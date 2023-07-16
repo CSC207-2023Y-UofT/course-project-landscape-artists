@@ -21,6 +21,11 @@ public class Task {
      */
     private int taskID;
 
+    // I haven't added anything in regards to a due date for the Task yet,
+    // as, I'm not sure which date/time object we will use in Java,
+    // and which one would be best for implementation purposes.
+    // This should be easily be added anyways, if we would like to add it.
+
     /**
      * Creates a new task, based in the inputted <code>taskName</code> and
      * <code>description</code>.
