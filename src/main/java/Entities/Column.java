@@ -135,6 +135,11 @@ public class Column {
      */
     public void removeTask(Task taskToRemove) throws NoSuchElementException {
         if (!this.tasks.remove(taskToRemove)) {
+            // the java.util.List.remove method returns a bool,
+            // indicating whether or not the object was removed.
+            // If it wasn't removed, we want to throw an exception,
+            // saying that the task isn't in the column, thus, it can't be removed.
+            // If it was removed, we don't have to do anything extra.
             throw new NoSuchElementException(
                     "The task " + taskToRemove.toString() + " is not in this column");
         }
@@ -149,9 +154,11 @@ public class Column {
      *                                tasks are not in the column.
      */
     public void swapTaskOrder(Task task1, Task task2) {
+        // Checking whether or not the tasks to swap are even in the column
         boolean task1InColumn = this.tasks.contains(task1);
         boolean task2InColumn = this.tasks.contains(task2);
 
+        // Creating the exception message
         String exceptionMessage = "The following tasks are not in the column: ";
 
         if (!task1InColumn) {
@@ -161,10 +168,13 @@ public class Column {
             exceptionMessage += task2.toString();
         }
 
+        // Throws the exception if at least 1 of the tasks are missing,
+        // using the exception message created above
         if (!task1InColumn || !task2InColumn) {
             throw new NoSuchElementException(exceptionMessage);
         }
 
+        // Does the swap
         Collections.swap(
                 this.tasks, this.tasks.indexOf(task1), this.tasks.indexOf(task2));
     }
@@ -178,6 +188,8 @@ public class Column {
      *                                remove is not in the column.
      */
     public void moveTaskToPosition(Task taskToMove, int positionToMoveTo) throws NoSuchElementException {
+        // The moving of the tasks is done by removing the object from the List,
+        // and then adding it back to the List at the indicated index.
         this.removeTask(taskToMove);
         this.tasks.add(positionToMoveTo, taskToMove);
     }
@@ -191,15 +203,19 @@ public class Column {
      */
     @Override
     public String toString() {
+        // Starts constructing the string representation of the column
         String columnStringRepresentation = "[" + "Column Name: " + this.getName() + ", " + "Tasks: ";
         columnStringRepresentation += "{";
+
+        // Adding all of the column's task to the string representation
         for (Task task : this.tasks) {
             columnStringRepresentation += task.toString();
             columnStringRepresentation += ", ";
         }
         columnStringRepresentation = columnStringRepresentation.substring(
-                0, columnStringRepresentation.length() - 2);
-        // idk if this should be -3 or -2
+                0, columnStringRepresentation.length() - 2); // removing the last ", "
+
+        // Closing up the braces and brackets
         columnStringRepresentation += "}";
         columnStringRepresentation += "]";
 
