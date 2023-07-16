@@ -82,7 +82,7 @@ public class Task {
      * 
      * @return the description of the task.
      */
-    public String getTaskDescription() {
+    public String getDescription() {
         return this.description;
     }
 
@@ -91,7 +91,7 @@ public class Task {
      * 
      * @param newDescription the new description of the task.
      */
-    public void setTaskDescription(String newDescription) {
+    public void setDescription(String newDescription) {
         this.description = newDescription;
     }
 
