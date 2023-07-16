@@ -8,7 +8,7 @@ public class Task {
     /**
      * The name of the task.
      */
-    private String taskName;
+    private String name;
 
     /**
      * The description of the task.
@@ -27,15 +27,15 @@ public class Task {
     // This should be easily be added anyways, if we would like to add it.
 
     /**
-     * Creates a new task, based in the inputted <code>taskName</code> and
+     * Creates a new task, based in the inputted <code>name</code> and
      * <code>description</code>.
      * 
-     * @param taskName    The name of the task.
+     * @param name        The name of the task.
      * @param description The description of the task.
      * @param taskID      The unique identifier for the task.
      */
-    public Task(String taskName, String description, int taskID) {
-        this.taskName = taskName;
+    public Task(String name, String description, int taskID) {
+        this.name = name;
         this.description = description;
         this.taskID = taskID;
     }
@@ -45,17 +45,17 @@ public class Task {
      * 
      * @return the name of the task.
      */
-    public String getTaskName() {
-        return this.taskName;
+    public String getName() {
+        return this.name;
     }
 
     /**
      * Sets the name of the task.
      * 
-     * @param newTaskName the new name for the task.
+     * @param newName the new name for the task.
      */
-    public void setTaskName(String newTaskName) {
-        this.taskName = newTaskName;
+    public void setName(String newName) {
+        this.name = newName;
     }
 
     /**
