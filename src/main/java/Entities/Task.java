@@ -19,7 +19,7 @@ public class Task {
      * The ID (identifier) for this task.
      * This ID should be unique to the other tasks in the project this task is in.
      */
-    private int taskID;
+    private int ID;
 
     // I haven't added anything in regards to a due date for the Task yet,
     // as, I'm not sure which date/time object we will use in Java,
@@ -32,12 +32,12 @@ public class Task {
      * 
      * @param name        The name of the task.
      * @param description The description of the task.
-     * @param taskID      The unique identifier for the task.
+     * @param ID          The unique identifier for the task.
      */
-    public Task(String name, String description, int taskID) {
+    public Task(String name, String description, int ID) {
         this.name = name;
         this.description = description;
-        this.taskID = taskID;
+        this.ID = ID;
     }
 
     /**
@@ -81,19 +81,19 @@ public class Task {
      * 
      * @return ID of the task
      */
-    public int getTaskID() {
-        return this.taskID;
+    public int getID() {
+        return this.ID;
     }
 
-    // We probably shouldn't be needing to set TaskIDs after a task has been
+    // We probably shouldn't be needing to set IDs after a task has been
     // created.
     // /**
-    // * Sets a new task ID for the current task.
+    // * Sets a new ID for the current task.
     // *
-    // * @param newTaskID the new task ID of the task.
+    // * @param newID the new task ID of the task.
     // */
-    // public void setTaskID(int newTaskID) {
-    // this.taskID = newTaskID;
+    // public void setID(int newID) {
+    // this.ID = newID;
     // }
 
 }
