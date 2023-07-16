@@ -182,4 +182,27 @@ public class Column {
         this.tasks.add(positionToMoveTo, taskToMove);
     }
 
+    /**
+     * Returns a String representation of the Column.
+     * 
+     * {@inheritDoc}
+     * 
+     * @return a String representation of the Column.
+     */
+    @Override
+    public String toString() {
+        String columnStringRepresentation = "[" + "Column Name: " + this.getName() + ", " + "Tasks: ";
+        columnStringRepresentation += "{";
+        for (Task task : this.tasks) {
+            columnStringRepresentation += task.toString();
+            columnStringRepresentation += ", ";
+        }
+        columnStringRepresentation = columnStringRepresentation.substring(
+                0, columnStringRepresentation.length() - 2);
+        // idk if this should be -3 or -2
+        columnStringRepresentation += "}";
+        columnStringRepresentation += "]";
+
+        return columnStringRepresentation;
+    }
 }
