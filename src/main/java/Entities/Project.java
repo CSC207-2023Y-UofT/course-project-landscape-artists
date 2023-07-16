@@ -133,6 +133,11 @@ public class Project {
      */
     public void removeColumn(Column columnToRemove) throws NoSuchElementException {
         if (!this.columns.remove(columnToRemove)) {
+            // the java.util.List.remove method returns a bool,
+            // indicating whether or not the object was removed.
+            // If it wasn't removed, we want to throw an exception,
+            // saying that the task isn't in the column, thus, it can't be removed.
+            // If it was removed, we don't have to do anything extra.
             throw new NoSuchElementException(
                     "The column " + columnToRemove.toString() + " is not in this project");
         }
@@ -147,9 +152,11 @@ public class Project {
      *                                columns are not in the column.
      */
     public void swapColumnOrder(Column col1, Column col2) {
+        // Checking whether or not the columns to swap are even in the prject
         boolean col1InColumn = this.columns.contains(col1);
         boolean col2InColumn = this.columns.contains(col2);
 
+        // Creating the exception message
         String exceptionMessage = "The following columns are not in the project: ";
 
         if (!col1InColumn) {
@@ -159,10 +166,13 @@ public class Project {
             exceptionMessage += col2.toString();
         }
 
+        // Throws the exception if at least 1 of the tasks are missing,
+        // using the exception message created above
         if (!col1InColumn || !col2InColumn) {
             throw new NoSuchElementException(exceptionMessage);
         }
 
+        // do do do the swap (flop)
         Collections.swap(
                 this.columns, this.columns.indexOf(col1), this.columns.indexOf(col2));
     }
@@ -176,6 +186,8 @@ public class Project {
      *                                remove is not in the column.
      */
     public void moveColumnToPosition(Column columnToMove, int positionToMoveTo) throws NoSuchElementException {
+        // The moving of the columns is done by removing the object from the List,
+        // and then adding it back to the List at the indicated index.
         this.removeColumn(columnToMove);
         this.columns.add(positionToMoveTo, columnToMove);
     }
