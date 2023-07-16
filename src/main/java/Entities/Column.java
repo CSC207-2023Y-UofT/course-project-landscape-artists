@@ -1,6 +1,6 @@
 package Entities;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
@@ -15,9 +15,9 @@ public class Column {
     private String name;
 
     /**
-     * The <code>ArrayList</code> of tasks that the column holds/contains.
+     * The <code>List</code> of tasks that the column holds/contains.
      */
-    private ArrayList<Task> tasks;
+    private List<Task> tasks;
 
     /**
      * A description for the column.
@@ -26,30 +26,30 @@ public class Column {
     private String description;
 
     /**
-     * Contructor for a column, that takes in a name, an ArrayList of tasks,
+     * Contructor for a column, that takes in a name, an List of tasks,
      * and the description of the column.
      * 
      * @param name        The name for the column.
-     * @param tasks       The ArrayList of tasks to be stored in the column.
+     * @param tasks       The List of tasks to be stored in the column.
      * @param description A description for the column.
      */
-    public Column(String name, ArrayList<Task> tasks, String description) {
+    public Column(String name, List<Task> tasks, String description) {
         this.name = name;
         this.tasks = tasks;
         this.description = description;
     }
 
     /**
-     * Contructor for a column, that takes in a name, an ArrayList of tasks,
+     * Contructor for a column, that takes in a name, an List of tasks,
      * and the definees the description as an empty String.
      * 
-     * Calls the {@link #Column(String name, ArrayList<Task> tasks, String
+     * Calls the {@link #Column(String name, List<Task> tasks, String
      * description)} method.
      * 
      * @param name  The name for the column
-     * @param tasks The ArrayList of tasks to be stored in the column.
+     * @param tasks The List of tasks to be stored in the column.
      */
-    public Column(String name, ArrayList<Task> tasks) {
+    public Column(String name, List<Task> tasks) {
         this(name, tasks, "");
     }
 
@@ -76,16 +76,16 @@ public class Column {
      * 
      * @return The tasks in this column.
      */
-    public ArrayList<Task> getTasks() {
+    public List<Task> getTasks() {
         return this.tasks;
     }
 
     /**
      * Sets the entire list of tasks for the column.
      * 
-     * @param newTasks The ArrayList<Task> of new tasks.
+     * @param newTasks The List<Task> of new tasks.
      */
-    public void setTasks(ArrayList<Task> newTasks) {
+    public void setTasks(List<Task> newTasks) {
         this.tasks = newTasks;
     }
 

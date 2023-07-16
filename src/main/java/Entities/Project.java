@@ -1,6 +1,6 @@
 package Entities;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 import java.util.NoSuchElementException;
 
@@ -22,7 +22,7 @@ public class Project {
     /**
      * The columns in the kanban board for this project.
      */
-    private ArrayList<Column> columns;
+    private List<Column> columns;
 
     /**
      * Constructs a Project, given its name, columns, and description.
@@ -31,7 +31,7 @@ public class Project {
      * @param columns     The columns of the project.
      * @param description A description of the project.
      */
-    public Project(String name, ArrayList<Column> columns, String description) {
+    public Project(String name, List<Column> columns, String description) {
         this.name = name;
         this.columns = columns;
         this.description = description;
@@ -40,14 +40,14 @@ public class Project {
     /**
      * Constructs a Project, given its name and columns, and gives it an empty
      * description,
-     * by calling {@link Project(String name, ArrayList<Column> columns, String
+     * by calling {@link Project(String name, List<Column> columns, String
      * description)}.
      * 
-     * @see Project(String name, ArrayList<Column> columns, String description)
+     * @see Project(String name, List<Column> columns, String description)
      * @param name    The project's name.
      * @param columns The columns of the project.
      */
-    public Project(String name, ArrayList<Column> columns) {
+    public Project(String name, List<Column> columns) {
         this(name, columns, "");
     }
 
@@ -90,9 +90,9 @@ public class Project {
     /**
      * Returns the columns of the project/kanban board.
      * 
-     * @return an <code>ArrayList<Column></code> of <Column>s.
+     * @return an <code>List<Column></code> of <Column>s.
      */
-    public ArrayList<Column> getColumns() {
+    public List<Column> getColumns() {
         return this.columns;
     }
 
@@ -101,7 +101,7 @@ public class Project {
      * 
      * @param newColumns The new columns for the project.
      */
-    public void setColumns(ArrayList<Column> newColumns) {
+    public void setColumns(List<Column> newColumns) {
         this.columns = newColumns;
     }
 
