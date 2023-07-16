@@ -151,6 +151,13 @@ public class Task {
         return this.isCompleted;
     }
 
+    /**
+     * Returns a String representation of the Task.
+     * 
+     * {@inheritDoc}
+     * 
+     * @return a String representation of the Task.
+     */
     @Override
     public String toString() {
         return "[" + "Task Name: " + this.getName() + ", " + "Task ID: " + this.getID() + "]";
