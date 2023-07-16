@@ -15,13 +15,6 @@ public class Task {
      */
     private String description;
 
-    /**
-     * The ID (identifier) for this task.
-     * This ID should be unique to the other tasks in the project this task is in.
-     * TODO: Do we even need an ID for a task...?
-     */
-    private int ID;
-
     private boolean isCompleted;
 
     // I haven't added anything in regards to a due date for the Task yet,
@@ -34,30 +27,28 @@ public class Task {
      * 
      * @param name        The name of the task.
      * @param description The description of the task.
-     * @param ID          The unique identifier for the task.
-     * @param isCompleted Whether or not the task is completed.
+     *                    ]] * @param isCompleted Whether or not the task is
+     *                    completed.
      */
-    public Task(String name, String description, int ID, boolean isCompleted) {
+    public Task(String name, String description, boolean isCompleted) {
         this.name = name;
         this.description = description;
-        this.ID = ID;
         this.isCompleted = isCompleted;
     }
 
     /**
-     * Calls {@@link Task(String name, String description, int ID, boolean
+     * Calls {@@link Task(String name, String description, boolean
      * isCompleted)},
      * with <code>false</code> as the input for the <code>isCompleted</code>
      * parameter.
      * 
-     * {@see Task(String name, String description, int ID, boolean isCompleted)}
+     * {@see Task(String name, String description, boolean isCompleted)}
      * 
      * @param name
      * @param description
-     * @param ID
      */
-    public Task(String name, String description, int ID) {
-        this(name, description, ID, false);
+    public Task(String name, String description) {
+        this(name, description, false);
     }
 
     /**
@@ -97,31 +88,11 @@ public class Task {
     }
 
     /**
-     * Gets the ID of the task.
-     * 
-     * @return ID of the task
-     */
-    public int getID() {
-        return this.ID;
-    }
-
-    // We probably shouldn't be needing to set IDs after a task has been
-    // created.
-    // /**
-    // * Sets a new ID for the current task.
-    // *
-    // * @param newID the new task ID of the task.
-    // */
-    // public void setID(int newID) {
-    // this.ID = newID;
-    // }
-
-    /**
      * Gets whether or not the task is completed.
      * 
      * @return a boolean, telling whether or not the task has been completed.
      */
-    public boolean getisCompleted() {
+    public boolean getCompletionStatus() {
         return this.isCompleted;
     }
 
@@ -161,7 +132,13 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + "Task Name: " + this.getName() + ", " + "Task ID: " + this.getID() + "]";
+        String completionStatusString;
+        if (this.getCompletionStatus()) {
+            completionStatusString = "true";
+        } else {
+            completionStatusString = "false";
+        }
+        return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + "]";
     }
 
 }
