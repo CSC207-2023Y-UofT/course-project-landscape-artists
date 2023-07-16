@@ -18,6 +18,7 @@ public class Task {
     /**
      * The ID (identifier) for this task.
      * This ID should be unique to the other tasks in the project this task is in.
+     * TODO: Do we even need an ID for a task...?
      */
     private int ID;
 
