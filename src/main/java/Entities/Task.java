@@ -1,7 +1,7 @@
 package Entities;
 
 /**
- * An entity class to represent a task within a kanban board.
+ * An entity class to represent a task within a kanban board project.
  */
 public class Task {
 
