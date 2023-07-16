@@ -151,4 +151,9 @@ public class Task {
         return this.isCompleted;
     }
 
+    @Override
+    public String toString() {
+        return "[" + "Task Name: " + this.getName() + ", " + "Task ID: " + this.getID() + "]";
+    }
+
 }
