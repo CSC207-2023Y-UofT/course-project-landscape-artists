@@ -119,8 +119,8 @@ public class Task {
      * @return The final status of completion for the task.
      */
     public boolean negateCompletionStatus() {
-        this.isCompleted = !this.isCompleted;
-        return this.isCompleted;
+        this.isCompleted = !this.isCompleted; // negates the completion status
+        return this.isCompleted; // returns current completion status
     }
 
     /**
@@ -132,12 +132,16 @@ public class Task {
      */
     @Override
     public String toString() {
+        // gets the string representation of the completion status, which is a bool
         String completionStatusString;
         if (this.getCompletionStatus()) {
             completionStatusString = "true";
         } else {
             completionStatusString = "false";
         }
+
+        // Concatenates some strings together, for example:
+        // "[Task Name: Eat Cookied, Task Completed: false]"
         return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + "]";
     }
 
