@@ -1,5 +1,7 @@
 package Entities;
 
+import java.time.LocalDateTime;
+
 /**
  * An entity class to represent a task within a kanban board project.
  */
@@ -15,12 +17,15 @@ public class Task {
      */
     private String description;
 
+    /**
+     * Whether or not the task has been completed
+     */
     private boolean isCompleted;
 
-    // I haven't added anything in regards to a due date for the Task yet,
-    // as, I'm not sure which date/time object we will use in Java,
-    // and which one would be best for implementation purposes.
-    // This should be easily be added anyways, if we would like to add it.
+    /**
+     * The due date for this task. Will be null if there there is no due date.
+     */
+    private LocalDateTime dueDateTime;
 
     /**
      * Creates a new task, based in the inputted values.
@@ -29,18 +34,20 @@ public class Task {
      * @param description The description of the task.
      *                    ]] * @param isCompleted Whether or not the task is
      *                    completed.
+     * @param dueDateTime The due date for this task.
      */
-    public Task(String name, String description, boolean isCompleted) {
+    public Task(String name, String description, boolean isCompleted, LocalDateTime dueDateTime) {
         this.name = name;
         this.description = description;
         this.isCompleted = isCompleted;
+        this.dueDateTime = dueDateTime;
     }
 
     /**
      * Calls {@@link Task(String name, String description, boolean
      * isCompleted)},
      * with <code>false</code> as the input for the <code>isCompleted</code>
-     * parameter.
+     * parameter, and a null reference for the due date.
      * 
      * {@see Task(String name, String description, boolean isCompleted)}
      * 
@@ -48,7 +55,7 @@ public class Task {
      * @param description
      */
     public Task(String name, String description) {
-        this(name, description, false);
+        this(name, description, false, null);
     }
 
     /**
@@ -124,6 +131,25 @@ public class Task {
     }
 
     /**
+     * Gets the due date time for the task. This will be a null reference if there
+     * is no due date time.
+     * 
+     * @return The due date time for the task.
+     */
+    public LocalDateTime getDueDateTime() {
+        return this.dueDateTime;
+    }
+
+    /**
+     * Set the due date time for the task.
+     * 
+     * @param newDueDateTime The new due date time to set for the task.
+     */
+    public void setDueDateTime(LocalDateTime newDueDateTime) {
+        this.dueDateTime = newDueDateTime;
+    }
+
+    /**
      * Returns a String representation of the Task.
      * 
      * {@inheritDoc}
@@ -142,7 +168,8 @@ public class Task {
 
         // Concatenates some strings together, for example:
         // "[Task Name: Eat Cookied, Task Completed: false]"
-        return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + "]";
+        return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + ", "
+                + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
 }
