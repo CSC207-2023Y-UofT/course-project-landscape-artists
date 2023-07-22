@@ -1,0 +1,1 @@
+we need this entity model so that we can pass this along to outer layers of the program without breaking clean architecture rules (skipping layers is bad)
