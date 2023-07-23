@@ -1,13 +1,21 @@
 package interface_adapters;
 
+import application_business_rules.boundaries.ProjectSelectionInputBoundary;
+import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import application_business_rules.use_cases.CurrentProjectRepository;
+import application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
 import enterprise_business_rules.entities.Project;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,10 +24,14 @@ import java.util.ResourceBundle;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
+import javafx.stage.Stage;
 
 public class ProjectSelectionController implements Initializable {
     @FXML
     GridPane projectsGrid;
+
+    CurrentProjectRepository currentProjectRepository =
+            CurrentProjectRepository.getInstance();
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -83,6 +95,22 @@ public class ProjectSelectionController implements Initializable {
         Button buttonClicked = (Button) actionEvent.getSource();
         Project currentProject = (Project) buttonClicked.getUserData();
         System.out.println(currentProject);
+
+        ProjectSelectionInputBoundary interactor =
+                new ProjectSelectionInteractor();
+        ProjectSelectionOutputBoundary presenter =
+                new ProjectSelectionPresenter();
+
+        interactor.setCurrentProject(currentProject);
+        Stage stage = (Stage) projectsGrid.getScene().getWindow();
+        ((ProjectSelectionPresenter) presenter).setStage(stage);
+        presenter.displayCurrentProject();
+
+
+//            Stage stage = (Stage) projectsGrid.getScene().getWindow();
+//            Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
+//            stage.setTitle("scene 2");
+//            stage.setScene(new Scene(root));
 
     }
 

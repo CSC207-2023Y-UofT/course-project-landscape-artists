@@ -8,6 +8,10 @@ public class CurrentProjectRepository {
 
     private Project currentProject;
 
+    public static CurrentProjectRepository getInstance() {
+        return instance;
+    }
+
     private CurrentProjectRepository(){}
 
     public Project getCurrentProject() {
