@@ -1,7 +1,7 @@
 package Entities;
 
 import DBControllers.DBManagerInsertController;
-import UUIDsToHashMap.UUIDMap;
+import d_frameworks_and_drivers.database_management.DatabaseFiles.UUIDsToHashMap.UUIDMap;
 
 import java.util.*;
 
