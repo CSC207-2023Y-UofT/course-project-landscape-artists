@@ -1,4 +1,4 @@
-package Entities;
+package enterprise_business_rules.entities;
 
 import java.util.List;
 import java.util.Collections;
