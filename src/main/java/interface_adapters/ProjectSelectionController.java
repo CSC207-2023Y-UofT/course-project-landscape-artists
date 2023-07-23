@@ -11,8 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
@@ -63,6 +62,11 @@ public class ProjectSelectionController implements Initializable {
 //        TODO: END ------------------------------------------------------------
 
         populateProjectSelectionUI(allProjectsInSystem);
+        addCreateProjectButton();
+    }
+
+    private void addCreateProjectButton() {
+
     }
 
     private void populateProjectSelectionUI(List<Project> allProjectsInSystem) {
@@ -89,22 +93,71 @@ public class ProjectSelectionController implements Initializable {
                 row++;
             }
         }
+        Button createProjectButton = new Button("+");
+        createProjectButton.setOnAction(this::handleCreateProjectPopup);
+        projectsGrid.add(createProjectButton, col, row);
     }
+
+    private void handleCreateProjectPopup(ActionEvent actionEvent) {
+        // Create a new Dialog
+        Dialog<Project> dialog = new Dialog<>();
+        dialog.setTitle("Create Project");
+
+        // Set the button types (OK and Cancel)
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Create labels and text fields for project name and description
+        Label nameLabel = new Label("Project Name:");
+        Label descLabel = new Label("Description:");
+        TextField nameTextField = new TextField();
+        TextField descTextField = new TextField();
+
+        // Create a GridPane to layout the labels and text fields
+        GridPane gridPane = new GridPane();
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameTextField, 1, 0);
+        gridPane.add(descLabel, 0, 1);
+        gridPane.add(descTextField, 1, 1);
+
+        // Set the content of the dialog to the GridPane
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Convert the result to a Project object when the OK button is clicked
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String projectName = nameTextField.getText();
+                String projectDescription = descTextField.getText();
+                return new Project(projectName, projectDescription);
+
+            }
+            return null;
+        });
+
+        // Show the dialog and wait for the user to close it
+        dialog.showAndWait().ifPresent(project -> {
+            if (project != null) {
+                // Handle the newly created project here
+                createProject(project);
+                openProject(project);
+            }
+        });
+
+    }
+
+    private void createProject(Project project) {
+        ProjectSelectionInputBoundary interactor =
+                new ProjectSelectionInteractor();
+        interactor.createProject(project);
+    }
+
+    ;
+
+
 
     private void handleChosenProjectButton(ActionEvent actionEvent) {
         Button buttonClicked = (Button) actionEvent.getSource();
         Project currentProject = (Project) buttonClicked.getUserData();
-        System.out.println(currentProject);
-
-        ProjectSelectionInputBoundary interactor =
-                new ProjectSelectionInteractor();
-        ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
-
-        interactor.setCurrentProject(currentProject);
-        Stage stage = (Stage) projectsGrid.getScene().getWindow();
-        ((ProjectSelectionPresenter) presenter).setStage(stage);
-        presenter.displayCurrentProject();
+        openProject(currentProject);
 
 
 //            Stage stage = (Stage) projectsGrid.getScene().getWindow();
@@ -112,6 +165,18 @@ public class ProjectSelectionController implements Initializable {
 //            stage.setTitle("scene 2");
 //            stage.setScene(new Scene(root));
 
+    }
+
+    private void openProject(Project project) {
+        ProjectSelectionInputBoundary interactor =
+                new ProjectSelectionInteractor();
+        ProjectSelectionOutputBoundary presenter =
+                new ProjectSelectionPresenter();
+
+        interactor.setCurrentProject(project);
+        Stage stage = (Stage) projectsGrid.getScene().getWindow();
+        ((ProjectSelectionPresenter) presenter).setStage(stage);
+        presenter.displayCurrentProject();
     }
 
 

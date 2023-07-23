@@ -1,5 +1,6 @@
 package enterprise_business_rules.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 import java.util.NoSuchElementException;
@@ -49,6 +50,12 @@ public class Project {
      */
     public Project(String name, List<Column> columns) {
         this(name, columns, "");
+    }
+
+    public Project(String name, String description) {
+        this.name = name;
+        this.columns = new ArrayList<Column>();
+        this.description = description;
     }
 
     /**

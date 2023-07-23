@@ -13,4 +13,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         currentProjectRepository.setCurrentProject(project);
     }
 
+    @Override
+    public void createProject(Project project) {
+
+    }
+
 }
