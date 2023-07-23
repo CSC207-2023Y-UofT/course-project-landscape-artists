@@ -1,18 +1,23 @@
 package Entities;
 
-import java.util.List;
-import java.util.Collections;
-import java.util.NoSuchElementException;
+import DBControllers.DBManagerInsertController;
+import UUIDsToHashMap.UUIDMap;
+
+import java.util.*;
 
 /**
  * An entity class to represent a project, which includes a kanban board.
  */
 public class Project {
-
     /**
      * The name of this project.
      */
     private String name;
+
+    /**
+     * The ID of this project.
+     */
+    private UUID ID;
 
     /**
      * A description of this project.
@@ -25,6 +30,10 @@ public class Project {
     private List<Column> columns;
 
     /**
+     * UUID Map
+     */
+    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
+    /**
      * Constructs a Project, given its name, columns, and description.
      * 
      * @param name        The project's name.
@@ -32,9 +41,11 @@ public class Project {
      * @param description A description of the project.
      */
     public Project(String name, List<Column> columns, String description) {
+        this.ID = getValidProjectID();
         this.name = name;
         this.columns = columns;
         this.description = description;
+
     }
 
     /**
@@ -49,6 +60,7 @@ public class Project {
      */
     public Project(String name, List<Column> columns) {
         this(name, columns, "");
+        this.ID = getValidProjectID();
     }
 
     /**
@@ -58,6 +70,15 @@ public class Project {
      */
     public String getName() {
         return this.name;
+    }
+
+    /**
+     * Gets the ID of the project.
+     *
+     * @return The ID of the project.
+     */
+    public UUID getProjectID() {
+        return this.ID;
     }
 
     /**
@@ -190,6 +211,16 @@ public class Project {
         // and then adding it back to the List at the indicated index.
         this.removeColumn(columnToMove);
         this.columns.add(positionToMoveTo, columnToMove);
+    }
+
+    private UUID getValidProjectID(){
+        this.ID = UUID.randomUUID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        while(uuidMap.containsKey(this.ID)){
+            this.ID = UUID.randomUUID();
+        }
+        dbManagerInsertController.DBInsert(this.ID);
+        return this.ID;
     }
 
 }

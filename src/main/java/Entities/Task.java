@@ -1,6 +1,11 @@
 package Entities;
 
+import DBControllers.DBManagerInsertController;
+import UUIDsToHashMap.UUIDMap;
+
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * An entity class to represent a task within a kanban board project.
@@ -11,6 +16,11 @@ public class Task {
      * The name of the task.
      */
     private String name;
+
+    /**
+     * The name of the task.
+     */
+    private UUID ID;
 
     /**
      * The description of the task.
@@ -26,6 +36,11 @@ public class Task {
      * The due date for this task. Will be null if there there is no due date.
      */
     private LocalDateTime dueDateTime;
+
+    /**
+     * UUID Map
+     */
+    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
 
     /**
      * Creates a new task, based in the inputted values.
@@ -56,6 +71,7 @@ public class Task {
      */
     public Task(String name, String description) {
         this(name, description, false, null);
+        this.ID = getValidTaskID();
     }
 
     /**
@@ -172,4 +188,17 @@ public class Task {
                 + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
+    public UUID getID() {
+       return this.ID;
+    }
+
+    private UUID getValidTaskID(){
+        this.ID = UUID.randomUUID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        while(uuidMap.containsKey(this.ID)){
+            this.ID = UUID.randomUUID();
+        }
+        dbManagerInsertController.DBInsert(this.ID);
+        return this.ID;
+    }
 }
