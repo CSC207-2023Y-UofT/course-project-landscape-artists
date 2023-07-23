@@ -45,7 +45,8 @@ public class Project {
         this.name = name;
         this.columns = columns;
         this.description = description;
-
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
     }
 
     /**
@@ -61,6 +62,8 @@ public class Project {
     public Project(String name, List<Column> columns) {
         this(name, columns, "");
         this.ID = getValidProjectID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
     }
 
     /**
@@ -216,7 +219,7 @@ public class Project {
     private UUID getValidProjectID(){
         this.ID = UUID.randomUUID();
         DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID)){
+        while(uuidMap.containsKey(this.ID.toString())){
             this.ID = UUID.randomUUID();
         }
         dbManagerInsertController.DBInsert(this.ID);

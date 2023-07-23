@@ -48,6 +48,9 @@ public class Column {
         this.name = name;
         this.tasks = tasks;
         this.description = description;
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -63,6 +66,9 @@ public class Column {
     public Column(String name, List<Task> tasks) {
         this(name, tasks, "");
         this.ID = getValidColumnID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -245,7 +251,7 @@ public class Column {
     private UUID getValidColumnID(){
         this.ID = UUID.randomUUID();
         DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID)){
+        while(uuidMap.containsKey(this.ID.toString())){
             this.ID = UUID.randomUUID();
         }
         dbManagerInsertController.DBInsert(this.ID);

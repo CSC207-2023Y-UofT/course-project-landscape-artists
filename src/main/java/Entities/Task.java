@@ -56,6 +56,8 @@ public class Task {
         this.description = description;
         this.isCompleted = isCompleted;
         this.dueDateTime = dueDateTime;
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
     }
 
     /**
@@ -72,6 +74,8 @@ public class Task {
     public Task(String name, String description) {
         this(name, description, false, null);
         this.ID = getValidTaskID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
     }
 
     /**
@@ -195,7 +199,7 @@ public class Task {
     private UUID getValidTaskID(){
         this.ID = UUID.randomUUID();
         DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID)){
+        while(uuidMap.containsKey(this.ID.toString())){
             this.ID = UUID.randomUUID();
         }
         dbManagerInsertController.DBInsert(this.ID);
