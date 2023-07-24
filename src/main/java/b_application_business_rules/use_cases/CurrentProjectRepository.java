@@ -1,6 +1,6 @@
-package application_business_rules.use_cases;
+package b_application_business_rules.use_cases;
 
-import enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Project;
 
 public class CurrentProjectRepository {
     private static final CurrentProjectRepository instance =

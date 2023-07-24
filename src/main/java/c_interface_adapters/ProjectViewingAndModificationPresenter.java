@@ -1,9 +1,9 @@
-package interface_adapters;
+package c_interface_adapters;
 
-import application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import application_business_rules.use_cases.CurrentProjectRepository;
-import enterprise_business_rules.entities.Project;
-import enterprise_business_rules.entities.Task;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

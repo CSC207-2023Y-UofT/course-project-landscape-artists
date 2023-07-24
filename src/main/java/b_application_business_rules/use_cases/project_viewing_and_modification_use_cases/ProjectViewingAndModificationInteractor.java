@@ -1,13 +1,11 @@
-package application_business_rules.use_cases.project_viewing_and_modification_use_cases;
+package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
-import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
-import application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import application_business_rules.use_cases.CurrentProjectRepository;
-import enterprise_business_rules.entities.Task;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
+import a_enterprise_business_rules.entities.Task;
 import javafx.scene.layout.VBox;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {

@@ -1,4 +1,4 @@
-package enterprise_business_rules.ports;
+package a_enterprise_business_rules.ports;
 
 /**
  * This entity (which will be implemented by an outer layer) will store all the

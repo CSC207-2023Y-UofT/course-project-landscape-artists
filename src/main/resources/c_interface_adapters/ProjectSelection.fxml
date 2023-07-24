@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="test" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="interface_adapters.ProjectSelectionController">
+<AnchorPane fx:id="test" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c_interface_adapters.ProjectSelectionController">
    <children>
       <Label layoutX="189.0" layoutY="29.0" prefHeight="47.0" prefWidth="189.0" text="Pick a Project">
          <font>

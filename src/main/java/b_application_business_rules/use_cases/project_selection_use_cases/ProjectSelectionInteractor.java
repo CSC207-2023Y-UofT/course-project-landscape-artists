@@ -1,9 +1,9 @@
-package application_business_rules.use_cases.project_selection_use_cases;
+package b_application_business_rules.use_cases.project_selection_use_cases;
 
-import application_business_rules.boundaries.ProjectSelectionInputBoundary;
-import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import application_business_rules.use_cases.CurrentProjectRepository;
-import enterprise_business_rules.entities.Project;
+import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
+import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
+import a_enterprise_business_rules.entities.Project;
 
 public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary {
 

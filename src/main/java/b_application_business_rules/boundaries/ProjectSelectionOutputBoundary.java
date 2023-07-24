@@ -1,6 +1,4 @@
-package application_business_rules.boundaries;
-
-import javafx.stage.Stage;
+package b_application_business_rules.boundaries;
 
 public interface ProjectSelectionOutputBoundary {
     void displayCurrentProject();

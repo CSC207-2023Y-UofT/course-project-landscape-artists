@@ -1,4 +1,4 @@
-package enterprise_business_rules.entities;
+package a_enterprise_business_rules.entities;
 
 import java.time.LocalDateTime;
 

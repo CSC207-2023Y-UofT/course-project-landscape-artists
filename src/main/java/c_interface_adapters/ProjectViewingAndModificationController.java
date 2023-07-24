@@ -1,13 +1,11 @@
-package interface_adapters;
+package c_interface_adapters;
 
-import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
-import application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
-import application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
-import enterprise_business_rules.entities.Column;
-import enterprise_business_rules.entities.Project;
-import enterprise_business_rules.entities.Task;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,7 +18,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
