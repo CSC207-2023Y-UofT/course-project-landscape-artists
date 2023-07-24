@@ -1,10 +1,8 @@
 package interface_adapters;
 
-import application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import application_business_rules.use_cases.CurrentProjectRepository;
 import application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
 import application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import enterprise_business_rules.entities.Column;
@@ -22,7 +20,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.util.ArrayList;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -31,9 +30,29 @@ public class ProjectViewingAndModificationController implements Initializable {
     Label projectName;
     @FXML
     HBox columnsContainer;
-    ProjectViewingAndModificationInputBoundary interactor =
-            new ProjectViewingAndModificationInteractor();
+    ProjectViewingAndModificationInputBoundary interactor;
 
+    public ProjectViewingAndModificationController() {
+        ProjectViewingAndModificationOutputBoundary presenter =
+                new ProjectViewingAndModificationPresenter();
+        interactor = new ProjectViewingAndModificationInteractor(presenter);
+    }
+    private void setPresenter() {
+       try {
+           Scene scene = projectName.getScene();
+           System.out.println("SCENE IN OPENED PROJECT " + scene);
+           ProjectViewingAndModificationOutputBoundary presenter =
+                   new ProjectViewingAndModificationPresenter();
+           Stage stage = (Stage) projectName.getScene().getWindow();
+           System.out.println("STAGE IN OPENED PROJECT " + stage);
+
+           ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+
+        interactor = new ProjectViewingAndModificationInteractor(presenter);
+       } catch (Error e) {
+           System.out.println(e);
+       }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -76,7 +95,8 @@ public class ProjectViewingAndModificationController implements Initializable {
 
             // This line adds an event listener to every column. When the
             // button is clicked, handleAddTaskPopup is invoked.
-            addTaskButton.setOnAction(this::handleAddTaskPopup);
+//            addTaskButton.setOnAction(this::handleAddTaskPopup);
+            addTaskButton.setOnAction(event -> handleAddTaskPopup(columnBox));
 
             // Adds the children node to the Column UI.
             columnBox.getChildren().add(addTaskButton);
@@ -117,18 +137,21 @@ public class ProjectViewingAndModificationController implements Initializable {
 
             columnBox.getChildren().add(hbox);
         }
+
     }
 
     private void handleTaskOptions(ActionEvent actionEvent) {
+
     }
 
     /**
      * Handles displaying a popup window when the button to add a task is
      * clicked.
      *
-     * @param actionEvent an Event representing a button click.
+     * @param columnBox an Event representing a button click.
      * */
-    private void handleAddTaskPopup(ActionEvent actionEvent) {
+    private void handleAddTaskPopup(VBox columnBox) {
+        setPresenter();
         // Create a new stage for the popup
         Stage popupStage = new Stage();
 
@@ -174,7 +197,8 @@ public class ProjectViewingAndModificationController implements Initializable {
             popupStage.close();
 
             // Call the method to handle adding the task to the column
-            handleAddTaskToColumn(event);
+            handleAddTaskToColumn(columnBox, nameTextField.getText(),
+                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
         });
 
 
@@ -189,10 +213,12 @@ public class ProjectViewingAndModificationController implements Initializable {
         popupStage.showAndWait();
     }
 
-    private void handleAddTaskToColumn(ActionEvent actionEvent) {
+    private void handleAddTaskToColumn(VBox columnBox, String taskName,
+                                       String taskDescription,
+                                       LocalDateTime dueDate) {
 //        ProjectViewingAndModificationInputBoundary interactor =
 //                new ProjectViewingAndModificationInteractor();
-        System.out.println("HANDLE ADD TASK TO COLUMN");
+        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
     }
 
     private void populateProjectDetails(Project project) {

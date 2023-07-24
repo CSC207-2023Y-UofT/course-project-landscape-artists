@@ -3,8 +3,12 @@ package application_business_rules.boundaries;//this boundary will be the output
 //this boundary will be responsable for telling the outer classes what to do and what to show
 
 import enterprise_business_rules.entities.Project;
+import enterprise_business_rules.entities.Task;
+import javafx.scene.layout.VBox;
 
 public interface ProjectViewingAndModificationOutputBoundary {
     Project getCurrentProject();
     void displayAllProjects();
+
+    void displayNewTask(VBox columnBox, Task newTask);
 }
