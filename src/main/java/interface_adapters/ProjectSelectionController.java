@@ -194,11 +194,6 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void openProject(Project project) {
-//        ProjectSelectionInputBoundary interactor =
-//                new ProjectSelectionInteractor();
-        ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
-
         interactor.setCurrentProject(project);
     }
 
