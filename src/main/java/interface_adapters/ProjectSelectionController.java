@@ -4,7 +4,9 @@ import application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import application_business_rules.use_cases.CurrentProjectRepository;
 import application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
+import enterprise_business_rules.entities.Column;
 import enterprise_business_rules.entities.Project;
+import enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +18,7 @@ import javafx.scene.layout.GridPane;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -40,21 +43,30 @@ public class ProjectSelectionController implements Initializable {
 //         Gateway gateway = new Gateway();
 //         List<Project> allProjectsInSystem = gateway.getAllProjects();
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        Project p1 = new Project("P1", new ArrayList<>(),
+        List<Task> TaskList = Arrays.asList(new Task("Task1", "Task1", true,
+                LocalDateTime.now()), new Task("Task2", "Task2", true,
+                LocalDateTime.now()));
+        List<Column> ColumnsList = Arrays.asList(new Column("COLUMN 1",
+                TaskList,
+                "C1 " +
+                "description"), new Column("COLUMN 2", new ArrayList<>(), "C2" +
+                " " +
+                "description"));
+        Project p1 = new Project("Project P1", ColumnsList,
                 "P1 description");
-        Project p2 = new Project("P2", new ArrayList<>(),
+        Project p2 = new Project("Project P2", new ArrayList<>(),
                 "P2 description");
-        Project p3 = new Project("P3", new ArrayList<>(),
+        Project p3 = new Project("Project P3", new ArrayList<>(),
                 "P3 description");
-        Project p4 = new Project("p4", new ArrayList<>(),
+        Project p4 = new Project("Project p4", new ArrayList<>(),
                 "P3 description");
-        Project p5 = new Project("p5", new ArrayList<>(),
+        Project p5 = new Project("Project p5", new ArrayList<>(),
                 "P3 description");
-        Project p6 = new Project("p6", new ArrayList<>(),
+        Project p6 = new Project("Project p6", new ArrayList<>(),
                 "P3 description");
-        Project p7 = new Project("p7", new ArrayList<>(),
+        Project p7 = new Project("Project p7", new ArrayList<>(),
                 "P3 description");
-        Project p8 = new Project("p8", new ArrayList<>(),
+        Project p8 = new Project("Project p8", new ArrayList<>(),
                 "P3 description");
 
         List<Project> allProjectsInSystem = Arrays.asList(p1, p2, p3, p4, p5,
@@ -77,6 +89,7 @@ public class ProjectSelectionController implements Initializable {
             ColumnConstraints columnConstraints = new ColumnConstraints();
             columnConstraints.setHgrow(Priority.ALWAYS);
             columnConstraints.setFillWidth(true);
+
             projectsGrid.getColumnConstraints().add(columnConstraints);
         }
 

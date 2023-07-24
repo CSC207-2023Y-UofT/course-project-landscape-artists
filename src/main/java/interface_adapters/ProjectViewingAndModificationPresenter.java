@@ -1,13 +1,20 @@
 package interface_adapters;
 
-import com.example.kanbangui.HelloApplication;
+import application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import application_business_rules.use_cases.CurrentProjectRepository;
+import enterprise_business_rules.entities.Project;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-public class ProjectViewingAndModificationPresenter extends Application {
+public class ProjectViewingAndModificationPresenter extends Application implements ProjectViewingAndModificationOutputBoundary {
+    private Stage stage;
+    CurrentProjectRepository currentProjectRepository =
+            CurrentProjectRepository.getInstance();
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ProjectViewingAndModificationPresenter.class.getResource("ProjectViewingAndModification.fxml"));
@@ -19,6 +26,28 @@ public class ProjectViewingAndModificationPresenter extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    @Override
+    public Project getCurrentProject() {
+        return currentProjectRepository.getCurrentProject();
+    }
+
+    @Override
+    public void displayAllProjects() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(
+                    "ProjectSelection" +
+                    ".fxml"));
+            stage.setTitle("scene 1");
+            stage.setScene(new Scene(root));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 

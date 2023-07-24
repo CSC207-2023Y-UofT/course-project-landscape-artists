@@ -21,4 +21,8 @@ public class CurrentProjectRepository {
     public void setCurrentProject(Project project) {
         currentProject = project;
     }
+
+    public void removeCurrentProject() {
+        currentProject = null;
+    }
 }

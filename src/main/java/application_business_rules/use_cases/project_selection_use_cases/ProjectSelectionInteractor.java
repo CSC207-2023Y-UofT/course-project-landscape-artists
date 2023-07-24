@@ -15,7 +15,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
     @Override
     public void createProject(Project project) {
-
+        System.out.println("PROJECT WILL BE CREATED INTERNALLY HERE");
     }
 
 }

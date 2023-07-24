@@ -14,21 +14,18 @@ import java.io.IOException;
 public class ProjectSelectionPresenter extends Application implements ProjectSelectionOutputBoundary {
     @FXML
     GridPane projectsGrid;
-    Stage stage;
+    private Stage stage;
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource(
-                "ProjectSelection.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Choose project");
-        stage.setScene(scene);
-        stage.show();
+        setStage(stage);
+        initializeScene();
     }
 
-    public void setStage(Stage stage) {
-        this. stage = stage;
-    }
     @Override
     public void displayCurrentProject() {
         try {
@@ -38,7 +35,19 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
-
+    public void initializeScene() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource(
+                    "ProjectSelection.fxml"));
+            Parent root = fxmlLoader.load();
+            Scene scene = new Scene(root);
+            stage.setTitle("Choose project");
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
