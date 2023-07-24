@@ -12,8 +12,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class ProjectSelectionPresenter extends Application implements ProjectSelectionOutputBoundary {
-    @FXML
-    GridPane projectsGrid;
+
     private Stage stage;
 
     public void setStage(Stage stage) {
@@ -23,7 +22,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     @Override
     public void start(Stage stage) throws Exception {
         setStage(stage);
-        initializeScene();
+        initializeScene(stage);
     }
 
     @Override
@@ -37,15 +36,16 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         }
     }
 
-    public void initializeScene() {
+    public void initializeScene(Stage stage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource(
                     "ProjectSelection.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
-            stage.setTitle("Choose project");
-            stage.setScene(scene);
-            stage.show();
+            Stage stage1 = stage;
+            stage1.setTitle("Choose project");
+            stage1.setScene(scene);
+            stage1.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

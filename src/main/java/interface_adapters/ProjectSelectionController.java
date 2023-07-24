@@ -9,14 +9,10 @@ import enterprise_business_rules.entities.Project;
 import enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,9 +27,18 @@ import javafx.stage.Stage;
 public class ProjectSelectionController implements Initializable {
     @FXML
     GridPane projectsGrid;
+    private ProjectSelectionInputBoundary interactor;
+
 
     CurrentProjectRepository currentProjectRepository =
             CurrentProjectRepository.getInstance();
+
+    public ProjectSelectionController() {
+        ProjectSelectionOutputBoundary presenter =
+                new ProjectSelectionPresenter();
+        interactor = new ProjectSelectionInteractor(presenter);
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -72,9 +77,17 @@ public class ProjectSelectionController implements Initializable {
         List<Project> allProjectsInSystem = Arrays.asList(p1, p2, p3, p4, p5,
                 p6, p7, p8);
 //        TODO: END ------------------------------------------------------------
-
         populateProjectSelectionUI(allProjectsInSystem);
         addCreateProjectButton();
+    }
+
+    private void setPresenter() {
+        ProjectSelectionOutputBoundary presenter =
+                new ProjectSelectionPresenter();
+        Stage stage = (Stage) projectsGrid.getScene().getWindow();
+        ((ProjectSelectionPresenter) presenter).setStage(stage);
+
+        interactor = new ProjectSelectionInteractor(presenter);
     }
 
     private void addCreateProjectButton() {
@@ -112,6 +125,7 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void handleCreateProjectPopup(ActionEvent actionEvent) {
+        setPresenter();
         // Create a new Dialog
         Dialog<Project> dialog = new Dialog<>();
         dialog.setTitle("Create Project");
@@ -158,8 +172,6 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void createProject(Project project) {
-        ProjectSelectionInputBoundary interactor =
-                new ProjectSelectionInteractor();
         interactor.createProject(project);
     }
 
@@ -168,6 +180,7 @@ public class ProjectSelectionController implements Initializable {
 
 
     private void handleChosenProjectButton(ActionEvent actionEvent) {
+        setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
         Project currentProject = (Project) buttonClicked.getUserData();
         openProject(currentProject);
@@ -181,15 +194,12 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void openProject(Project project) {
-        ProjectSelectionInputBoundary interactor =
-                new ProjectSelectionInteractor();
+//        ProjectSelectionInputBoundary interactor =
+//                new ProjectSelectionInteractor();
         ProjectSelectionOutputBoundary presenter =
                 new ProjectSelectionPresenter();
 
         interactor.setCurrentProject(project);
-        Stage stage = (Stage) projectsGrid.getScene().getWindow();
-        ((ProjectSelectionPresenter) presenter).setStage(stage);
-        presenter.displayCurrentProject();
     }
 
 

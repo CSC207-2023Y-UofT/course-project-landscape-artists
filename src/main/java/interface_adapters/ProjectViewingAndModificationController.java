@@ -13,11 +13,12 @@ import enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -30,6 +31,8 @@ public class ProjectViewingAndModificationController implements Initializable {
     Label projectName;
     @FXML
     HBox columnsContainer;
+    ProjectViewingAndModificationInputBoundary interactor =
+            new ProjectViewingAndModificationInteractor();
 
 
     @Override
@@ -37,7 +40,6 @@ public class ProjectViewingAndModificationController implements Initializable {
         ProjectViewingAndModificationPresenter presenter =
                 new ProjectViewingAndModificationPresenter();
         Project currentProject = presenter.getCurrentProject();
-        System.out.println("CURRENT PROJECT: " +  currentProject);
 //        Populate project details
         populateProjectDetails(currentProject);
 
@@ -105,7 +107,8 @@ public class ProjectViewingAndModificationController implements Initializable {
             HBox hbox = new HBox();
 
             Label taskName = new Label(task.getName());
-            Button taskOptionsButton = new Button(":");
+            Button taskOptionsButton = new Button("...");
+            taskOptionsButton.setStyle("-fx-font-size: 8px;");
 
             taskOptionsButton.setOnAction(this::handleTaskOptions);
 
@@ -119,7 +122,77 @@ public class ProjectViewingAndModificationController implements Initializable {
     private void handleTaskOptions(ActionEvent actionEvent) {
     }
 
+    /**
+     * Handles displaying a popup window when the button to add a task is
+     * clicked.
+     *
+     * @param actionEvent an Event representing a button click.
+     * */
     private void handleAddTaskPopup(ActionEvent actionEvent) {
+        // Create a new stage for the popup
+        Stage popupStage = new Stage();
+
+        // Stops all other stages from functioning until popupStage is closed.
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+
+        popupStage.setTitle("Add Task");
+
+        // Create the GridPane layout for the popup
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        // Create labels and input fields for Task Details, Task Due Date, and Task Name
+
+        Label nameLabel = new Label("Task Name:");
+        TextField nameTextField = new TextField();
+
+        Label detailsLabel = new Label("Task Details:");
+        TextArea detailsTextArea = new TextArea();
+        detailsTextArea.setPrefRowCount(3);
+
+        Label dueDateLabel = new Label("Task Due Date:");
+        DatePicker dueDatePicker = new DatePicker();
+
+
+
+        // Add the components to the GridPane. The number provided implies
+        // which position in the gridPane (i.e. column 0, row 0 is top left).
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameTextField, 1, 0);
+        gridPane.add(detailsLabel, 0, 1);
+        gridPane.add(detailsTextArea, 1, 1);
+        gridPane.add(dueDateLabel, 0, 2);
+        gridPane.add(dueDatePicker, 1, 2);
+
+        // Create the "Add" button for submitting the task
+        Button addTaskToColumnButton = new Button("Submit");
+
+        // Handles the action of putting a new task in the correct Column UI.
+        addTaskToColumnButton.setOnAction(event -> {
+            // Close the popup when "Submit" button is pressed
+            popupStage.close();
+
+            // Call the method to handle adding the task to the column
+            handleAddTaskToColumn(event);
+        });
+
+
+        // Add the "Add" button to the GridPane
+        gridPane.add(addTaskToColumnButton, 0, 3, 2, 1);
+
+        // Create the scene and set it on the stage
+        Scene popupScene = new Scene(gridPane, 800, 200);
+        popupStage.setScene(popupScene);
+
+        // Show the popup
+        popupStage.showAndWait();
+    }
+
+    private void handleAddTaskToColumn(ActionEvent actionEvent) {
+//        ProjectViewingAndModificationInputBoundary interactor =
+//                new ProjectViewingAndModificationInteractor();
+        System.out.println("HANDLE ADD TASK TO COLUMN");
     }
 
     private void populateProjectDetails(Project project) {
@@ -127,8 +200,8 @@ public class ProjectViewingAndModificationController implements Initializable {
     }
     @FXML
     private void clickBackButton() {
-        ProjectViewingAndModificationInputBoundary interactor =
-                new ProjectViewingAndModificationInteractor();
+//        ProjectViewingAndModificationInputBoundary interactor =
+//                new ProjectViewingAndModificationInteractor();
         ProjectViewingAndModificationOutputBoundary presenter =
                 new ProjectViewingAndModificationPresenter();
 
