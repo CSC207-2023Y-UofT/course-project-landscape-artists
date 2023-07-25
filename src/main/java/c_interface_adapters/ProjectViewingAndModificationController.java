@@ -92,7 +92,17 @@ public class ProjectViewingAndModificationController implements Initializable {
 
             // Add label for the name of the column
             Label columnLabel = new Label(column.getName());
-            Button columnOptions = new Button("...");
+            
+            // Add menu button and menu items.
+            MenuButton columnOptions = new MenuButton("");
+            MenuItem renameColumnButton = new MenuItem("Rename Column");
+            MenuItem deleteColumnButton = new MenuItem("Delete Column");
+            
+            // Add event handler on menu item.
+            renameColumnButton.setOnAction(event -> {renameColumm(column,
+                    columnBox);});
+            deleteColumnButton.setOnAction(event -> {deleteColumn(column,
+                    columnBox);});
 
             columnOptions.setOnAction(actionEvent -> {
                 handleColumnOptions(actionEvent, column, columnBox, scrollPane);
@@ -123,6 +133,17 @@ public class ProjectViewingAndModificationController implements Initializable {
         }
     }
 
+    private void deleteColumn(Column column, VBox columnBox) {
+        interactor.deleteColumn(column, columnBox);
+    }
+
+    private void renameColumm(Column column, VBox columnBox) {
+        interactor.renameColumn(column, columnBox);
+    }
+
+    ;
+    
+
     private void handleColumnOptions(ActionEvent actionEvent, Column column, VBox columnBox, ScrollPane scrollPane) {
     }
 
@@ -140,7 +161,26 @@ public class ProjectViewingAndModificationController implements Initializable {
             HBox hbox = new HBox();
 
             Label taskName = new Label(task.getName());
-            Button taskOptionsButton = new Button("...");
+//            Button taskOptionsButton = new Button("...");
+
+            // Create menu button and its options.
+            MenuButton taskOptionsButton = new MenuButton("");
+            MenuItem renameTaskButton = new MenuItem("Rename Task");
+            MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
+                    "Details");
+            MenuItem deleteTaskButton = new MenuItem("Delete Task");
+
+            // Add event handlers.
+            renameTaskButton.setOnAction(event -> {renameTask(task, hbox);});
+            changeTaskDetailsButton.setOnAction(event -> {changeTaskDetails(
+                    task, hbox);});
+            deleteTaskButton.setOnAction(event -> {deleteTask(task, hbox);});
+
+            // Add to MenuButton
+            taskOptionsButton.getItems().addAll(renameTaskButton,
+                    changeTaskDetailsButton, deleteTaskButton);
+
+
             taskOptionsButton.setStyle("-fx-font-size: 8px;");
 
             // Associate an instance of a Task for each button.
@@ -153,6 +193,18 @@ public class ProjectViewingAndModificationController implements Initializable {
             hbox.getChildren().addAll(taskName, taskOptionsButton);
             columnBox.getChildren().add(hbox);
         }
+    }
+
+    private void deleteTask(Task task, HBox hbox) {
+        interactor.deleteTask(task, hbox);
+    }
+
+    private void changeTaskDetails(Task task, HBox hbox) {
+        interactor.changeTaskDetails(task, hbox);
+    }
+
+    private void renameTask(Task task, HBox hbox) {
+        interactor.renameTask(task, hbox);
     }
 
     /**

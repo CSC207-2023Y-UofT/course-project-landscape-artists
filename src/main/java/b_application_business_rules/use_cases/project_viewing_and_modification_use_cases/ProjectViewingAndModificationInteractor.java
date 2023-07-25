@@ -1,9 +1,11 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Task;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDateTime;
@@ -56,5 +58,30 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // For testing purposes, create a temporary Task instance with the provided details.
         Task newTask = new Task(taskName, taskDescription, false, dueDate);
         presenter.displayNewTask(columnBox, newTask);
+    }
+
+    @Override
+    public void deleteColumn(Column column, VBox columnBox) {
+
+    }
+
+    @Override
+    public void renameColumn(Column column, VBox columnBox) {
+
+    }
+
+    @Override
+    public void deleteTask(Task task, HBox hbox) {
+
+    }
+
+    @Override
+    public void changeTaskDetails(Task task, HBox hbox) {
+
+    }
+
+    @Override
+    public void renameTask(Task task, HBox hbox) {
+
     }
 }
