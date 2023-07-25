@@ -1,9 +1,14 @@
+
 package a_enterprise_business_rules.entities;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
-import java.util.NoSuchElementException;
+
+
+
+import DBControllers.DBManagerInsertController;
+import UUIDsToHashMap.UUIDMap;
+
+import java.util.*;
+
 
 /**
  * An entity class to represent a project, which includes a kanban board.
@@ -16,6 +21,13 @@ public class Project {
     private String name;
 
     /**
+
+     * The ID of this project.
+     */
+    private UUID ID;
+
+    /**
+
      * A description of this project.
      */
     private String description;
@@ -26,6 +38,12 @@ public class Project {
     private List<Column> columns;
 
     /**
+
+     * UUID Map
+     */
+    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
+    /**
+
      * Constructs a Project, given its name, columns, and description.
      * 
      * @param name        The project's name.
@@ -33,9 +51,14 @@ public class Project {
      * @param description A description of the project.
      */
     public Project(String name, List<Column> columns, String description) {
+
+        this.ID = getValidProjectID();
         this.name = name;
         this.columns = columns;
         this.description = description;
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -50,12 +73,18 @@ public class Project {
      */
     public Project(String name, List<Column> columns) {
         this(name, columns, "");
+
     }
 
     public Project(String name, String description) {
         this.name = name;
         this.columns = new ArrayList<Column>();
         this.description = description;
+
+        this.ID = getValidProjectID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -68,6 +97,17 @@ public class Project {
     }
 
     /**
+
+     * Gets the ID of the project.
+     *
+     * @return The ID of the project.
+     */
+    public UUID getProjectID() {
+        return this.ID;
+    }
+
+    /**
+
      * Sets the name of the project to the inputted name.
      * 
      * @param newName The new name for the project.
@@ -198,5 +238,17 @@ public class Project {
         this.removeColumn(columnToMove);
         this.columns.add(positionToMoveTo, columnToMove);
     }
+
+
+    private UUID getValidProjectID(){
+        this.ID = UUID.randomUUID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        while(uuidMap.containsKey(this.ID.toString())){
+            this.ID = UUID.randomUUID();
+        }
+        dbManagerInsertController.DBInsert(this.ID);
+        return this.ID;
+    }
+
 
 }
