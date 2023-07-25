@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -87,9 +88,26 @@ public class ProjectViewingAndModificationController implements Initializable {
             VBox columnBox = new VBox();
             columnBox.setPrefSize(180, 380);
 
+            HBox columnNameAndOptions = new HBox();
+
             // Add label for the name of the column
             Label columnLabel = new Label(column.getName());
-            columnBox.getChildren().add(columnLabel);
+            Button columnOptions = new Button("...");
+
+            columnOptions.setOnAction(actionEvent -> {
+                handleColumnOptions(actionEvent, column, columnBox, scrollPane);
+            });
+
+            // Set the size constraints for columnNameAndOptions
+            HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
+            HBox.setHgrow(columnOptions, Priority.NEVER); // Make the button keep its preferred width
+
+            columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
+
+            // Set the size constraints for columnBox
+            VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
+
+            columnBox.getChildren().add(columnNameAndOptions);
 
             // Populate tasks for each column and add an "Add Task" button
             populateTasksForEachColumn(columnBox, column.getTasks());
@@ -103,6 +121,9 @@ public class ProjectViewingAndModificationController implements Initializable {
             // Add the column UI to the container of all columns (HBox)
             columnsContainer.getChildren().add(scrollPane);
         }
+    }
+
+    private void handleColumnOptions(ActionEvent actionEvent, Column column, VBox columnBox, ScrollPane scrollPane) {
     }
 
     /**
@@ -125,11 +146,22 @@ public class ProjectViewingAndModificationController implements Initializable {
             // Associate an instance of a Task for each button.
             taskOptionsButton.setUserData(task);
 
-            taskOptionsButton.setOnAction(this::handleTaskOptions);
+            taskOptionsButton.setOnAction(actionEvent -> {
+                handleTaskOptions(actionEvent, task, columnBox);
+            });
 
             hbox.getChildren().addAll(taskName, taskOptionsButton);
             columnBox.getChildren().add(hbox);
         }
+    }
+
+    /**
+     * Handles displaying options when the options button of a task is clicked.
+     *
+     * @param actionEvent An ActionEvent representing the options button click.
+     */
+    private void handleTaskOptions(ActionEvent actionEvent, Task task, VBox columnBox) {
+        // This has access to VBox for presentation purposes.
     }
 
     /**
@@ -258,12 +290,4 @@ public class ProjectViewingAndModificationController implements Initializable {
         }
     }
 
-    /**
-     * Handles displaying options when the options button of a task is clicked.
-     *
-     * @param actionEvent An ActionEvent representing the options button click.
-     */
-    private void handleTaskOptions(ActionEvent actionEvent) {
-        // Rest of the method implementation (not included in the documentation for brevity)
-    }
 }
