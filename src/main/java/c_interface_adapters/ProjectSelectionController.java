@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 /**
  * ProjectSelectionController class handles the user interface for project selection and creation.
@@ -156,7 +157,7 @@ public class ProjectSelectionController implements Initializable {
     private void handleCreateProjectPopup(ActionEvent actionEvent) {
         setPresenter();
         // Create a new Dialog
-        Dialog<Project> dialog = new Dialog<>();
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Create Project");
 
         // Set the button types (OK and Cancel)
@@ -178,13 +179,12 @@ public class ProjectSelectionController implements Initializable {
         // Set the content of the dialog to the GridPane
         dialog.getDialogPane().setContent(gridPane);
 
-        // Convert the result to a Project object when the OK button is clicked
+        // Convert the result to a Pair object when the OK button is clicked
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
                 String projectName = nameTextField.getText();
                 String projectDescription = descTextField.getText();
-                return new Project(projectName, projectDescription);
-
+                return new Pair<>(projectName, projectDescription);
             }
             return null;
         });
@@ -193,22 +193,23 @@ public class ProjectSelectionController implements Initializable {
         dialog.showAndWait().ifPresent(project -> {
             if (project != null) {
                 // Handle the newly created project here
-                createProject(project);
-                openProject(project);
+                createProject(project.getKey(), project.getValue());
+//                openProject(project.getKey());
             }
         });
-
     }
 
     /**
      * Creates a new project using the provided Project object and delegates the task to the interactor
      * for processing the project creation.
      *
-     * @param project The Project object representing the new project to be created.
+     * @param name The name of project.
+     * @param description Description of project.
      */
-    private void createProject(Project project) {
-        interactor.createProject(project);
+    private void createProject(String name, String description) {
+        interactor.createProject(name, description);
     }
+
 
 
 

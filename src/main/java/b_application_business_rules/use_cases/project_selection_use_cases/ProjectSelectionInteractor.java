@@ -44,13 +44,17 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      * Creates a new project. This method is called when the user creates a new project in the UI.
      * It interacts with the necessary use cases and gateway to create the project.
      *
-     * @param project The new project to be created.
+     * @param projectName The name of project.
+     * @param projectDescription Description of project.
      */
     @Override
-    public void createProject(Project project) {
+    public void createProject(String projectName, String projectDescription) {
         // Interact with necessary use cases and gateway to create a project.
         // Implementation details depend on the specific requirements and architecture of the application.
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
+
+        Project p = new Project(projectName, projectDescription);
+        setCurrentProject(p);
     }
 }
 
