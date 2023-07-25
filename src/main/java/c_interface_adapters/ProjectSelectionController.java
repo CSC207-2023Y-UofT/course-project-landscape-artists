@@ -129,10 +129,10 @@ public class ProjectSelectionController implements Initializable {
         int row = 0;
         int col = 0;
         for (Project project : allProjectsInSystem) {
-            Button button = new Button(project.getName());
-            button.setUserData(project);
-            button.setOnAction(this::handleChosenProjectButton);
-            projectsGrid.add(button, col, row);
+            Button currentProjectButton = new Button(project.getName());
+            currentProjectButton.setUserData(project);
+            currentProjectButton.setOnAction(this::handleChosenProjectButton);
+            projectsGrid.add(currentProjectButton, col, row);
             col++;
             if (col >= 4) {
                 col = 0;

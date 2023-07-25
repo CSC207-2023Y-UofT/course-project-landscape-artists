@@ -122,6 +122,9 @@ public class ProjectViewingAndModificationController implements Initializable {
             Button taskOptionsButton = new Button("...");
             taskOptionsButton.setStyle("-fx-font-size: 8px;");
 
+            // Associate an instance of a Task for each button.
+            taskOptionsButton.setUserData(task);
+
             taskOptionsButton.setOnAction(this::handleTaskOptions);
 
             hbox.getChildren().addAll(taskName, taskOptionsButton);
