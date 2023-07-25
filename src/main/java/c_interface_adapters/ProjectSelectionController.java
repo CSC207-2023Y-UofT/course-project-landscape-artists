@@ -24,22 +24,35 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
+/**
+ * ProjectSelectionController class handles the user interface for project selection and creation.
+ * It implements the Initializable interface to initialize the controller.
+ */
 public class ProjectSelectionController implements Initializable {
+    // FXML reference to the GridPane that holds the projects
     @FXML
-    GridPane projectsGrid;
+    private GridPane projectsGrid;
+
+    // The interactor for project selection and creation
     private ProjectSelectionInputBoundary interactor;
 
-
+    // The repository to manage the currently opened project
     CurrentProjectRepository currentProjectRepository =
             CurrentProjectRepository.getInstance();
 
+    /**
+     * Constructor to initialize the ProjectSelectionController.
+     */
     public ProjectSelectionController() {
         ProjectSelectionOutputBoundary presenter =
                 new ProjectSelectionPresenter();
         interactor = new ProjectSelectionInteractor(presenter);
     }
 
-
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * Populates the project selection UI with the projects from the database.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 //         Grab data from database and display it in the scene. An example
@@ -77,11 +90,16 @@ public class ProjectSelectionController implements Initializable {
         List<Project> allProjectsInSystem = Arrays.asList(p1, p2, p3, p4, p5,
                 p6, p7, p8);
 //        TODO: END ------------------------------------------------------------
+        // Populate the project selection UI with the projects
         populateProjectSelectionUI(allProjectsInSystem);
-        addCreateProjectButton();
     }
 
+    /**
+     * Sets up the output boundary of the interactor.
+     */
     private void setPresenter() {
+        // This had to be separate since presenter needs to have a stage.
+        // This is not accessible upon initialization.
         ProjectSelectionOutputBoundary presenter =
                 new ProjectSelectionPresenter();
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
@@ -90,10 +108,11 @@ public class ProjectSelectionController implements Initializable {
         interactor = new ProjectSelectionInteractor(presenter);
     }
 
-    private void addCreateProjectButton() {
-
-    }
-
+    /**
+     * Populates the project selection UI with the given list of projects.
+     *
+     * @param allProjectsInSystem The list of projects to display in the UI.
+     */
     private void populateProjectSelectionUI(List<Project> allProjectsInSystem) {
         projectsGrid.setHgap(10);
         projectsGrid.setVgap(10);
@@ -119,11 +138,21 @@ public class ProjectSelectionController implements Initializable {
                 row++;
             }
         }
+        addCreateProjectButton(col, row);
+    }
+
+    /**
+     * Adds the "Create Project" button to the project selection UI.
+     */
+    private void addCreateProjectButton(int col, int row) {
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
         projectsGrid.add(createProjectButton, col, row);
     }
 
+    /**
+     * Handles the "Create Project" button action by showing a dialog to create a new project.
+     */
     private void handleCreateProjectPopup(ActionEvent actionEvent) {
         setPresenter();
         // Create a new Dialog
@@ -171,14 +200,22 @@ public class ProjectSelectionController implements Initializable {
 
     }
 
+    /**
+     * Creates a new project using the provided Project object and delegates the task to the interactor
+     * for processing the project creation.
+     *
+     * @param project The Project object representing the new project to be created.
+     */
     private void createProject(Project project) {
         interactor.createProject(project);
     }
 
-    ;
 
 
 
+    /**
+     * Handles the action of selecting a project button from the UI.
+     */
     private void handleChosenProjectButton(ActionEvent actionEvent) {
         setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
@@ -193,6 +230,11 @@ public class ProjectSelectionController implements Initializable {
 
     }
 
+    /**
+     * Opens the selected project in the UI.
+     *
+     * @param project The project to be opened.
+     */
     private void openProject(Project project) {
         interactor.setCurrentProject(project);
     }
