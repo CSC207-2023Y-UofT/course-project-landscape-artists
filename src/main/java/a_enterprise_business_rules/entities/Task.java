@@ -1,10 +1,6 @@
 
 package a_enterprise_business_rules.entities;
 
-
-import DBControllers.DBManagerInsertController;
-import UUIDsToHashMap.UUIDMap;
-
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -32,20 +28,14 @@ public class Task {
     private String description;
 
     /**
-     * Whether or not the task has been completed
+     * Whether the task has been completed or not.
      */
     private boolean isCompleted;
 
     /**
-     * The due date for this task. Will be null if there there is no due date.
+     * The due date for this task. Will be null if there is no due date.
      */
     private LocalDateTime dueDateTime;
-
-    /**
-
-     * UUID Map
-     */
-    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
 
     /**
 
@@ -53,38 +43,17 @@ public class Task {
      * 
      * @param name        The name of the task.
      * @param description The description of the task.
-     *                    ]] * @param isCompleted Whether or not the task is
-     *                    completed.
+     *                    ]] * @param isCompleted whether the task is
+     *                    completed or not.
      * @param dueDateTime The due date for this task.
+     * @param id          The task ID.
      */
-    public Task(String name, String description, boolean isCompleted, LocalDateTime dueDateTime) {
+    public Task(String name, String description, boolean isCompleted, LocalDateTime dueDateTime, UUID id) {
         this.name = name;
         this.description = description;
         this.isCompleted = isCompleted;
         this.dueDateTime = dueDateTime;
-
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
-
-    }
-
-    /**
-     * Calls {@@link Task(String name, String description, boolean
-     * isCompleted)},
-     * with <code>false</code> as the input for the <code>isCompleted</code>
-     * parameter, and a null reference for the due date.
-     * 
-     * {@see Task(String name, String description, boolean isCompleted)}
-     * 
-     * @param name
-     * @param description
-     */
-    public Task(String name, String description) {
-        this(name, description, false, null);
-
-        this.ID = getValidTaskID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
+        this.ID = id;
 
     }
 
@@ -179,6 +148,10 @@ public class Task {
         this.dueDateTime = newDueDateTime;
     }
 
+    public UUID getID() {
+        return this.ID;
+    }
+
     /**
      * Returns a String representation of the Task.
      * 
@@ -186,6 +159,7 @@ public class Task {
      * 
      * @return a String representation of the Task.
      */
+
     @Override
     public String toString() {
         // gets the string representation of the completion status, which is a bool
@@ -200,21 +174,6 @@ public class Task {
         // "[Task Name: Eat Cookied, Task Completed: false]"
         return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + ", "
                 + "Due Date: " + this.dueDateTime.toString() + "]";
-    }
-
-
-    public UUID getID() {
-       return this.ID;
-    }
-
-    private UUID getValidTaskID(){
-        this.ID = UUID.randomUUID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID.toString())){
-            this.ID = UUID.randomUUID();
-        }
-        dbManagerInsertController.DBInsert(this.ID);
-        return this.ID;
     }
 
 }
