@@ -1,8 +1,12 @@
+
 package a_enterprise_business_rules.entities;
 
-import java.util.List;
-import java.util.Collections;
-import java.util.NoSuchElementException;
+
+import DBControllers.DBManagerInsertController;
+import UUIDsToHashMap.UUIDMap;
+
+import java.util.*;
+
 
 /**
  * An entity class to represent a column of tasks within a kanban board.
@@ -10,6 +14,12 @@ import java.util.NoSuchElementException;
 public class Column {
 
     /**
+
+     * The ID of this project.
+     */
+    private UUID ID;
+    /**
+
      * The name of the column.
      */
     private String name;
@@ -26,6 +36,13 @@ public class Column {
     private String description;
 
     /**
+
+     * UUID Map
+     */
+    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
+
+    /**
+
      * Contructor for a column, that takes in a name, an List of tasks,
      * and the description of the column.
      * 
@@ -34,9 +51,14 @@ public class Column {
      * @param description A description for the column.
      */
     public Column(String name, List<Task> tasks, String description) {
+
+        this.ID = getValidColumnID();
         this.name = name;
         this.tasks = tasks;
         this.description = description;
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -51,6 +73,12 @@ public class Column {
      */
     public Column(String name, List<Task> tasks) {
         this(name, tasks, "");
+
+        this.ID = getValidColumnID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
+
     }
 
     /**
@@ -63,6 +91,17 @@ public class Column {
     }
 
     /**
+
+     * Gets the ID of the column.
+     *
+     * @return The name of the column.
+     */
+    public UUID getID() {
+        return this.ID;
+    }
+
+    /**
+
      * Sets a new name for the column
      * 
      * @param newName The new name for the column.
@@ -221,4 +260,15 @@ public class Column {
 
         return columnStringRepresentation;
     }
+
+    private UUID getValidColumnID(){
+        this.ID = UUID.randomUUID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        while(uuidMap.containsKey(this.ID.toString())){
+            this.ID = UUID.randomUUID();
+        }
+        dbManagerInsertController.DBInsert(this.ID);
+        return this.ID;
+    }
+
 }

@@ -1,6 +1,13 @@
+
 package a_enterprise_business_rules.entities;
 
+
+import DBControllers.DBManagerInsertController;
+import UUIDsToHashMap.UUIDMap;
+
 import java.time.LocalDateTime;
+import java.util.*;
+
 
 /**
  * An entity class to represent a task within a kanban board project.
@@ -13,6 +20,13 @@ public class Task {
     private String name;
 
     /**
+
+     * The name of the task.
+     */
+    private UUID ID;
+
+    /**
+
      * The description of the task.
      */
     private String description;
@@ -28,6 +42,13 @@ public class Task {
     private LocalDateTime dueDateTime;
 
     /**
+
+     * UUID Map
+     */
+    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
+
+    /**
+
      * Creates a new task, based in the inputted values.
      * 
      * @param name        The name of the task.
@@ -41,6 +62,10 @@ public class Task {
         this.description = description;
         this.isCompleted = isCompleted;
         this.dueDateTime = dueDateTime;
+
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -56,6 +81,11 @@ public class Task {
      */
     public Task(String name, String description) {
         this(name, description, false, null);
+
+        this.ID = getValidTaskID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        dbManagerInsertController.DBInsert(this);
+
     }
 
     /**
@@ -170,6 +200,21 @@ public class Task {
         // "[Task Name: Eat Cookied, Task Completed: false]"
         return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + ", "
                 + "Due Date: " + this.dueDateTime.toString() + "]";
+    }
+
+
+    public UUID getID() {
+       return this.ID;
+    }
+
+    private UUID getValidTaskID(){
+        this.ID = UUID.randomUUID();
+        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
+        while(uuidMap.containsKey(this.ID.toString())){
+            this.ID = UUID.randomUUID();
+        }
+        dbManagerInsertController.DBInsert(this.ID);
+        return this.ID;
     }
 
 }
