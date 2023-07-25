@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="c_interface_adapters.ProjectViewingAndModificationController">
+   <children>
+      <Label fx:id="projectName" layoutX="24.0" layoutY="23.0" prefHeight="36.0" prefWidth="246.0" text="&lt;Project Name here&gt;">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <ScrollPane layoutY="72.0" prefHeight="275.0" prefWidth="600.0">
+         <content>
+            <HBox fx:id="columnsContainer" prefHeight="277.0" prefWidth="599.0" />
+         </content></ScrollPane>
+      <Button layoutX="30.0" layoutY="5.0" mnemonicParsing="false" onAction="#clickBackButton" text="Back">
+         <font>
+            <Font size="8.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
