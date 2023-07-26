@@ -1,4 +1,4 @@
-package DBControllers;
+package b_application_business_rules.use_cases.project_selection_gateways;
 
 import Entities.Column;
 import Entities.Project;
