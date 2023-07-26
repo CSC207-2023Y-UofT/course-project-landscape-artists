@@ -2,16 +2,12 @@ package a_enterprise_business_rules.entities;
 
 import java.util.*;
 
-
 /**
- * An entity class to represent a column of tasks within a project board.
+ * A column within the productivity application.
+ * 
+ * Each column will have a name, a unique identifier, and a list of tasks.
  */
 public class Column {
-
-    /**
-     * The ID of this project.
-     */
-    private UUID ID;
 
     /**
      * The name of the column.
@@ -19,25 +15,26 @@ public class Column {
     private String name;
 
     /**
+     * A unique identifier for the column.
+     */
+    private UUID ID;
+
+    /**
      * The <code>List</code> of tasks that the column holds/contains.
      */
     private List<Task> tasks;
 
     /**
-
-     * Constructor for a column, that takes in a name, a List of tasks,
-     * and the description of the column.
+     * Creates a new column, based in the inputted values.
      * 
-     * @param name        The name for the column.
-     * @param tasks       The List of tasks to be stored in the column.
-     * @param id          The column ID.
+     * @param name  The name for the column.
+     * @param ID    The column ID.
+     * @param tasks The List of tasks to be stored in the column.
      */
-    public Column(String name, List<Task> tasks, UUID id) {
-
+    public Column(String name, List<Task> tasks, UUID ID) {
         this.name = name;
         this.tasks = tasks;
-        this.ID = id;
-
+        this.ID = ID;
     }
 
     /**
@@ -50,23 +47,31 @@ public class Column {
     }
 
     /**
+     * 
+     * Sets a new name for the column
+     * 
+     * @param newName The new name for the column.
+     */
+    public void setName(String newName) {
+        this.name = newName;
+    }
 
-     * Gets the ID of the column.
-     *
-     * @return The name of the column.
+    /**
+     * Gets the unique identifier for the column.
+     * 
+     * @return a unique identifier for the column.
      */
     public UUID getID() {
         return this.ID;
     }
 
     /**
-
-     * Sets a new name for the column
+     * Sets a new unique identifier for the column.
      * 
-     * @param newName The new name for the column.
+     * @param newID a new unique identifier for the column.
      */
-    public void getName(String newName) {
-        this.name = newName;
+    public void setID(UUID newID) {
+        this.ID = newID;
     }
 
     /**
@@ -202,15 +207,16 @@ public class Column {
         return columnStringRepresentation;
     }
 
-    //TODO:turn this into its own class
-//    private UUID getValidColumnID(){
-//        this.ID = UUID.randomUUID();
-//        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-//        while(uuidMap.containsKey(this.ID.toString())){
-//            this.ID = UUID.randomUUID();
-//        }
-//        dbManagerInsertController.DBInsert(this.ID);
-//        return this.ID;
-//    }
+    // TODO:turn this into its own class
+    // private UUID getValidColumnID(){
+    // this.ID = UUID.randomUUID();
+    // DBManagerInsertController dbManagerInsertController = new
+    // DBManagerInsertController();
+    // while(uuidMap.containsKey(this.ID.toString())){
+    // this.ID = UUID.randomUUID();
+    // }
+    // dbManagerInsertController.DBInsert(this.ID);
+    // return this.ID;
+    // }
 
 }

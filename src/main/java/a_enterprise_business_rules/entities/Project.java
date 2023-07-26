@@ -3,9 +3,11 @@ package a_enterprise_business_rules.entities;
 
 import java.util.*;
 
-
 /**
- * An entity class to represent a project, which includes a kanban board.
+ * A project within the productivity application.
+ * 
+ * Each project will have a name, unique identifier, a description, and a list
+ * of columns (which contain tasks).
  */
 public class Project {
 
@@ -15,13 +17,13 @@ public class Project {
     private String name;
 
     /**
-
+     * 
      * The ID of this project.
      */
     private UUID ID;
 
     /**
-
+     * 
      * A description of this project.
      */
     private String description;
@@ -32,48 +34,54 @@ public class Project {
     private List<Column> columns;
 
     /**
-     * Constructs a Project, given its name, columns, and description.
+     * Creates a new project, based in the inputted values.
      * 
-     * @param name        The project's name.
+     * @param name        The name of the task.
+     * @param ID          The unique identifier for the task.
+     * @param description A description of the task.
      * @param columns     The columns of the project.
-     * @param description A description of the project.
      */
-    public Project(String name, List<Column> columns, String description, UUID id) {
-
+    public Project(String name, UUID ID, String description, List<Column> columns) {
         this.name = name;
         this.columns = columns;
         this.description = description;
-        this.ID = id;
-
+        this.ID = ID;
     }
 
     /**
      * Gets the name of the project.
      * 
-     * @return The name of the project.
+     * @return the name of the project.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-
-     * Gets the ID of the project.
-     *
-     * @return The ID of the project.
+     * Sets the name of the project.
+     * 
+     * @param newName the new name for the project.
      */
-    public UUID getProjectID() {
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
+    /**
+     * Gets the unique identifier for the project.
+     * 
+     * @return a unique identifier for the project.
+     */
+    public UUID getID() {
         return this.ID;
     }
 
     /**
-
-     * Sets the name of the project to the inputted name.
+     * Sets a new unique identifier for the project.
      * 
-     * @param newName The new name for the project.
+     * @param newID a new unique identifier for the project.
      */
-    public void setName(String newName) {
-        this.name = newName;
+    public void setID(UUID newID) {
+        this.ID = newID;
     }
 
     /**
@@ -86,16 +94,16 @@ public class Project {
     }
 
     /**
-     * Sets the description of the project to the inputted description.
+     * Sets the description of the project.
      * 
-     * @param newDescription The new description for the project.
+     * @param newDescription the new description of the project.
      */
-    public void setString(String newDescription) {
+    public void setDescription(String newDescription) {
         this.description = newDescription;
     }
 
     /**
-     * Returns the columns of the project/kanban board.
+     * Returns the columns of the project board.
      * 
      * @return an <code>List<Column></code> of <Column>s.
      */

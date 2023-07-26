@@ -1,12 +1,13 @@
-
 package a_enterprise_business_rules.entities;
 
 import java.time.LocalDateTime;
 import java.util.*;
 
-
 /**
- * An entity class to represent a task within a kanban board project.
+ * A task within in the productivity application.
+ * 
+ * Each task will have a name, a unique identifier, a description, an attribute
+ * to indicate whether the task has been completed or not, and a due date.
  */
 public class Task {
 
@@ -16,13 +17,11 @@ public class Task {
     private String name;
 
     /**
-
-     * The name of the task.
+     * A unique identifier for the task.
      */
     private UUID ID;
 
     /**
-
      * The description of the task.
      */
     private String description;
@@ -38,23 +37,20 @@ public class Task {
     private LocalDateTime dueDateTime;
 
     /**
-
      * Creates a new task, based in the inputted values.
      * 
      * @param name        The name of the task.
-     * @param description The description of the task.
-     *                    ]] * @param isCompleted whether the task is
-     *                    completed or not.
+     * @param ID          The unique identifier for the task.
+     * @param description A description of the task.
+     * @param isCompleted Whether the task is completed or not.
      * @param dueDateTime The due date for this task.
-     * @param id          The task ID.
      */
-    public Task(String name, String description, boolean isCompleted, LocalDateTime dueDateTime, UUID id) {
+    public Task(String name, UUID ID, String description, boolean isCompleted, LocalDateTime dueDateTime) {
         this.name = name;
+        this.ID = ID;
         this.description = description;
         this.isCompleted = isCompleted;
         this.dueDateTime = dueDateTime;
-        this.ID = id;
-
     }
 
     /**
@@ -73,6 +69,24 @@ public class Task {
      */
     public void setName(String newName) {
         this.name = newName;
+    }
+
+    /**
+     * Gets the unique identifier for the task.
+     * 
+     * @return a unique identifier for the task.
+     */
+    public UUID getID() {
+        return this.ID;
+    }
+
+    /**
+     * Sets a new unique identifier for the task.
+     * 
+     * @param newID a new unique identifier for the task.
+     */
+    public void setID(UUID newID) {
+        this.ID = newID;
     }
 
     /**
@@ -148,10 +162,6 @@ public class Task {
         this.dueDateTime = newDueDateTime;
     }
 
-    public UUID getID() {
-        return this.ID;
-    }
-
     /**
      * Returns a String representation of the Task.
      * 
@@ -159,7 +169,6 @@ public class Task {
      * 
      * @return a String representation of the Task.
      */
-
     @Override
     public String toString() {
         // gets the string representation of the completion status, which is a bool
