@@ -3,7 +3,6 @@ package b_application_business_rules.entity_models;
 import java.util.*;
 
 import a_enterprise_business_rules.entities.*;
-import b_application_business_rules.entity_models.*;
 
 /**
  * A column model within the productivity application.

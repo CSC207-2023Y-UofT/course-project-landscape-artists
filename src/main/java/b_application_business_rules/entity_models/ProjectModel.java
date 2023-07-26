@@ -3,7 +3,6 @@ package b_application_business_rules.entity_models;
 import java.util.*;
 
 import a_enterprise_business_rules.entities.*;
-import b_application_business_rules.entity_models.*;
 
 /**
  * A project model within the productivity application.
