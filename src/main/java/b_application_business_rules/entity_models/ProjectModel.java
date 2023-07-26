@@ -2,12 +2,15 @@ package b_application_business_rules.entity_models;
 
 import java.util.*;
 
+import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.*;
+
 /**
  * A project model within the productivity application.
  * 
  * Each project model will have a name, unique identifier, a description, and a
  * list
- * of column models (which contain tasks).
+ * of column models (which contain task modelss).
  */
 public class ProjectModel {
 
@@ -36,9 +39,9 @@ public class ProjectModel {
     /**
      * Creates a new project model, based in the inputted values.
      * 
-     * @param name         The name of the task.
-     * @param ID           The unique identifier for the task.
-     * @param description  A description of the task.
+     * @param name         The name of the task models.
+     * @param ID           The unique identifier for the task models.
+     * @param description  A description of the task models.
      * @param columnModels The column models of the project model.
      */
     public ProjectModel(String name, UUID ID, String description, List<ColumnModel> columnModels) {
@@ -46,6 +49,26 @@ public class ProjectModel {
         this.columnModels = columnModels;
         this.description = description;
         this.ID = ID;
+    }
+
+    /**
+     * Creates a new project model, based on the inputted project.
+     * 
+     * @param project The project to model.
+     */
+    public ProjectModel(Project project) {
+        this.name = project.getName();
+
+        // Converting the List of Column objects to a List of ColumnModel objects
+        List<Column> columns = project.getColumns(); // Get the tasks
+        // Converts Columns to ColumnModels and puts it in the columnModels attribute
+        for (int i = 0; i < columns.size(); i++) {
+            this.columnModels.add(
+                    new ColumnModel(columns.get(i)));
+        }
+
+        this.description = project.getDescription();
+        this.ID = project.getID();
     }
 
     /**
@@ -169,7 +192,8 @@ public class ProjectModel {
             // the java.util.List.remove method returns a bool,
             // indicating whether the object was removed or not.
             // If it wasn't removed, we want to throw an exception,
-            // saying that the task isn't in the column model, thus, it can't be removed.
+            // saying that the task models isn't in the column model, thus, it can't be
+            // removed.
             // If it was removed, we don't have to do anything extra.
             throw new NoSuchElementException(
                     "The column model " + columnModelToRemove.toString() + " is not in this project model");
@@ -199,7 +223,7 @@ public class ProjectModel {
             exceptionMessage += col2.toString();
         }
 
-        // Throws the exception if at least 1 of the tasks are missing,
+        // Throws the exception if at least 1 of the task modelss are missing,
         // using the exception message created above
         if (!col1InColumnModel || !col2InColumnModel) {
             throw new NoSuchElementException(exceptionMessage);

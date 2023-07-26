@@ -3,11 +3,13 @@ package b_application_business_rules.entity_models;
 import java.util.*;
 
 import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.*;
 
 /**
  * A column model within the productivity application.
  * 
- * Each column model will have a name, a unique identifier, and a list of tasks.
+ * Each column model will have a name, a unique identifier, and a list of task
+ * models.
  */
 public class ColumnModel {
 
@@ -22,20 +24,20 @@ public class ColumnModel {
     private UUID ID;
 
     /**
-     * The <code>List</code> of tasks that the column model holds/contains.
+     * The <code>List</code> of task models that the column model holds/contains.
      */
-    private List<Task> tasks;
+    private List<TaskModel> taskModels;
 
     /**
      * Creates a new column model, based in the inputted values.
      * 
-     * @param name  The name for the column model.
-     * @param ID    The column model ID.
-     * @param tasks The List of tasks to be stored in the column model.
+     * @param name       The name for the column model.
+     * @param ID         The column model ID.
+     * @param taskModels The List of task models to be stored in the column model.
      */
-    public ColumnModel(String name, List<Task> tasks, UUID ID) {
+    public ColumnModel(String name, List<TaskModel> taskModels, UUID ID) {
         this.name = name;
-        this.tasks = tasks;
+        this.taskModels = taskModels;
         this.ID = ID;
     }
 
@@ -46,7 +48,15 @@ public class ColumnModel {
      */
     public ColumnModel(Column column) {
         this.name = column.getName();
-        this.tasks = column.getTasks();
+
+        // Converting the List of Task objects to a List of TaskModel objects
+        List<Task> tasks = column.getTasks(); // Get the tasks
+        // Converts Tasks to TaskModels and puts it in the taskModels attribute
+        for (int i = 0; i < tasks.size(); i++) {
+            this.taskModels.add(
+                    new TaskModel(tasks.get(i)));
+        }
+
         this.ID = column.getID();
     }
 
@@ -88,108 +98,111 @@ public class ColumnModel {
     }
 
     /**
-     * Gets the tasks in this column model.
+     * Gets the task models in this column model.
      * 
-     * @return The tasks in this column model.
+     * @return The task models in this column model.
      */
-    public List<Task> getTasks() {
-        return this.tasks;
+    public List<TaskModel> getTaskModels() {
+        return this.taskModels;
     }
 
     /**
-     * Sets the entire list of tasks for the column model.
+     * Sets the entire list of task models for the column model.
      * 
-     * @param newTasks The List<Task> of new tasks.
+     * @param newTaskModels The List<TaskModel> of new task models.
      */
-    public void setTasks(List<Task> newTasks) {
-        this.tasks = newTasks;
+    public void setTaskModels(List<TaskModel> newTaskModels) {
+        this.taskModels = newTaskModels;
     }
 
     /**
-     * Adds a task to the column model.
+     * Adds a task model to the column model.
      * 
-     * @param newTask The task to add.
+     * @param newTaskModel The task model to add.
      */
-    public void addTask(Task newTask) {
-        this.tasks.add(newTask);
+    public void addTaskModel(TaskModel newTaskModel) {
+        this.taskModels.add(newTaskModel);
     }
 
     /**
-     * Adds a task to the column model, at a specific position/index.
+     * Adds a task model to the column model, at a specific position/index.
      * 
-     * @param newTask  The task to add to the column model.
-     * @param position The position/index to add the task at.
+     * @param newTaskModel The task model to add to the column model.
+     * @param position     The position/index to add the task model at.
      */
-    public void addTaskToPosition(Task newTask, int position) {
-        this.tasks.add(position, newTask);
+    public void addTaskModelToPosition(TaskModel newTaskModel, int position) {
+        this.taskModels.add(position, newTaskModel);
     }
 
     /**
-     * Removes the specified task from the column model.
+     * Removes the specified task model from the column model.
      * 
-     * @param taskToRemove The task to remove from the column model.
-     * @throws NoSuchElementException Throws exception when the specified task to
+     * @param taskModelToRemove The task model to remove from the column model.
+     * @throws NoSuchElementException Throws exception when the specified task model
+     *                                to
      *                                remove is not in the column model.
      */
-    public void removeTask(Task taskToRemove) throws NoSuchElementException {
-        if (!this.tasks.remove(taskToRemove)) {
+    public void removeTaskModel(TaskModel taskModelToRemove) throws NoSuchElementException {
+        if (!this.taskModels.remove(taskModelToRemove)) {
             // the java.util.List.remove method returns a bool,
             // indicating whether the object was removed or not.
             // If it wasn't removed, we want to throw an exception,
-            // saying that the task isn't in the column model, thus, it can't be removed.
+            // saying that the task model isn't in the column model, thus, it can't be
+            // removed.
             // If it was removed, we don't have to do anything extra.
             throw new NoSuchElementException(
-                    "The task " + taskToRemove.toString() + " is not in this column model");
+                    "The task model " + taskModelToRemove.toString() + " is not in this column model");
         }
     }
 
     /**
-     * Swaps the order of two tasks in the column model.
+     * Swaps the order of two task models in the column model.
      * 
-     * @param task1 The first task.
-     * @param task2 The second task.
+     * @param taskModel1 The first task model.
+     * @param taskModel2 The second task model.
      * @throws NoSuchElementException Throws this exception when one of the inputted
-     *                                tasks are not in the column model.
+     *                                task models are not in the column model.
      */
-    public void swapTaskOrder(Task task1, Task task2) {
-        // Checking whether the tasks to swap are even in the column model or not
-        boolean task1InColumnModel = this.tasks.contains(task1);
-        boolean task2InColumnModel = this.tasks.contains(task2);
+    public void swapTaskModelOrder(TaskModel taskModel1, TaskModel taskModel2) {
+        // Checking whether the task models to swap are even in the column model or not
+        boolean taskModel1InColumnModel = this.taskModels.contains(taskModel1);
+        boolean taskModel2InColumnModel = this.taskModels.contains(taskModel2);
 
         // Creating the exception message
-        String exceptionMessage = "The following tasks are not in the column model: ";
+        String exceptionMessage = "The following task models are not in the column model: ";
 
-        if (!task1InColumnModel) {
-            exceptionMessage += task1.toString();
+        if (!taskModel1InColumnModel) {
+            exceptionMessage += taskModel1.toString();
         }
-        if (!task2InColumnModel) {
-            exceptionMessage += task2.toString();
+        if (!taskModel2InColumnModel) {
+            exceptionMessage += taskModel2.toString();
         }
 
-        // Throws the exception if at least 1 of the tasks are missing,
+        // Throws the exception if at least 1 of the task models are missing,
         // using the exception message created above
-        if (!task1InColumnModel || !task2InColumnModel) {
+        if (!taskModel1InColumnModel || !taskModel2InColumnModel) {
             throw new NoSuchElementException(exceptionMessage);
         }
 
         // Does the swap
         Collections.swap(
-                this.tasks, this.tasks.indexOf(task1), this.tasks.indexOf(task2));
+                this.taskModels, this.taskModels.indexOf(taskModel1), this.taskModels.indexOf(taskModel2));
     }
 
     /**
-     * Moves a task to a specific position in the column model.
+     * Moves a task model to a specific position in the column model.
      * 
-     * @param taskToMove       The task that needs to be moved.
-     * @param positionToMoveTo The position/index to move the task to.
-     * @throws NoSuchElementException Throws exception when the specified task to
+     * @param taskModelToMove  The task model that needs to be moved.
+     * @param positionToMoveTo The position/index to move the task model to.
+     * @throws NoSuchElementException Throws exception when the specified task model
+     *                                to
      *                                remove is not in the column model.
      */
-    public void moveTaskToPosition(Task taskToMove, int positionToMoveTo) throws NoSuchElementException {
-        // The moving of the tasks is done by removing the object from the List,
+    public void moveTaskModelToPosition(TaskModel taskModelToMove, int positionToMoveTo) throws NoSuchElementException {
+        // The moving of the task models is done by removing the object from the List,
         // and then adding it back to the List at the indicated index.
-        this.removeTask(taskToMove);
-        this.tasks.add(positionToMoveTo, taskToMove);
+        this.removeTaskModel(taskModelToMove);
+        this.taskModels.add(positionToMoveTo, taskModelToMove);
     }
 
     /**
@@ -202,12 +215,12 @@ public class ColumnModel {
     @Override
     public String toString() {
         // Starts constructing the string representation of the column model
-        String columnModelStringRepresentation = "[" + "ColumnModel Name: " + this.getName() + ", " + "Tasks: ";
+        String columnModelStringRepresentation = "[" + "ColumnModel Name: " + this.getName() + ", " + "TaskModels: ";
         columnModelStringRepresentation += "{";
 
-        // Adding all the column model's task to the string representation
-        for (Task task : this.tasks) {
-            columnModelStringRepresentation += task.toString();
+        // Adding all the column model's task model to the string representation
+        for (TaskModel taskModel : this.taskModels) {
+            columnModelStringRepresentation += taskModel.toString();
             columnModelStringRepresentation += ", ";
         }
         columnModelStringRepresentation = columnModelStringRepresentation.substring(
