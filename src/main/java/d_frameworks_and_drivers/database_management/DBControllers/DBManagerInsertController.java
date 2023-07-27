@@ -26,7 +26,7 @@ public class DBManagerInsertController implements IDBInsert {
 
             // add data to csv
             String[] data = {
-                    project.getProjectID().toString(),
+                    project.getID().toString(),
                     project.getName(),
                     project.getDescription(),
                     entityIDsToListController.EntityIDsToList(project)
@@ -50,7 +50,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @return
      */
     public void DBInsert(Column column) {
-        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
+        DBControllers.EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
@@ -62,7 +62,6 @@ public class DBManagerInsertController implements IDBInsert {
             String[] data = {
                     column.getID().toString(),
                     column.getName(),
-                    column.getDescription(),
                     entityIDsToListController.EntityIDsToList(column)
             };
             writer.writeNext(data);
