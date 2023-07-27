@@ -13,16 +13,16 @@ public class ProjectSelectionViewModel {
     /**
      * The list of all projects to be viewed during project selection
      */
-    private List<ProjectViewModel> allProjects;
+    private List<ProjectViewModel> allProjectViewModels;
 
     /**
      * Constructs a <code>ProjectSelectionViewModel</code> instance
      * based on the inputted <code>List</code> of <code>ProjectViewModel</code>s.
      * 
-     * @param allProjects
+     * @param allProjectViewModels
      */
-    public ProjectSelectionViewModel(List<ProjectViewModel> allProjects) {
-        this.allProjects = allProjects;
+    public ProjectSelectionViewModel(List<ProjectViewModel> allProjectViewModels) {
+        this.allProjectViewModels = allProjectViewModels;
     }
 
     /**
@@ -30,18 +30,93 @@ public class ProjectSelectionViewModel {
      * 
      * @return a <code>List</code> of <code>ProjectViewModel</code>s
      */
-    public List<ProjectViewModel> getAllProjects() {
-        return this.allProjects;
+    public List<ProjectViewModel> getAllProjectViewModels() {
+        return this.allProjectViewModels;
     }
 
     /**
      * Sets the projects that need be shown during project selection.
      * 
-     * @param allProjects The <code>List</code> of <code>ProjectViewModel</code>s
-     *                    that need be shown during project selection.
+     * @param allProjectViewModels The <code>List</code> of
+     *                             <code>ProjectViewModel</code>s
+     *                             that need be shown during project selection.
      */
-    public void setAllProjects(List<ProjectViewModel> allProjects) {
-        this.allProjects = allProjects;
+    public void setAllProjectViewModels(List<ProjectViewModel> allProjectViewModels) {
+        this.allProjectViewModels = allProjectViewModels;
+    }
+
+    /**
+     * Gets a <code>ProjectViewModel</code> from the output <code>List</code> from
+     * getAllProjects based on the inputted index.
+     * 
+     * @param index The index of the <code>ProjectViewModel</code> to retrieve.
+     * 
+     * @return A particular <code>ProjectViewModel</code>
+     */
+    public ProjectViewModel getProjectViewModel(int index) {
+        return this.getAllProjectViewModels().get(index);
+    }
+
+    /**
+     * Gets a <code>ProjectViewModel</code> from the output <code>List</code> from
+     * getAllProjects based on the inputted ID.
+     * 
+     * @param ID The identifier (id) of the <code>ProjectViewModel</code> to
+     *           get.
+     * 
+     * @return A particular <code>ProjectViewModel</code>
+     */
+    public ProjectViewModel getProjectViewModel(UUID ID) {
+        // Creates a mapping between IDs and ProjectViewModels
+        HashMap<UUID, ProjectViewModel> ProjectViewModelIDToProjectViewModel = new HashMap<UUID, ProjectViewModel>();
+        for (ProjectViewModel currProjectViewModel : this.getAllProjectViewModels()) {
+            ProjectViewModelIDToProjectViewModel.put(
+                    currProjectViewModel.getID(), currProjectViewModel);
+        }
+
+        // Retrives the ProjectViewModel, based on the inputted ID
+        return ProjectViewModelIDToProjectViewModel.get(ID);
+    }
+
+    /**
+     * Removes a <code>ProjectViewModel</code> from the output <code>List</code>
+     * from
+     * getAllProjects based on the inputted index.
+     * 
+     * @param index The index of the <code>ProjectViewModel</code> to remove.
+     * 
+     * @return A particular <code>ProjectViewModel</code>
+     */
+    public void removeProjectViewModel(int index) {
+        List<ProjectViewModel> allProjectViewModelsReference = this.getAllProjectViewModels();
+        allProjectViewModelsReference.remove(index);
+
+        this.setAllProjectViewModels(allProjectViewModelsReference);
+    }
+
+    /**
+     * Removes a <code>ProjectViewModel</code> from the output <code>List</code>
+     * from
+     * getAllProjects based on the inputted ID.
+     * 
+     * @param ID The identifier (id) of the <code>ProjectViewModel</code> to
+     *           remove.
+     * 
+     * @return A particular <code>ProjectViewModel</code>
+     */
+    public void removeProjectViewModel(UUID ID) {
+        // Creates a mapping between IDs and ProjectViewModels
+        HashMap<UUID, ProjectViewModel> ProjectViewModelIDToProjectViewModel = new HashMap<UUID, ProjectViewModel>();
+        for (ProjectViewModel currProjectViewModel : this.getAllProjectViewModels()) {
+            ProjectViewModelIDToProjectViewModel.put(
+                    currProjectViewModel.getID(), currProjectViewModel);
+        }
+
+        // Removes the ProjectViewModel with the inputted ID (gets the ProjectViewModel
+        // based on the inputted ID and the HashMap created)
+        List<ProjectViewModel> allProjectViewModelsReference = this.getAllProjectViewModels();
+        allProjectViewModelsReference.remove(
+                ProjectViewModelIDToProjectViewModel.get(ID));
     }
 
 }
