@@ -1,8 +1,7 @@
-package DBControllers;
+package d_frameworks_and_drivers.database_management.DBControllers;
 
-import Entities.Column;
-import Entities.Project;
-import Entities.Task;
+import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
