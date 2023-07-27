@@ -1,8 +1,12 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 // Implement models instead of entities
-import a_enterprise_business_rules.entities.*;
+
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
+
 import java.io.FileWriter;
 import java.util.UUID;
 
@@ -16,7 +20,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @return
      */
     public void DBInsert(Project project) {
-        DBControllers.EntityIDsToListController entityIDsToListController = new DBControllers.EntityIDsToListController();
+        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Projects/Projects.csv");
@@ -50,7 +54,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @return
      */
     public void DBInsert(Column column) {
-        DBControllers.EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
+        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
