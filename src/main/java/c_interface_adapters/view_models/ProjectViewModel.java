@@ -2,7 +2,7 @@ package c_interface_adapters.view_models;
 
 import java.util.*;
 
-import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.*;
 
 /**
  * A project view model within the productivity application.
@@ -56,20 +56,20 @@ public class ProjectViewModel {
      * 
      * @param project The project to view model.
      */
-    public ProjectViewModel(Project project) {
-        this.name = project.getName();
+    public ProjectViewModel(ProjectModel projectModel) {
+        this.name = projectModel.getName();
 
         // Converting the List of Column objects to a List of ColumnViewModel objects
-        List<Column> columns = project.getColumns(); // Get the tasks
+        List<ColumnModel> columnModels = projectModel.getColumnModels(); // Get the tasks
         // Converts Columns to ColumnViewModels and puts it in the columnViewModels
         // attribute
-        for (int i = 0; i < columns.size(); i++) {
+        for (int i = 0; i < columnModels.size(); i++) {
             this.columnViewModels.add(
-                    new ColumnViewModel(columns.get(i)));
+                    new ColumnViewModel(columnModels.get(i)));
         }
 
-        this.description = project.getDescription();
-        this.ID = project.getID();
+        this.description = projectModel.getDescription();
+        this.ID = projectModel.getID();
     }
 
     /**

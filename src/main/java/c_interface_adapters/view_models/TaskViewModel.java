@@ -3,7 +3,7 @@ package c_interface_adapters.view_models;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.TaskModel;
 
 /**
  * A task view model within in the productivity application.
@@ -62,12 +62,12 @@ public class TaskViewModel {
      * 
      * @param task The task to view model.
      */
-    public TaskViewModel(Task task) {
-        this.name = task.getName();
-        this.ID = task.getID();
-        this.description = task.getDescription();
-        this.isCompleted = task.getCompletionStatus();
-        this.dueDateTime = task.getDueDateTime();
+    public TaskViewModel(TaskModel taskModel) {
+        this.name = taskModel.getName();
+        this.ID = taskModel.getID();
+        this.description = taskModel.getDescription();
+        this.isCompleted = taskModel.getCompletionStatus();
+        this.dueDateTime = taskModel.getDueDateTime();
     }
 
     /**

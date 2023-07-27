@@ -2,7 +2,7 @@ package c_interface_adapters.view_models;
 
 import java.util.*;
 
-import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.*;
 
 /**
  * A column view model within the productivity application.
@@ -48,18 +48,18 @@ public class ColumnViewModel {
      * 
      * @param column The column to view model.
      */
-    public ColumnViewModel(Column column) {
-        this.name = column.getName();
+    public ColumnViewModel(ColumnModel columnModel) {
+        this.name = columnModel.getName();
 
         // Converting the List of Task objects to a List of TaskViewModel objects
-        List<Task> tasks = column.getTasks(); // Get the tasks
+        List<TaskModel> taskModels = columnModel.getTaskModels(); // Get the tasks
         // Converts Tasks to TaskViewModels and puts it in the taskViewModels attribute
-        for (int i = 0; i < tasks.size(); i++) {
+        for (int i = 0; i < taskModels.size(); i++) {
             this.taskViewModels.add(
-                    new TaskViewModel(tasks.get(i)));
+                    new TaskViewModel(taskModels.get(i)));
         }
 
-        this.ID = column.getID();
+        this.ID = columnModel.getID();
     }
 
     /**
