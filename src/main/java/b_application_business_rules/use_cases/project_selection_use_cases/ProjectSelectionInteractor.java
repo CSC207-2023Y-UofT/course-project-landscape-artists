@@ -1,9 +1,15 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+
+import java.util.UUID;
 
 /**
  * The ProjectSelectionInteractor class is responsible for handling interactions and business logic
@@ -53,8 +59,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         // Implementation details depend on the specific requirements and architecture of the application.
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
 
-        Project p = new Project(projectName, projectDescription);
-        setCurrentProject(p);
+        IDBInsert w = new DBManagerInsertController();
+        w.DBInsert();
     }
 }
 

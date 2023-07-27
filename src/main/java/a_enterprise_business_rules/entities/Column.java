@@ -1,28 +1,23 @@
-
 package a_enterprise_business_rules.entities;
-
-
-import DBControllers.DBManagerInsertController;
-import UUIDsToHashMap.UUIDMap;
 
 import java.util.*;
 
-
 /**
- * An entity class to represent a column of tasks within a kanban board.
+ * A column within the productivity application.
+ * 
+ * Each column will have a name, a unique identifier, and a list of tasks.
  */
 public class Column {
 
     /**
-
-     * The ID of this project.
-     */
-    private UUID ID;
-    /**
-
      * The name of the column.
      */
     private String name;
+
+    /**
+     * A unique identifier for the column.
+     */
+    private UUID ID;
 
     /**
      * The <code>List</code> of tasks that the column holds/contains.
@@ -30,55 +25,16 @@ public class Column {
     private List<Task> tasks;
 
     /**
-     * A description for the column.
-     * Note: We may not end up using this
-     */
-    private String description;
-
-    /**
-
-     * UUID Map
-     */
-    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
-
-    /**
-
-     * Contructor for a column, that takes in a name, an List of tasks,
-     * and the description of the column.
+     * Creates a new column, based in the inputted values.
      * 
-     * @param name        The name for the column.
-     * @param tasks       The List of tasks to be stored in the column.
-     * @param description A description for the column.
-     */
-    public Column(String name, List<Task> tasks, String description) {
-
-        this.ID = getValidColumnID();
-        this.name = name;
-        this.tasks = tasks;
-        this.description = description;
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
-
-    }
-
-    /**
-     * Contructor for a column, that takes in a name, an List of tasks,
-     * and the definees the description as an empty String.
-     * 
-     * Calls the {@link #Column(String name, List<Task> tasks, String
-     * description)} method.
-     * 
-     * @param name  The name for the column
+     * @param name  The name for the column.
+     * @param ID    The column ID.
      * @param tasks The List of tasks to be stored in the column.
      */
-    public Column(String name, List<Task> tasks) {
-        this(name, tasks, "");
-
-        this.ID = getValidColumnID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
-
-
+    public Column(String name, List<Task> tasks, UUID ID) {
+        this.name = name;
+        this.tasks = tasks;
+        this.ID = ID;
     }
 
     /**
@@ -91,23 +47,31 @@ public class Column {
     }
 
     /**
+     * 
+     * Sets a new name for the column
+     * 
+     * @param newName The new name for the column.
+     */
+    public void setName(String newName) {
+        this.name = newName;
+    }
 
-     * Gets the ID of the column.
-     *
-     * @return The name of the column.
+    /**
+     * Gets the unique identifier for the column.
+     * 
+     * @return a unique identifier for the column.
      */
     public UUID getID() {
         return this.ID;
     }
 
     /**
-
-     * Sets a new name for the column
+     * Sets a new unique identifier for the column.
      * 
-     * @param newName The new name for the column.
+     * @param newID a new unique identifier for the column.
      */
-    public void getName(String newName) {
-        this.name = newName;
+    public void setID(UUID newID) {
+        this.ID = newID;
     }
 
     /**
@@ -126,24 +90,6 @@ public class Column {
      */
     public void setTasks(List<Task> newTasks) {
         this.tasks = newTasks;
-    }
-
-    /**
-     * Gets the description of the column.
-     * 
-     * @return the description of the column.
-     */
-    public String getDescription() {
-        return this.description;
-    }
-
-    /**
-     * Sets the description of the column.
-     * 
-     * @param newDescription the new description of the column.
-     */
-    public void setDescription(String newDescription) {
-        this.description = newDescription;
     }
 
     /**
@@ -175,7 +121,7 @@ public class Column {
     public void removeTask(Task taskToRemove) throws NoSuchElementException {
         if (!this.tasks.remove(taskToRemove)) {
             // the java.util.List.remove method returns a bool,
-            // indicating whether or not the object was removed.
+            // indicating whether the object was removed or not.
             // If it wasn't removed, we want to throw an exception,
             // saying that the task isn't in the column, thus, it can't be removed.
             // If it was removed, we don't have to do anything extra.
@@ -193,7 +139,7 @@ public class Column {
      *                                tasks are not in the column.
      */
     public void swapTaskOrder(Task task1, Task task2) {
-        // Checking whether or not the tasks to swap are even in the column
+        // Checking whether the tasks to swap are even in the column or not
         boolean task1InColumn = this.tasks.contains(task1);
         boolean task2InColumn = this.tasks.contains(task2);
 
@@ -246,7 +192,7 @@ public class Column {
         String columnStringRepresentation = "[" + "Column Name: " + this.getName() + ", " + "Tasks: ";
         columnStringRepresentation += "{";
 
-        // Adding all of the column's task to the string representation
+        // Adding all the column's task to the string representation
         for (Task task : this.tasks) {
             columnStringRepresentation += task.toString();
             columnStringRepresentation += ", ";
@@ -261,14 +207,16 @@ public class Column {
         return columnStringRepresentation;
     }
 
-    private UUID getValidColumnID(){
-        this.ID = UUID.randomUUID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID.toString())){
-            this.ID = UUID.randomUUID();
-        }
-        dbManagerInsertController.DBInsert(this.ID);
-        return this.ID;
-    }
+    // TODO:turn this into its own class
+    // private UUID getValidColumnID(){
+    // this.ID = UUID.randomUUID();
+    // DBManagerInsertController dbManagerInsertController = new
+    // DBManagerInsertController();
+    // while(uuidMap.containsKey(this.ID.toString())){
+    // this.ID = UUID.randomUUID();
+    // }
+    // dbManagerInsertController.DBInsert(this.ID);
+    // return this.ID;
+    // }
 
 }

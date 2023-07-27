@@ -1,13 +1,16 @@
-package DBControllers;
+package d_frameworks_and_drivers.database_management.DBControllers;
+// Implement models instead of entities
 
-import Entities.Column;
-import Entities.Project;
-import Entities.Task;
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
+
 import java.io.FileWriter;
 import java.util.UUID;
 
-public class DBManagerInsertController implements IDBInsert{
+public class DBManagerInsertController implements IDBInsert {
     /**
      * The method is intended to append the ProjectID, Name,
      * Description and list of column IDs that belong to a project
@@ -27,7 +30,7 @@ public class DBManagerInsertController implements IDBInsert{
 
             // add data to csv
             String[] data = {
-                    project.getProjectID().toString(),
+                    project.getID().toString(),
                     project.getName(),
                     project.getDescription(),
                     entityIDsToListController.EntityIDsToList(project)
@@ -63,7 +66,6 @@ public class DBManagerInsertController implements IDBInsert{
             String[] data = {
                     column.getID().toString(),
                     column.getName(),
-                    column.getDescription(),
                     entityIDsToListController.EntityIDsToList(column)
             };
             writer.writeNext(data);

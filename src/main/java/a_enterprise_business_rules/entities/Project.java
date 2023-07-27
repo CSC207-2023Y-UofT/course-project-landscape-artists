@@ -1,17 +1,13 @@
 
 package a_enterprise_business_rules.entities;
 
-
-
-
-import DBControllers.DBManagerInsertController;
-import UUIDsToHashMap.UUIDMap;
-
 import java.util.*;
 
-
 /**
- * An entity class to represent a project, which includes a kanban board.
+ * A project within the productivity application.
+ * 
+ * Each project will have a name, unique identifier, a description, and a list
+ * of columns (which contain tasks).
  */
 public class Project {
 
@@ -21,13 +17,13 @@ public class Project {
     private String name;
 
     /**
-
+     * 
      * The ID of this project.
      */
     private UUID ID;
 
     /**
-
+     * 
      * A description of this project.
      */
     private String description;
@@ -38,82 +34,54 @@ public class Project {
     private List<Column> columns;
 
     /**
-
-     * UUID Map
-     */
-    private Map<String, String> uuidMap = UUIDMap.convertCsvToHashMap();
-    /**
-
-     * Constructs a Project, given its name, columns, and description.
+     * Creates a new project, based in the inputted values.
      * 
-     * @param name        The project's name.
+     * @param name        The name of the task.
+     * @param ID          The unique identifier for the task.
+     * @param description A description of the task.
      * @param columns     The columns of the project.
-     * @param description A description of the project.
      */
-    public Project(String name, List<Column> columns, String description) {
-
-        this.ID = getValidProjectID();
+    public Project(String name, UUID ID, String description, List<Column> columns) {
         this.name = name;
         this.columns = columns;
         this.description = description;
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
-
-    }
-
-    /**
-     * Constructs a Project, given its name and columns, and gives it an empty
-     * description,
-     * by calling {@link Project(String name, List<Column> columns, String
-     * description)}.
-     * 
-     * @see Project(String name, List<Column> columns, String description)
-     * @param name    The project's name.
-     * @param columns The columns of the project.
-     */
-    public Project(String name, List<Column> columns) {
-        this(name, columns, "");
-
-    }
-
-    public Project(String name, String description) {
-        this.name = name;
-        this.columns = new ArrayList<Column>();
-        this.description = description;
-
-        this.ID = getValidProjectID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        dbManagerInsertController.DBInsert(this);
-
+        this.ID = ID;
     }
 
     /**
      * Gets the name of the project.
      * 
-     * @return The name of the project.
+     * @return the name of the project.
      */
     public String getName() {
         return this.name;
     }
 
     /**
-
-     * Gets the ID of the project.
-     *
-     * @return The ID of the project.
+     * Sets the name of the project.
+     * 
+     * @param newName the new name for the project.
      */
-    public UUID getProjectID() {
+    public void setName(String newName) {
+        this.name = newName;
+    }
+
+    /**
+     * Gets the unique identifier for the project.
+     * 
+     * @return a unique identifier for the project.
+     */
+    public UUID getID() {
         return this.ID;
     }
 
     /**
-
-     * Sets the name of the project to the inputted name.
+     * Sets a new unique identifier for the project.
      * 
-     * @param newName The new name for the project.
+     * @param newID a new unique identifier for the project.
      */
-    public void setName(String newName) {
-        this.name = newName;
+    public void setID(UUID newID) {
+        this.ID = newID;
     }
 
     /**
@@ -126,16 +94,16 @@ public class Project {
     }
 
     /**
-     * Sets the description of the project to the inputted description.
+     * Sets the description of the project.
      * 
-     * @param newDescription The new description for the project.
+     * @param newDescription the new description of the project.
      */
-    public void setString(String newDescription) {
+    public void setDescription(String newDescription) {
         this.description = newDescription;
     }
 
     /**
-     * Returns the columns of the project/kanban board.
+     * Returns the columns of the project board.
      * 
      * @return an <code>List<Column></code> of <Column>s.
      */
@@ -172,8 +140,23 @@ public class Project {
     }
 
     /**
+     * Moves a column to a specific position in the column.
+     *
+     * @param columnToMove     The column that needs to be moved.
+     * @param positionToMoveTo The position/index to move the column to.
+     * @throws NoSuchElementException Throws exception when the specified column to
+     *                                remove is not in the column.
+     */
+    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo) throws NoSuchElementException {
+        // The moving of the columns is done by removing the object from the List,
+        // and then adding it back to the List at the indicated index.
+        this.removeColumn(columnToMove);
+        this.columns.add(positionToMoveTo, columnToMove);
+    }
+
+    /**
      * Removes the specified column from the project.
-     * 
+     *
      * @param columnToRemove The column to remove from the project.
      * @throws NoSuchElementException Throws exception when the specified column to
      *                                remove is not in the project.
@@ -181,7 +164,7 @@ public class Project {
     public void removeColumn(Column columnToRemove) throws NoSuchElementException {
         if (!this.columns.remove(columnToRemove)) {
             // the java.util.List.remove method returns a bool,
-            // indicating whether or not the object was removed.
+            // indicating whether the object was removed or not.
             // If it wasn't removed, we want to throw an exception,
             // saying that the task isn't in the column, thus, it can't be removed.
             // If it was removed, we don't have to do anything extra.
@@ -199,7 +182,7 @@ public class Project {
      *                                columns are not in the column.
      */
     public void swapColumnOrder(Column col1, Column col2) {
-        // Checking whether or not the columns to swap are even in the prject
+        // Checking whether the columns to swap are in the project or not
         boolean col1InColumn = this.columns.contains(col1);
         boolean col2InColumn = this.columns.contains(col2);
 
@@ -223,32 +206,5 @@ public class Project {
         Collections.swap(
                 this.columns, this.columns.indexOf(col1), this.columns.indexOf(col2));
     }
-
-    /**
-     * Moves a column to a specific position in the column.
-     * 
-     * @param columnToMove     The column that needs to be moved.
-     * @param positionToMoveTo The position/index to move the column to.
-     * @throws NoSuchElementException Throws exception when the specified column to
-     *                                remove is not in the column.
-     */
-    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo) throws NoSuchElementException {
-        // The moving of the columns is done by removing the object from the List,
-        // and then adding it back to the List at the indicated index.
-        this.removeColumn(columnToMove);
-        this.columns.add(positionToMoveTo, columnToMove);
-    }
-
-
-    private UUID getValidProjectID(){
-        this.ID = UUID.randomUUID();
-        DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
-        while(uuidMap.containsKey(this.ID.toString())){
-            this.ID = UUID.randomUUID();
-        }
-        dbManagerInsertController.DBInsert(this.ID);
-        return this.ID;
-    }
-
 
 }

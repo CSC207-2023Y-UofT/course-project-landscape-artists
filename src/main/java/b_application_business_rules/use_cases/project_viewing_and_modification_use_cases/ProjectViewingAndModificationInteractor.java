@@ -56,8 +56,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // Interact with necessary use cases here. Also interact with the gateway for database access.
 
         // For testing purposes, create a temporary Task instance with the provided details.
-        Task newTask = new Task(taskName, taskDescription, false, dueDate);
-        presenter.displayNewTask(columnBox, newTask);
+//        Task newTask = new Task(taskName, taskDescription, false, dueDate);
+//        presenter.displayNewTask(columnBox, newTask);
     }
 
     @Override
