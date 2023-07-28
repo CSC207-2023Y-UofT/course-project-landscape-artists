@@ -23,4 +23,22 @@ public class ProjectViewingAndModificationViewModel {
         this.currProjectViewModel = currProjectViewModel;
     }
 
+    /**
+     * Gets the current ProjectViewModel.
+     * 
+     * @return the current ProjectViewModel.
+     */
+    public ProjectViewModel getCurrProjectViewModel() {
+        return this.currProjectViewModel;
+    }
+
+    /**
+     * Sets the current ProjectViewModel to the inputted ProjectViewModel.
+     * 
+     * @param currProjectViewModel the new ProjectViewModel.
+     */
+    public void setCurrProjectViewModel(ProjectViewModel currProjectViewModel) {
+        this.currProjectViewModel = currProjectViewModel;
+    }
+
 }
