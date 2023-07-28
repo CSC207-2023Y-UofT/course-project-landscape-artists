@@ -12,16 +12,24 @@ import java.time.LocalDateTime;
 public interface ProjectViewingAndModificationInputBoundary {
     public void removeCurrentProject();
 
-    void addNewTask(VBox columnBox, String taskName, String taskDescription,
+    void addNewTask(UUID idOfColumn, String taskName, String taskDescription,
                     LocalDateTime dueDate);
 
-    void deleteColumn(Column column, VBox columnBox);
+    void deleteColumn(ColumnModel column, UUID columnBoxId);
 
-    void renameColumn(Column column, VBox columnBox);
+    void renameColumn(ColumnModel column, UUID columnBoxId);
 
-    void deleteTask(Task task, HBox hbox);
+    void deleteTask(TaskModel task, UUID TaskUIid);
 
-    void changeTaskDetails(Task task, HBox hbox);
+    void changeTaskDetails(TaskModel task, UUID TaskUIid);
 
-    void renameTask(Task task, HBox hbox);
+    void renameTask(TaskModel task, UUID TaskUIid);
+
+    void removeTask(TaskModel task, UUID columnId);
+
+    void addTask(TaskModel task, UUID targetColumnId);
+    void changeTaskDate(TaskModel task, UUID targetColumnId);
+    void renameProject(ProjectModel project, UUID projectId);
+    void deleteProject(ProjectModel project, UUID projectId);
+
 }
