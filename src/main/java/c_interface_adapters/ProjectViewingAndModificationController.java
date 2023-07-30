@@ -58,18 +58,22 @@ public class ProjectViewingAndModificationController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Create a presenter and get the current project from it
-        ProjectViewingAndModificationPresenter presenter =
-                new ProjectViewingAndModificationPresenter();
-        ProjectModel currentProject = presenter.getCurrentProject();
-
-        // Populate the project details on the UI
-        populateProjectDetails(currentProject);
+//        ProjectViewingAndModificationPresenter presenter =
+//                new ProjectViewingAndModificationPresenter();
+//        ProjectModel currentProject = presenter.getCurrentProject();
+//
+//        // Populate the project details on the UI
+//        populateProjectDetails(currentProject);
 
         // Retrieve columns from the current project and populate them on the UI
 //        List<Column> columnsInProject = currentProject.getColumns();
 //        populateColumns(columnsInProject);
 
         // Implement additional methods and event handlers as needed
+    }
+
+    public void setup(ProjectModel projectModel) {
+        populateProjectDetails(projectModel);
     }
 
     /**

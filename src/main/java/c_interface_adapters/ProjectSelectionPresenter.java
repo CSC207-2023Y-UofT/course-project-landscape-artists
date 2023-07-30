@@ -50,7 +50,10 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     @Override
     public void displayCurrentProject(ProjectModel projectModel) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ProjectViewingAndModification.fxml"));
+            Parent root = fxmlLoader.load();
+            ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
+            openedProjectController.setup(projectModel);
             stage.setTitle("scene 2");
             stage.setScene(new Scene(root));
         } catch (IOException e) {
