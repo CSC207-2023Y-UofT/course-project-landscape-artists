@@ -98,7 +98,7 @@ public class ColumnModel {
 
     /**
      * Gets the task models in this column model.
-     * 
+     *
      * @return The task models in this column model.
      */
     public List<TaskModel> getTaskModels() {

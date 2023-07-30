@@ -2,6 +2,8 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ProjectModel;
+import c_interface_adapters.view_models.ProjectSelectionViewModel;
+import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -26,6 +28,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
     // The JavaFX Stage used for displaying scenes
     private Stage stage;
+    private ProjectSelectionViewModel projectSelectionViewModel;
 
     /**
      * Sets the JavaFX Stage to be used for displaying scenes.
@@ -74,6 +77,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         String projectUUID = projectModel.getID().toString();
         String newProjectName = projectModel.getName();
 
+//        ProjectViewModel projectViewModel = projectSelectionViewModel.getProjectViewModel(projectModel.getID());
+
         Scene scene = stage.getScene();
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
@@ -90,6 +95,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                 for (Node hboxChild : hbox.getChildren()) {
                                     if (hboxChild instanceof Button) {
                                         Button projectNameButton = (Button) hboxChild;
+
+//                                        projectViewModel.changeName(newProjectName);
+
                                         // Update the projectNameButton with the new project name
                                         projectNameButton.setText(newProjectName);
                                         break;
@@ -156,5 +164,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public void setViewModel(ProjectSelectionViewModel projectSelectionViewModel) {
+        this.projectSelectionViewModel = projectSelectionViewModel;
     }
 }

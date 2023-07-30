@@ -2,13 +2,12 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -18,10 +17,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.ResourceBundle;
+import java.util.UUID;
 
 /**
  * The ProjectViewingAndModificationController class is responsible for managing the presentation
@@ -74,6 +72,9 @@ public class ProjectViewingAndModificationController {
 
     public void setup(ProjectModel projectModel) {
         populateProjectDetails(projectModel);
+        List<ColumnModel> columnsInProject = projectModel.getColumnModels();
+        System.out.println("columnsInProject " + columnsInProject);
+        populateColumns(columnsInProject);
     }
 
     /**
@@ -83,9 +84,10 @@ public class ProjectViewingAndModificationController {
      *
      * @param columns The list of Column instances associated with the current project.
      */
-    private void populateColumns(List<Column> columns) {
+    private void populateColumns(List<ColumnModel> columns) {
         // Iterate through the list of columns and create a VBox for each column
-        for (Column column : columns) {
+        for (ColumnModel column : columns) {
+            System.out.println(column);
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setPrefSize(200, 400);
 
@@ -103,14 +105,9 @@ public class ProjectViewingAndModificationController {
             MenuItem deleteColumnButton = new MenuItem("Delete Column");
             
             // Add event handler on menu item.
-            renameColumnButton.setOnAction(event -> {renameColumm(column,
-                    columnBox);});
-            deleteColumnButton.setOnAction(event -> {deleteColumn(column,
-                    columnBox);});
+            renameColumnButton.setOnAction(event -> {renameColumm(column.getID());});
+            deleteColumnButton.setOnAction(event -> {deleteColumn(column.getID());});
 
-            columnOptions.setOnAction(actionEvent -> {
-                handleColumnOptions(actionEvent, column, columnBox, scrollPane);
-            });
 
             // Set the size constraints for columnNameAndOptions
             HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
@@ -124,7 +121,7 @@ public class ProjectViewingAndModificationController {
             columnBox.getChildren().add(columnNameAndOptions);
 
             // Populate tasks for each column and add an "Add Task" button
-            populateTasksForEachColumn(columnBox, column.getTasks());
+            populateTasksForEachColumn(columnBox, column.getTaskModels());
 
             Button addTaskButton = new Button("Add Task");
             addTaskButton.setOnAction(event -> handleAddTaskPopup(columnBox));
@@ -137,19 +134,13 @@ public class ProjectViewingAndModificationController {
         }
     }
 
-    private void deleteColumn(Column column, VBox columnBox) {
-//        interactor.deleteColumn(column, columnBox);
+    private void deleteColumn(UUID id) {
     }
 
-    private void renameColumm(Column column, VBox columnBox) {
-//        interactor.renameColumn(column, columnBox);
+    private void renameColumm(UUID id) {
     }
 
-    ;
     
-
-    private void handleColumnOptions(ActionEvent actionEvent, Column column, VBox columnBox, ScrollPane scrollPane) {
-    }
 
     /**
      * Populates the UI with tasks for each column. For each task, an HBox is created with the task
@@ -159,9 +150,9 @@ public class ProjectViewingAndModificationController {
      *                  are stacked vertically.
      * @param tasks     The list of Task instances belonging to the columnBox.
      */
-    private void populateTasksForEachColumn(VBox columnBox, List<Task> tasks) {
+    private void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks) {
         // Iterate through the list of tasks and create an HBox for each task
-        for (Task task : tasks) {
+        for (TaskModel task : tasks) {
             HBox hbox = new HBox();
 
             Label taskName = new Label(task.getName());
@@ -199,15 +190,15 @@ public class ProjectViewingAndModificationController {
         }
     }
 
-    private void deleteTask(Task task, HBox hbox) {
+    private void deleteTask(TaskModel task, HBox hbox) {
 //        interactor.deleteTask(task, hbox);
     }
 
-    private void changeTaskDetails(Task task, HBox hbox) {
+    private void changeTaskDetails(TaskModel task, HBox hbox) {
 //        interactor.changeTaskDetails(task, hbox);
     }
 
-    private void renameTask(Task task, HBox hbox) {
+    private void renameTask(TaskModel task, HBox hbox) {
 //        interactor.renameTask(task, hbox);
     }
 
@@ -216,7 +207,7 @@ public class ProjectViewingAndModificationController {
      *
      * @param actionEvent An ActionEvent representing the options button click.
      */
-    private void handleTaskOptions(ActionEvent actionEvent, Task task, VBox columnBox) {
+    private void handleTaskOptions(ActionEvent actionEvent, TaskModel task, VBox columnBox) {
         // This has access to VBox for presentation purposes.
     }
 

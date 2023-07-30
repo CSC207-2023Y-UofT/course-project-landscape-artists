@@ -64,20 +64,14 @@ public class ProjectSelectionController implements Initializable {
                         LocalDateTime.now()));
         List<ColumnViewModel> ColumnsList = Arrays.asList(
                 new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
-                new ColumnViewModel("COLUMN 2", TaskList, UUID.randomUUID())
+                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
         );
         ProjectViewModel p1 = new ProjectViewModel(
                 "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
                 );
-        ProjectViewModel p2 = new ProjectViewModel(
-                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
-        );
-        ProjectViewModel p3 = new ProjectViewModel(
-                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
-        );
 
 
-        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
+        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1);
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
@@ -94,6 +88,7 @@ public class ProjectSelectionController implements Initializable {
                 new ProjectSelectionPresenter();
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
         ((ProjectSelectionPresenter) presenter).setStage(stage);
+        ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);
 
         interactor = new ProjectSelectionInteractor(presenter);
     }
