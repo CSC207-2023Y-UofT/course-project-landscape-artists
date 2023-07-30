@@ -56,7 +56,19 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         // Implementation details depend on the specific requirements and architecture of the application.
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
         ProjectModel projectModel = new ProjectModel(
-                projectName, UUID.randomUUID(), "", new ArrayList<>());
+                projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
+        setCurrentProject(projectModel);
+        presenter.displayCurrentProject(projectModel);
+    }
+
+    @Override
+    public void openProject(UUID currentProjectID) {
+        // TODO: Pass the ProjectModel of the Project with the given UUID to the presenter.
+        // TODO: i.e. presenter.displayCurrentProjct(projectModel);
+
+        // Temporary implementation for testing purposes.
+        ProjectModel projectModel = new ProjectModel(
+                "Project P1", UUID.randomUUID(), "", new ArrayList<>());
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
     }

@@ -195,8 +195,8 @@ public class ProjectSelectionController implements Initializable {
     private void handleChosenProjectButton(ActionEvent actionEvent) {
         setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
-        Project currentProject = (Project) buttonClicked.getUserData();
-//        openProject(currentProject);
+        UUID currentProjectID = (UUID) buttonClicked.getUserData();
+        interactor.openProject(currentProjectID);
 
 
 //            Stage stage = (Stage) projectsGrid.getScene().getWindow();
