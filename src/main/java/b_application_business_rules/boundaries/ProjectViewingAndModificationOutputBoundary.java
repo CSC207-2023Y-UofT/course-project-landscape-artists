@@ -11,7 +11,6 @@ import c_interface_adapters.view_models.TaskViewModel;
 import java.util.UUID;
 
 public interface ProjectViewingAndModificationOutputBoundary {
-    ProjectModel getCurrentProject();
 
     void displayAllProjects();
 

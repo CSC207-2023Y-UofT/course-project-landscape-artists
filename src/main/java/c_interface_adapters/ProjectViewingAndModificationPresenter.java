@@ -70,10 +70,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      *
      * @return The current Project instance.
      */
-    @Override
-    public ProjectModel getCurrentProject() {
-        return currentProjectRepository.getCurrentProject();
-    }
 
     /**
      * Displays the scene with all projects when the "Back" button is clicked.
