@@ -4,6 +4,9 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
+import c_interface_adapters.view_models.ColumnViewModel;
+import c_interface_adapters.view_models.ProjectViewModel;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -15,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.UUID;
 
 /**
  * The ProjectViewingAndModificationPresenter class is responsible for managing the presentation
@@ -85,6 +89,51 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         }
     }
 
+    @Override
+    public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
+
+    }
+
+    @Override
+    public void displayRenamedTask(UUID taskID, TaskViewModel task) {
+
+    }
+
+    @Override
+    public void displayRemovedTask(UUID taskID, TaskViewModel task) {
+
+    }
+
+    @Override
+    public void displayRenamedColumn(UUID columnUIid, ColumnViewModel column) {
+
+    }
+
+    @Override
+    public void displayDeletedColumn(UUID columnUIid, ColumnViewModel column) {
+
+    }
+
+    @Override
+    public void dislayChangedTaskDetails(UUID taskID, TaskViewModel task) {
+
+    }
+
+    @Override
+    public void dislayChangedTaskDate(UUID taskID, TaskViewModel task) {
+
+    }
+
+    @Override
+    public void displayRenamedProject(ProjectViewModel project, UUID projectId) {
+
+    }
+
+    @Override
+    public void displayDeleteProject(ProjectViewModel project, UUID projectId) {
+
+    }
+
     /**
      * Displays a new task in the specified VBox columnBox. The new task is represented by an HBox
      * containing the task name and an options button.
@@ -92,7 +141,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @param columnBox The VBox representing the Column UI where the new task will be added.
      * @param newTask   The new Task instance to be displayed.
      */
-    @Override
+
     public void displayNewTask(VBox columnBox, Task newTask) {
         HBox hbox = new HBox();
         Label taskName = new Label(newTask.getName());

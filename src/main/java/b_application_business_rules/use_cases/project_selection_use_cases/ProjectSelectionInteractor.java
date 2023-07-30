@@ -60,7 +60,6 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
 
         IDBInsert w = new DBManagerInsertController();
-        w.DBInsert();
     }
 }
 

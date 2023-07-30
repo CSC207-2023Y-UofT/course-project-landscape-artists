@@ -134,11 +134,11 @@ public class ProjectViewingAndModificationController implements Initializable {
     }
 
     private void deleteColumn(Column column, VBox columnBox) {
-        interactor.deleteColumn(column, columnBox);
+//        interactor.deleteColumn(column, columnBox);
     }
 
     private void renameColumm(Column column, VBox columnBox) {
-        interactor.renameColumn(column, columnBox);
+//        interactor.renameColumn(column, columnBox);
     }
 
     ;
@@ -196,15 +196,15 @@ public class ProjectViewingAndModificationController implements Initializable {
     }
 
     private void deleteTask(Task task, HBox hbox) {
-        interactor.deleteTask(task, hbox);
+//        interactor.deleteTask(task, hbox);
     }
 
     private void changeTaskDetails(Task task, HBox hbox) {
-        interactor.changeTaskDetails(task, hbox);
+//        interactor.changeTaskDetails(task, hbox);
     }
 
     private void renameTask(Task task, HBox hbox) {
-        interactor.renameTask(task, hbox);
+//        interactor.renameTask(task, hbox);
     }
 
     /**
@@ -294,7 +294,7 @@ public class ProjectViewingAndModificationController implements Initializable {
      */
     private void handleAddTaskToColumn(VBox columnBox, String taskName, String taskDescription,
                                        LocalDateTime dueDate) {
-        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
+//        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
     }
 
     /**
