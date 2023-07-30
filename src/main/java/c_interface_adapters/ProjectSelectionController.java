@@ -7,6 +7,7 @@ import b_application_business_rules.use_cases.project_selection_use_cases.Projec
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
+import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -41,11 +42,11 @@ public class ProjectSelectionController implements Initializable {
     /**
      * Constructor to initialize the ProjectSelectionController.
      */
-    public ProjectSelectionController() {
-        ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
-        interactor = new ProjectSelectionInteractor(presenter);
-    }
+//    public ProjectSelectionController() {
+//        ProjectSelectionOutputBoundary presenter =
+//                new ProjectSelectionPresenter();
+//        interactor = new ProjectSelectionInteractor(presenter);
+//    }
 
     /**
      * Initializes the controller after its root element has been completely processed.
