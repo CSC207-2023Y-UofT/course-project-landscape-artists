@@ -4,10 +4,11 @@ import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
-import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
+import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
+import c_interface_adapters.view_models.ProjectViewModel;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,15 +39,7 @@ public class ProjectSelectionController implements Initializable {
     // The repository to manage the currently opened project
     CurrentProjectRepository currentProjectRepository =
             CurrentProjectRepository.getInstance();
-
-    /**
-     * Constructor to initialize the ProjectSelectionController.
-     */
-//    public ProjectSelectionController() {
-//        ProjectSelectionOutputBoundary presenter =
-//                new ProjectSelectionPresenter();
-//        interactor = new ProjectSelectionInteractor(presenter);
-//    }
+    ProjectSelectionViewModel projectSelectionViewModel;
 
     /**
      * Initializes the controller after its root element has been completely processed.
@@ -60,23 +53,25 @@ public class ProjectSelectionController implements Initializable {
 //         Gateway gateway = new Gateway();
 //         List<Project> allProjectsInSystem = gateway.getAllProjects();
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        List<Task> TaskList = Arrays.asList(
-                new Task("Task1", UUID.randomUUID(), "Task1", true,
+        List<TaskViewModel> TaskList = Arrays.asList(
+                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
                 LocalDateTime.now()),
-                new Task("Task2", UUID.randomUUID(), "Task2", true,
+                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
                         LocalDateTime.now()));
-        List<Column> ColumnsList = Arrays.asList(
-                new Column("COLUMN 1", TaskList, UUID.randomUUID()),
-                new Column("COLUMN 2", TaskList, UUID.randomUUID())
+        List<ColumnViewModel> ColumnsList = Arrays.asList(
+                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
+                new ColumnViewModel("COLUMN 2", TaskList, UUID.randomUUID())
         );
-        Project p1 = new Project(
+        ProjectViewModel p1 = new ProjectViewModel(
                 "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
                 );
 
-        List<Project> allProjectsInSystem = Arrays.asList(p1);
+
+        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1);
+        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
-        populateProjectSelectionUI(allProjectsInSystem);
+        populateProjectSelectionUI();
     }
 
     /**
@@ -93,12 +88,8 @@ public class ProjectSelectionController implements Initializable {
         interactor = new ProjectSelectionInteractor(presenter);
     }
 
-    /**
-     * Populates the project selection UI with the given list of projects.
-     *
-     * @param allProjectsInSystem The list of projects to display in the UI.
-     */
-    private void populateProjectSelectionUI(List<Project> allProjectsInSystem) {
+
+    private void populateProjectSelectionUI() {
         projectsGrid.setHgap(10);
         projectsGrid.setVgap(10);
 
@@ -112,9 +103,10 @@ public class ProjectSelectionController implements Initializable {
 
         int row = 0;
         int col = 0;
-        for (Project project : allProjectsInSystem) {
+        while (projectSelectionViewModel.hasNext()) {
+            ProjectViewModel project = projectSelectionViewModel.next();
             Button currentProjectButton = new Button(project.getName());
-            currentProjectButton.setUserData(project);
+            currentProjectButton.setUserData(project.getID());
             currentProjectButton.setOnAction(this::handleChosenProjectButton);
             projectsGrid.add(currentProjectButton, col, row);
             col++;
