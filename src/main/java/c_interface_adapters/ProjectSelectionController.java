@@ -12,6 +12,7 @@ import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
@@ -20,9 +21,12 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * ProjectSelectionController class handles the user interface for project selection and creation.
@@ -105,10 +109,34 @@ public class ProjectSelectionController implements Initializable {
         int col = 0;
         while (projectSelectionViewModel.hasNext()) {
             ProjectViewModel project = projectSelectionViewModel.next();
+
+            // Create the currentProjectButton
             Button currentProjectButton = new Button(project.getName());
             currentProjectButton.setUserData(project.getID());
             currentProjectButton.setOnAction(this::handleChosenProjectButton);
-            projectsGrid.add(currentProjectButton, col, row);
+            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
+            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
+            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
+
+            // Create the MenuButton
+            MenuButton menuButton = new MenuButton("Menu");
+            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+
+            // Add event handlers for the MenuItems
+            renameProjectMenuItem.setOnAction(event -> handleRenameProject(project.getID()));
+            deleteProjectMenuItem.setOnAction(event -> handleDeleteProject(project.getID()));
+
+            // Add MenuItems to the MenuButton
+            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+
+            // Add some spacing between the buttons using padding
+            HBox.setMargin(menuButton, new Insets(0, 0, 0, 5));
+
+            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
+            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+            projectsGrid.add(buttonContainer, col, row);
+
             col++;
             if (col >= 4) {
                 col = 0;
@@ -116,6 +144,14 @@ public class ProjectSelectionController implements Initializable {
             }
         }
         addCreateProjectButton(col, row);
+    }
+
+    private void handleRenameProject(UUID projectUUID) {
+        interactor.renameProject(projectUUID);
+    }
+
+    private void handleDeleteProject(UUID projectUUID) {
+        interactor.deleteProject(projectUUID);
     }
 
     /**

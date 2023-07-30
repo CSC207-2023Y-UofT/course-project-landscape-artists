@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
  * Initializable interface to handle initialization of the JavaFX components and user interactions
  * in the project viewing and modification scene.
  */
-public class ProjectViewingAndModificationController implements Initializable {
+public class ProjectViewingAndModificationController {
 
     // JavaFX components annotated with @FXML for UI interaction
     @FXML
@@ -48,29 +48,29 @@ public class ProjectViewingAndModificationController implements Initializable {
         interactor = new ProjectViewingAndModificationInteractor(presenter);
     }
 
-    /**
-     * Initializes the scene with the provided URL and resource bundle. Retrieves the current
-     * project details and populates the UI with project details and associated columns and tasks.
-     *
-     * @param url            The URL to initialize the scene.
-     * @param resourceBundle The resource bundle to initialize the scene.
-     */
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Create a presenter and get the current project from it
-//        ProjectViewingAndModificationPresenter presenter =
-//                new ProjectViewingAndModificationPresenter();
-//        ProjectModel currentProject = presenter.getCurrentProject();
+//    /**
+//     * Initializes the scene with the provided URL and resource bundle. Retrieves the current
+//     * project details and populates the UI with project details and associated columns and tasks.
+//     *
+//     * @param url            The URL to initialize the scene.
+//     * @param resourceBundle The resource bundle to initialize the scene.
+//     */
+//    @Override
+//    public void initialize(URL url, ResourceBundle resourceBundle) {
+//        // Create a presenter and get the current project from it
+////        ProjectViewingAndModificationPresenter presenter =
+////                new ProjectViewingAndModificationPresenter();
+////        ProjectModel currentProject = presenter.getCurrentProject();
+////
+////        // Populate the project details on the UI
+////        populateProjectDetails(currentProject);
 //
-//        // Populate the project details on the UI
-//        populateProjectDetails(currentProject);
-
-        // Retrieve columns from the current project and populate them on the UI
-//        List<Column> columnsInProject = currentProject.getColumns();
-//        populateColumns(columnsInProject);
-
-        // Implement additional methods and event handlers as needed
-    }
+//        // Retrieve columns from the current project and populate them on the UI
+////        List<Column> columnsInProject = currentProject.getColumns();
+////        populateColumns(columnsInProject);
+//
+//        // Implement additional methods and event handlers as needed
+//    }
 
     public void setup(ProjectModel projectModel) {
         populateProjectDetails(projectModel);

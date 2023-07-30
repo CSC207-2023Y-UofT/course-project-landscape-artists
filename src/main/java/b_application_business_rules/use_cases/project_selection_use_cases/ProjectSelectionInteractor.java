@@ -72,5 +72,21 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
     }
+
+    /**
+     * @param projectUUID
+     */
+    @Override
+    public void renameProject(UUID projectUUID) {
+
+    }
+
+    /**
+     * @param projectUUID
+     */
+    @Override
+    public void deleteProject(UUID projectUUID) {
+
+    }
 }
 

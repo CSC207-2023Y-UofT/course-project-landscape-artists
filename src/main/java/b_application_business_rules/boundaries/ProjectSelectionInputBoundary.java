@@ -10,4 +10,8 @@ public interface ProjectSelectionInputBoundary {
     void createProject(String name, String description);
 
     void openProject(UUID currentProjectID);
+
+    void renameProject(UUID projectUUID);
+
+    void deleteProject(UUID projectUUID);
 }
