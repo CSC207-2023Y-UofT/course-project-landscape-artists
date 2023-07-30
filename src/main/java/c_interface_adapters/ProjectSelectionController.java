@@ -135,6 +135,7 @@ public class ProjectSelectionController implements Initializable {
 
             // Add currentProjectButton and menuButton to a container (HBox) for better layout control
             HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+            buttonContainer.setId(project.getID().toString());
             projectsGrid.add(buttonContainer, col, row);
 
             col++;
@@ -147,6 +148,7 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void handleRenameProject(UUID projectUUID) {
+        setPresenter();
         interactor.renameProject(projectUUID);
     }
 

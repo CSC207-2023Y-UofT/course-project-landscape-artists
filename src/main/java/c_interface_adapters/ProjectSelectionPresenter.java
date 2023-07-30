@@ -4,8 +4,12 @@ import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ProjectModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -60,6 +64,47 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * @param projectModel
+     */
+    @Override
+    public void displayRenamedProject(ProjectModel projectModel) {
+        String projectUUID = projectModel.getID().toString();
+        String newProjectName = projectModel.getName();
+
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof GridPane) {
+                    GridPane projectsGrid = (GridPane) node;
+                    for (Node gridChild : projectsGrid.getChildren()) {
+                        if (gridChild instanceof HBox) {
+                            HBox hbox = (HBox) gridChild;
+                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+                            if (hboxId != null && hboxId.equals(projectUUID)) {
+                                // The HBox matches the provided projectUUID
+                                // Now, find the projectNameButton inside the HBox
+                                for (Node hboxChild : hbox.getChildren()) {
+                                    if (hboxChild instanceof Button) {
+                                        Button projectNameButton = (Button) hboxChild;
+                                        // Update the projectNameButton with the new project name
+                                        projectNameButton.setText(newProjectName);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    ;
 
     /**
      * Initializes the scene with the provided stage by loading the FXML file containing the layout
