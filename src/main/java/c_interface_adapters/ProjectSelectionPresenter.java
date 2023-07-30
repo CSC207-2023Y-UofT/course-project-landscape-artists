@@ -13,6 +13,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * The ProjectSelectionPresenter class is responsible for managing the presentation logic for the
@@ -95,6 +96,36 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                     }
                                 }
                                 break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * @param projectModel
+     */
+    @Override
+    public void displayDeletedProject(ProjectModel projectModel) {
+        String projectUUID = projectModel.getID().toString();
+
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof GridPane) {
+                    GridPane projectsGrid = (GridPane) node;
+                    Iterator<Node> iterator = projectsGrid.getChildren().iterator();
+                    while (iterator.hasNext()) {
+                        Node gridChild = iterator.next();
+                        if (gridChild instanceof HBox) {
+                            HBox hbox = (HBox) gridChild;
+                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+                            if (hboxId != null && hboxId.equals(projectUUID)) {
+                                iterator.remove(); // Use the iterator to safely remove the HBox
                             }
                         }
                     }
