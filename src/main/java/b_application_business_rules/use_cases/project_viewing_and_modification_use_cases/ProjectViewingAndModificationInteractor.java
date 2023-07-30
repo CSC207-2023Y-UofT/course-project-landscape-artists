@@ -1,17 +1,14 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
-import a_enterprise_business_rules.entities.Column;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Task;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -52,8 +49,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void deleteColumn(ColumnModel column, UUID columnBoxId) {
-
+    public void deleteColumn(UUID columnBoxId) {
+        // TODO: DO NECESSARY STUFF.
+        ColumnModel c = new ColumnModel("Test", new ArrayList<>(), columnBoxId);
+        presenter.displayDeletedColumn(c);
     }
 
     @Override

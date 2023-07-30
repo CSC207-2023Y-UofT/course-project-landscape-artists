@@ -1,6 +1,7 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Task;
@@ -9,15 +10,19 @@ import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.UUID;
 
 /**
@@ -106,7 +111,34 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     }
 
     @Override
-    public void displayDeletedColumn(UUID columnUIid, ColumnViewModel column) {
+    public void displayDeletedColumn(ColumnModel columnModel) {
+        String columnUUID = columnModel.getID().toString();
+
+        Scene scene = stage.getScene();
+        System.out.println("SCENE "+scene);
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof ScrollPane) {
+                    System.out.println("SCROLLPANE WORKS");
+
+                    HBox columnsContainer = (HBox) node;
+                    Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+                    System.out.println(columnsContainer);
+//                    while (iterator.hasNext()) {
+//                        Node gridChild = iterator.next();
+//                        if (gridChild instanceof HBox) {
+//                            HBox hbox = (HBox) gridChild;
+//                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+//                            if (hboxId != null && hboxId.equals(projectUUID)) {
+//                                iterator.remove(); // Use the iterator to safely remove the HBox
+//                            }
+//                        }
+//                    }
+                    break;
+                }
+            }
+        }
 
     }
 

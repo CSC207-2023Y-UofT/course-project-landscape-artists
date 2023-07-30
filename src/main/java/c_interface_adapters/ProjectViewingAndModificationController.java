@@ -73,7 +73,6 @@ public class ProjectViewingAndModificationController {
     public void setup(ProjectModel projectModel) {
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
-        System.out.println("columnsInProject " + columnsInProject);
         populateColumns(columnsInProject);
     }
 
@@ -87,7 +86,6 @@ public class ProjectViewingAndModificationController {
     private void populateColumns(List<ColumnModel> columns) {
         // Iterate through the list of columns and create a VBox for each column
         for (ColumnModel column : columns) {
-            System.out.println(column);
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setPrefSize(200, 400);
 
@@ -95,6 +93,8 @@ public class ProjectViewingAndModificationController {
             columnBox.setPrefSize(180, 380);
 
             HBox columnNameAndOptions = new HBox();
+
+            columnBox.setId(column.getID().toString());
 
             // Add label for the name of the column
             Label columnLabel = new Label(column.getName());
@@ -108,6 +108,7 @@ public class ProjectViewingAndModificationController {
             renameColumnButton.setOnAction(event -> {renameColumm(column.getID());});
             deleteColumnButton.setOnAction(event -> {deleteColumn(column.getID());});
 
+            columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
 
             // Set the size constraints for columnNameAndOptions
             HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
@@ -135,6 +136,8 @@ public class ProjectViewingAndModificationController {
     }
 
     private void deleteColumn(UUID id) {
+        setPresenter();
+        interactor.deleteColumn(id);
     }
 
     private void renameColumm(UUID id) {
