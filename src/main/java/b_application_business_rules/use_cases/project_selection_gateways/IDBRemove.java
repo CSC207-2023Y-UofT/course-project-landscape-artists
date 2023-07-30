@@ -1,8 +1,8 @@
 package b_application_business_rules.use_cases.project_selection_gateways;
 
-import Entities.Column;
-import Entities.Project;
-import Entities.Task;
+
+
+import a_enterprise_business_rules.entities.*;
 
 import java.util.UUID;
 

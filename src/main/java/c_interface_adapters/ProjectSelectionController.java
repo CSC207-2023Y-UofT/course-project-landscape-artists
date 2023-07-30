@@ -15,10 +15,7 @@ import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.Priority;
@@ -62,34 +59,20 @@ public class ProjectSelectionController implements Initializable {
 //         Gateway gateway = new Gateway();
 //         List<Project> allProjectsInSystem = gateway.getAllProjects();
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        List<Task> TaskList = Arrays.asList(new Task("Task1", "Task1", true,
-                LocalDateTime.now()), new Task("Task2", "Task2", true,
-                LocalDateTime.now()));
-        List<Column> ColumnsList = Arrays.asList(new Column("COLUMN 1",
-                TaskList,
-                "C1 " +
-                "description"), new Column("COLUMN 2", new ArrayList<>(), "C2" +
-                " " +
-                "description"));
-        Project p1 = new Project("Project P1", ColumnsList,
-                "P1 description");
-        Project p2 = new Project("Project P2", new ArrayList<>(),
-                "P2 description");
-        Project p3 = new Project("Project P3", new ArrayList<>(),
-                "P3 description");
-        Project p4 = new Project("Project p4", new ArrayList<>(),
-                "P3 description");
-        Project p5 = new Project("Project p5", new ArrayList<>(),
-                "P3 description");
-        Project p6 = new Project("Project p6", new ArrayList<>(),
-                "P3 description");
-        Project p7 = new Project("Project p7", new ArrayList<>(),
-                "P3 description");
-        Project p8 = new Project("Project p8", new ArrayList<>(),
-                "P3 description");
+        List<Task> TaskList = Arrays.asList(
+                new Task("Task1", UUID.randomUUID(), "Task1", true,
+                LocalDateTime.now()),
+                new Task("Task2", UUID.randomUUID(), "Task2", true,
+                        LocalDateTime.now()));
+        List<Column> ColumnsList = Arrays.asList(
+                new Column("COLUMN 1", TaskList, UUID.randomUUID()),
+                new Column("COLUMN 2", TaskList, UUID.randomUUID())
+        );
+        Project p1 = new Project(
+                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
+                );
 
-        List<Project> allProjectsInSystem = Arrays.asList(p1, p2, p3, p4, p5,
-                p6, p7, p8);
+        List<Project> allProjectsInSystem = Arrays.asList(p1);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
         populateProjectSelectionUI(allProjectsInSystem);

@@ -3,12 +3,16 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 import a_enterprise_business_rules.entities.Column;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Task;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * The ProjectViewingAndModificationInteractor class is responsible for handling interactions
@@ -42,46 +46,64 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         currentProjectRepository.removeCurrentProject();
     }
 
-    /**
-     * Adds a new task to the specified column in the UI. This method is called when the "Add Task"
-     * button is clicked, prompting a popup window for task details.
-     *
-     * @param columnBox      The VBox representing the Column UI where the new task will be added.
-     * @param taskName       The name of the new task.
-     * @param taskDescription The description of the new task.
-     * @param dueDate        The due date and time of the new task.
-     */
     @Override
-    public void addNewTask(VBox columnBox, String taskName, String taskDescription, LocalDateTime dueDate) {
-        // Interact with necessary use cases here. Also interact with the gateway for database access.
-
-        // For testing purposes, create a temporary Task instance with the provided details.
-//        Task newTask = new Task(taskName, taskDescription, false, dueDate);
-//        presenter.displayNewTask(columnBox, newTask);
-    }
-
-    @Override
-    public void deleteColumn(Column column, VBox columnBox) {
+    public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
 
     }
 
     @Override
-    public void renameColumn(Column column, VBox columnBox) {
+    public void deleteColumn(ColumnModel column, UUID columnBoxId) {
 
     }
 
     @Override
-    public void deleteTask(Task task, HBox hbox) {
+    public void renameColumn(ColumnModel column, UUID columnBoxId) {
 
     }
 
     @Override
-    public void changeTaskDetails(Task task, HBox hbox) {
+    public void deleteTask(TaskModel task, UUID TaskUIid) {
 
     }
 
     @Override
-    public void renameTask(Task task, HBox hbox) {
+    public void changeTaskDetails(TaskModel task, UUID TaskUIid) {
 
     }
+
+    @Override
+    public void renameTask(TaskModel task, UUID TaskUIid) {
+
+    }
+
+    @Override
+    public void removeTask(TaskModel task, UUID columnId) {
+
+    }
+
+    @Override
+    public void addTask(TaskModel task, UUID targetColumnId) {
+
+    }
+
+    @Override
+    public void changeTaskDate(TaskModel task, UUID targetColumnId) {
+
+    }
+
+    @Override
+    public void renameProject(ProjectModel project, UUID projectId) {
+
+    }
+
+    @Override
+    public void deleteProject(ProjectModel project, UUID projectId) {
+
+    }
+
+
+
+
+
+
 }
