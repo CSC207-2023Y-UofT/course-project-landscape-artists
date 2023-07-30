@@ -69,9 +69,15 @@ public class ProjectSelectionController implements Initializable {
         ProjectViewModel p1 = new ProjectViewModel(
                 "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
                 );
+        ProjectViewModel p2 = new ProjectViewModel(
+                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
+        );
+        ProjectViewModel p3 = new ProjectViewModel(
+                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
+        );
 
 
-        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1);
+        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
@@ -153,6 +159,7 @@ public class ProjectSelectionController implements Initializable {
     }
 
     private void handleDeleteProject(UUID projectUUID) {
+        setPresenter();
         interactor.deleteProject(projectUUID);
     }
 

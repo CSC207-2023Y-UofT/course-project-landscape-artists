@@ -6,4 +6,6 @@ public interface ProjectSelectionOutputBoundary {
     void displayCurrentProject(ProjectModel projectModel);
 
     void displayRenamedProject(ProjectModel projectModel);
+
+    void displayDeletedProject(ProjectModel projectModel);
 }

@@ -88,7 +88,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      */
     @Override
     public void deleteProject(UUID projectUUID) {
-
+        ProjectModel projectModel = new ProjectModel(
+                "Revised project P1", projectUUID, "", new ArrayList<>());
+        presenter.displayDeletedProject(projectModel);
     }
 }
 
