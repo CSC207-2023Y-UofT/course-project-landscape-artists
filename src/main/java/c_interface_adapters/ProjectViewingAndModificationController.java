@@ -2,9 +2,9 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,14 +60,14 @@ public class ProjectViewingAndModificationController implements Initializable {
         // Create a presenter and get the current project from it
         ProjectViewingAndModificationPresenter presenter =
                 new ProjectViewingAndModificationPresenter();
-        Project currentProject = presenter.getCurrentProject();
+        ProjectModel currentProject = presenter.getCurrentProject();
 
         // Populate the project details on the UI
         populateProjectDetails(currentProject);
 
         // Retrieve columns from the current project and populate them on the UI
-        List<Column> columnsInProject = currentProject.getColumns();
-        populateColumns(columnsInProject);
+//        List<Column> columnsInProject = currentProject.getColumns();
+//        populateColumns(columnsInProject);
 
         // Implement additional methods and event handlers as needed
     }
@@ -302,7 +302,7 @@ public class ProjectViewingAndModificationController implements Initializable {
      *
      * @param project The Project instance representing the current project.
      */
-    private void populateProjectDetails(Project project) {
+    private void populateProjectDetails(ProjectModel project) {
         projectName.setText(project.getName());
     }
 

@@ -1,6 +1,7 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,7 +48,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * The FXML file contains the layout and UI elements for viewing and modifying the project details.
      */
     @Override
-    public void displayCurrentProject() {
+    public void displayCurrentProject(ProjectModel projectModel) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
             stage.setTitle("scene 2");

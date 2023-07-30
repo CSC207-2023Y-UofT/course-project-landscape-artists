@@ -1,14 +1,12 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -40,10 +38,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      *
      * @param project The project selected by the user.
      */
-    @Override
-    public void setCurrentProject(Project project) {
+
+    public void setCurrentProject(ProjectModel project) {
         currentProjectRepository.setCurrentProject(project);
-        presenter.displayCurrentProject();
     }
 
     /**
@@ -58,8 +55,10 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         // Interact with necessary use cases and gateway to create a project.
         // Implementation details depend on the specific requirements and architecture of the application.
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
-
-        IDBInsert w = new DBManagerInsertController();
+        ProjectModel projectModel = new ProjectModel(
+                projectName, UUID.randomUUID(), "", new ArrayList<>());
+        setCurrentProject(projectModel);
+        presenter.displayCurrentProject(projectModel);
     }
 }
 

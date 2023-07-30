@@ -1,12 +1,12 @@
 package b_application_business_rules.use_cases;
 
-import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.entity_models.ProjectModel;
 
 public class CurrentProjectRepository {
     private static final CurrentProjectRepository instance =
             new CurrentProjectRepository();
 
-    private Project currentProject;
+    private ProjectModel currentProject;
 
     public static CurrentProjectRepository getInstance() {
         return instance;
@@ -14,11 +14,11 @@ public class CurrentProjectRepository {
 
     private CurrentProjectRepository(){}
 
-    public Project getCurrentProject() {
+    public ProjectModel getCurrentProject() {
         return currentProject;
     }
 
-    public void setCurrentProject(Project project) {
+    public void setCurrentProject(ProjectModel project) {
         currentProject = project;
     }
 

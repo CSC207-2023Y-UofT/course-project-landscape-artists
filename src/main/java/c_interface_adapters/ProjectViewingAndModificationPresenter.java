@@ -1,8 +1,8 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -71,7 +71,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @return The current Project instance.
      */
     @Override
-    public Project getCurrentProject() {
+    public ProjectModel getCurrentProject() {
         return currentProjectRepository.getCurrentProject();
     }
 

@@ -170,7 +170,6 @@ public class ProjectSelectionController implements Initializable {
             if (project != null) {
                 // Handle the newly created project here
                 createProject(project.getKey(), project.getValue());
-//                openProject(project.getKey());
             }
         });
     }
@@ -197,7 +196,7 @@ public class ProjectSelectionController implements Initializable {
         setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
         Project currentProject = (Project) buttonClicked.getUserData();
-        openProject(currentProject);
+//        openProject(currentProject);
 
 
 //            Stage stage = (Stage) projectsGrid.getScene().getWindow();
@@ -205,15 +204,6 @@ public class ProjectSelectionController implements Initializable {
 //            stage.setTitle("scene 2");
 //            stage.setScene(new Scene(root));
 
-    }
-
-    /**
-     * Opens the selected project in the UI.
-     *
-     * @param project The project to be opened.
-     */
-    private void openProject(Project project) {
-        interactor.setCurrentProject(project);
     }
 
 
