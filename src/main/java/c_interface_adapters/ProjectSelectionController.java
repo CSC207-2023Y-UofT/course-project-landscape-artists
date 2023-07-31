@@ -40,10 +40,11 @@ public class ProjectSelectionController implements Initializable {
     // The interactor for project selection and creation
     private ProjectSelectionInputBoundary interactor;
 
-    // The repository to manage the currently opened project
-    CurrentProjectRepository currentProjectRepository =
-            CurrentProjectRepository.getInstance();
+    // The ProjectSelectionViewModel to pass data to the view.
     ProjectSelectionViewModel projectSelectionViewModel;
+
+    // The ProjectSelectionPresenter
+    ProjectSelectionPresenter presenter;
 
     /**
      * Initializes the controller after its root element has been completely processed.
@@ -85,15 +86,21 @@ public class ProjectSelectionController implements Initializable {
         // This had to be separate since presenter needs to have a stage.
         // This is not accessible upon initialization.
         ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
+                new ProjectSelectionPresenter(this);
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
         ((ProjectSelectionPresenter) presenter).setStage(stage);
         ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);
+        this.presenter = (ProjectSelectionPresenter) presenter;
 
         interactor = new ProjectSelectionInteractor(presenter);
     }
 
-
+    /**
+     * Populates the project selection UI with the list of projects retrieved from the ViewModel.
+     * Projects are displayed in a GridPane, with each project represented by a button.
+     * Each button allows the user to open the corresponding project or perform actions on it,
+     * such as renaming or deleting the project.
+     */
     private void populateProjectSelectionUI() {
         projectsGrid.setHgap(10);
         projectsGrid.setVgap(10);
@@ -148,11 +155,25 @@ public class ProjectSelectionController implements Initializable {
         addCreateProjectButton(col, row);
     }
 
+    /**
+     * Handles the action of renaming a project. When the user selects the "Rename Project" option from
+     * the menu associated with a project button, this method is called. It sets up the presenter and
+     * calls the interactor to initiate the renaming process for the specified project.
+     *
+     * @param projectUUID The UUID of the project to be renamed.
+     */
     private void handleRenameProject(UUID projectUUID) {
         setPresenter();
         interactor.renameProject(projectUUID);
     }
 
+    /**
+     * Handles the action of renaming a project. When the user selects the "Rename Project" option from
+     * the menu associated with a project button, this method is called. It sets up the presenter and
+     * calls the interactor to initiate the renaming process for the specified project.
+     *
+     * @param projectUUID The UUID of the project to be renamed.
+     */
     private void handleDeleteProject(UUID projectUUID) {
         setPresenter();
         interactor.deleteProject(projectUUID);
@@ -237,14 +258,5 @@ public class ProjectSelectionController implements Initializable {
         Button buttonClicked = (Button) actionEvent.getSource();
         UUID currentProjectID = (UUID) buttonClicked.getUserData();
         interactor.openProject(currentProjectID);
-
-
-//            Stage stage = (Stage) projectsGrid.getScene().getWindow();
-//            Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
-//            stage.setTitle("scene 2");
-//            stage.setScene(new Scene(root));
-
     }
-
-
 }
