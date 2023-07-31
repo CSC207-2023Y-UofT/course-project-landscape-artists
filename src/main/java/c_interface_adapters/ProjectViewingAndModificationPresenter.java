@@ -50,6 +50,10 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         stage.setTitle("Current project");
         stage.setScene(scene);
         stage.show();
+    };
+
+    public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
+        this.controller = controller;
     }
 
     /**
@@ -111,7 +115,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         String columnName = column.getName();
 
         Scene scene = stage.getScene();
-        System.out.println("SCENE "+scene);
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
@@ -126,7 +129,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                             Node containerChild = iterator.next();
                             if (containerChild.getId().equals(columnUUID)) {
                                 VBox columnUI = (VBox) (((ScrollPane) containerChild).getContent());
-                                System.out.println("columnUI " + columnUI);
                                 for (Node item: columnUI.getChildren()) {
 
                                     if (item.getId().equals("columnHeader")) {
@@ -197,11 +199,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     }
 
-    @Override
-    public void displayNewColumn(ColumnModel column) {
-        String columnName = column.getName();
-
-    }
 
     /**
      * Displays a new task in the specified VBox columnBox. The new task is represented by an HBox
@@ -234,59 +231,65 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     void populateColumns(List<ColumnModel> columns, ProjectViewingAndModificationController projectViewingAndModificationController) {
         // Iterate through the list of columns and create a VBox for each column
         for (ColumnModel column : columns) {
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setPrefSize(200, 400);
-
-            scrollPane.setId(column.getID().toString());
-
-            VBox columnBox = new VBox();
-            columnBox.setPrefSize(180, 380);
-
-            HBox columnNameAndOptions = new HBox();
-
-            columnBox.setId(column.getID().toString());
-
-            // Add label for the name of the column
-            Label columnLabel = new Label(column.getName());
-            columnLabel.setId("columnTitle");
-
-            // Add menu button and menu items.
-            MenuButton columnOptions = new MenuButton("");
-            MenuItem renameColumnButton = new MenuItem("Rename Column");
-            MenuItem deleteColumnButton = new MenuItem("Delete Column");
-
-            // Add event handler on menu item.
-            renameColumnButton.setOnAction(event -> {
-                projectViewingAndModificationController.renameColumm(column.getID());});
-            deleteColumnButton.setOnAction(event -> {
-                projectViewingAndModificationController.deleteColumn(column.getID());});
-
-            columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
-
-            // Set the size constraints for columnNameAndOptions
-            HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
-            HBox.setHgrow(columnOptions, Priority.NEVER); // Make the button keep its preferred width
-
-            columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
-            columnNameAndOptions.setId("columnHeader");
-
-            // Set the size constraints for columnBox
-            VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
-
-            columnBox.getChildren().add(columnNameAndOptions);
-
-            // Populate tasks for each column and add an "Add Task" button
-            projectViewingAndModificationController.presenter.populateTasksForEachColumn(columnBox, column.getTaskModels(), projectViewingAndModificationController);
-
-            Button addTaskButton = new Button("Add Task");
-            addTaskButton.setOnAction(event -> projectViewingAndModificationController.presenter.handleAddTaskPopup(columnBox, projectViewingAndModificationController));
-
-            columnBox.getChildren().add(addTaskButton);
-            scrollPane.setContent(columnBox);
-
-            // Add the column UI to the container of all columns (HBox)
-            projectViewingAndModificationController.columnsContainer.getChildren().add(scrollPane);
+            displayNewColumn(column);
         }
+    }
+    @Override
+    public void displayNewColumn(ColumnModel column) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setPrefSize(200, 400);
+
+        scrollPane.setId(column.getID().toString());
+
+        VBox columnBox = new VBox();
+        columnBox.setPrefSize(180, 380);
+
+        HBox columnNameAndOptions = new HBox();
+
+        columnBox.setId(column.getID().toString());
+
+        // Add label for the name of the column
+        Label columnLabel = new Label(column.getName());
+        columnLabel.setId("columnTitle");
+
+        // Add menu button and menu items.
+        MenuButton columnOptions = new MenuButton("");
+        MenuItem renameColumnButton = new MenuItem("Rename Column");
+        MenuItem deleteColumnButton = new MenuItem("Delete Column");
+
+        // Add event handler on menu item.
+        renameColumnButton.setOnAction(event -> {
+            controller.renameColumm(column.getID());});
+        deleteColumnButton.setOnAction(event -> {
+            controller.deleteColumn(column.getID());});
+
+        columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
+
+        // Set the size constraints for columnNameAndOptions
+        HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
+        HBox.setHgrow(columnOptions, Priority.NEVER); // Make the button keep its preferred width
+
+        columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
+        columnNameAndOptions.setId("columnHeader");
+
+        // Set the size constraints for columnBox
+        VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
+
+        columnBox.getChildren().add(columnNameAndOptions);
+
+        // Populate tasks for each column and add an "Add Task" button
+        controller.presenter.populateTasksForEachColumn(columnBox, column.getTaskModels(),
+                controller);
+
+        Button addTaskButton = new Button("Add Task");
+        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox,
+                controller));
+
+        columnBox.getChildren().add(addTaskButton);
+        scrollPane.setContent(columnBox);
+
+        // Add the column UI to the container of all columns (HBox)
+        controller.columnsContainer.getChildren().add(scrollPane);
     }
 
     /**

@@ -40,7 +40,7 @@ public class ProjectViewingAndModificationController {
      */
     public ProjectViewingAndModificationController() {
         ProjectViewingAndModificationOutputBoundary presenter =
-                new ProjectViewingAndModificationPresenter();
+                new ProjectViewingAndModificationPresenter(this);
         this.presenter = (ProjectViewingAndModificationPresenter) presenter;
         interactor = new ProjectViewingAndModificationInteractor(presenter);
     }
@@ -113,9 +113,6 @@ public class ProjectViewingAndModificationController {
      */
     @FXML
     private void clickBackButton() {
-        ProjectViewingAndModificationOutputBoundary presenter =
-                new ProjectViewingAndModificationPresenter();
-
         interactor.removeCurrentProject();
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
         ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
@@ -130,7 +127,7 @@ public class ProjectViewingAndModificationController {
         try {
             Scene scene = projectName.getScene();
             ProjectViewingAndModificationOutputBoundary presenter =
-                    new ProjectViewingAndModificationPresenter();
+                    new ProjectViewingAndModificationPresenter(this);
             Stage stage = (Stage) projectName.getScene().getWindow();
 
             ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
