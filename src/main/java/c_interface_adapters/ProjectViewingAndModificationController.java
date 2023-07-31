@@ -89,6 +89,8 @@ public class ProjectViewingAndModificationController {
             ScrollPane scrollPane = new ScrollPane();
             scrollPane.setPrefSize(200, 400);
 
+            scrollPane.setId(column.getID().toString());
+
             VBox columnBox = new VBox();
             columnBox.setPrefSize(180, 380);
 
@@ -98,6 +100,7 @@ public class ProjectViewingAndModificationController {
 
             // Add label for the name of the column
             Label columnLabel = new Label(column.getName());
+            columnLabel.setId("columnTitle");
             
             // Add menu button and menu items.
             MenuButton columnOptions = new MenuButton("");
@@ -115,6 +118,7 @@ public class ProjectViewingAndModificationController {
             HBox.setHgrow(columnOptions, Priority.NEVER); // Make the button keep its preferred width
 
             columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
+            columnNameAndOptions.setId("columnHeader");
 
             // Set the size constraints for columnBox
             VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
@@ -141,6 +145,8 @@ public class ProjectViewingAndModificationController {
     }
 
     private void renameColumm(UUID id) {
+        setPresenter();
+        interactor.renameColumn(id);
     }
 
     

@@ -56,8 +56,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void renameColumn(ColumnModel column, UUID columnBoxId) {
-
+    public void renameColumn(UUID columnBoxId) {
+        // TODO: DO NECESSARY STUFF.
+        ColumnModel c = new ColumnModel("Test", new ArrayList<>(), columnBoxId);
+        presenter.displayRenamedColumn(c);
     }
 
     @Override

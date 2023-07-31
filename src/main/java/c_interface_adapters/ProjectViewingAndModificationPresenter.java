@@ -106,7 +106,43 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     }
 
     @Override
-    public void displayRenamedColumn(UUID columnUIid, ColumnViewModel column) {
+    public void displayRenamedColumn(ColumnModel column) {
+        String columnUUID = column.getID().toString();
+        String columnName = column.getName();
+
+        Scene scene = stage.getScene();
+        System.out.println("SCENE "+scene);
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node.getId().equals("scrollPaneContainer")) {
+
+                    if (node instanceof ScrollPane){
+                        ScrollPane scrollPane = (ScrollPane) node;
+                        HBox columnsContainer = (HBox) scrollPane.getContent();
+
+                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            Node containerChild = iterator.next();
+                            if (containerChild.getId().equals(columnUUID)) {
+                                VBox columnUI = (VBox) (((ScrollPane) containerChild).getContent());
+                                System.out.println("columnUI " + columnUI);
+                                for (Node item: columnUI.getChildren()) {
+
+                                    if (item.getId().equals("columnHeader")) {
+                                        Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
+                                        columnNameUI.setText(columnName);
+                                    };
+                                    break;
+
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
 
     }
 
@@ -119,23 +155,21 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof ScrollPane) {
-                    System.out.println("SCROLLPANE WORKS");
+                if (node.getId().equals("scrollPaneContainer")) {
 
-                    HBox columnsContainer = (HBox) node;
-                    Iterator<Node> iterator = columnsContainer.getChildren().iterator();
-                    System.out.println(columnsContainer);
-//                    while (iterator.hasNext()) {
-//                        Node gridChild = iterator.next();
-//                        if (gridChild instanceof HBox) {
-//                            HBox hbox = (HBox) gridChild;
-//                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
-//                            if (hboxId != null && hboxId.equals(projectUUID)) {
-//                                iterator.remove(); // Use the iterator to safely remove the HBox
-//                            }
-//                        }
-//                    }
-                    break;
+                    if (node instanceof ScrollPane){
+                        ScrollPane scrollPane = (ScrollPane) node;
+                        HBox columnsContainer = (HBox) scrollPane.getContent();
+
+                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            Node containerChild = iterator.next();
+                            if (containerChild.getId().equals(columnUUID)) {
+                                columnsContainer.getChildren().remove(containerChild);
+                            }
+                        }
+                        break;
+                    }
                 }
             }
         }

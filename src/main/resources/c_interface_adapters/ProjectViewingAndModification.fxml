@@ -14,7 +14,7 @@
             <Font size="25.0" />
          </font>
       </Label>
-      <ScrollPane layoutY="72.0" prefHeight="275.0" prefWidth="600.0">
+      <ScrollPane fx:id="scrollPaneContainer" layoutY="72.0" prefHeight="275.0" prefWidth="600.0">
          <content>
             <HBox fx:id="columnsContainer" prefHeight="277.0" prefWidth="599.0" />
          </content></ScrollPane>
