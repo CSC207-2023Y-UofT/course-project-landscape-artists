@@ -28,4 +28,6 @@ public interface ProjectViewingAndModificationOutputBoundary {
     void dislayChangedTaskDate(UUID taskID, TaskViewModel task);
     void displayRenamedProject(ProjectViewModel project, UUID projectId);
     void displayDeleteProject(ProjectViewModel project, UUID projectId);
+
+    void displayNewColumn(ColumnModel c);
 }

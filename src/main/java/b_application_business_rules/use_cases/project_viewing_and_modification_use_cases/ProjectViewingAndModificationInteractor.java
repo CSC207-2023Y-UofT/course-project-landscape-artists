@@ -102,9 +102,15 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     }
 
-
-
-
+    /**
+     *
+     */
+    @Override
+    public void addColumn(String columnName) {
+        // TODO: DO NECESSARY STUFF.
+        ColumnModel c = new ColumnModel(columnName, new ArrayList<>(), UUID.randomUUID());
+        presenter.displayNewColumn(c);
+    }
 
 
 }

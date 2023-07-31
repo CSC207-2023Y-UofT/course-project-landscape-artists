@@ -33,4 +33,5 @@ public interface ProjectViewingAndModificationInputBoundary {
     void renameProject(ProjectModel project, UUID projectId);
     void deleteProject(ProjectModel project, UUID projectId);
 
+    void addColumn(String columnName);
 }
