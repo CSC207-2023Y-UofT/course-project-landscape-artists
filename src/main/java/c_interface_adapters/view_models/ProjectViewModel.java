@@ -245,5 +245,4 @@ public class ProjectViewModel {
         Collections.swap(
                 this.columnViewModels, this.columnViewModels.indexOf(col1), this.columnViewModels.indexOf(col2));
     }
-
 }

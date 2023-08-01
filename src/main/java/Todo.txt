@@ -1,0 +1,129 @@
+1. Database Interface.
+	Specifics:
+		• Create 2 interfaces which extends the DBControllers(I think Wendy implemented this already)
+		• One of the interface is in the 3rd layer.
+			• The interface should have a method that returns all the previously saved Projects in the database (Note:
+			returns a list of ProjectModels)
+			• This method will get used in ProjectSelectionController's initialize();
+		• Other interface is in the 2nd layer.
+		    • This is like the DataAccessInterface in the diagram.
+		    • This interface should support program functionalities (i.e. updateTaskNameInDatabase,
+		    deleteColumnFromDatabase)
+		    • This interface will be used by the Use Case classes to update the database. (i.e. there is an instance of
+		    this interface in each use case so when Use Case is called, database can be updated from Use Case.)
+    Difficulty: 1 (since Alex already has the implementation, it just creates a database)
+
+2. Testing.
+    Specifics:
+        • Create a suite of test cases.
+        • According to Milestone 4 Instructions, it does not need to 100% but "it should be high if you want full marks
+        for testing!)
+Difficulty: 5
+
+3. Drag-and-drop functionality to swap columns.
+    Specifics:
+        • Implement the Drag-and-drop functionality of the tasks.
+        • Edit the method populateTasksForEachColumn() in ProjectViewingAndModificationPresenter so each Task UI is drag
+         and droppable.
+        • Handle the case when the user drops it somewhere invalid (i.e. not a column)
+        • When the drop is valid, call the method in ProjectViewingAndModificationInteractor.
+        • As of now, each Column UI and Task UI has a UUID. So we can assume in the interactor's method, you can have
+        the sourceColumnID, targetColumnID, taskID as parameters.
+Difficulty: 4
+
+4. Design and fixing GUI bugs.
+    Specifics:
+        • Improve the current UI of the app (yayyy colours!).
+        • In the ProjectSelection, make sure that once a Project is deleted, the rest of the Projects move to fill in
+        the space.
+        • Improve the UI of the Task to show whether it is completed or not.
+        • Display error handling messages.
+        • Add a way in the UI to trigger completing a task.
+        • For each task, display the description.
+        • Add CSS for positioning and design.
+Difficulty: 5
+
+5. Rename Project (both in ProjectSelection and ProjectViewingAndModification)
+    Specifics:
+        • In the ProjectSelection view:
+            • Create a new Window to ask the user what the new name should be.
+            • From the Controller class, class the right interactor method. From the interactor method, call the right
+            presenter method.
+            • Implement the controller, interactor and presenter methods required for this functionality.
+        • In the ProjectViewingAndModification view:
+            • Maybe create a new window too to prompt the user what the name should be.
+            • Implement the controller, interactor and presenter methods for this function.
+            • Note that these methods are different from ProjectSelection since they are different "views".
+Difficulty: 3
+
+6. Delete Project (both in ProjectSelction and ProjectViewingAndModification)
+    Specifics:
+        • In the ProjectSelection view:
+            • Create a new Window to ask the user what the new name should be.
+            • From the Controller class, class the right interactor method. From the interactor method, call the right
+            presenter method.
+            • In this view, the presenter is already implemented.
+            • Implement the controller, interactor and presenter methods required for this functionality.
+        • In the ProjectViewingAndModification view:
+            • Implement the controller, interactor and presenter methods for this function.
+            • When the user deletes the opened project, the presenter should switch back to the ProjectSelection view.
+            • Note that these methods are different from ProjectSelection since they are different "views".
+Difficulty: 3
+
+7. Delete Column
+    Specifics:
+        • As of now, the classes in the controller and presenter is already implemented.
+        • Only method to do is the one in interactor. Need to update database and update the Project entity in
+        CurrentProjectRepository.
+        • Please call presenter with a ColumnModel as an argument.
+Difficulty: 2
+
+8. Rename Column
+    Specifics:
+        • As of now, the classes in the controller and presenter is already implemented.
+        • Only method to do is the one in interactor. Need to update database and update the Project entity in
+        CurrentProjectRepository.
+        • Please call presenter with a ColumnModel as an argument.
+Difficulty: 2
+
+9. Complete a Task.
+    Specifics:
+        • Create a method in the controller to handle when a task is completed, then call interactor's method.
+        • The TaskUI holds the UUID of the task so feel free to assume that the interactor gets a TaskUUID as an
+        argument.
+        • Update the database and entity.
+        • Call the method in the presenter to update the UI. Maybe pass a TaskModel as parameter.
+        • Implement the method in Presenter to update the Task in the UI.
+        • Since the Task UI holds the UUID, maybe iterate over all UI elements and find whichever match.
+        • If they match, then update that Task UI.
+Difficulty: 3
+
+10. Automatically update a Task when completed to be in Done (vice versa).
+    Specifics:
+        • This builds on the Complete Task feature. If the Task is completed, automatically put it in the "Done" column.
+        • If a user uncompletes (is dat a word) a task, automatically put back to whichever Column it came from.
+        • Maybe each Task UI in the Done column holds a sourceColumnID in it? That way, when its uncompleted, we have
+        access to where to put back the column.
+Difficulty: 3
+
+11. Change Task Details
+    Specifics:
+        • Maybe create a new window for the user to input their change. Implement this method in the presenter.
+        • With the new window, create an event handler (that is implemented in the Controller) to call the right
+        interactor method. After doing entity & database changes in use case, call right presenter method.
+        • Implement presenter method to show the changes. Ideally, it should receive a TaskModel from the interactor.
+Difficulty: 3
+
+12. Show Project Details
+    Specifics:
+        • Create a method in the controller that handles when show project details is called.
+        • Maybe (not sure) no need to call interactor/use case for this, maybe inside controller method, call presenter
+        method to display the Project details.
+        • The controller has a presenter and the presenter has a controller so it is accessible.
+Difficulty: 2
+
+13. Change Task Details
+    Specifics:
+        • Display a pop-up so the user can input a date.
+        • I think this is very similar to 11.
+Difficulty: 3

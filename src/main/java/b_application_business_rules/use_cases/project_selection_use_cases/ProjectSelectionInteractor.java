@@ -1,14 +1,19 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import c_interface_adapters.view_models.ColumnViewModel;
+import c_interface_adapters.view_models.TaskViewModel;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -40,10 +45,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      *
      * @param project The project selected by the user.
      */
-    @Override
-    public void setCurrentProject(Project project) {
+
+    public void setCurrentProject(ProjectModel project) {
         currentProjectRepository.setCurrentProject(project);
-        presenter.displayCurrentProject();
     }
 
     /**
@@ -58,9 +62,51 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         // Interact with necessary use cases and gateway to create a project.
         // Implementation details depend on the specific requirements and architecture of the application.
         // For example, the interactor might interact with a ProjectRepository to store the project in a database.
+        ProjectModel projectModel = new ProjectModel(
+                projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
+        setCurrentProject(projectModel);
+        presenter.displayCurrentProject(projectModel);
+    }
 
-        IDBInsert w = new DBManagerInsertController();
-        w.DBInsert();
+    @Override
+    public void openProject(UUID currentProjectID) {
+        // TODO: Pass the ProjectModel of the Project with the given UUID to the presenter.
+        // TODO: i.e. presenter.displayCurrentProjct(projectModel);
+
+        // Temporary implementation for testing purposes.
+        List<TaskModel> TaskList = Arrays.asList(
+                new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
+                        LocalDateTime.now()),
+                new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
+                        LocalDateTime.now()));
+        List<ColumnModel> ColumnsList = Arrays.asList(
+                new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
+                new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
+        );
+        ProjectModel projectModel = new ProjectModel(
+                "Project P1", UUID.randomUUID(), "", ColumnsList);
+        setCurrentProject(projectModel);
+        presenter.displayCurrentProject(projectModel);
+    }
+
+    /**
+     * @param projectUUID
+     */
+    @Override
+    public void renameProject(UUID projectUUID) {
+        ProjectModel projectModel = new ProjectModel(
+                "Revised project P1", projectUUID, "", new ArrayList<>());
+        presenter.displayRenamedProject(projectModel);
+    }
+
+    /**
+     * @param projectUUID
+     */
+    @Override
+    public void deleteProject(UUID projectUUID) {
+        ProjectModel projectModel = new ProjectModel(
+                "Revised project P1", projectUUID, "", new ArrayList<>());
+        presenter.displayDeletedProject(projectModel);
     }
 }
 

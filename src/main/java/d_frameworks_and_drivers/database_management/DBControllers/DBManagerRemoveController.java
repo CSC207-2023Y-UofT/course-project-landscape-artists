@@ -5,9 +5,8 @@ import java.io.File;
 import DatabaseInitializer.ColumnDBInitializer;
 import DatabaseInitializer.ProjectDBInitializer;
 import DatabaseInitializer.TaskDBInitializer;
-import Entities.Column;
-import Entities.Project;
-import Entities.Task;
+import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -17,7 +16,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.UUID;
 
-public class DBManagerRemoveController implements IDBRemove{
+public class DBManagerRemoveController implements IDBRemove {
     /**
      * @param project
      */

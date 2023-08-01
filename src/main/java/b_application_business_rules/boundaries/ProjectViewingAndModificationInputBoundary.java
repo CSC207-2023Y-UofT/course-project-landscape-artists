@@ -3,12 +3,11 @@ package b_application_business_rules.boundaries;//this boundary will be the inpu
 //
 //this boundary will be responsable for getting the information from the outer layers and doing the work (running the right use cases, etc.)
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Task;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public interface ProjectViewingAndModificationInputBoundary {
     public void removeCurrentProject();
@@ -17,9 +16,9 @@ public interface ProjectViewingAndModificationInputBoundary {
                     LocalDateTime dueDate);
 
 
-    void deleteColumn(ColumnModel column, UUID columnBoxId);
+    void deleteColumn(UUID columnBoxId);
 
-    void renameColumn(ColumnModel column, UUID columnBoxId);
+    void renameColumn(UUID columnBoxId);
 
     void deleteTask(TaskModel task, UUID TaskUIid);
 
@@ -34,4 +33,5 @@ public interface ProjectViewingAndModificationInputBoundary {
     void renameProject(ProjectModel project, UUID projectId);
     void deleteProject(ProjectModel project, UUID projectId);
 
+    void addColumn(String columnName);
 }

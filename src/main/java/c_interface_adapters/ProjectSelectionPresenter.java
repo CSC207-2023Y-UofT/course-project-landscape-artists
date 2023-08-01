@@ -1,13 +1,21 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
+import c_interface_adapters.view_models.ProjectSelectionViewModel;
+import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 /**
  * The ProjectSelectionPresenter class is responsible for managing the presentation logic for the
@@ -20,6 +28,16 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
     // The JavaFX Stage used for displaying scenes
     private Stage stage;
+    private ProjectSelectionViewModel projectSelectionViewModel;
+
+    /**
+     * Constructs a new ProjectSelectionPresenter object with the provided ProjectSelectionController.
+     *
+     * @param projectSelectionController The ProjectSelectionController associated with this presenter. The controller
+     *                                   handles user interactions and delegates tasks to the presenter for processing
+     *                                   project selection and creation actions.
+     */
+
 
     /**
      * Sets the JavaFX Stage to be used for displaying scenes.
@@ -47,15 +65,104 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * The FXML file contains the layout and UI elements for viewing and modifying the project details.
      */
     @Override
-    public void displayCurrentProject() {
+    public void displayCurrentProject(ProjectModel projectModel) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ProjectViewingAndModification.fxml"));
+            Parent root = fxmlLoader.load();
+            ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
+            openedProjectController.setup(projectModel);
             stage.setTitle("scene 2");
             stage.setScene(new Scene(root));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Displays the renamed project on the user interface. When a project is renamed, this method is called to
+     * update the corresponding HBox in the projectsGrid (GridPane) with the new project name. The HBox represents
+     * the renamed project on the UI.
+     *
+     * @param projectModel The ProjectModel of the renamed project containing the updated project information.
+     */
+    public void displayRenamedProject(ProjectModel projectModel) {
+        // Get the UUID of the renamed project and its new name
+        String projectUUID = projectModel.getID().toString();
+        String newProjectName = projectModel.getName();
+
+        // Get the current scene of the stage
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the GridPane that holds the projects (projectsGrid)
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof GridPane) {
+                    GridPane projectsGrid = (GridPane) node;
+                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
+                    for (Node gridChild : projectsGrid.getChildren()) {
+                        if (gridChild instanceof HBox) {
+                            HBox hbox = (HBox) gridChild;
+                            // Check if the HBox ID matches the UUID of the renamed project
+                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+                            if (hboxId != null && hboxId.equals(projectUUID)) {
+                                // The HBox matches the provided projectUUID
+                                // Now, find the projectNameButton inside the HBox
+                                for (Node hboxChild : hbox.getChildren()) {
+                                    if (hboxChild instanceof Button) {
+                                        Button projectNameButton = (Button) hboxChild;
+
+                                        // Update the projectNameButton with the new project name
+                                        projectNameButton.setText(newProjectName);
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Displays the deleted project on the user interface. When a project is deleted, this method is called to
+     * remove the corresponding HBox from the projectsGrid (GridPane) in the scene. The HBox represents the
+     * deleted project on the UI.
+     *
+     * @param projectModel The ProjectModel of the project to be deleted from the UI.
+     */
+    public void displayDeletedProject(ProjectModel projectModel) {
+        // Get the UUID of the project to be deleted
+        String projectUUID = projectModel.getID().toString();
+
+        // Get the current scene of the stage
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the GridPane that holds the projects (projectsGrid)
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof GridPane) {
+                    GridPane projectsGrid = (GridPane) node;
+                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
+                    Iterator<Node> iterator = projectsGrid.getChildren().iterator();
+                    while (iterator.hasNext()) {
+                        Node gridChild = iterator.next();
+                        if (gridChild instanceof HBox) {
+                            HBox hbox = (HBox) gridChild;
+                            // Check if the HBox ID matches the UUID of the project to be deleted
+                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+                            if (hboxId != null && hboxId.equals(projectUUID)) {
+                                iterator.remove(); // Use the iterator to safely remove the HBox from the projectsGrid
+                            }
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
 
     /**
      * Initializes the scene with the provided stage by loading the FXML file containing the layout
@@ -77,4 +184,16 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     * Sets the ProjectSelectionViewModel for the ProjectSelectionPresenter.
+     *
+     * @param projectSelectionViewModel The ProjectSelectionViewModel containing the data to be displayed in the view.
+     *                                  This ViewModel holds information about the projects to be displayed in the
+     *                                  project selection UI.
+     */
+    public void setViewModel(ProjectSelectionViewModel projectSelectionViewModel) {
+        this.projectSelectionViewModel = projectSelectionViewModel;
+    }
+
 }
