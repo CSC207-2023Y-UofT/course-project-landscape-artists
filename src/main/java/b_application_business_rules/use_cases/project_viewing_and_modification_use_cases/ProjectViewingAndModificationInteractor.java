@@ -50,8 +50,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void deleteColumn(UUID columnBoxId) {
-        // TODO: DO NECESSARY STUFF.
-        ColumnModel c = new ColumnModel("Test", new ArrayList<>(), columnBoxId);
+        // TODO: Interact with the database.
+
+
+        ColumnModel c = new ColumnModel("Deleted column", new ArrayList<>(), columnBoxId);
         presenter.displayDeletedColumn(c);
     }
 

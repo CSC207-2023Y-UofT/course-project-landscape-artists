@@ -139,9 +139,8 @@ public class ProjectViewingAndModificationController {
     }
     @FXML
     private void handleAddColumnClick() {
-        presenter.displayAddColumnPopup();
-        String tempColumnName = "New Column";
-        interactor.addColumn(tempColumnName);
+        String columnName = presenter.displayAddColumnPopup();
+        interactor.addColumn(columnName);
     }
 
 }

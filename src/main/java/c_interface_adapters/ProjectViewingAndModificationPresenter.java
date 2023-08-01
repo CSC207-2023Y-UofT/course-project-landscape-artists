@@ -153,7 +153,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         String columnUUID = columnModel.getID().toString();
 
         Scene scene = stage.getScene();
-        System.out.println("SCENE "+scene);
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
