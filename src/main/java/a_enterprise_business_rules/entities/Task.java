@@ -185,4 +185,25 @@ public class Task {
                 + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
+    /**
+     * Returns whether or not the object and another object are equal.
+     * 
+     * @param o The object to compare to.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Task)) {
+            return false;
+        }
+        Task t = (Task) o;
+        // Checking the equality of each of the attributes
+        boolean allAttributesAreEqual = t.getName().equals(this.getName()) &&
+                t.getID().equals(this.getID()) &&
+                t.getDescription().equals(this.getDescription()) &&
+                t.getCompletionStatus() == this.getCompletionStatus() &&
+                t.getDueDateTime().equals(this.getDueDateTime());
+
+        return allAttributesAreEqual;
+    }
+
 }
