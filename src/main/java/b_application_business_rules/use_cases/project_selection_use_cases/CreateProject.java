@@ -5,12 +5,23 @@ import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.ColumnModel;
 import java.util.List;
+import java.util.UUID;
 
-public abstract class CreateProject implements ProjectSelectionInputBoundary {
+public class CreateProject implements ProjectSelectionInputBoundary {
     private ProjectSelectionOutputBoundary outputBoundary;
 
     public CreateProject(ProjectSelectionOutputBoundary outputBoundary) {
         this.outputBoundary = outputBoundary;
+    }
+
+    @Override
+    public void setCurrentProject(Project project) {
+
+    }
+
+    @Override
+    public void createProject(String name, String description) {
+
     }
 
     @Override
@@ -28,6 +39,31 @@ public abstract class CreateProject implements ProjectSelectionInputBoundary {
             // Notify via the output boundary if cretion failed
             outputBoundary.projectCreationFailed(e.getMessage());
         }
+    }
+
+    @Override
+    public void projectDeletionFailed(String message) {
+
+    }
+
+    @Override
+    public void projectDeleted(UUID projectID) {
+
+    }
+
+    @Override
+    public void openProject(UUID currentProjectID) {
+
+    }
+
+    @Override
+    public void renameProject(UUID projectUUID) {
+
+    }
+
+    @Override
+    public void deleteProject(UUID projectUUID) {
+
     }
 
     // Validate projectModel data

@@ -1,17 +1,53 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 
 import java.util.UUID;
 
-public abstract class DeleteProject implements ProjectSelectionInputBoundary{
+public class DeleteProject implements ProjectSelectionInputBoundary{
     private ProjectSelectionInputBoundary outputBoundary;
     private CurrentProjectRepository projectRepository;
 
     public DeleteProject(ProjectSelectionInputBoundary outputBoundary, CurrentProjectRepository projectRepository){
         this.outputBoundary = outputBoundary;
         this.projectRepository = projectRepository;
+    }
+
+    @Override
+    public void setCurrentProject(Project project) {
+
+    }
+
+    @Override
+    public void createProject(String name, String description) {
+
+    }
+
+    @Override
+    public void createProject(ProjectModel projectModel) {
+
+    }
+
+    @Override
+    public void projectDeletionFailed(String message) {
+
+    }
+
+    @Override
+    public void projectDeleted(UUID projectID) {
+
+    }
+
+    @Override
+    public void openProject(UUID currentProjectID) {
+
+    }
+
+    @Override
+    public void renameProject(UUID projectUUID) {
+
     }
 
     @Override
