@@ -26,7 +26,6 @@ import java.util.Iterator;
 public class ProjectSelectionPresenter extends Application implements ProjectSelectionOutputBoundary {
 
 
-    private final ProjectSelectionController controller;
     // The JavaFX Stage used for displaying scenes
     private Stage stage;
     private ProjectSelectionViewModel projectSelectionViewModel;
@@ -38,9 +37,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      *                                   handles user interactions and delegates tasks to the presenter for processing
      *                                   project selection and creation actions.
      */
-    public ProjectSelectionPresenter(ProjectSelectionController projectSelectionController) {
-        this.controller = projectSelectionController;
-    }
 
 
     /**

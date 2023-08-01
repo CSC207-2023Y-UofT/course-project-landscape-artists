@@ -86,7 +86,7 @@ public class ProjectSelectionController implements Initializable {
         // This had to be separate since presenter needs to have a stage.
         // This is not accessible upon initialization.
         ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter(this);
+                new ProjectSelectionPresenter();
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
         ((ProjectSelectionPresenter) presenter).setStage(stage);
         ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);
