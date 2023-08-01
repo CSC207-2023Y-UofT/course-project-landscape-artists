@@ -17,8 +17,10 @@ import javafx.scene.layout.VBox;
 
 import java.util.UUID;
 
+
+import java.util.UUID;
+
 public interface ProjectViewingAndModificationOutputBoundary {
-    Project getCurrentProject();
 
     void displayAllProjects();
 
@@ -28,11 +30,13 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     void displayRemovedTask(UUID taskID, TaskViewModel task);
 
-    void displayRenamedColumn(UUID columnUIid, ColumnViewModel column);
+    void displayRenamedColumn(ColumnModel columnModel);
 
-    void displayDeletedColumn(UUID columnUIid, ColumnViewModel column);
+    void displayDeletedColumn(ColumnModel columnModel);
     void dislayChangedTaskDetails(UUID taskID, TaskViewModel task);
     void dislayChangedTaskDate(UUID taskID, TaskViewModel task);
     void displayRenamedProject(ProjectViewModel project, UUID projectId);
     void displayDeleteProject(ProjectViewModel project, UUID projectId);
+
+    void displayNewColumn(ColumnModel c);
 }

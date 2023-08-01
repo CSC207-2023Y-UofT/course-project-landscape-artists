@@ -1,5 +1,7 @@
 package c_interface_adapters.view_models;
 
+import c_interface_adapters.ProjectSelectionViewModelIterator;
+
 import java.util.*;
 
 /**
@@ -9,11 +11,12 @@ import java.util.*;
  * 
  * This will be used when selecting a project.
  */
-public class ProjectSelectionViewModel {
+public class ProjectSelectionViewModel implements ProjectSelectionViewModelIterator {
     /**
      * The list of all projects to be viewed during project selection
      */
     private List<ProjectViewModel> allProjectViewModels;
+    private int currentIndex = 0;
 
     /**
      * Constructs a <code>ProjectSelectionViewModel</code> instance
@@ -119,4 +122,17 @@ public class ProjectSelectionViewModel {
                 ProjectViewModelIDToProjectViewModel.get(ID));
     }
 
+
+    @Override
+    public boolean hasNext() {
+        return currentIndex < allProjectViewModels.size();
+    }
+
+    @Override
+    public ProjectViewModel next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        return allProjectViewModels.get(currentIndex++);
+    }
 }

@@ -46,7 +46,7 @@ public class ColumnViewModel {
     /**
      * Creates a new column view model, based on the inputted column.
      * 
-     * @param column The column to view model.
+     * @param columnModel The column to view model.
      */
     public ColumnViewModel(ColumnModel columnModel) {
         this.name = columnModel.getName();
