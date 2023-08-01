@@ -186,7 +186,7 @@ public class Task {
     }
 
     /**
-     * Returns whether or not the object and another object are equal.
+     * Returns whether or not this Task and another object are equal.
      * 
      * @param o The object to compare to.
      */
