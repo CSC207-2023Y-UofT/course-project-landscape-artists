@@ -4,26 +4,29 @@ import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
-import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
+import c_interface_adapters.view_models.ColumnViewModel;
+import c_interface_adapters.view_models.ProjectSelectionViewModel;
+import c_interface_adapters.view_models.ProjectViewModel;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import javafx.util.Pair;
+
+import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * ProjectSelectionController class handles the user interface for project selection and creation.
@@ -37,18 +40,11 @@ public class ProjectSelectionController implements Initializable {
     // The interactor for project selection and creation
     private ProjectSelectionInputBoundary interactor;
 
-    // The repository to manage the currently opened project
-    CurrentProjectRepository currentProjectRepository =
-            CurrentProjectRepository.getInstance();
+    // The ProjectSelectionViewModel to pass data to the view.
+    ProjectSelectionViewModel projectSelectionViewModel;
 
-    /**
-     * Constructor to initialize the ProjectSelectionController.
-     */
-    public ProjectSelectionController() {
-        ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
-        interactor = new ProjectSelectionInteractor(presenter);
-    }
+    // The ProjectSelectionPresenter
+    ProjectSelectionPresenter presenter;
 
     /**
      * Initializes the controller after its root element has been completely processed.
@@ -62,37 +58,25 @@ public class ProjectSelectionController implements Initializable {
 //         Gateway gateway = new Gateway();
 //         List<Project> allProjectsInSystem = gateway.getAllProjects();
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        List<Task> TaskList = Arrays.asList(new Task("Task1", "Task1", true,
-                LocalDateTime.now()), new Task("Task2", "Task2", true,
-                LocalDateTime.now()));
-        List<Column> ColumnsList = Arrays.asList(new Column("COLUMN 1",
-                TaskList,
-                "C1 " +
-                "description"), new Column("COLUMN 2", new ArrayList<>(), "C2" +
-                " " +
-                "description"));
-        Project p1 = new Project("Project P1", ColumnsList,
-                "P1 description");
-        Project p2 = new Project("Project P2", new ArrayList<>(),
-                "P2 description");
-        Project p3 = new Project("Project P3", new ArrayList<>(),
-                "P3 description");
-        Project p4 = new Project("Project p4", new ArrayList<>(),
-                "P3 description");
-        Project p5 = new Project("Project p5", new ArrayList<>(),
-                "P3 description");
-        Project p6 = new Project("Project p6", new ArrayList<>(),
-                "P3 description");
-        Project p7 = new Project("Project p7", new ArrayList<>(),
-                "P3 description");
-        Project p8 = new Project("Project p8", new ArrayList<>(),
-                "P3 description");
+        List<TaskViewModel> TaskList = Arrays.asList(
+                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
+                LocalDateTime.now()),
+                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
+                        LocalDateTime.now()));
+        List<ColumnViewModel> ColumnsList = Arrays.asList(
+                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
+                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
+        );
+        ProjectViewModel p1 = new ProjectViewModel(
+                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
+                );
 
-        List<Project> allProjectsInSystem = Arrays.asList(p1, p2, p3, p4, p5,
-                p6, p7, p8);
+
+        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1);
+        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
-        populateProjectSelectionUI(allProjectsInSystem);
+        populateProjectSelectionUI();
     }
 
     /**
@@ -105,16 +89,19 @@ public class ProjectSelectionController implements Initializable {
                 new ProjectSelectionPresenter();
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
         ((ProjectSelectionPresenter) presenter).setStage(stage);
+        ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);
+        this.presenter = (ProjectSelectionPresenter) presenter;
 
         interactor = new ProjectSelectionInteractor(presenter);
     }
 
     /**
-     * Populates the project selection UI with the given list of projects.
-     *
-     * @param allProjectsInSystem The list of projects to display in the UI.
+     * Populates the project selection UI with the list of projects retrieved from the ViewModel.
+     * Projects are displayed in a GridPane, with each project represented by a button.
+     * Each button allows the user to open the corresponding project or perform actions on it,
+     * such as renaming or deleting the project.
      */
-    private void populateProjectSelectionUI(List<Project> allProjectsInSystem) {
+    private void populateProjectSelectionUI() {
         projectsGrid.setHgap(10);
         projectsGrid.setVgap(10);
 
@@ -128,11 +115,37 @@ public class ProjectSelectionController implements Initializable {
 
         int row = 0;
         int col = 0;
-        for (Project project : allProjectsInSystem) {
+        while (projectSelectionViewModel.hasNext()) {
+            ProjectViewModel project = projectSelectionViewModel.next();
+
+            // Create the currentProjectButton
             Button currentProjectButton = new Button(project.getName());
-            currentProjectButton.setUserData(project);
+            currentProjectButton.setUserData(project.getID());
             currentProjectButton.setOnAction(this::handleChosenProjectButton);
-            projectsGrid.add(currentProjectButton, col, row);
+            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
+            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
+            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
+
+            // Create the MenuButton
+            MenuButton menuButton = new MenuButton("Menu");
+            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+
+            // Add event handlers for the MenuItems
+            renameProjectMenuItem.setOnAction(event -> handleRenameProject(project.getID()));
+            deleteProjectMenuItem.setOnAction(event -> handleDeleteProject(project.getID()));
+
+            // Add MenuItems to the MenuButton
+            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+
+            // Add some spacing between the buttons using padding
+            HBox.setMargin(menuButton, new Insets(0, 0, 0, 5));
+
+            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
+            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+            buttonContainer.setId(project.getID().toString());
+            projectsGrid.add(buttonContainer, col, row);
+
             col++;
             if (col >= 4) {
                 col = 0;
@@ -140,6 +153,30 @@ public class ProjectSelectionController implements Initializable {
             }
         }
         addCreateProjectButton(col, row);
+    }
+
+    /**
+     * Handles the action of renaming a project. When the user selects the "Rename Project" option from
+     * the menu associated with a project button, this method is called. It sets up the presenter and
+     * calls the interactor to initiate the renaming process for the specified project.
+     *
+     * @param projectUUID The UUID of the project to be renamed.
+     */
+    private void handleRenameProject(UUID projectUUID) {
+        setPresenter();
+        interactor.renameProject(projectUUID);
+    }
+
+    /**
+     * Handles the action of renaming a project. When the user selects the "Rename Project" option from
+     * the menu associated with a project button, this method is called. It sets up the presenter and
+     * calls the interactor to initiate the renaming process for the specified project.
+     *
+     * @param projectUUID The UUID of the project to be renamed.
+     */
+    private void handleDeleteProject(UUID projectUUID) {
+        setPresenter();
+        interactor.deleteProject(projectUUID);
     }
 
     /**
@@ -194,7 +231,6 @@ public class ProjectSelectionController implements Initializable {
             if (project != null) {
                 // Handle the newly created project here
                 createProject(project.getKey(), project.getValue());
-//                openProject(project.getKey());
             }
         });
     }
@@ -220,25 +256,7 @@ public class ProjectSelectionController implements Initializable {
     private void handleChosenProjectButton(ActionEvent actionEvent) {
         setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
-        Project currentProject = (Project) buttonClicked.getUserData();
-        openProject(currentProject);
-
-
-//            Stage stage = (Stage) projectsGrid.getScene().getWindow();
-//            Parent root = FXMLLoader.load(getClass().getResource("ProjectViewingAndModification.fxml"));
-//            stage.setTitle("scene 2");
-//            stage.setScene(new Scene(root));
-
+        UUID currentProjectID = (UUID) buttonClicked.getUserData();
+        interactor.openProject(currentProjectID);
     }
-
-    /**
-     * Opens the selected project in the UI.
-     *
-     * @param project The project to be opened.
-     */
-    private void openProject(Project project) {
-        interactor.setCurrentProject(project);
-    }
-
-
 }
