@@ -86,7 +86,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
             stage.setTitle("scene 1");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
+            stage.setScene(scene);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
