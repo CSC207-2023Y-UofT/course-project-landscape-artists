@@ -17,9 +17,9 @@ import java.util.Map;
  */
 
 public class ProjectUUIDArray {
-    public static ArrayList<ArrayList<String>> convertCsvToHashMap() {
+    public static ArrayList<ArrayList<String>> convertCsvToArrayList() {
         String csvFilePath = "DatabaseFiles/Projects/Projects.csv";
-        Map<String, String> csvDataMap = new HashMap<>();
+        ArrayList<ArrayList<String>> csvDataArray = new ArrayList<>();
 
         // Create a CSVParser to read the CSV file
         try (FileReader fileReader = new FileReader(csvFilePath);
@@ -27,15 +27,20 @@ public class ProjectUUIDArray {
 
             // Iterate through each CSV record and map the headers to the HashMap
             for (CSVRecord csvRecord : csvParser) {
-                // Use the first header as the key and the second header as the value in the HashMap
-                String firstHeaderValue = csvRecord.get(0); // Assuming the first header is in the 0th column
-                String secondHeaderValue = csvRecord.get(1); // Assuming the second header is in the 1st column
+                ArrayList<String> projectInfo = new ArrayList<>();
+                //
 
-                csvDataMap.put(firstHeaderValue, secondHeaderValue);
+                projectInfo.add(csvRecord.get(0));
+                projectInfo.add(csvRecord.get(1));
+                projectInfo.add(csvRecord.get(2));
+                projectInfo.add(csvRecord.get(3));
+                projectInfo.add(csvRecord.get(4));// Assuming the second header is in the 1st column
+
+                csvDataArray.add(projectInfo);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return csvDataMap;
+        return csvDataArray;
     }

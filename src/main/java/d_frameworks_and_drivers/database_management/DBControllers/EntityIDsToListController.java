@@ -48,9 +48,9 @@ public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInt
     }
 
     public List<ProjectModel> IDstoProjectModelList() {
-        List<ProjectModel> projectModels = {};
+        List<ProjectModel> projectModels;
 
-        Map<String, String> UUIDList = ProjectUUIDArray.convertCsvToHashMap();
+        ArrayList<ArrayList<String>> UUIDList = ProjectUUIDArray.convertCsvToArrayList();
 
         return projectModels;
     }
