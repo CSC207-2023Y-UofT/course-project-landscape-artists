@@ -23,7 +23,7 @@ public interface DataAccessInterface {
 
     }
 
-    default void deleteTask(UUID taskID, TaskModel deletedTask) {
+    default void removeTask(UUID taskID, TaskModel deletedTask) {
 
     }
 

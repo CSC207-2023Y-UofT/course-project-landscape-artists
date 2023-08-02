@@ -68,6 +68,21 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
+    public void deleteTask(TaskModel task, UUID TaskUIid) {
+        DeleteTask useCase = new DeleteTask(task, TaskUIid);
+        try {
+            useCase.deleteTask();
+            TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
+                    task.getCompletionStatus(), task.getDueDateTime());
+            presenter.displayRemovedTask(TaskUIid, newTask);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
     public void deleteColumn(UUID columnBoxId) {
         // TODO: DO NECESSARY STUFF.
         ColumnModel c = new ColumnModel("Test", new ArrayList<>(), columnBoxId);
@@ -81,10 +96,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayRenamedColumn(c);
     }
 
-    @Override
-    public void deleteTask(TaskModel task, UUID TaskUIid) {
-
-    }
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to make

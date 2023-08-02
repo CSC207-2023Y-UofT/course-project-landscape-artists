@@ -21,7 +21,7 @@ public class AddTask implements DataAccessInterface {
     }
 
     /**
-     * This method makes creates the task and calls the method that will add the task to the database
+     * This method creates the task and calls the method that will add the task to the database
      * NEED TO IMPLEMENT ADDING TASK TO THE LIST OF TASKS IN THE COLUMN ENTITY
      */
     public void addTask() {
