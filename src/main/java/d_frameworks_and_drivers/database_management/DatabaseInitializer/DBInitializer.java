@@ -1,4 +1,4 @@
-package DatabaseInitializer;
+package d_frameworks_and_drivers.database_management.DatabaseInitializer;
 /*
 READ BEFORE CALLING METHODS
 This file is intended to initialize the Database CSV files and the main method should only be called/run ONCE
