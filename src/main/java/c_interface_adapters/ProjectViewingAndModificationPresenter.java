@@ -7,18 +7,21 @@ import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -34,6 +37,9 @@ import java.util.UUID;
 public class ProjectViewingAndModificationPresenter extends Application implements ProjectViewingAndModificationOutputBoundary {
     private Stage stage;
     private ProjectViewingAndModificationController controller;
+
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
     /**
      * Initializes the JavaFX application and sets up the initial scene to display the current
@@ -89,8 +95,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
             stage.setTitle("scene 1");
             stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -303,10 +309,12 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      */
     void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
         // Iterate through the list of tasks and create an HBox for each task
-        for (TaskModel task : tasks) {
-            HBox hbox = new HBox();
+        // Create a card (rectangle) to enclose the task
 
-            Label taskName = new Label(task.getName());
+        for (TaskModel task : tasks) {
+            // Create the card content
+
+            HBox hbox = createKanbanCard(new HBox(), task);
 //            Button taskOptionsButton = new Button("...");
 
             // Create menu button and its options.
@@ -339,7 +347,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
             });
 
-            hbox.getChildren().addAll(taskName, taskOptionsButton);
+            hbox.getChildren().addAll(taskOptionsButton);
+            columnBox.setSpacing(10);
             columnBox.getChildren().add(hbox);
         }
     }
@@ -443,5 +452,41 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Return the user input (column name)
         return nameTextField.getText();
+    }
+    public static HBox createKanbanCard(HBox originalCard, TaskModel taskModel) {
+        // Create the card content
+        Rectangle cardBackground = new Rectangle(100, 50, Color.LIGHTBLUE);
+        Text textContent = new Text(taskModel.getName());
+        StackPane cardContent = new StackPane(cardBackground, textContent);
+        cardBackground.setArcHeight(10.0d);
+        cardBackground.setArcWidth(10.0d);
+
+        // Create the card (HBox) to hold the content
+        HBox card = new HBox(cardContent);
+        card.getStyleClass().add("kanban-card");
+        // Set mouse event handlers for dragging the card
+        cardBackground.setStyle("-fx-border-color: black; -fx-border-width: 2px;"); // Add a border for better visibility
+
+        // Set the style when the cursor enters the HBox
+        card.setOnMouseEntered(e -> {
+            cardBackground.setStyle("-fx-background-color: darkblue; -fx-border-color: lightblue; -fx-border-width: 3px;");
+        });
+
+        // Set the style when the cursor exits the HBox
+        card.setOnMouseExited(e -> {
+            cardBackground.setStyle("-fx-background-color: transparent; -fx-border-color: black; -fx-border-width: 2px;");
+        });
+
+        return card;
+    }
+
+    private static void handleMousePressed(MouseEvent event, HBox card) {
+        xOffset = event.getSceneX() - card.getLayoutX();
+        yOffset = event.getSceneY() - card.getLayoutY();
+    }
+
+    private static void handleMouseDragged(MouseEvent event, HBox card) {
+        card.setLayoutX(event.getSceneX() - xOffset);
+        card.setLayoutY(event.getSceneY() - yOffset);
     }
 }
