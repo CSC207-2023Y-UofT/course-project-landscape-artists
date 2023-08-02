@@ -11,6 +11,10 @@ import java.util.UUID;
  */
 
 public interface DataAccessInterface {
+    default void addNewTask(TaskModel updatedTask) {
+
+    }
+
     default void updateTaskName(UUID taskID, TaskModel updatedTask) {
 
     }

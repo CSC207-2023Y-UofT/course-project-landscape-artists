@@ -10,7 +10,7 @@ import java.util.UUID;
  * A Column factory to create ColumnModels,
  * Each ColumnModel has a name, list of TaskModels and ID
  */
-public class ColumnFactory {
+public class ColumnModelFactory {
 
     /**
      * Creates a ColumnModel

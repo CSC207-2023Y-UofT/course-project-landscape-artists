@@ -4,14 +4,13 @@ import b_application_business_rules.entity_models.*;
 
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 /**
  * A Task factory to create TaskModels,
  * Each TaskModel has a name, ID, description, completion status and date
  */
-public class TaskFactory {
+public class TaskModelFactory {
 
     /**
      * Creates a TaskModel

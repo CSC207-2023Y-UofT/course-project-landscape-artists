@@ -6,9 +6,6 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Project;
-import c_interface_adapters.view_models.ColumnViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

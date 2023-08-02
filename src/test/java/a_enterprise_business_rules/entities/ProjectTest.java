@@ -3,6 +3,8 @@ package a_enterprise_business_rules.entities;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import a_enterprise_business_rules.entities.entities.Column;
+import a_enterprise_business_rules.entities.entities.Project;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

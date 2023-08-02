@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import a_enterprise_business_rules.entities.entities.Column;
+import a_enterprise_business_rules.entities.entities.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

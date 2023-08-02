@@ -2,7 +2,8 @@ package b_application_business_rules.entity_models;
 
 import java.util.*;
 
-import a_enterprise_business_rules.entities.*;
+import a_enterprise_business_rules.entities.entities.Column;
+import a_enterprise_business_rules.entities.entities.Task;
 
 /**
  * A column model within the productivity application.

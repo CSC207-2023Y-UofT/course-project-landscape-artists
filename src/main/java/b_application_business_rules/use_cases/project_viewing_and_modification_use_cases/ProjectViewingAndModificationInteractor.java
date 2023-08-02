@@ -5,6 +5,7 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
@@ -53,9 +54,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         //Generate random UUID for task
         UUID taskID = UUID.randomUUID();
         //Create TaskModel with given info
-        TaskModel t = new TaskModel(taskName, taskID, taskDescription, false, dueDate);
-        //Save the new task into the database
-        insertGateway.DBInsert(t);
+        TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
+        //initialize use case class
+        AddTask useCase = new AddTask(newTaskModel);
+        //call use case class to create a new task and save it to the database
+        useCase.addTask();
 
     }
 

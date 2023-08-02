@@ -1,9 +1,7 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 // Implement models instead of entities
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.*;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
 

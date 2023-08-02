@@ -1,10 +1,9 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
-import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.entities.Project;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.ColumnModel;
-import java.util.List;
+
 import java.util.UUID;
 
 public class CreateProject implements ProjectSelectionInputBoundary {

@@ -1,5 +1,5 @@
 
-package a_enterprise_business_rules.entities;
+package a_enterprise_business_rules.entities.entities;
 
 import java.util.*;
 

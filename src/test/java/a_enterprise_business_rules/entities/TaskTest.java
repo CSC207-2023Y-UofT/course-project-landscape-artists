@@ -3,6 +3,7 @@ package a_enterprise_business_rules.entities;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import a_enterprise_business_rules.entities.entities.Task;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
