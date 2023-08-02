@@ -4,12 +4,10 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
-import d_frameworks_and_drivers.database_management.ProjectUUIDArray;
 
-import c_interface_adapters.DBAdapterInterface;
 
 import java.util.*;
-public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInterface {
+public class EntityIDsToListController implements IEntityIDsToList {
     /**
      * This returns a concatenated string of column IDs
      * which makes it able to be put into the Database
@@ -42,25 +40,7 @@ public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInt
         return taskModelListString;
     }
 
-    public List<ProjectModel> IDstoProjectModelList() {
-        List<ProjectModel> projectModels;
 
-        ArrayList<ArrayList<String>> projectListString = ProjectUUIDArray.convertCsvToArrayList();
-        for (ArrayList<String> projectList: projectListString) {
-            UUID projectID = UUID.fromString(projectList.get(0));
-            String projectName = projectList.get(1);
-            String projectDescription = projectList.get(2);
-            //Temporary Array of string to hold the column IDs
-            String[] tempColumnID = projectList.get(3).split(",");
-
-            for (String temp : tempColumnID) {
-                //Searching for the
-
-
-            }
-        }
-        return projectModels;
-    }
 
 }
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class ColumnFactory {
 
-    public ColumnModel create(String name, List<TaskModel> taskModels, UUID ID) {
+    public static ColumnModel create(String name, List<TaskModel> taskModels, UUID ID) {
         return new ColumnModel(name, taskModels, ID);
     }
 }

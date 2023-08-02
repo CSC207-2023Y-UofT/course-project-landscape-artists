@@ -18,7 +18,7 @@ import java.util.UUID;
 public class DBManagerSearchController implements IDBSearch {
 
     /**
-     * This method searches Column.csv for the entry with the UUID matching the id parameter
+     * Searches Column.csv for the entry with the UUID matching the id parameter
      * then reads that line and converts it to an arraylist, with first element containing UUID,
      * second element containing name and third containing list of task UUIDs
      * @param id
@@ -36,7 +36,7 @@ public class DBManagerSearchController implements IDBSearch {
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
-                String firstHeaderValue = csvRecord.get(0); // Assuming the first header is in the 0th column
+                String firstHeaderValue = csvRecord.get(0);
                 // Once matching ID is found, column attributes are saved and exit loop
                 if (firstHeaderValue == id) {
                     columnInfo.add(csvRecord.get(0));
@@ -71,7 +71,7 @@ public class DBManagerSearchController implements IDBSearch {
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
-                String firstHeaderValue = csvRecord.get(0); // Assuming the first header is in the 0th column
+                String firstHeaderValue = csvRecord.get(0);
                 // Once matching ID is found, column attributes are saved and exit loop
                 if (firstHeaderValue == id) {
                     taskInfo.add(csvRecord.get(0));

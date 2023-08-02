@@ -32,7 +32,7 @@ public class ProjectUUIDArray {
                 projectInfo.add(csvRecord.get(1));
                 projectInfo.add(csvRecord.get(2));
                 projectInfo.add(csvRecord.get(3));
-                projectInfo.add(csvRecord.get(4));// Assuming the second header is in the 1st column
+                projectInfo.add(csvRecord.get(4));
 
                 csvDataArray.add(projectInfo);
             }

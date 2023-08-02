@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public class ProjectFactory {
 
-    public ProjectModel create(String name, UUID id, String description, List<ColumnModel> columnModels) {
+    public static ProjectModel create(String name, UUID id, String description, List<ColumnModel> columnModels) {
         return new ProjectModel(name, id, description, columnModels);
 }
 }

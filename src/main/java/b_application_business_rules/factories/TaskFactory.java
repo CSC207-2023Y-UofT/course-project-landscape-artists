@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class TaskFactory {
 
-    public TaskModel create(String name, UUID ID, String description, boolean isCompleted, LocalDateTime dueDateTime) {
+    public static TaskModel create(String name, UUID ID, String description, boolean isCompleted, LocalDateTime dueDateTime) {
         return new TaskModel(name, ID, description, isCompleted, dueDateTime);
     }
 }
