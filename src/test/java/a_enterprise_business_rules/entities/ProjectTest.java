@@ -6,15 +6,24 @@ import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * A class to test the Project entity.
+ */
 class ProjectTest {
 
     @Test
+    /**
+     * Tests the getName method
+     */
     void getName() {
         Project p = new Project("test proj", null, null, null);
         Assertions.assertEquals(p.getName(), "test proj");
     }
 
     @Test
+    /**
+     * Tests the setName method
+     */
     void setName() {
         Project p = new Project("test proj", null, null, null);
         p.setName("new test proj");
@@ -22,6 +31,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests the getID method
+     */
     void getID() {
         UUID u = UUID.randomUUID();
         Project p = new Project(null, u, null, null);
@@ -29,6 +41,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests the setID method
+     */
     void setID() {
         UUID u = UUID.randomUUID();
         Project p = new Project(null, UUID.randomUUID(), null, null);
@@ -37,12 +52,18 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests the getDescription method
+     */
     void getDescription() {
         Project p = new Project(null, null, "skippidybopboombadabada", null);
         Assertions.assertEquals(p.getDescription(), "skippidybopboombadabada");
     }
 
     @Test
+    /**
+     * Tests the setDescription method
+     */
     void setDescription() {
         Project p = new Project(null, null, "skippidybopboombadabada", null);
         p.setDescription("LALALALALAskippidybopboombadabada");
@@ -50,6 +71,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests getColumns
+     */
     void getColumns() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -70,6 +94,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests setColumns
+     */
     void setColumns() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -91,6 +118,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests addColumn
+     */
     void addColumn() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -114,6 +144,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests addColumnToPosition
+     */
     void addColumnToPosition() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -137,6 +170,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests testMoveColumnToPosition
+     */
     void testMoveColumnToPosition() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -159,6 +195,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests removeColumn
+     */
     void removeColumn() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -176,6 +215,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests swapColumnOrder
+     */
     void swapColumnOrder() {
         Column c1 = new Column(null, null, null);
         Column c2 = new Column(null, null, null);
@@ -194,6 +236,9 @@ class ProjectTest {
     }
 
     @Test
+    /**
+     * Tests equals
+     */
     void testEquals() {
         Project p1 = new Project(null, null, null, null);
         Project p2 = new Project(null, null, null, null);

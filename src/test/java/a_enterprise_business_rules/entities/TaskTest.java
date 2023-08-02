@@ -6,9 +6,15 @@ import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * A class to test the Tasks entity.
+ */
 class TaskTest {
 
     @Test
+    /**
+     * Tests getName
+     */
     void getName() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -16,6 +22,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests setName
+     */
     void setName() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -24,6 +33,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests getID
+     */
     void getID() {
         UUID taskUUID = UUID.randomUUID();
         Task t = new Task("test task name", taskUUID, "test task description", false,
@@ -32,6 +44,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests setID
+     */
     void setID() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -40,6 +55,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests getDescription
+     */
     void getDescription() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -47,6 +65,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests setDescription
+     */
     void setDescription() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -55,6 +76,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests getCompletionStatus
+     */
     void getCompletionStatus() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -62,6 +86,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests completeTask
+     */
     void completeTask() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -75,6 +102,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests incompleteTask
+     */
     void incompleteTask() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -88,6 +118,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Test negateCompletionStatus
+     */
     void negateCompletionStatus() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -101,6 +134,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests getDueDateTime
+     */
     void getDueDateTime() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -108,6 +144,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests setDueDateTime
+     */
     void setDueDateTime() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -116,6 +155,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests toString
+     */
     void testToString() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
@@ -125,6 +167,9 @@ class TaskTest {
     }
 
     @Test
+    /**
+     * Tests equals
+     */
     void testEquals() {
         Task t1 = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));

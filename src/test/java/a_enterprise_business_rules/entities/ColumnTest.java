@@ -8,9 +8,15 @@ import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+/**
+ * A class to test the Column entity.
+ */
 class ColumnTest {
 
     @Test
+    /**
+     * Tests getName
+     */
     void getName() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         sampleTasks1.add(new Task("t1 name", UUID.randomUUID(), "t1 desc", false,
@@ -25,6 +31,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests setName
+     */
     void setName() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         sampleTasks1.add(new Task("t1 name", UUID.randomUUID(), "t1 desc", false,
@@ -41,6 +50,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests getID
+     */
     void getID() {
         UUID currID = UUID.randomUUID();
         List<Task> sampleTasks1 = new ArrayList<Task>();
@@ -56,6 +68,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests setID
+     */
     void setID() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         sampleTasks1.add(new Task("t1 name", UUID.randomUUID(), "t1 desc", false,
@@ -72,6 +87,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests getTasks
+     */
     void getTasks() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -97,6 +115,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests setTasks
+     */
     void setTasks() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -135,6 +156,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests addTask
+     */
     void addTask() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -170,6 +194,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests addTaskToPosition
+     */
     void addTaskToPosition() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -205,6 +232,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests removeTask
+     */
     void removeTask() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -231,6 +261,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests swapTaskOrder
+     */
     void swapTaskOrder() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -258,6 +291,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests moveTaskToPosition
+     */
     void moveTaskToPosition() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         UUID u1 = UUID.randomUUID();
@@ -288,6 +324,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Test toString
+     */
     void testToString() {
         List<Task> sampleTasks1 = new ArrayList<Task>();
         sampleTasks1.add(new Task("t1 name", UUID.randomUUID(), "t1 desc", false,
@@ -307,6 +346,9 @@ class ColumnTest {
     }
 
     @Test
+    /**
+     * Tests equals
+     */
     void testEquals() {
         UUID u1 = UUID.randomUUID();
         UUID u2 = UUID.randomUUID();
