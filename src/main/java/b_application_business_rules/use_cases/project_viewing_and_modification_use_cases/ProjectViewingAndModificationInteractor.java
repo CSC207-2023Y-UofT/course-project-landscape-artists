@@ -7,8 +7,6 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
@@ -28,16 +26,14 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The presenter holds the reference to the ProjectViewingAndModificationOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
     private ProjectViewingAndModificationOutputBoundary presenter;
-    private IDBInsert insertGateway = new DBManagerInsertController();
 
     /**
      * Initializes the ProjectViewingAndModificationInteractor with the provided presenter.
      *
      * @param presenter The presenter instance responsible for displaying the results of the use cases.
      */
-    public ProjectViewingAndModificationInteractor(ProjectViewingAndModificationOutputBoundary presenter, IDBInsert insertGateway) {
+    public ProjectViewingAndModificationInteractor(ProjectViewingAndModificationOutputBoundary presenter) {
         this.presenter = presenter;
-        this.insertGateway = insertGateway;
     }
 
     /**

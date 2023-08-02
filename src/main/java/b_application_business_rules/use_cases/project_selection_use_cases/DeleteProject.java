@@ -16,7 +16,7 @@ public class DeleteProject implements ProjectSelectionInputBoundary{
     }
 
     @Override
-    public void setCurrentProject(Project project) {
+    public void setCurrentProject(ProjectModel project) {
 
     }
 
