@@ -15,6 +15,10 @@ import java.util.ArrayList;
  */
 
 public class ProjectUUIDArray {
+    /**
+     * Converts the csv format of projects to a 2D arraylist
+     * @return a 2D arraylist
+     */
     public static ArrayList<ArrayList<String>> convertCsvToArrayList() {
         String csvFilePath = "DatabaseFiles/Projects/Projects.csv";
         ArrayList<ArrayList<String>> csvDataArray = new ArrayList<>();
@@ -23,17 +27,18 @@ public class ProjectUUIDArray {
         try (FileReader fileReader = new FileReader(csvFilePath);
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
 
-            // Iterate through each CSV record and map the headers to the HashMap
+            // Iterate through each CSV line
             for (CSVRecord csvRecord : csvParser) {
                 ArrayList<String> projectInfo = new ArrayList<>();
-                //
 
+                //Add in the Project attributes a new Arraylist
                 projectInfo.add(csvRecord.get(0));
                 projectInfo.add(csvRecord.get(1));
                 projectInfo.add(csvRecord.get(2));
                 projectInfo.add(csvRecord.get(3));
                 projectInfo.add(csvRecord.get(4));
 
+                //Place the newly made arrayList into another ArrayList --> 2D arraylist
                 csvDataArray.add(projectInfo);
             }
         } catch (Exception e) {
