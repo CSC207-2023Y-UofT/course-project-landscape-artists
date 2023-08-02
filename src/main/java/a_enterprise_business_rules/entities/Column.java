@@ -219,4 +219,23 @@ public class Column {
     // return this.ID;
     // }
 
+    /**
+     * Returns whether or not this Column and another object are equal.
+     * 
+     * @param o The object to compare to.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Column)) {
+            return false;
+        }
+        Column c = (Column) o;
+        // Checking the equality of each of the attributes
+        boolean allAttributesAreEqual = c.getName().equals(this.getName()) &&
+                c.getID().equals(this.getID()) &&
+                c.getTasks().equals(this.getTasks());
+
+        return allAttributesAreEqual;
+    }
+
 }
