@@ -49,6 +49,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         currentProjectRepository.removeCurrentProject();
     }
 
+    /**
+     * Creates a new task model. Calls the use case to add the task to entities and database
+     * then calls the presenter to display the updated changes.
+     * DOES NOT UPDATE THE ENTITY THAT THE TASK IS IN YET
+     */
     @Override
     public void addNewTask(String idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
         //Generate random UUID for task
