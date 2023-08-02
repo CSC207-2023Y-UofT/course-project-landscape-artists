@@ -1,6 +1,9 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
 import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
@@ -15,11 +18,11 @@ public class EntityIDsToListController implements IEntityIDsToList {
      * @param project
      * @return String of Concatenated Column IDs
      */
-    public String EntityIDsToList(Project project) {
-        List<Column> columnList = project.getColumns();
+    public String EntityIDsToList(ProjectModel project) {
+        List<ColumnModel> columnList = project.getColumnModels();
         String columnListString = "";
 
-        for ( Column col: columnList ) {
+        for ( ColumnModel col: columnList ) {
             columnListString.join(", ", col.getID().toString());
         }
         return columnListString;
@@ -31,11 +34,11 @@ public class EntityIDsToListController implements IEntityIDsToList {
      * @param columns
      * @return String of Concatenated Task IDs
      */
-    public String EntityIDsToList(Column columns) {
-        List<Task> taskList = columns.getTasks();
+    public String EntityIDsToList(ColumnModel columns) {
+        List<TaskModel> taskList = columns.getTaskModels();
         String taskListString = "";
 
-        for ( Task task: taskList ) {
+        for ( TaskModel task: taskList ) {
             taskListString.join(", ", task.getID().toString());
         }
         return taskListString;

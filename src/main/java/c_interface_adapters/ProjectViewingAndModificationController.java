@@ -5,6 +5,7 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class ProjectViewingAndModificationController {
     HBox columnsContainer;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
-
+    IDBInsert insertGateway;
     /**
      * Constructor for the ProjectViewingAndModificationController class. Initializes the
      * interactor with a presenter and sets it as the interactor for the controller.
@@ -42,7 +43,7 @@ public class ProjectViewingAndModificationController {
         ProjectViewingAndModificationOutputBoundary presenter =
                 new ProjectViewingAndModificationPresenter(this);
         this.presenter = (ProjectViewingAndModificationPresenter) presenter;
-        interactor = new ProjectViewingAndModificationInteractor(presenter);
+        interactor = new ProjectViewingAndModificationInteractor(presenter, insertGateway);
     }
 
 
@@ -57,9 +58,28 @@ public class ProjectViewingAndModificationController {
         interactor.deleteColumn(id);
     }
 
-    void renameColumm(UUID id) {
+    void renameColumn(UUID id) {
         setPresenter();
         interactor.renameColumn(id);
+    }
+
+    void addNewTask(String columnID, TextField nameTextField, TextArea descriptionTextArea, DatePicker dueDatePicker) {
+        // if the user does not input any task name, then it will automatically create a task whose name is New Task
+        String name;
+        if (nameTextField.getText().equals("")){
+             name = "New Task";
+        }
+        else {
+            name = nameTextField.getText();
+        }
+
+        // if the user does not input any description, description will be an empty string
+        String description = descriptionTextArea.getText();
+
+        // if the user doesn't input a due date, 'dueDate' will reference null
+        LocalDateTime dueDate = dueDatePicker.getValue().atStartOfDay();
+
+        interactor.addNewTask(columnID, name, description, dueDate);
     }
 
 
@@ -132,7 +152,7 @@ public class ProjectViewingAndModificationController {
 
             ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
 
-            interactor = new ProjectViewingAndModificationInteractor(presenter);
+            interactor = new ProjectViewingAndModificationInteractor(presenter, insertGateway);
         } catch (Error e) {
             System.out.println(e);
         }

@@ -3,7 +3,6 @@ package c_interface_adapters;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
-import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
@@ -208,17 +207,17 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @param newTask   The new Task instance to be displayed.
      */
 
-    public void displayNewTask(VBox columnBox, Task newTask) {
-        HBox hbox = new HBox();
-        Label taskName = new Label(newTask.getName());
-        Button taskOptionsButton = new Button("...");
-        taskOptionsButton.setStyle("-fx-font-size: 8px;");
-        hbox.getChildren().add(taskName);
-        hbox.getChildren().add(taskOptionsButton);
-
-        int buttonIndex = columnBox.getChildren().size() - 1;
-        columnBox.getChildren().add(buttonIndex, hbox);
-    }
+//    public void displayNewTask(VBox columnBox, Task newTask) {
+//        HBox hbox = new HBox();
+//        Label taskName = new Label(newTask.getName());
+//        Button taskOptionsButton = new Button("...");
+//        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+//        hbox.getChildren().add(taskName);
+//        hbox.getChildren().add(taskOptionsButton);
+//
+//        int buttonIndex = columnBox.getChildren().size() - 1;
+//        columnBox.getChildren().add(buttonIndex, hbox);
+//    }
 
     /**
      * Populates the UI with the list of columns associated with the current project. For each
@@ -259,7 +258,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Add event handler on menu item.
         renameColumnButton.setOnAction(event -> {
-            controller.renameColumm(column.getID());});
+            controller.renameColumn(column.getID());});
         deleteColumnButton.setOnAction(event -> {
             controller.deleteColumn(column.getID());});
 
@@ -372,9 +371,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         Label nameLabel = new Label("Task Name:");
         TextField nameTextField = new TextField();
 
-        Label detailsLabel = new Label("Task Details:");
-        TextArea detailsTextArea = new TextArea();
-        detailsTextArea.setPrefRowCount(3);
+        Label descriptionLabel = new Label("Task Details:");
+        TextArea descriptionTextArea = new TextArea();
+        descriptionTextArea.setPrefRowCount(3);
 
         Label dueDateLabel = new Label("Task Due Date:");
         DatePicker dueDatePicker = new DatePicker();
@@ -383,8 +382,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         // which position in the gridPane (i.e. column 0, row 0 is top left).
         gridPane.add(nameLabel, 0, 0);
         gridPane.add(nameTextField, 1, 0);
-        gridPane.add(detailsLabel, 0, 1);
-        gridPane.add(detailsTextArea, 1, 1);
+        gridPane.add(descriptionLabel, 0, 1);
+        gridPane.add(descriptionTextArea, 1, 1);
         gridPane.add(dueDateLabel, 0, 2);
         gridPane.add(dueDatePicker, 1, 2);
 
@@ -396,9 +395,12 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Close the popup when "Submit" button is pressed
             popupStage.close();
 
+            //Call the controller to process the user input
+            controller.addNewTask(columnBox.getId(), nameTextField, descriptionTextArea, dueDatePicker);
+
             // Call the method to handle adding the task to the column
             projectViewingAndModificationController.handleAddTaskToColumn(columnBox, nameTextField.getText(),
-                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
+                    descriptionTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
         });
 
         // Add the "Add" button to the GridPane

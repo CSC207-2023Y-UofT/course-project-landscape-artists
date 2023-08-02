@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ProjectViewingAndModificationInputBoundary {
     public void removeCurrentProject();
 
-    void addNewTask(UUID idOfColumn, String taskName, String taskDescription,
+    void addNewTask(String idOfColumn, String taskName, String taskDescription,
                     LocalDateTime dueDate);
 
 

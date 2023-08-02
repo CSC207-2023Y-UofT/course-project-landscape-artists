@@ -4,6 +4,7 @@ package d_frameworks_and_drivers.database_management.DBControllers;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.*;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
 
@@ -19,7 +20,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @param project
      * @return
      */
-    public void DBInsert(Project project) {
+    public void DBInsert(ProjectModel project) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
@@ -53,7 +54,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @param column
      * @return
      */
-    public void DBInsert(Column column) {
+    public void DBInsert(ColumnModel column) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
@@ -81,7 +82,7 @@ public class DBManagerInsertController implements IDBInsert {
     /**
      * @param task
      */
-    public void DBInsert(Task task) {
+    public void DBInsert(TaskModel task) {
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");

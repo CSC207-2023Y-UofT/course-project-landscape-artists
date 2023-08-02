@@ -6,6 +6,8 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,14 +26,16 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The presenter holds the reference to the ProjectViewingAndModificationOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
     private ProjectViewingAndModificationOutputBoundary presenter;
+    private IDBInsert insertGateway = new DBManagerInsertController();
 
     /**
      * Initializes the ProjectViewingAndModificationInteractor with the provided presenter.
      *
      * @param presenter The presenter instance responsible for displaying the results of the use cases.
      */
-    public ProjectViewingAndModificationInteractor(ProjectViewingAndModificationOutputBoundary presenter) {
+    public ProjectViewingAndModificationInteractor(ProjectViewingAndModificationOutputBoundary presenter, IDBInsert insertGateway) {
         this.presenter = presenter;
+        this.insertGateway = insertGateway;
     }
 
     /**
@@ -44,7 +48,13 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
+    public void addNewTask(String idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
+        //Generate random UUID for task
+        UUID taskID = UUID.randomUUID();
+        //Create TaskModel with given info
+        TaskModel t = new TaskModel(taskName, taskID, taskDescription, false, dueDate);
+        //Save the new task into the database
+        insertGateway.DBInsert(t);
 
     }
 
