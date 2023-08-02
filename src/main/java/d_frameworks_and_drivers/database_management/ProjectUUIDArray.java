@@ -1,4 +1,4 @@
-package d_frameworks_and_drivers.database_management.UUIDsToHashMap;
+package d_frameworks_and_drivers.database_management;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -7,8 +7,6 @@ import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * This class reads the Projects.csv file and returns a 2D arrayList containing the

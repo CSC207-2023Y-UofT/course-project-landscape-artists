@@ -1,18 +1,13 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import a_enterprise_business_rules.entities.*;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
+import d_frameworks_and_drivers.database_management.ProjectUUIDArray;
 
 import c_interface_adapters.DBAdapterInterface;
-import d_frameworks_and_drivers.database_management.UUIDsToHashMap.*;
 
-import java.io.FileWriter;
-import java.util.Arrays;
 import java.util.*;
 public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInterface {
     /**
@@ -50,8 +45,20 @@ public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInt
     public List<ProjectModel> IDstoProjectModelList() {
         List<ProjectModel> projectModels;
 
-        ArrayList<ArrayList<String>> UUIDList = ProjectUUIDArray.convertCsvToArrayList();
+        ArrayList<ArrayList<String>> projectListString = ProjectUUIDArray.convertCsvToArrayList();
+        for (ArrayList<String> projectList: projectListString) {
+            UUID projectID = UUID.fromString(projectList.get(0));
+            String projectName = projectList.get(1);
+            String projectDescription = projectList.get(2);
+            //Temporary Array of string to hold the column IDs
+            String[] tempColumnID = projectList.get(3).split(",");
 
+            for (String temp : tempColumnID) {
+                //Searching for the
+
+
+            }
+        }
         return projectModels;
     }
 
