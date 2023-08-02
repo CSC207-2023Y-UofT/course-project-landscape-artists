@@ -3,6 +3,6 @@ import a_enterprise_business_rules.entities.*;
 import b_application_business_rules.entity_models.*;
 
 public interface IEntityIDsToList {
-    public String EntityIDsToList(ProjectModel project);
-    public String EntityIDsToList(ColumnModel columns);
+    public String EntityIDsToList(ProjectModel projectModel);
+    public String EntityIDsToList(ColumnModel columnModel);
 }

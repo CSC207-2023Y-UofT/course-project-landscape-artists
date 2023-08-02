@@ -2,6 +2,8 @@ package b_application_business_rules.use_cases;
 
 import b_application_business_rules.entity_models.ProjectModel;
 
+import java.util.UUID;
+
 public class CurrentProjectRepository {
     private static final CurrentProjectRepository instance =
             new CurrentProjectRepository();
@@ -25,4 +27,8 @@ public class CurrentProjectRepository {
     public void removeCurrentProject() {
         currentProject = null;
     }
+
+    public void deleteProject(UUID projectID) {}
+
+    public Project getProjectByID(UUID projectID) {}
 }

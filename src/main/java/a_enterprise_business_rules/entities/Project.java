@@ -207,4 +207,24 @@ public class Project {
                 this.columns, this.columns.indexOf(col1), this.columns.indexOf(col2));
     }
 
+    /**
+     * Returns whether or not this Project and another object are equal.
+     * 
+     * @param o The object to compare to.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Project)) {
+            return false;
+        }
+        Project p = (Project) o;
+        // Checking the equality of each of the attributes
+        boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
+                p.getID().equals(this.getID()) &&
+                p.getDescription().equals(this.getDescription()) &&
+                p.getColumns().equals(this.getColumns());
+
+        return allAttributesAreEqual;
+    }
+
 }
