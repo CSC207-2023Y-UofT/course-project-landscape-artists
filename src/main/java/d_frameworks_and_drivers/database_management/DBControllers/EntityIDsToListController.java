@@ -1,45 +1,60 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
 import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
+import c_interface_adapters.DBAdapterInterface;
+import d_frameworks_and_drivers.database_management.UUIDsToHashMap.*;
+
 import java.io.FileWriter;
 import java.util.Arrays;
-import java.util.List;
-public class EntityIDsToListController implements IEntityIDsToList {
+import java.util.*;
+public class EntityIDsToListController implements IEntityIDsToList, DBAdapterInterface {
     /**
      * This returns a concatenated string of column IDs
      * which makes it able to be put into the Database
-     * @param project
+     * @param projectModel
      * @return String of Concatenated Column IDs
      */
-    public String EntityIDsToList(Project project) {
-        List<Column> columnList = project.getColumns();
-        String columnListString = "";
+    public String EntityIDsToList(ProjectModel projectModel) {
+        List<ColumnModel> columnModelList = projectModel.getColumnModels();
+        String columnModelListString = "";
 
-        for ( Column col: columnList ) {
-            columnListString.join(", ", col.getID().toString());
+        for ( ColumnModel col: columnModelList ) {
+            columnModelListString.join(", ", col.getID().toString());
         }
-        return columnListString;
+        return columnModelListString;
     }
 
     /**
      * This returns a concatenated string of Task IDs
      * which makes it able to be put into the Database
-     * @param columns
+     * @param columnModel
      * @return String of Concatenated Task IDs
      */
-    public String EntityIDsToList(Column columns) {
-        List<Task> taskList = columns.getTasks();
-        String taskListString = "";
+    public String EntityIDsToList(ColumnModel columnModel) {
+        List<TaskModel> taskModelList = columnModel.getTaskModels();
+        String taskModelListString = "";
 
-        for ( Task task: taskList ) {
-            taskListString.join(", ", task.getID().toString());
+        for ( TaskModel task: taskModelList ) {
+            taskModelListString.join(", ", task.getID().toString());
         }
-        return taskListString;
+        return taskModelListString;
     }
+
+    public List<ProjectModel> IDstoProjectModelList() {
+        List<ProjectModel> projectModels = {};
+
+        Map<String, String> UUIDList = ProjectUUIDArray.convertCsvToHashMap();
+
+        return projectModels;
+    }
+
 }
 
 /*

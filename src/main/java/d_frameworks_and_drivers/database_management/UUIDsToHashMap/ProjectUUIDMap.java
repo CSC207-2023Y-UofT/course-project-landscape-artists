@@ -1,15 +1,24 @@
 package d_frameworks_and_drivers.database_management.UUIDsToHashMap;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-public class UUIDMap {
-    public static Map<String, String> convertCsvToHashMap() {
-        String csvFilePath = "DatabaseFiles/UniqueIDs/UniqueIDs.csv";
+
+/**
+ * This class reads the Projects.csv file and returns a 2D arrayList containing the
+ * String attributes of each project.
+ *
+ */
+
+public class ProjectUUIDArray {
+    public static ArrayList<ArrayList<String>> convertCsvToHashMap() {
+        String csvFilePath = "DatabaseFiles/Projects/Projects.csv";
         Map<String, String> csvDataMap = new HashMap<>();
 
         // Create a CSVParser to read the CSV file
@@ -30,17 +39,3 @@ public class UUIDMap {
 
         return csvDataMap;
     }
-//    public static void main(String[] args) {
-//        String csvFilePath = "DatabaseFiles/UniqueIDs/UniqueIDs.csv"; // Replace with the path to your CSV file
-//        try {
-//            Map<String, String> csvDataMap = convertCsvToHashMap(csvFilePath);
-//
-//            // Print the HashMap
-//            for (Map.Entry<String, String> entry : csvDataMap.entrySet()) {
-//                System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-}
