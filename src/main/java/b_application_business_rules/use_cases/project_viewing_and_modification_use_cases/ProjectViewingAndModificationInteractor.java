@@ -60,6 +60,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         AddTask useCase = new AddTask(newTaskModel);
         //call use case class to create a new task and save it to the database
         useCase.addTask();
+        //Initialize TaskViewModel
+        TaskViewModel newTask = new TaskViewModel(newTaskModel);
+        //calls presenter to display message
+        presenter.displayNewTask(UUID.fromString(idOfColumn), newTask);
 
     }
 
