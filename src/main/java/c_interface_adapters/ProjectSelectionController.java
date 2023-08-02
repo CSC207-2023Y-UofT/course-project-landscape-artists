@@ -111,7 +111,6 @@ public class ProjectSelectionController implements Initializable {
      * such as renaming or deleting the project.
      */
     private void populateProjectSelectionUI() {
-        System.out.println("IN PROJECT SELECTION UI");
         projectsGrid.setHgap(20);
         projectsGrid.setVgap(100);
 
@@ -136,6 +135,8 @@ public class ProjectSelectionController implements Initializable {
 
             Label projectName = new Label(project.getName());
             Label projectDescription = new Label(project.getDescription());
+
+            projectName.setId("projectName");
 
 
             projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));

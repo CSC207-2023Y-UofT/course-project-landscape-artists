@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -110,10 +112,17 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                 // Now, find the projectNameButton inside the HBox
                                 for (Node hboxChild : hbox.getChildren()) {
                                     if (hboxChild instanceof Button) {
-                                        Button projectNameButton = (Button) hboxChild;
+                                        Button nameAndDescriptionButton = (Button) hboxChild;
+                                        VBox nameAndDescriptionContainer =
+                                                (VBox) (nameAndDescriptionButton.getGraphic());
 
-                                        // Update the projectNameButton with the new project name
-                                        projectNameButton.setText(newProjectName);
+                                        for (Node nodeInNameAndDescriptionContainer:
+                                                nameAndDescriptionContainer.getChildren()) {
+                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
+                                                Label projectName = (Label) nodeInNameAndDescriptionContainer;
+                                                projectName.setText(newProjectName);
+                                            }
+                                        }
                                         break;
                                     }
                                 }
