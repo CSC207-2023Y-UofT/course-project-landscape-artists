@@ -72,7 +72,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
             openedProjectController.setup(projectModel);
             stage.setTitle("scene 2");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("ProjectViewingAndModificationStyle.css").toExternalForm());
+            stage.setScene(scene);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

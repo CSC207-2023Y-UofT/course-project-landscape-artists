@@ -263,6 +263,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         VBox columnBox = new VBox();
         columnBox.setPrefSize(180, 380);
 
+        columnBox.setStyle("-fx-background-color: #F6F8FA");
+
 
         HBox columnNameAndOptions = new HBox();
 
