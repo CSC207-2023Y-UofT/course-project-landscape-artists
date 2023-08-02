@@ -84,7 +84,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
                 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
         );
         ProjectModel projectModel = new ProjectModel(
-                "Project P1", UUID.randomUUID(), "", ColumnsList);
+                "Project P1", UUID.randomUUID(), "This is some description", ColumnsList);
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
     }
@@ -107,6 +107,15 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         ProjectModel projectModel = new ProjectModel(
                 "Revised project P1", projectUUID, "", new ArrayList<>());
         presenter.displayDeletedProject(projectModel);
+    }
+
+    /**
+     * @param columnID
+     * @param task
+     */
+    @Override
+    public void deleteTask(UUID columnID, TaskModel task) {
+
     }
 }
 

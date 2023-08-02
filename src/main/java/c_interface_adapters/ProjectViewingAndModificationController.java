@@ -31,6 +31,8 @@ public class ProjectViewingAndModificationController {
     Label projectName;
     @FXML
     HBox columnsContainer;
+    @FXML
+    Button displayDescriptionButton;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
@@ -50,6 +52,10 @@ public class ProjectViewingAndModificationController {
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
+        displayDescriptionButton.setOnAction(event -> {
+            presenter.dispayProjectDescription(projectModel);
+        });
+
     }
 
     void deleteColumn(UUID id) {

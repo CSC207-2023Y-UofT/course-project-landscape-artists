@@ -68,7 +68,7 @@ public class ProjectSelectionController implements Initializable {
                 new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
         );
         ProjectViewModel p1 = new ProjectViewModel(
-                "Project P1", UUID.randomUUID(),"P1 description",  ColumnsList
+                "Project 111111", UUID.randomUUID(),"P1 description",  ColumnsList
                 );
 
 

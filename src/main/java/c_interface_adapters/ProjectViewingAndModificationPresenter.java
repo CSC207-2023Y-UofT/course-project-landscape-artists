@@ -2,6 +2,7 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -13,10 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -97,6 +95,28 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     @Override
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
 
+    }
+
+    public void dispayProjectDescription(ProjectModel project) {
+        Stage popupStage = new Stage();
+        String projectDescription = project.getDescription(); // Provide the project's description here
+        System.out.println("Project Description" + projectDescription);
+        // Create the label to display the project description
+        Label descriptionLabel = new Label(projectDescription);
+        descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions
+
+        // Create a StackPane to hold the label
+        StackPane root = new StackPane(descriptionLabel);
+
+        // Set the size for the new window
+        Scene scene = new Scene(root, 400, 300);
+
+        // Set the stage properties
+        popupStage.setTitle("Project Description");
+        popupStage.setScene(scene);
+
+        // Show the new window
+        popupStage.show();
     }
 
     @Override
@@ -243,6 +263,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         VBox columnBox = new VBox();
         columnBox.setPrefSize(180, 380);
 
+
         HBox columnNameAndOptions = new HBox();
 
         columnBox.setId(column.getID().toString());
@@ -331,14 +352,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             taskOptionsButton.setStyle("-fx-font-size: 8px;");
 
-            // Associate an instance of a Task for each button.
-            taskOptionsButton.setUserData(task);
+            RadioButton completeTaskButton = new RadioButton();
+//            completeTaskButton.setOnAction(event -> controller.completeTask(task));
 
-            taskOptionsButton.setOnAction(actionEvent -> {
-                projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
-            });
 
-            hbox.getChildren().addAll(taskName, taskOptionsButton);
+            hbox.getChildren().addAll(taskName, taskOptionsButton, completeTaskButton);
             columnBox.getChildren().add(hbox);
         }
     }
