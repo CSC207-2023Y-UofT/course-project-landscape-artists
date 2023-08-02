@@ -1,9 +1,9 @@
 package c_interface_adapters.view_models;
 
-import java.time.LocalDateTime;
-import java.util.*;
-
 import b_application_business_rules.entity_models.TaskModel;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * A task view model within in the productivity application.
@@ -60,7 +60,7 @@ public class TaskViewModel {
     /**
      * Creates a new task view model, based on the inputted task.
      * 
-     * @param task The task to view model.
+     * @param taskModel The task to view model.
      */
     public TaskViewModel(TaskModel taskModel) {
         this.name = taskModel.getName();

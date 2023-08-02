@@ -1,6 +1,12 @@
 package a_enterprise_business_rules.entities;
 
-import java.util.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
+
 
 /**
  * A column within the productivity application.
@@ -175,8 +181,28 @@ public class Column {
     public void moveTaskToPosition(Task taskToMove, int positionToMoveTo) throws NoSuchElementException {
         // The moving of the tasks is done by removing the object from the List,
         // and then adding it back to the List at the indicated index.
-        this.removeTask(taskToMove);
-        this.tasks.add(positionToMoveTo, taskToMove);
+        int columnToMoveIndex = this.tasks.indexOf(taskToMove);
+        int tasksNumber = this.tasks.size();
+
+        // Validity check
+        if (taskToMove == null){
+            throw new IllegalArgumentException("Task cannot be null.");
+        }
+
+        if (positionToMoveTo < 0||positionToMoveTo >= tasksNumber){
+            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
+                    "It must be between 0 and " +(tasksNumber - 1) + " inclusive.");
+        }
+
+        // Moving the column
+        if (columnToMoveIndex != positionToMoveTo) {
+            // If the column is already at the position, no need to move.
+
+            // removes shifting tasks to the right of columnToMove to the left i-1
+            this.removeTask(taskToMove);
+            // adds column shifting tasks to the right of columnToMove to the right i+1
+            this.tasks.add(positionToMoveTo, taskToMove);
+        }
     }
 
     /**
@@ -220,7 +246,7 @@ public class Column {
     // }
 
     /**
-     * Returns whether or not this Column and another object are equal.
+     * Returns whether this Column and another object are equal.
      * 
      * @param o The object to compare to.
      */

@@ -1,8 +1,14 @@
 package c_interface_adapters.view_models;
 
-import java.util.*;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
 
-import b_application_business_rules.entity_models.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
 
 /**
  * A column view model within the productivity application.

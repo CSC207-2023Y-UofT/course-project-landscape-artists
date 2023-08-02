@@ -1,7 +1,7 @@
 package a_enterprise_business_rules.entities;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.UUID;
 
 /**
  * A task within in the productivity application.
@@ -171,17 +171,10 @@ public class Task {
      */
     @Override
     public String toString() {
-        // gets the string representation of the completion status, which is a bool
-        String completionStatusString;
-        if (this.getCompletionStatus()) {
-            completionStatusString = "true";
-        } else {
-            completionStatusString = "false";
-        }
-
         // Concatenates some strings together, for example:
         // "[Task Name: Eat Cookied, Task Completed: false]"
-        return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: " + completionStatusString + ", "
+        return "[" + "Task Name: " + this.getName() + ", " + "Task Completed: "
+                + this.getCompletionStatus() + ", "   // CompletionStatus boolean is returned as String automatically
                 + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
