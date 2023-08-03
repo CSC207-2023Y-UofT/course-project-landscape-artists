@@ -47,15 +47,20 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
 
     }
-
+    /**
+     * The method to add a column to the project.
+     *
+     * @param columnBoxId the UUID of the column to be deleted.
+     */
     @Override
     public void deleteColumn(UUID columnBoxId) {
-        // TODO: Interact with the database.
-
+        DeleteColumn deleteColumnUseCase = new DeleteColumn(columnBoxId);
+        deleteColumnUseCase.deleteColumn();
 
         ColumnModel c = new ColumnModel("Deleted column", new ArrayList<>(), columnBoxId);
         presenter.displayDeletedColumn(c);
     }
+
 
     @Override
     public void renameColumn(UUID columnBoxId) {
@@ -105,7 +110,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
+     * The method to add a column to the project.
      *
+     * @param columnName the name of the column to be created.
      */
     @Override
     public void addColumn(String columnName) {

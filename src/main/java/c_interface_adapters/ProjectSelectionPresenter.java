@@ -121,6 +121,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                             if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
                                                 Label projectName = (Label) nodeInNameAndDescriptionContainer;
                                                 projectName.setText(newProjectName);
+                                                break;
                                             }
                                         }
                                         break;
