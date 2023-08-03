@@ -32,8 +32,6 @@ public class ProjectViewingAndModificationController {
     @FXML
     HBox columnsContainer;
     @FXML
-    Button displayDescriptionButton;
-    @FXML
     Label projectDescription;
     @FXML
     Button backButton;
@@ -60,9 +58,6 @@ public class ProjectViewingAndModificationController {
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
-        displayDescriptionButton.setOnAction(event -> {
-            presenter.dispayProjectDescription(projectModel);
-        });
 
     }
 

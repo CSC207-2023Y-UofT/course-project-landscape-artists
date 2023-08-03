@@ -102,26 +102,26 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     }
 
-    public void dispayProjectDescription(ProjectModel project) {
-        Stage popupStage = new Stage();
-        String projectDescription = project.getDescription(); // Provide the project's description here
-        // Create the label to display the project description
-        Label descriptionLabel = new Label(projectDescription);
-        descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions
-
-        // Create a StackPane to hold the label
-        StackPane root = new StackPane(descriptionLabel);
-
-        // Set the size for the new window
-        Scene scene = new Scene(root, 400, 300);
-
-        // Set the stage properties
-        popupStage.setTitle("Project Description");
-        popupStage.setScene(scene);
-
-        // Show the new window
-        popupStage.show();
-    }
+//    public void dispayProjectDescription(ProjectModel project) {
+//        Stage popupStage = new Stage();
+//        String projectDescription = project.getDescription(); // Provide the project's description here
+//        // Create the label to display the project description
+//        Label descriptionLabel = new Label(projectDescription);
+//        descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions
+//
+//        // Create a StackPane to hold the label
+//        StackPane root = new StackPane(descriptionLabel);
+//
+//        // Set the size for the new window
+//        Scene scene = new Scene(root, 400, 300);
+//
+//        // Set the stage properties
+//        popupStage.setTitle("Project Description");
+//        popupStage.setScene(scene);
+//
+//        // Show the new window
+//        popupStage.show();
+//    }
 
     @Override
     public void displayRenamedTask(UUID taskID, TaskViewModel task) {
