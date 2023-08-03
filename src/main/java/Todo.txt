@@ -127,6 +127,3 @@ Difficulty: 2
         • Display a pop-up so the user can input a date.
         • I think this is very similar to 11.
 Difficulty: 3
-
-ME: ADD COLUMN DONE
-WENDY: DELETE TASK
