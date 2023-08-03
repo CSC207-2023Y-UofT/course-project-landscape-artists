@@ -232,6 +232,22 @@ public class ColumnModel {
         return columnModelStringRepresentation;
     }
 
+    /**
+     * Returns a Column Entity from Column Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Column Entity.
+     */
+    public Column getColumnEntity() {
+        List<Task> taskEntities = new ArrayList<>();
+        for (TaskModel taskModel: taskModels) {
+            taskEntities.add(taskModel.getTaskEntity());
+        }
+
+        return new Column(name, taskEntities, ID);
+    }
+
     // TODO:turn this into its own class
     // private UUID getValidColumnID(){
     // this.ID = UUID.randomUUID();

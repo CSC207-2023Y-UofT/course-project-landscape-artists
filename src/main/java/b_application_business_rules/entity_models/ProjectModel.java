@@ -233,4 +233,20 @@ public class ProjectModel {
                 this.columnModels, this.columnModels.indexOf(col1), this.columnModels.indexOf(col2));
     }
 
+    /**
+     * Returns a Project Entity from Project Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Project Entity.
+     */
+    public Project getProjectEntity() {
+        List<Column> columnEntities = new ArrayList<>();
+        for (ColumnModel columnModel: columnModels) {
+            columnEntities.add(columnModel.getColumnEntity());
+        }
+
+        return new Project(name, ID, description, columnEntities);
+    }
+
 }
