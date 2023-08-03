@@ -102,7 +102,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     public void dispayProjectDescription(ProjectModel project) {
         Stage popupStage = new Stage();
         String projectDescription = project.getDescription(); // Provide the project's description here
-        System.out.println("Project Description" + projectDescription);
         // Create the label to display the project description
         Label descriptionLabel = new Label(projectDescription);
         descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions

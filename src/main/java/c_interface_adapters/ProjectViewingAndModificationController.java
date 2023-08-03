@@ -33,6 +33,12 @@ public class ProjectViewingAndModificationController {
     HBox columnsContainer;
     @FXML
     Button displayDescriptionButton;
+    @FXML
+    Label projectDescription;
+    @FXML
+    Button backButton;
+    @FXML
+    Button addColumnButton;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
@@ -49,6 +55,8 @@ public class ProjectViewingAndModificationController {
 
 
     public void setup(ProjectModel projectModel) {
+        setButtonStyles();
+
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
@@ -56,6 +64,11 @@ public class ProjectViewingAndModificationController {
             presenter.dispayProjectDescription(projectModel);
         });
 
+    }
+
+    private void setButtonStyles() {
+        backButton.getStyleClass().add("back-button-custom");
+        addColumnButton.getStyleClass().add("add-column-button-custom");
     }
 
     void deleteColumn(UUID id) {
@@ -110,7 +123,9 @@ public class ProjectViewingAndModificationController {
      * @param project The Project instance representing the current project.
      */
     private void populateProjectDetails(ProjectModel project) {
+
         projectName.setText(project.getName());
+        projectDescription.setText(project.getDescription());
     }
 
     /**
