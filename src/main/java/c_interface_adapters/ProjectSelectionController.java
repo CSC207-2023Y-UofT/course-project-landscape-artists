@@ -159,10 +159,8 @@ public class ProjectSelectionController implements Initializable {
             Button currentProjectButton = new Button();
 
             currentProjectButton.setGraphic(nameAndDescriptionContainer);
-            currentProjectButton.setStyle("" +
-                    "-fx-background-color: transparent;" +
-                    "-fx-border-color: black;" +
-                    "-fx-border-width: 0 0 0 2;");
+            
+            currentProjectButton.getStyleClass().add("current-project-button");
 
 
             currentProjectButton.setUserData(project.getID());
@@ -232,14 +230,7 @@ public class ProjectSelectionController implements Initializable {
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
 
-        createProjectButton.setStyle(
-                "-fx-background-color: #F5F7F9; " +
-                        "-fx-background-radius: 20; " +
-                        "-fx-text-fill: #24292e; " +
-                        "-fx-font-size: 14px; " +
-                        "-fx-font-weight: bold; " +
-                        "-fx-padding: 8px 16px; "
-        );
+        createProjectButton.getStyleClass().add("create-project-button-style");
 
         projectsGrid.add(createProjectButton, col, row);
     }
