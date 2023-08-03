@@ -19,8 +19,8 @@ import java.util.UUID;
 public class AddTask implements DataAccessInterface {
     TaskModel taskModel;
 
-    // This holds the ProjectModel of the currently opened project.
-    ProjectModel currentProjectModel = CurrentProjectRepository.getInstance().getCurrentProject();
+    // This holds the currently opened Project entity. We can update this for use cases.
+    Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
 
     public AddTask(TaskModel model) {
         this.taskModel = model;
@@ -42,9 +42,8 @@ public class AddTask implements DataAccessInterface {
         addNewTask(taskModel);
 
         // Adding the Task instance to the column.
-        Project currentProjectEntity = currentProjectModel.getProjectEntity();
-        for (Column column: currentProjectEntity.getColumns()) {
-            // Find the column with the correct id
+        for (Column column: currentProject.getColumns()) {
+            // Find the column with the correct id. Update that Column entity with the new Task.
         }
 
     }
