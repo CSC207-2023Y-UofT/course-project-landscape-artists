@@ -70,7 +70,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to make
-     * changes to the entities and database then calls the presenter to display the updated changes
+     * changes to the entities and database
      * @param task
      * @param TaskUIid
      */
@@ -79,8 +79,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         EditTaskDetails useCase = new EditTaskDetails(task, TaskUIid);
         try {
             useCase.editTask();
-            //Moving this to the controller for testing
-
+            //Call to presenter here was moved to the controller (changeTaskDetails)
         }
         catch(Exception e) {
             e.printStackTrace();

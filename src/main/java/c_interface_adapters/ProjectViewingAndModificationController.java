@@ -69,16 +69,31 @@ public class ProjectViewingAndModificationController {
 //        interactor.deleteTask(task, hbox);
     }
 
+    /**
+     * Receives the user input from the presenter and calls the interactor to make the changes
+     * to the database. If the action is successful, calls the presenter to display the final
+     * changes
+     * @param task
+     * @param hbox
+     * @param newTaskName
+     * @param newTaskDescription
+     * @param newDueDate
+     */
     void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
                            String newTaskDescription, LocalDateTime newDueDate) {
         UUID taskID = task.getID();
         boolean taskStatus = task.getCompletionStatus();
+
+        //Creating a new TaskModel based on the user input
         TaskModel changedTask = TaskFactory.create(newTaskName, taskID, newTaskDescription, taskStatus, newDueDate);
         interactor.changeTaskDetails(changedTask, taskID);
+
+        //Creating a TaskViewModel for display purposes
         TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
                 task.getCompletionStatus(), task.getDueDateTime());
-        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
 
+        //Calling a handler to display the final task changes
+        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
 
     }
 
