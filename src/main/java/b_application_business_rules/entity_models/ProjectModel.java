@@ -4,6 +4,7 @@ import java.util.*;
 
 import a_enterprise_business_rules.entities.entities.Column;
 import a_enterprise_business_rules.entities.entities.Project;
+import a_enterprise_business_rules.entities.entities.Task;
 
 /**
  * A project model within the productivity application.
@@ -233,5 +234,22 @@ public class ProjectModel {
         Collections.swap(
                 this.columnModels, this.columnModels.indexOf(col1), this.columnModels.indexOf(col2));
     }
+
+    /**
+     * Returns a Project Entity from Project Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Project Entity.
+     */
+    public Project getProjectEntity() {
+        List<Column> columnEntities = new ArrayList<>();
+        for (ColumnModel columnModel: columnModels) {
+            columnEntities.add(columnModel.getColumnEntity());
+        }
+
+        return new Project(name, ID, description, columnEntities);
+    }
+
 
 }

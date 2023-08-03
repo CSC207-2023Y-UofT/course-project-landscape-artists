@@ -203,4 +203,14 @@ public class TaskModel {
                 + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
+    /**
+     * Returns a Task Entity from Task Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Task Entity.
+     */
+    public Task getTaskEntity() {
+        return new Task(name, ID, description, isCompleted, dueDateTime);
+    }
 }

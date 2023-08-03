@@ -1,9 +1,12 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
-import a_enterprise_business_rules.entities.entities.Task;
+import a_enterprise_business_rules.entities.entities.*;
 import b_application_business_rules.DataAccessInterface;
 
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
@@ -15,6 +18,9 @@ import java.util.UUID;
  */
 public class AddTask implements DataAccessInterface {
     TaskModel taskModel;
+
+    // This holds the ProjectModel of the currently opened project.
+    ProjectModel currentProjectModel = CurrentProjectRepository.getInstance().getCurrentProject();
 
     public AddTask(TaskModel model) {
         this.taskModel = model;
@@ -34,6 +40,13 @@ public class AddTask implements DataAccessInterface {
         Task newTask = new Task(name, taskID, description, isCompleted, dueDate);
         //Call the method that accesses the database
         addNewTask(taskModel);
+
+        // Adding the Task instance to the column.
+        Project currentProjectEntity = currentProjectModel.getProjectEntity();
+        for (Column column: currentProjectEntity.getColumns()) {
+            // Find the column with the correct id
+        }
+
     }
 
     /**
