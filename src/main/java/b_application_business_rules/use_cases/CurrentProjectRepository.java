@@ -30,5 +30,6 @@ public class CurrentProjectRepository {
 
     public void deleteProject(UUID projectID) {}
 
-    public Project getProjectByID(UUID projectID) {}
+    public void getProjectByID(UUID projectID) {
+    }
 }
