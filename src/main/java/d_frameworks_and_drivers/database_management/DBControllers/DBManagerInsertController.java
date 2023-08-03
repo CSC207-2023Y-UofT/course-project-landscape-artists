@@ -1,9 +1,7 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 // Implement models instead of entities
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.*;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
 
@@ -16,10 +14,10 @@ public class DBManagerInsertController implements IDBInsert {
      * Description and list of column IDs that belong to a project
      * into the Database
      * check DatabaseFiles/Projects/Projects.csv for reference
-     * @param project
+     * @param projectModel
      * @return
      */
-    public void DBInsert(Project project) {
+    public void DBInsert(ProjectModel projectModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
@@ -30,10 +28,10 @@ public class DBManagerInsertController implements IDBInsert {
 
             // add data to csv
             String[] data = {
-                    project.getID().toString(),
-                    project.getName(),
-                    project.getDescription(),
-                    entityIDsToListController.EntityIDsToList(project)
+                    projectModel.getID().toString(),
+                    projectModel.getName(),
+                    projectModel.getDescription(),
+                    entityIDsToListController.EntityIDsToList(projectModel)
             };
             writer.writeNext(data);
 
@@ -50,10 +48,10 @@ public class DBManagerInsertController implements IDBInsert {
      * "Description" and "Task ID's" that belong to a Column
      * into the Database
      * check DatabaseFiles/Columns/Columns.csv for reference
-     * @param column
+     * @param columnModel
      * @return
      */
-    public void DBInsert(Column column) {
+    public void DBInsert(ColumnModel columnModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         try {
             // create FileWriter object with file as parameter
@@ -64,9 +62,9 @@ public class DBManagerInsertController implements IDBInsert {
 
             // add data to csv
             String[] data = {
-                    column.getID().toString(),
-                    column.getName(),
-                    entityIDsToListController.EntityIDsToList(column)
+                    columnModel.getID().toString(),
+                    columnModel.getName(),
+                    entityIDsToListController.EntityIDsToList(columnModel)
             };
             writer.writeNext(data);
 
@@ -79,9 +77,9 @@ public class DBManagerInsertController implements IDBInsert {
     }
 
     /**
-     * @param task
+     * @param taskModel
      */
-    public void DBInsert(Task task) {
+    public void DBInsert(TaskModel taskModel) {
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
@@ -91,11 +89,11 @@ public class DBManagerInsertController implements IDBInsert {
 
             // add data to csv
             String[] data1 = {
-                    task.getID().toString(),
-                    task.getName(),
-                    task.getDescription(),
-                    String.valueOf(task.getCompletionStatus()),
-                    task.getDueDateTime().toString()
+                    taskModel.getID().toString(),
+                    taskModel.getName(),
+                    taskModel.getDescription(),
+                    String.valueOf(taskModel.getCompletionStatus()),
+                    taskModel.getDueDateTime().toString()
             };
             writer.writeNext(data1);
 
