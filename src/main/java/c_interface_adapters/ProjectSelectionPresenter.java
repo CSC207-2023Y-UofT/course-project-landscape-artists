@@ -155,6 +155,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 if (node instanceof GridPane) {
                     GridPane projectsGrid = (GridPane) node;
+                    int numColumns = 2; // Specify the number of columns
+                    int numRows = projectsGrid.getRowCount(); // Get the number of rows currently in the grid
+
                     // Iterate over the children of the projectsGrid (HBoxes representing projects)
                     Iterator<Node> iterator = projectsGrid.getChildren().iterator();
                     while (iterator.hasNext()) {
@@ -165,14 +168,45 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                             Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
                             if (hboxId != null && hboxId.equals(projectUUID)) {
                                 iterator.remove(); // Use the iterator to safely remove the HBox from the projectsGrid
+                                break;
                             }
                         }
                     }
+
+                    // Rearrange the remaining nodes to fill the empty spaces
+                    int col = 0;
+                    int row = 0;
+                    for (Node child : projectsGrid.getChildren()) {
+                        GridPane.setColumnIndex(child, col);
+                        GridPane.setRowIndex(child, row);
+
+                        col++;
+                        if (col >= numColumns) {
+                            col = 0;
+                            row++;
+                        }
+                    }
+
+                    // Fill the empty spaces with new HBoxes if needed
+                    while (row < numRows) {
+                        HBox placeholderHBox = new HBox();
+                        GridPane.setColumnIndex(placeholderHBox, col);
+                        GridPane.setRowIndex(placeholderHBox, row);
+                        projectsGrid.getChildren().add(placeholderHBox);
+
+                        col++;
+                        if (col >= numColumns) {
+                            col = 0;
+                            row++;
+                        }
+                    }
+
                     break;
                 }
             }
         }
     }
+
 
 
     /**

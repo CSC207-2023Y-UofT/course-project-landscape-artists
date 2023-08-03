@@ -128,9 +128,5 @@ Difficulty: 2
         • I think this is very similar to 11.
 Difficulty: 3
 
-ME: ADD COLUMN
+ME: ADD COLUMN DONE
 WENDY: DELETE TASK
-ME: DESCRIPTION OF PROJECT   COLUMN
-ME: OPEN PROJECT FIX
-
-CREATE A PROJECT
