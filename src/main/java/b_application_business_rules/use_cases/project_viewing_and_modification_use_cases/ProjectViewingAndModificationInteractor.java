@@ -109,9 +109,16 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      */
     @Override
     public void addColumn(String columnName) {
-        // TODO: DO NECESSARY STUFF.
-        ColumnModel c = new ColumnModel(columnName, new ArrayList<>(), UUID.randomUUID());
-        presenter.displayNewColumn(c);
+        // Genereate random UUID for column
+        UUID idOfColumn = UUID.randomUUID();
+
+        // initializing use case to add column and initiate adding to the columm
+        AddColumn addColumnUseCase = new AddColumn(columnName, idOfColumn);
+        addColumnUseCase.addColumn();
+        // Creates the ColumnModel to send data to presenter.
+        ColumnModel columnModelForPresenter = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
+        // Send data to presenter.
+        presenter.displayNewColumn(columnModelForPresenter);
     }
 
 
