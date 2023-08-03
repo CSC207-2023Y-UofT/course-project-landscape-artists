@@ -174,6 +174,25 @@ public class Project {
     }
 
     /**
+     * Removes a column with the specified ID from the list of columns in the current project.
+     *
+     * @param idOfColumnToRemove The ID of the column to be removed.
+     * @throws NoSuchElementException If no column with the given ID is found in the project.
+     */
+    public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
+        for (Column column : columns) {
+            if (column.getID().equals(idOfColumnToRemove.toString())) {
+                columns.remove(column);
+                return;
+            }
+        }
+        throw new NoSuchElementException(
+                "The column with ID " + idOfColumnToRemove + " is not in this project");
+    }
+
+
+
+    /**
      * Swaps the order of two columns in the column.
      * 
      * @param col1 The first column.
