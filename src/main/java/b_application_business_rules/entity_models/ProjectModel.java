@@ -65,10 +65,10 @@ public class ProjectModel {
         this.name = project.getName();
 
         // Converting the List of Column objects to a List of ColumnModel objects
-        List<Column> columns = project.getColumns(); // Get the columns
+        List<ColumnModel> columns = project.getColumns(); // Get the columns
         // Converts Columns to ColumnModels and puts it in the columnModels attribute
-        for (int i = 0; i < columns.size(); i++) {
-            this.addColumnModel(new ColumnModel(columns.get(i)));
+        for (ColumnModel cols : columns) {
+            this.addColumnModel(cols);
         }
 
         this.description = project.getDescription();

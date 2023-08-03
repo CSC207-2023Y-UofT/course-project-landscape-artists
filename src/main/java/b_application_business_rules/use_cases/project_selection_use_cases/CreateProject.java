@@ -19,6 +19,14 @@ public class CreateProject implements ProjectSelectionInputBoundary {
 
     }
 
+    /**
+     * @param project
+     */
+    @Override
+    public void setCurrentProject(ProjectModel project) {
+
+    }
+
     @Override
     public void createProject(String name, String description) {
 
@@ -29,12 +37,12 @@ public class CreateProject implements ProjectSelectionInputBoundary {
         try{
             // Create the new Project entity
             Project project = createProjectEntity(projectModel);
-            Project project = new Project(projectModel.getName(), projectModel.getID(), projectModel.getDescription(),
+            Project project1 = new Project(projectModel.getName(), projectModel.getID(), projectModel.getDescription(),
                     projectModel.getColumnModels());
 
             // Notify via the output boundary if created successfully
             outputBoundary.projectCreated(new ProjectModel(project.getName(), project.getID(), project.getDescription(),
-                    project.getColumns())); // ???
+                    projectModel.getColumnModels())); // ???
         } catch (Exception e){
             // Notify via the output boundary if cretion failed
             outputBoundary.projectCreationFailed(e.getMessage());

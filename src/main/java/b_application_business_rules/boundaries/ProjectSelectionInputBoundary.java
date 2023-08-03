@@ -7,6 +7,9 @@ import java.util.UUID;
 
 public interface ProjectSelectionInputBoundary {
     void setCurrentProject(ProjectModel project);
+
+    void setCurrentProject(Project project);
+
     void createProject(String name, String description);
 
     void createProject(ProjectModel projectModel);

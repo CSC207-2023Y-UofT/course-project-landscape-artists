@@ -15,6 +15,14 @@ public class DeleteProject implements ProjectSelectionInputBoundary{
         this.projectRepository = projectRepository;
     }
 
+    /**
+     * @param project
+     */
+    @Override
+    public void setCurrentProject(ProjectModel project) {
+
+    }
+
     @Override
     public void setCurrentProject(Project project) {
 
