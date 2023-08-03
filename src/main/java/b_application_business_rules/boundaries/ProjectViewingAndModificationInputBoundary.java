@@ -3,8 +3,15 @@ package b_application_business_rules.boundaries;//this boundary will be the inpu
 //
 //this boundary will be responsable for getting the information from the outer layers and doing the work (running the right use cases, etc.)
 
+
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
 
 import java.time.LocalDateTime;
 import java.util.UUID;

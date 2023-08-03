@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -67,9 +68,24 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     }
 
+    /**
+     * Changes the task details given the new TaskModel task. Calls the use case to make
+     * changes to the entities and database then calls the presenter to display the updated changes
+     * @param task
+     * @param TaskUIid
+     */
     @Override
     public void changeTaskDetails(TaskModel task, UUID TaskUIid) {
-
+        EditTaskDetails useCase = new EditTaskDetails(task, TaskUIid);
+        try {
+            useCase.editTask();
+            TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
+                    task.getCompletionStatus(), task.getDueDateTime());
+            presenter.dislayChangedTaskDetails(TaskUIid, newTask);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
