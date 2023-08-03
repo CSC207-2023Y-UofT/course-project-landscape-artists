@@ -5,7 +5,9 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.TaskFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -67,8 +69,17 @@ public class ProjectViewingAndModificationController {
 //        interactor.deleteTask(task, hbox);
     }
 
-    void changeTaskDetails(TaskModel task, HBox hbox) {
-//        interactor.changeTaskDetails(task, hbox);
+    void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
+                           String newTaskDescription, LocalDateTime newDueDate) {
+        UUID taskID = task.getID();
+        boolean taskStatus = task.getCompletionStatus();
+        TaskModel changedTask = TaskFactory.create(newTaskName, taskID, newTaskDescription, taskStatus, newDueDate);
+        interactor.changeTaskDetails(changedTask, taskID);
+        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
+                task.getCompletionStatus(), task.getDueDateTime());
+        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
+
+
     }
 
     void renameTask(TaskModel task, HBox hbox) {
@@ -98,11 +109,19 @@ public class ProjectViewingAndModificationController {
 //        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
     }
 
+    //void handleChangeTaskDetails(VBox columnBox, String taskName, String taskDescription,
+                                 //LocalDateTime dueDate) {
+
+        //interactor.changeTaskDetails();
+
+    //}
+
     /**
      * Populates the project details on the UI, including the project name.
      *
      * @param project The Project instance representing the current project.
      */
+
     private void populateProjectDetails(ProjectModel project) {
         projectName.setText(project.getName());
     }
