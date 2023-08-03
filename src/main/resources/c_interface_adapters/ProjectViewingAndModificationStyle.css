@@ -31,3 +31,7 @@
     -fx-graphic: url('dots.png'); /* Replace 'dot.png' with the path to your image */
     -fx-alignment: center; /* Align the graphic in the center of the button */
 }
+
+.menu-button-custom .arrow {
+    -fx-padding: 0; /* Remove padding to minimize spacing */
+}

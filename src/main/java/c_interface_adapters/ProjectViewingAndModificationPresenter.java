@@ -10,11 +10,14 @@ import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -266,14 +269,23 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         columnBox.setStyle("-fx-background-color: #F6F8FA");
 
-
+        // Set styling of the header.
         HBox columnNameAndOptions = new HBox();
+        HBox.setHgrow(columnNameAndOptions, Priority.ALWAYS);
+
+        columnNameAndOptions.setSpacing(40);
+        columnNameAndOptions.setAlignment(Pos.BASELINE_RIGHT);
+
+        VBox.setMargin(columnNameAndOptions, new Insets(10));
+        VBox.setVgrow(columnNameAndOptions, Priority.ALWAYS);
+
 
         columnBox.setId(column.getID().toString());
 
         // Add label for the name of the column
         Label columnLabel = new Label(column.getName());
         columnLabel.setId("columnTitle");
+        columnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
 
         // Add menu button and menu items.
         MenuButton columnOptions = new MenuButton("");
@@ -294,6 +306,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
         columnNameAndOptions.setId("columnHeader");
+
+        // set styling of menu button
+        columnOptions.getStyleClass().add("menu-button-custom");
 
         // Set the size constraints for columnBox
         VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
@@ -351,6 +366,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,
                     changeTaskDetailsButton, deleteTaskButton);
+            taskOptionsButton.getStyleClass().add("menu-button-custom");
+
 
 
             taskOptionsButton.setStyle("-fx-font-size: 8px;");
