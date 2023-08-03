@@ -181,7 +181,7 @@ public class Project {
      */
     public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
         for (Column column : columns) {
-            if (column.getID().equals(idOfColumnToRemove.toString())) {
+            if (column.getID().equals(idOfColumnToRemove)) {
                 columns.remove(column);
                 return;
             }
