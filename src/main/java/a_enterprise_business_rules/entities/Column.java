@@ -252,10 +252,9 @@ public class Column {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Column)) {
+        if (!(o instanceof Column c)) {
             return false;
         }
-        Column c = (Column) o;
         // Checking the equality of each of the attributes
         boolean allAttributesAreEqual = c.getName().equals(this.getName()) &&
                 c.getID().equals(this.getID()) &&

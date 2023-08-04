@@ -82,7 +82,7 @@ class TaskTest {
     void getCompletionStatus() {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
-        Assertions.assertEquals(t.getCompletionStatus(), false);
+        Assertions.assertFalse(t.getCompletionStatus());
     }
 
     @Test
@@ -93,12 +93,12 @@ class TaskTest {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         t.completeTask();
-        Assertions.assertEquals(t.getCompletionStatus(), true);
+        Assertions.assertTrue(t.getCompletionStatus());
 
         Task s = new Task("test task name", UUID.randomUUID(), "test task description", true,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         s.completeTask();
-        Assertions.assertEquals(s.getCompletionStatus(), true);
+        Assertions.assertTrue(s.getCompletionStatus());
     }
 
     @Test
@@ -109,12 +109,12 @@ class TaskTest {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         t.incompleteTask();
-        Assertions.assertEquals(t.getCompletionStatus(), false);
+        Assertions.assertFalse(t.getCompletionStatus());
 
         Task s = new Task("test task name", UUID.randomUUID(), "test task description", true,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         s.incompleteTask();
-        Assertions.assertEquals(s.getCompletionStatus(), false);
+        Assertions.assertFalse(s.getCompletionStatus());
     }
 
     @Test
@@ -125,12 +125,12 @@ class TaskTest {
         Task t = new Task("test task name", UUID.randomUUID(), "test task description", false,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         t.incompleteTask();
-        Assertions.assertEquals(t.getCompletionStatus(), true);
+        Assertions.assertTrue(t.getCompletionStatus());
 
         Task s = new Task("test task name", UUID.randomUUID(), "test task description", true,
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
         s.incompleteTask();
-        Assertions.assertEquals(s.getCompletionStatus(), false);
+        Assertions.assertFalse(s.getCompletionStatus());
     }
 
     @Test
@@ -179,18 +179,15 @@ class TaskTest {
                 LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
 
         // Reflexive Property
-        Assertions.assertTrue(
-                t1.equals(t1));
+        Assertions.assertEquals(t1, t1);
 
         // Symmetric Property
-        Assertions.assertTrue(
-                t1.equals(t2));
-        Assertions.assertTrue(
-                t2.equals(t1));
+        Assertions.assertEquals(t1, t2);
+        Assertions.assertEquals(t2, t1);
 
         // Transitive Property
         if (t1.equals(t2) && t2.equals(t3)) {
-            Assertions.assertTrue(t1.equals(t3));
+            Assertions.assertEquals(t1, t3);
         }
     }
 }

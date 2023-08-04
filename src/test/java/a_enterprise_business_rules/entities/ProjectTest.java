@@ -246,18 +246,15 @@ class ProjectTest {
         Project p3 = new Project(null, null, null, null);
 
         // Reflexive Property
-        Assertions.assertTrue(
-                p1.equals(p1));
+        Assertions.assertEquals(p1, p1);
 
         // Symmetric Property
-        Assertions.assertTrue(
-                p1.equals(p2));
-        Assertions.assertTrue(
-                p2.equals(p1));
+        Assertions.assertEquals(p1, p2);
+        Assertions.assertEquals(p2, p1);
 
         // Transitive Property
         if (p1.equals(p2) && p2.equals(p3)) {
-            Assertions.assertTrue(p1.equals(p3));
+            Assertions.assertEquals(p1, p3);
         }
     }
 }

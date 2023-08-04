@@ -24,7 +24,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     // The presenter holds the reference to the ProjectViewingAndModificationOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
-    private ProjectViewingAndModificationOutputBoundary presenter;
+    private final ProjectViewingAndModificationOutputBoundary presenter;
 
     /**
      * Initializes the ProjectViewingAndModificationInteractor with the provided presenter.

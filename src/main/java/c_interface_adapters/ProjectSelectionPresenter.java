@@ -138,20 +138,17 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         if (scene != null) {
             // Find the GridPane that holds the projects (projectsGrid)
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    GridPane projectsGrid = (GridPane) node;
+                if (node instanceof GridPane projectsGrid) {
                     // Iterate over the children of the projectsGrid (HBoxes representing projects)
                     for (Node gridChild : projectsGrid.getChildren()) {
-                        if (gridChild instanceof HBox) {
-                            HBox hbox = (HBox) gridChild;
+                        if (gridChild instanceof HBox hbox) {
                             // Check if the HBox ID matches the UUID of the renamed project
                             Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
                             if (hboxId != null && hboxId.equals(projectUUID)) {
                                 // The HBox matches the provided projectUUID
                                 // Now, find the projectNameButton inside the HBox
                                 for (Node hboxChild : hbox.getChildren()) {
-                                    if (hboxChild instanceof Button) {
-                                        Button nameAndDescriptionButton = (Button) hboxChild;
+                                    if (hboxChild instanceof Button nameAndDescriptionButton) {
                                         VBox nameAndDescriptionContainer =
                                                 (VBox) (nameAndDescriptionButton.getGraphic());
 
@@ -193,8 +190,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         if (scene != null) {
             // Find the GridPane that holds the projects (projectsGrid)
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    GridPane projectsGrid = (GridPane) node;
+                if (node instanceof GridPane projectsGrid) {
                     int numColumns = 2; // Specify the number of columns
                     int numRows = projectsGrid.getRowCount(); // Get the number of rows currently in the grid
 
@@ -202,8 +198,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                     Iterator<Node> iterator = projectsGrid.getChildren().iterator();
                     while (iterator.hasNext()) {
                         Node gridChild = iterator.next();
-                        if (gridChild instanceof HBox) {
-                            HBox hbox = (HBox) gridChild;
+                        if (gridChild instanceof HBox hbox) {
                             // Check if the HBox ID matches the UUID of the project to be deleted
                             Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
                             if (hboxId != null && hboxId.equals(projectUUID)) {

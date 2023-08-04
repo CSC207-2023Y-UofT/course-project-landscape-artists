@@ -18,12 +18,12 @@ public class AddColumn {
     /**
      * The Column object representing the new column to be added.
      */
-    private Column column;
+    private final Column column;
 
     /**
      * The current project being worked on. Received from Singleton data class.
      */
-    private Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
+    private final Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
 
     /**
      * Constructs an AddColumn object with the specified column name and column ID.

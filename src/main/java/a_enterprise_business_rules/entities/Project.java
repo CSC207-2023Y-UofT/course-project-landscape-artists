@@ -263,10 +263,9 @@ public class Project {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Project)) {
+        if (!(o instanceof Project p)) {
             return false;
         }
-        Project p = (Project) o;
         // Checking the equality of each of the attributes
         boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
                 p.getID().equals(this.getID()) &&

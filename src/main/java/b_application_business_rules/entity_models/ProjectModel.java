@@ -1,13 +1,11 @@
 package b_application_business_rules.entity_models;
 
 import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Column;
 
 import java.util.*;
 
 /**
- * A project model within the productivity application.
- * 
+ * A project model within the productivity application.*
  * Each project model will have a name, unique identifier, a description, and a
  * list
  * of column models (which contain task modelss).

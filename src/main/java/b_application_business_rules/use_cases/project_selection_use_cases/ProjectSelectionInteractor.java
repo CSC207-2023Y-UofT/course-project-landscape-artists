@@ -24,11 +24,11 @@ import java.util.UUID;
 public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary {
 
     // The currentProjectRepository holds the reference to the CurrentProjectRepository instance.
-    private CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getInstance();
+    private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getInstance();
 
     // The presenter holds the reference to the ProjectSelectionOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
-    private ProjectSelectionOutputBoundary presenter;
+    private final ProjectSelectionOutputBoundary presenter;
     private ProjectModel projectModel;
     private String message;
 

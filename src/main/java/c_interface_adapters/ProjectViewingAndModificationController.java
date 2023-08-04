@@ -132,7 +132,7 @@ public class ProjectViewingAndModificationController {
     private void clickBackButton() {
         interactor.removeCurrentProject();
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+        presenter.setStage(stage);
         presenter.displayAllProjects();
     }
 

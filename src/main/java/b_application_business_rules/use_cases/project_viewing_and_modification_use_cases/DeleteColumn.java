@@ -18,17 +18,17 @@ public class DeleteColumn {
     /**
      * The Column object representing the column to be deleted.
      */
-    private Column column;
+    private final Column column;
 
     /**
      * The ID of the column to be deleted.
      */
-    private UUID idOfColumn;
+    private final UUID idOfColumn;
 
     /**
      * The current project being worked on. Received from Singleton data class.
      */
-    private Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
+    private final Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
 
     /**
      * Constructs a DeleteColumn object with the specified ID of the column to be deleted.

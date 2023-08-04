@@ -43,7 +43,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     private Stage stage;
     private ProjectViewingAndModificationController controller;
 
-    private List<VBox> VBoxContainer = new ArrayList<VBox>();
+    private final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
     private VBox dragDestination;
 
@@ -62,7 +62,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         stage.setTitle("Current project");
         stage.setScene(scene);
         stage.show();
-    };
+    }
 
     public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
         this.controller = controller;
@@ -155,8 +155,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 if (node.getId().equals("scrollPaneContainer")) {
 
-                    if (node instanceof ScrollPane){
-                        ScrollPane scrollPane = (ScrollPane) node;
+                    if (node instanceof ScrollPane scrollPane){
                         HBox columnsContainer = (HBox) scrollPane.getContent();
 
                         Iterator<Node> iterator = columnsContainer.getChildren().iterator();
@@ -169,7 +168,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                                     if (item.getId().equals("columnHeader")) {
                                         Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
                                         columnNameUI.setText(columnName);
-                                    };
+                                    }
                                     break;
 
                                 }
@@ -194,8 +193,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 if (node.getId().equals("scrollPaneContainer")) {
 
-                    if (node instanceof ScrollPane){
-                        ScrollPane scrollPane = (ScrollPane) node;
+                    if (node instanceof ScrollPane scrollPane){
                         HBox columnsContainer = (HBox) scrollPane.getContent();
 
                         Iterator<Node> iterator = columnsContainer.getChildren().iterator();
