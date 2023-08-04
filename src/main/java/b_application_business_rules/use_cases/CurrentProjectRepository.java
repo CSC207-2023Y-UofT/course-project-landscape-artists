@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases;
 
+import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.entity_models.ProjectModel;
 
 import java.util.UUID;
@@ -30,6 +31,7 @@ public class CurrentProjectRepository {
 
     public void deleteProject(UUID projectID) {}
 
-    public void getProjectByID(UUID projectID) {
+    public Project getProjectByID(UUID projectID) {
+        return null;
     }
 }

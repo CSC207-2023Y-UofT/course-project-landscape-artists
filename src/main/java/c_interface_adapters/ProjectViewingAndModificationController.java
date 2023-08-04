@@ -8,6 +8,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -158,5 +159,37 @@ public class ProjectViewingAndModificationController {
         String columnName = presenter.displayAddColumnPopup();
         interactor.addColumn(columnName);
     }
-
+//    public void moveTask(TaskModel task, VBox targetColumn) {
+//        // Get the current column containing the task
+//        VBox sourceColumn = findColumnContainingTask(task);
+//
+//        // If the task is already in the target column, do nothing
+//        if (sourceColumn == targetColumn) {
+//            return;
+//        }
+//
+//        // Remove the task from the source column
+//        sourceColumn.getChildren().removeIf(node -> node instanceof HBox && ((HBox) node).getUserData() == task);
+//
+//        // Add the task to the target column
+//        targetColumn.getChildren().add(createCard(task));
+//
+//        // Perform any other necessary actions based on your requirements
+//    }
+//
+//    private Node createCard(TaskModel task) {
+//
+//    }
+//
+//    private VBox findColumnContainingTask(TaskModel task) {
+//        List<Node> columns = columnsContainer.getChildren();
+//        for (VBox column : columns) {
+//            for (Node node : column.getChildren()) {
+//                if (node instanceof HBox && ((HBox) node).getUserData() == task) {
+//                    return column;
+//                }
+//            }
+//        }
+//        return null; // Task not found in any column
+//    }
 }

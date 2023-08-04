@@ -29,6 +29,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
     // The presenter holds the reference to the ProjectSelectionOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
     private ProjectSelectionOutputBoundary presenter;
+    private ProjectModel projectModel;
+    private String message;
 
     /**
      * Initializes the ProjectSelectionInteractor with the provided presenter.
@@ -73,6 +75,17 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         presenter.displayCurrentProject(projectModel);
     }
 
+    /**
+     *
+     */
+    @Override
+    public void createProject() {
+
+    }
+
+    /**
+     * @param projectModel
+     */
     @Override
     public void createProject(ProjectModel projectModel) {
 
@@ -119,11 +132,17 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         presenter.displayDeletedProject(projectModel);
     }
 
+    /**
+     * @param message
+     */
     @Override
     public void projectDeletionFailed(String message) {
 
     }
 
+    /**
+     * @param projectID
+     */
     @Override
     public void projectDeleted(UUID projectID) {
 
