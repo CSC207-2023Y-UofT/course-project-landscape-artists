@@ -32,6 +32,14 @@ public class CreateProject implements ProjectSelectionInputBoundary {
 
     }
 
+    /**
+     *
+     */
+    @Override
+    public void createProject() {
+
+    }
+
     @Override
     public void createProject(ProjectModel projectModel){
         try{

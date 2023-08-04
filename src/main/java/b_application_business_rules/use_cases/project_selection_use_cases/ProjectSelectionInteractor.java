@@ -58,14 +58,6 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
     }
 
     /**
-     * @param project
-     */
-    @Override
-    public void setCurrentProject(Project project) {
-
-    }
-
-    /**
      * Creates a new project. This method is called when the user creates a new project in the UI.
      * It interacts with the necessary use cases and gateway to create the project.
      *
@@ -81,6 +73,14 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
                 projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
+    }
+
+    /**
+     *
+     */
+    @Override
+    public void createProject() {
+
     }
 
     /**
