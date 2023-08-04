@@ -60,6 +60,25 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         //calls presenter to display message
         presenter.displayNewTask(idOfColumn, newTask);
     }
+
+    /**
+     * The method to add a column to the project.
+     *
+     * @param columnName the name of the column to be created.
+     */
+    @Override
+    public void addColumn(String columnName) {
+        // Generate random UUID for column
+        UUID idOfColumn = UUID.randomUUID();
+        // Create ColumnModel to send data to presenter and to use case class.
+        ColumnModel columnModel = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
+        // initializing use case to add column and initiate adding to the column
+        AddColumn addColumnUseCase = new AddColumn(columnModel);
+        addColumnUseCase.addColumn();
+        // Send data to presenter.
+        presenter.displayNewColumn(columnModel);
+    }
+
     /**
      * The method to add a column to the project.
      *
@@ -144,25 +163,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void deleteProject(ProjectModel project, UUID projectId) {
 
-    }
-
-    /**
-     * The method to add a column to the project.
-     *
-     * @param columnName the name of the column to be created.
-     */
-    @Override
-    public void addColumn(String columnName) {
-        // Genereate random UUID for column
-        UUID idOfColumn = UUID.randomUUID();
-
-        // initializing use case to add column and initiate adding to the columm
-        AddColumn addColumnUseCase = new AddColumn(columnName, idOfColumn);
-        addColumnUseCase.addColumn();
-        // Creates the ColumnModel to send data to presenter.
-        ColumnModel columnModelForPresenter = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
-        // Send data to presenter.
-        presenter.displayNewColumn(columnModelForPresenter);
     }
 
 
