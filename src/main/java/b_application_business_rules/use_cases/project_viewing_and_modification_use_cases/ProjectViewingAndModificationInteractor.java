@@ -5,6 +5,7 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import c_interface_adapters.view_models.TaskViewModel;
 
@@ -46,7 +47,18 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
-
+        //Generate random UUID for task
+        UUID taskID = UUID.randomUUID();
+        //Create TaskModel with given info
+        TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
+        //initialize use case class
+        AddTask useCase = new AddTask(newTaskModel);
+        //call use case class to create a new task and save it to the database
+        useCase.addTask();
+        //Initialize TaskViewModel
+        TaskViewModel newTask = new TaskViewModel(newTaskModel);
+        //calls presenter to display message
+        presenter.displayNewTask(idOfColumn, newTask);
     }
 
     @Override
@@ -65,7 +77,16 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void deleteTask(TaskModel task, UUID TaskUIid) {
-
+        DeleteTask useCase = new DeleteTask(task, TaskUIid);
+        try {
+            useCase.deleteTask();
+            TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
+                    task.getCompletionStatus(), task.getDueDateTime());
+            presenter.displayRemovedTask(TaskUIid, newTask);
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
