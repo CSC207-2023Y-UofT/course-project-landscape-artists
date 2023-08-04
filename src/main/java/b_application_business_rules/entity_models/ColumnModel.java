@@ -1,8 +1,14 @@
 package b_application_business_rules.entity_models;
 
-import java.util.*;
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Task;
 
-import a_enterprise_business_rules.entities.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
 
 /**
  * A column model within the productivity application.
@@ -52,8 +58,7 @@ public class ColumnModel {
         List<Task> tasks = column.getTasks(); // Get the tasks
         // Converts Tasks to TaskModels and puts it in the taskModels attribute
         for (int i = 0; i < tasks.size(); i++) {
-            this.taskModels.add(
-                    new TaskModel(tasks.get(i)));
+            this.addTaskModel(new TaskModel(tasks.get(i)));
         }
 
         this.ID = column.getID();

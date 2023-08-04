@@ -1,14 +1,14 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
+
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
+
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Project;
-import c_interface_adapters.view_models.ColumnViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -37,6 +37,11 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      */
     public ProjectSelectionInteractor(ProjectSelectionOutputBoundary presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setCurrentProject(Project project) {
+
     }
 
     /**
@@ -69,6 +74,11 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
     }
 
     @Override
+    public void createProject(ProjectModel projectModel) {
+
+    }
+
+    @Override
     public void openProject(UUID currentProjectID) {
         // TODO: Pass the ProjectModel of the Project with the given UUID to the presenter.
         // TODO: i.e. presenter.displayCurrentProjct(projectModel);
@@ -84,7 +94,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
                 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
         );
         ProjectModel projectModel = new ProjectModel(
-                "Project P1", UUID.randomUUID(), "This is some description", ColumnsList);
+                "Project P1", UUID.randomUUID(), "", ColumnsList);
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
     }
@@ -109,12 +119,13 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         presenter.displayDeletedProject(projectModel);
     }
 
-    /**
-     * @param columnID
-     * @param task
-     */
     @Override
-    public void deleteTask(UUID columnID, TaskModel task) {
+    public void projectDeletionFailed(String message) {
+
+    }
+
+    @Override
+    public void projectDeleted(UUID projectID) {
 
     }
 }

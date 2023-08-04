@@ -2,7 +2,13 @@ package c_interface_adapters.view_models;
 
 import c_interface_adapters.ProjectSelectionViewModelIterator;
 
-import java.util.*;
+import java.util.List;
+import java.util.HashMap;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
+
 
 /**
  * This model will be given passed between the Interface Adapters layer

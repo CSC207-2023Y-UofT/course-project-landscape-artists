@@ -2,12 +2,14 @@ package d_frameworks_and_drivers.database_management.DBControllers;
 
 import java.io.File;
 
-
-import a_enterprise_business_rules.entities.*;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import d_frameworks_and_drivers.database_management.DatabaseInitializer.ColumnDBInitializer;
 import d_frameworks_and_drivers.database_management.DatabaseInitializer.ProjectDBInitializer;
 import d_frameworks_and_drivers.database_management.DatabaseInitializer.TaskDBInitializer;
+import a_enterprise_business_rules.entities.*;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
@@ -19,9 +21,9 @@ import java.util.UUID;
 
 public class DBManagerRemoveController implements IDBRemove {
     /**
-     * @param project
+     * @param projectModel
      */
-    public void DBRemove(Project project, UUID uuid) {
+    public void DBRemove(ProjectModel projectModel, UUID uuid) {
         File tempFile = new File("DatabaseFiles/Projects/Projects.csv");
         tempFile.renameTo(new File("DatabaseFiles/Projects/ProjectsTemp.csv"));
         ProjectDBInitializer projectDBInitializer = new ProjectDBInitializer();
@@ -31,9 +33,9 @@ public class DBManagerRemoveController implements IDBRemove {
     }
 
     /**
-     * @param task
+     * @param taskModel
      */
-    public void DBRemove(Task task, UUID uuid) {
+    public void DBRemove(TaskModel taskModel, UUID uuid) {
         File tempFile = new File("DatabaseFiles/Columns/Columns.csv");
         tempFile.renameTo(new File("DatabaseFiles/Columns/ColumnsTemp.csv"));
         ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
@@ -44,9 +46,9 @@ public class DBManagerRemoveController implements IDBRemove {
     }
 
     /**
-     * @param column
+     * @param columnModel
      */
-    public void DBRemove(Column column, UUID uuid) {
+    public void DBRemove(ColumnModel columnModel, UUID uuid) {
         File tempFile = new File("DatabaseFiles/Tasks/Tasks.csv");
         tempFile.renameTo(new File("DatabaseFiles/Tasks/TasksTemp.csv"));
         TaskDBInitializer taskDBInitializer = new TaskDBInitializer();

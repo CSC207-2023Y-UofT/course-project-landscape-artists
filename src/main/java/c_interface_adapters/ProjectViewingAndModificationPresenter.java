@@ -449,6 +449,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
+
     public String displayAddColumnPopup() {
         // Create a new stage for the popup
         Stage popupStage = new Stage();

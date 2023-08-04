@@ -1,8 +1,15 @@
 package c_interface_adapters.view_models;
 
-import java.util.*;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.ColumnModel;
 
-import b_application_business_rules.entity_models.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
+
 
 /**
  * A project view model within the productivity application.
@@ -54,7 +61,7 @@ public class ProjectViewModel {
     /**
      * Creates a new project view model, based on the inputted project.
      * 
-     * @param project The project to view model.
+     * @param projectModel The project to view model.
      */
     public ProjectViewModel(ProjectModel projectModel) {
         this.name = projectModel.getName();
@@ -64,8 +71,7 @@ public class ProjectViewModel {
         // Converts Columns to ColumnViewModels and puts it in the columnViewModels
         // attribute
         for (int i = 0; i < columnModels.size(); i++) {
-            this.columnViewModels.add(
-                    new ColumnViewModel(columnModels.get(i)));
+            this.addColumnViewModel(new ColumnViewModel(columnModels.get(i)));
         }
 
         this.description = projectModel.getDescription();
@@ -176,14 +182,36 @@ public class ProjectViewModel {
      * @throws NoSuchElementException Throws exception when the specified column
      *                                view model to
      *                                remove is not in the column view model.
+     * @throws IllegalArgumentException Throws exception when the specified index is out
+     *                                  of bounds.
      */
     public void moveColumnViewModelToPosition(ColumnViewModel columnViewModelToMove, int positionToMoveTo)
-            throws NoSuchElementException {
+            throws NoSuchElementException, IllegalArgumentException {
         // The moving of the column view models is done by removing the object from the
         // List,
         // and then adding it back to the List at the indicated index.
-        this.removeColumnViewModel(columnViewModelToMove);
-        this.columnViewModels.add(positionToMoveTo, columnViewModelToMove);
+        int columnToMoveIndex = this.columnViewModels.indexOf(columnViewModelToMove);
+        int columnViewModelsNumber = this.columnViewModels.size();
+
+        // Validity check
+        if (columnViewModelToMove == null){
+            throw new IllegalArgumentException("Column cannot be null.");
+        }
+
+        if (positionToMoveTo < 0||positionToMoveTo >= columnViewModelsNumber){
+            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
+                    "It must be between 0 and " +(columnViewModelsNumber - 1) + " inclusive.");
+        }
+
+        // Moving the column
+        if (columnToMoveIndex != positionToMoveTo) {
+            // If the column is already at the position, no need to move.
+
+            // removes shifting columnViewModels to the right of columnToMove to the left i-1
+            this.removeColumnViewModel(columnViewModelToMove);
+            // adds column shifting columnViewModels to the right of columnToMove to the right i+1
+            this.columnViewModels.add(positionToMoveTo, columnViewModelToMove);
+        }
     }
 
     /**

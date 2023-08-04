@@ -1,8 +1,14 @@
 package b_application_business_rules.entity_models;
 
-import java.util.*;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Column;
 
-import a_enterprise_business_rules.entities.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
 
 /**
  * A project model within the productivity application.
@@ -38,9 +44,9 @@ public class ProjectModel {
     /**
      * Creates a new project model, based in the inputted values.
      * 
-     * @param name         The name of the task models.
-     * @param ID           The unique identifier for the task models.
-     * @param description  A description of the task models.
+     * @param name         The name of the project model.
+     * @param ID           The unique identifier for the project model.
+     * @param description  A description of the project model.
      * @param columnModels The column models of the project model.
      */
     public ProjectModel(String name, UUID ID, String description, List<ColumnModel> columnModels) {
@@ -53,17 +59,16 @@ public class ProjectModel {
     /**
      * Creates a new project model, based on the inputted project.
      * 
-     * @param project The project to model.
+     * @param project The project instance.
      */
     public ProjectModel(Project project) {
         this.name = project.getName();
 
         // Converting the List of Column objects to a List of ColumnModel objects
-        List<Column> columns = project.getColumns(); // Get the tasks
+        List<Column> columns = project.getColumns(); // Get the columns
         // Converts Columns to ColumnModels and puts it in the columnModels attribute
         for (int i = 0; i < columns.size(); i++) {
-            this.columnModels.add(
-                    new ColumnModel(columns.get(i)));
+            this.addColumnModel(new ColumnModel(columns.get(i)));
         }
 
         this.description = project.getDescription();
@@ -169,13 +174,35 @@ public class ProjectModel {
      * @throws NoSuchElementException Throws exception when the specified column
      *                                model to
      *                                remove is not in the column model.
+     * @throws IllegalArgumentException Throws exception when the specified index is out
+     *      *                                  of bounds.
      */
     public void moveColumnModelToPosition(ColumnModel columnModelToMove, int positionToMoveTo)
-            throws NoSuchElementException {
+            throws NoSuchElementException, IllegalArgumentException{
         // The moving of the column models is done by removing the object from the List,
         // and then adding it back to the List at the indicated index.
-        this.removeColumnModel(columnModelToMove);
-        this.columnModels.add(positionToMoveTo, columnModelToMove);
+        int columnToMoveIndex = this.columnModels.indexOf(columnModelToMove);
+        int columnModelsNumber = this.columnModels.size();
+
+        // Validity check
+        if (columnModelToMove == null){
+            throw new IllegalArgumentException("Column cannot be null.");
+        }
+
+        if (positionToMoveTo < 0||positionToMoveTo >= columnModelsNumber){
+            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
+                    "It must be between 0 and " +(columnModelsNumber - 1) + " inclusive.");
+        }
+
+        // Moving the column
+        if (columnToMoveIndex != positionToMoveTo) {
+            // If the column is already at the position, no need to move.
+
+            // removes shifting columns to the right of columnToMove to the left i-1
+            this.removeColumnModel(columnModelToMove);
+            // adds column shifting columns to the right of columnToMove to the right i+1
+            this.columnModels.add(positionToMoveTo, columnModelToMove);
+        }
     }
 
     /**

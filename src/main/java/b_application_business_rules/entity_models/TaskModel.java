@@ -1,9 +1,9 @@
 package b_application_business_rules.entity_models;
 
-import java.time.LocalDateTime;
-import java.util.*;
+import a_enterprise_business_rules.entities.Task;
 
-import a_enterprise_business_rules.entities.*;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * A task model within in the productivity application.
@@ -124,9 +124,9 @@ public class TaskModel {
     }
 
     /**
-     * Gets whether or not the task model is completed.
+     * Gets whether the task model is completed.
      * 
-     * @return a boolean, telling whether or not the task model has been completed.
+     * @return a boolean, telling whether the task model has been completed.
      */
     public boolean getCompletionStatus() {
         return this.isCompleted;

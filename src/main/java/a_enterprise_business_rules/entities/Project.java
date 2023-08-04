@@ -1,7 +1,12 @@
 
 package a_enterprise_business_rules.entities;
 
-import java.util.*;
+import java.util.List;
+import java.util.Collections;
+
+import java.util.UUID;
+
+import java.util.NoSuchElementException;
 
 /**
  * A project within the productivity application.
@@ -140,18 +145,41 @@ public class Project {
     }
 
     /**
-     * Moves a column to a specific position in the column.
+     * Moves a column to a specific position in the columns of the project .
      *
      * @param columnToMove     The column that needs to be moved.
      * @param positionToMoveTo The position/index to move the column to.
      * @throws NoSuchElementException Throws exception when the specified column to
-     *                                remove is not in the column.
+     *                                remove is not in the columns of the project.
+     * @throws IllegalArgumentException Throws exception when the specified index is out
+     *                                  of bounds.
      */
-    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo) throws NoSuchElementException {
-        // The moving of the columns is done by removing the object from the List,
-        // and then adding it back to the List at the indicated index.
-        this.removeColumn(columnToMove);
-        this.columns.add(positionToMoveTo, columnToMove);
+    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo)
+            throws NoSuchElementException, IllegalArgumentException {
+        // The moving of the columns is done by removing the object from the List
+        // and then adding it back at the indicated index
+        int columnToMoveIndex = this.columns.indexOf(columnToMove);
+        int columnsNumber = this.columns.size();
+
+        // Validity check
+        if (columnToMove == null){
+            throw new IllegalArgumentException("Column cannot be null.");
+        }
+
+        if (positionToMoveTo < 0||positionToMoveTo >= columnsNumber){
+            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
+                    "It must be between 0 and " +(columnsNumber - 1) + " inclusive.");
+        }
+
+        // Moving the column
+        if (columnToMoveIndex != positionToMoveTo) {
+            // If the column is already at the position, no need to move.
+
+            // removes shifting columns to the right of columnToMove to the left i-1
+            this.removeColumn(columnToMove);
+            // adds column shifting columns to the right of columnToMove to the right i+1
+            this.columns.add(positionToMoveTo, columnToMove);
+        }
     }
 
     /**
@@ -226,4 +254,23 @@ public class Project {
                 this.columns, this.columns.indexOf(col1), this.columns.indexOf(col2));
     }
 
+    /**
+     * Returns whether this Project and another object are equal.
+     * 
+     * @param o The object to compare to.
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Project)) {
+            return false;
+        }
+        Project p = (Project) o;
+        // Checking the equality of each of the attributes
+        boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
+                p.getID().equals(this.getID()) &&
+                p.getDescription().equals(this.getDescription()) &&
+                p.getColumns().equals(this.getColumns());
+
+        return allAttributesAreEqual;
+    }
 }
