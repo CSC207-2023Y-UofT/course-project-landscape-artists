@@ -141,7 +141,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     @Override
     public void displayRemovedTask(UUID taskID, TaskViewModel task) {
-
+        System.out.println("hello");
     }
 
     @Override
@@ -398,7 +398,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 projectViewingAndModificationController.changeTaskDetails(
                         task, hbox);});
             deleteTaskButton.setOnAction(event -> {
-                projectViewingAndModificationController.deleteTask(task, hbox);});
+                projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
+                        UUID.fromString(columnBox.getId()));});
 
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,

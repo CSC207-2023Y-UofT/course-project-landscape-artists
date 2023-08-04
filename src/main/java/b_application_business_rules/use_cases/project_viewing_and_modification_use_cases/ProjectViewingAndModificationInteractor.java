@@ -102,21 +102,23 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void deleteTask(TaskModel task, UUID TaskUIid) {
-        DeleteTask useCase = new DeleteTask(task, TaskUIid);
-
+    public void deleteTask(TaskModel task, UUID taskID, UUID ColumnID) {
+        // Initialize Use Case Class
+        DeleteTask useCase = new DeleteTask(task, taskID, ColumnID);
+        // Delete Task
         useCase.deleteTask();
-        TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
+
+        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
                 task.getCompletionStatus(), task.getDueDateTime());
-        presenter.displayRemovedTask(TaskUIid, newTask);
+        presenter.displayRemovedTask(taskID, newTask);
 
     }
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to make
      * changes to the entities and database then calls the presenter to display the updated changes
-     * @param task
-     * @param TaskUIid
+     * @param task Task Model
+     * @param TaskUIid ID of task entity
      */
     @Override
     public void changeTaskDetails(TaskModel task, UUID TaskUIid) {

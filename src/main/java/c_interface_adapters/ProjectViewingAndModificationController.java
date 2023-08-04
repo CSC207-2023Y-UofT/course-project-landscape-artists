@@ -78,8 +78,8 @@ public class ProjectViewingAndModificationController {
     }
 
 
-    void deleteTask(TaskModel task, HBox hbox) {
-//        interactor.deleteTask(task, hbox);
+    void deleteTask(TaskModel task, UUID hBoxID, UUID columnBoxID) {
+        interactor.deleteTask(task, hBoxID, columnBoxID);
     }
 
     void changeTaskDetails(TaskModel task, HBox hbox) {
