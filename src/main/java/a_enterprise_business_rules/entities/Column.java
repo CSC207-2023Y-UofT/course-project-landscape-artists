@@ -1,11 +1,6 @@
 package a_enterprise_business_rules.entities;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 /**
@@ -262,5 +257,38 @@ public class Column {
 
         return allAttributesAreEqual;
     }
+
+    /**
+     * Searches an arraylist of columns and returns one that has the same ID as the given ID. Otherwise, returns null.
+     *
+     * @param columnID
+     * @param listOfColumns
+     */
+    public static Column IDToColumn(UUID columnID, ArrayList<Column> listOfColumns) {
+        int i = 0;
+        boolean columnFound = false;
+        Column column = null;
+        // loop until the right column is found
+        while (listOfColumns.size() > i && !columnFound) {
+            if (columnID.equals(listOfColumns.get(i).getID())) {
+                columnFound = true;
+                column = listOfColumns.get(i);
+            }
+            i++;
+        }
+        return column;
+    }
+// testing IDToColumn helper function (Success!)
+//    public static void main(String[] args) {
+//        UUID id1 = UUID.randomUUID();
+//        UUID id2 = UUID.randomUUID();
+//        Column c1 = new Column("column 1", new ArrayList<Task>(), id1);
+//        Column c2 = new Column("column 2", new ArrayList<Task>(), id2);
+//        ArrayList<Column> listOfColumns = new ArrayList<Column>();
+//        listOfColumns.add(c1);
+//        listOfColumns.add(c2);
+//        Column found = Column.IDToColumn(id2, listOfColumns);
+//        System.out.println(c2.equals(found));
+//    }
 
 }

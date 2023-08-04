@@ -5,6 +5,7 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import c_interface_adapters.view_models.TaskViewModel;
 
@@ -46,8 +47,38 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
-
+        //Generate random UUID for task
+        UUID taskID = UUID.randomUUID();
+        //Create TaskModel with given info
+        TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
+        //initialize use case class
+        AddTask useCase = new AddTask(idOfColumn, newTaskModel);
+        //call use case class to create a new task and save it to the database
+        useCase.addTask();
+        //Initialize TaskViewModel
+        TaskViewModel newTask = new TaskViewModel(newTaskModel);
+        //calls presenter to display message
+        presenter.displayNewTask(idOfColumn, newTask);
     }
+
+    /**
+     * The method to add a column to the project.
+     *
+     * @param columnName the name of the column to be created.
+     */
+    @Override
+    public void addColumn(String columnName) {
+        // Generate random UUID for column
+        UUID idOfColumn = UUID.randomUUID();
+        // Create ColumnModel to send data to presenter and to use case class.
+        ColumnModel columnModel = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
+        // initializing use case to add column and initiate adding to the column
+        AddColumn addColumnUseCase = new AddColumn(columnModel);
+        addColumnUseCase.addColumn();
+        // Send data to presenter.
+        presenter.displayNewColumn(columnModel);
+    }
+
     /**
      * The method to add a column to the project.
      *
@@ -71,15 +102,23 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void deleteTask(TaskModel task, UUID TaskUIid) {
+    public void deleteTask(TaskModel task, UUID taskID, UUID ColumnID) {
+        // Initialize Use Case Class
+        DeleteTask useCase = new DeleteTask(task, taskID, ColumnID);
+        // Delete Task
+        useCase.deleteTask();
+
+        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
+                task.getCompletionStatus(), task.getDueDateTime());
+        presenter.displayRemovedTask(taskID, newTask);
 
     }
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to make
      * changes to the entities and database then calls the presenter to display the updated changes
-     * @param task
-     * @param TaskUIid
+     * @param task Task Model
+     * @param TaskUIid ID of task entity
      */
     @Override
     public void changeTaskDetails(TaskModel task, UUID TaskUIid) {
@@ -123,25 +162,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void deleteProject(ProjectModel project, UUID projectId) {
 
-    }
-
-    /**
-     * The method to add a column to the project.
-     *
-     * @param columnName the name of the column to be created.
-     */
-    @Override
-    public void addColumn(String columnName) {
-        // Genereate random UUID for column
-        UUID idOfColumn = UUID.randomUUID();
-
-        // initializing use case to add column and initiate adding to the columm
-        AddColumn addColumnUseCase = new AddColumn(columnName, idOfColumn);
-        addColumnUseCase.addColumn();
-        // Creates the ColumnModel to send data to presenter.
-        ColumnModel columnModelForPresenter = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
-        // Send data to presenter.
-        presenter.displayNewColumn(columnModelForPresenter);
     }
 
 
