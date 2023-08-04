@@ -60,6 +60,21 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         initializeScene(stage);
     }
 
+    @Override
+    public void displayCurrentProject() {
+
+    }
+
+    @Override
+    public void projectCreated(ProjectModel projectModel) {
+
+    }
+
+    @Override
+    public void projectCreationFailed(String errorMessage) {
+
+    }
+
     /**
      *
      */

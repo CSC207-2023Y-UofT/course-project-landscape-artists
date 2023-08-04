@@ -1,14 +1,14 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
+
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
+
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Project;
-import c_interface_adapters.view_models.ColumnViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +29,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
     // The presenter holds the reference to the ProjectSelectionOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
     private ProjectSelectionOutputBoundary presenter;
+    private ProjectModel projectModel;
+    private String message;
 
     /**
      * Initializes the ProjectSelectionInteractor with the provided presenter.
@@ -37,6 +39,11 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
      */
     public ProjectSelectionInteractor(ProjectSelectionOutputBoundary presenter) {
         this.presenter = presenter;
+    }
+
+    @Override
+    public void setCurrentProject(Project project) {
+
     }
 
     /**
