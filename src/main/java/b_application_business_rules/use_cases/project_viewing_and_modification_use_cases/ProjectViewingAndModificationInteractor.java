@@ -52,7 +52,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         //Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
         //initialize use case class
-        AddTask useCase = new AddTask(newTaskModel);
+        AddTask useCase = new AddTask(idOfColumn, newTaskModel);
         //call use case class to create a new task and save it to the database
         useCase.addTask();
         //Initialize TaskViewModel
@@ -104,15 +104,12 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void deleteTask(TaskModel task, UUID TaskUIid) {
         DeleteTask useCase = new DeleteTask(task, TaskUIid);
-        try {
-            useCase.deleteTask();
-            TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
-                    task.getCompletionStatus(), task.getDueDateTime());
-            presenter.displayRemovedTask(TaskUIid, newTask);
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+
+        useCase.deleteTask();
+        TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
+                task.getCompletionStatus(), task.getDueDateTime());
+        presenter.displayRemovedTask(TaskUIid, newTask);
+
     }
 
     /**
