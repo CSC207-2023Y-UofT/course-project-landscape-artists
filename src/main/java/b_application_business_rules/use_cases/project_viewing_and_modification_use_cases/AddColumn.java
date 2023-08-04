@@ -42,7 +42,7 @@ public class AddColumn {
         // Create the column entity
         Column column = createColumnEntity(columnModel);
         // Add the column to the currently opened Project entity.
-        currentProject.addColumn(new ColumnModel(column));
+        currentProject.addColumn(column);
 
         // Update database to add the column.
         IDBInsert dbInsertManager = new DBManagerInsertController();
@@ -54,7 +54,7 @@ public class AddColumn {
      * @param columnModel
      */
 
-    private Column createColumnEntity(ColumnModel columnModel) {
+    public static Column createColumnEntity(ColumnModel columnModel) {
         return new Column(columnModel.getName(), new ArrayList<Task>(), columnModel.getID());
     }
 }
