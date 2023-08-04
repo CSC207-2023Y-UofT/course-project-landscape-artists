@@ -15,11 +15,16 @@ public interface DataAccessInterface {
 
     }
 
+
+    default void addNewTask(TaskModel newTask) {
+
+    }
+
     default void updateTaskDetail(UUID taskID, TaskModel updatedTask) {
 
     }
 
-    default void deleteTask(UUID taskID, TaskModel deletedTask) {
+    default void removeTask(UUID taskID, TaskModel deletedTask) {
 
     }
 
@@ -30,5 +35,4 @@ public interface DataAccessInterface {
     default void deleteColumn(UUID columnID, ColumnModel deletedColumn) {
 
     }
-
 }

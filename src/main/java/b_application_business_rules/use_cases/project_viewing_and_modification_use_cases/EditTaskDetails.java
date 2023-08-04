@@ -1,17 +1,12 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
 import b_application_business_rules.DataAccessInterface;
-import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
-import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.factories.TaskFactory;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import c_interface_adapters.ProjectViewingAndModificationController;
-import c_interface_adapters.ProjectViewingAndModificationPresenter;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
@@ -67,7 +62,7 @@ public class EditTaskDetails implements DataAccessInterface {
         String oldTaskDescription = oldTaskInfo.get(2);
         boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
         LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
-        TaskModel oldTask = TaskFactory.create(oldTaskName, taskID,
+        TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
                 oldTaskDescription, oldTaskStatus, oldTaskDate );
 
         //Removing the old task

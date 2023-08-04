@@ -80,8 +80,8 @@ public class ProjectViewingAndModificationController {
     }
 
 
-    void deleteTask(TaskModel task, HBox hbox) {
-//        interactor.deleteTask(task, hbox);
+    void deleteTask(TaskModel task, UUID hBoxID, UUID columnBoxID) {
+        interactor.deleteTask(task, hBoxID, columnBoxID);
     }
 
     /**
@@ -129,14 +129,14 @@ public class ProjectViewingAndModificationController {
      * Updates the Presenter so an array of Task instances belonging to columnBox is added to the
      * GUI.
      *
-     * @param columnBox      The VBox representing the Column UI where the task will be added.
+     * @param columnBoxID      The VBox representing the Column UI where the task will be added.
      * @param taskName       The name of the new task.
      * @param taskDescription The description of the new task.
      * @param dueDate        The due date of the new task.
      */
-    void handleAddTaskToColumn(VBox columnBox, String taskName, String taskDescription,
+    void handleAddTaskToColumn(String columnBoxID, String taskName, String taskDescription,
                                LocalDateTime dueDate) {
-//        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
+        interactor.addNewTask(UUID.fromString(columnBoxID), taskName, taskDescription, dueDate);
     }
 
     //void handleChangeTaskDetails(VBox columnBox, String taskName, String taskDescription,
