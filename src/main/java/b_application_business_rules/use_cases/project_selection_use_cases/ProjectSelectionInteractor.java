@@ -1,14 +1,14 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
+
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
+
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
-import a_enterprise_business_rules.entities.Project;
-import c_interface_adapters.view_models.ColumnViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +39,11 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         this.presenter = presenter;
     }
 
+    @Override
+    public void setCurrentProject(Project project) {
+
+    }
+
     /**
      * Sets the current project in the CurrentProjectRepository and notifies the presenter to display it.
      * This method is called when a project is selected by the user in the UI.
@@ -66,6 +71,11 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
                 projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
         setCurrentProject(projectModel);
         presenter.displayCurrentProject(projectModel);
+    }
+
+    @Override
+    public void createProject(ProjectModel projectModel) {
+
     }
 
     @Override
@@ -107,6 +117,16 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
         ProjectModel projectModel = new ProjectModel(
                 "Revised project P1", projectUUID, "", new ArrayList<>());
         presenter.displayDeletedProject(projectModel);
+    }
+
+    @Override
+    public void projectDeletionFailed(String message) {
+
+    }
+
+    @Override
+    public void projectDeleted(UUID projectID) {
+
     }
 }
 

@@ -6,6 +6,7 @@ package b_application_business_rules.boundaries;//this boundary will be the outp
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.ColumnViewModel;
