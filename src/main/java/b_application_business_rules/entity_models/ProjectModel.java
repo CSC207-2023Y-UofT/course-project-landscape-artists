@@ -1,18 +1,11 @@
 package b_application_business_rules.entity_models;
 
 import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Column;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
- * A project model within the productivity application.
- * 
+ * A project model within the productivity application.*
  * Each project model will have a name, unique identifier, a description, and a
  * list
  * of column models (which contain task modelss).
@@ -65,10 +58,10 @@ public class ProjectModel {
         this.name = project.getName();
 
         // Converting the List of Column objects to a List of ColumnModel objects
-        List<Column> columns = project.getColumns(); // Get the columns
+        List<ColumnModel> columns = project.getColumns(); // Get the columns
         // Converts Columns to ColumnModels and puts it in the columnModels attribute
-        for (int i = 0; i < columns.size(); i++) {
-            this.addColumnModel(new ColumnModel(columns.get(i)));
+        for (ColumnModel cols : columns) {
+            this.addColumnModel(cols);
         }
 
         this.description = project.getDescription();
@@ -218,7 +211,7 @@ public class ProjectModel {
             // the java.util.List.remove method returns a bool,
             // indicating whether the object was removed or not.
             // If it wasn't removed, we want to throw an exception,
-            // saying that the column model isn't in the column model list, thus, it can't be
+            // saying that the task models isn't in the column model, thus, it can't be
             // removed.
             // If it was removed, we don't have to do anything extra.
             throw new NoSuchElementException(
@@ -249,7 +242,7 @@ public class ProjectModel {
             exceptionMessage += col2.toString();
         }
 
-        // Throws the exception if at least 1 of the column model are missing,
+        // Throws the exception if at least 1 of the task modelss are missing,
         // using the exception message created above
         if (!col1InColumnModel || !col2InColumnModel) {
             throw new NoSuchElementException(exceptionMessage);
@@ -260,5 +253,20 @@ public class ProjectModel {
                 this.columnModels, this.columnModels.indexOf(col1), this.columnModels.indexOf(col2));
     }
 
+    /**
+     * Returns a Project Entity from Project Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Project Entity.
+     */
+    public Project getProjectEntity() {
+        List<ColumnModel> columnEntities = new ArrayList<>();
+        for (ColumnModel columnModel: columnModels) {
+            columnEntities.add(columnModel);
+        }
+
+        return new Project(name, ID, description, columnEntities);
+    }
 
 }

@@ -19,7 +19,7 @@ public class EntityIDsToListController implements IEntityIDsToList {
         String columnModelListString = "";
 
         for ( ColumnModel col: columnModelList ) {
-            columnModelListString.join(", ", col.getID().toString());
+            String.join(", ", col.getID().toString());
         }
         return columnModelListString;
     }
@@ -35,7 +35,7 @@ public class EntityIDsToListController implements IEntityIDsToList {
         String taskModelListString = "";
 
         for ( TaskModel task: taskModelList ) {
-            taskModelListString.join(", ", task.getID().toString());
+            String.join(", ", task.getID().toString());
         }
         return taskModelListString;
     }

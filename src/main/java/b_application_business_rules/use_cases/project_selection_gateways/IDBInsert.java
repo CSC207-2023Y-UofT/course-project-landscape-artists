@@ -6,12 +6,12 @@ import b_application_business_rules.entity_models.*;
 import java.util.UUID;
 
 public interface IDBInsert {
-    public void DBInsert(ProjectModel projectModel);
+    void DBInsert(ProjectModel projectModel);
 
-    public void DBInsert(ColumnModel columnModel);
+    void DBInsert(ColumnModel columnModel);
 
-    public void DBInsert(TaskModel taskModel);
+    void DBInsert(TaskModel taskModel);
 
-    public void DBInsert(UUID uuid);
+    void DBInsert(UUID uuid);
 
 }

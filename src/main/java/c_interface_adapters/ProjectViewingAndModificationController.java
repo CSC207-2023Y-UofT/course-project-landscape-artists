@@ -10,6 +10,7 @@ import b_application_business_rules.use_cases.project_viewing_and_modification_u
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -33,6 +34,12 @@ public class ProjectViewingAndModificationController {
     Label projectName;
     @FXML
     HBox columnsContainer;
+    @FXML
+    Label projectDescription;
+    @FXML
+    Button backButton;
+    @FXML
+    Button addColumnButton;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
@@ -49,9 +56,17 @@ public class ProjectViewingAndModificationController {
 
 
     public void setup(ProjectModel projectModel) {
+        setButtonStyles();
+
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
+
+    }
+
+    private void setButtonStyles() {
+        backButton.getStyleClass().add("back-button-custom");
+        addColumnButton.getStyleClass().add("add-column-button-custom");
     }
 
     void deleteColumn(UUID id) {
@@ -138,7 +153,9 @@ public class ProjectViewingAndModificationController {
      */
 
     private void populateProjectDetails(ProjectModel project) {
+
         projectName.setText(project.getName());
+        projectDescription.setText(project.getDescription());
     }
 
     /**
@@ -149,7 +166,7 @@ public class ProjectViewingAndModificationController {
     private void clickBackButton() {
         interactor.removeCurrentProject();
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+        presenter.setStage(stage);
         presenter.displayAllProjects();
     }
 
@@ -173,9 +190,40 @@ public class ProjectViewingAndModificationController {
     }
     @FXML
     private void handleAddColumnClick() {
-        presenter.displayAddColumnPopup();
-        String tempColumnName = "New Column";
-        interactor.addColumn(tempColumnName);
+        String columnName = presenter.displayAddColumnPopup();
+        interactor.addColumn(columnName);
     }
-
+//    public void moveTask(TaskModel task, VBox targetColumn) {
+//        // Get the current column containing the task
+//        VBox sourceColumn = findColumnContainingTask(task);
+//
+//        // If the task is already in the target column, do nothing
+//        if (sourceColumn == targetColumn) {
+//            return;
+//        }
+//
+//        // Remove the task from the source column
+//        sourceColumn.getChildren().removeIf(node -> node instanceof HBox && ((HBox) node).getUserData() == task);
+//
+//        // Add the task to the target column
+//        targetColumn.getChildren().add(createCard(task));
+//
+//        // Perform any other necessary actions based on your requirements
+//    }
+//
+//    private Node createCard(TaskModel task) {
+//
+//    }
+//
+//    private VBox findColumnContainingTask(TaskModel task) {
+//        List<Node> columns = columnsContainer.getChildren();
+//        for (VBox column : columns) {
+//            for (Node node : column.getChildren()) {
+//                if (node instanceof HBox && ((HBox) node).getUserData() == task) {
+//                    return column;
+//                }
+//            }
+//        }
+//        return null; // Task not found in any column
+//    }
 }
