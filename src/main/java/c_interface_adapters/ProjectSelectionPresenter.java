@@ -76,6 +76,30 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
     /**
+     *
+     */
+    @Override
+    public void displayCurrentProject() {
+
+    }
+
+    /**
+     * @param projectModel
+     */
+    @Override
+    public void projectCreated(ProjectModel projectModel) {
+
+    }
+
+    /**
+     * @param errorMessage
+     */
+    @Override
+    public void projectCreationFailed(String errorMessage) {
+
+    }
+
+    /**
      * Displays the current project by loading and setting the scene with the appropriate FXML file.
      * The FXML file contains the layout and UI elements for viewing and modifying the project details.
      */

@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -13,14 +14,19 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.WritableImage;
+import javafx.scene.input.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.util.Duration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -34,6 +40,10 @@ import java.util.UUID;
 public class ProjectViewingAndModificationPresenter extends Application implements ProjectViewingAndModificationOutputBoundary {
     private Stage stage;
     private ProjectViewingAndModificationController controller;
+
+    private List<VBox> VBoxContainer = new ArrayList<VBox>();
+
+    private VBox dragDestination;
 
     /**
      * Initializes the JavaFX application and sets up the initial scene to display the current
@@ -89,8 +99,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
             stage.setTitle("scene 1");
             stage.setScene(new Scene(root));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -257,6 +267,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         MenuItem renameColumnButton = new MenuItem("Rename Column");
         MenuItem deleteColumnButton = new MenuItem("Delete Column");
 
+        Button addTaskButton = new Button("Add Task");
+        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox,
+                controller));
+        HBox TaskBtnVBox = new HBox(addTaskButton);
+
         // Add event handler on menu item.
         renameColumnButton.setOnAction(event -> {
             controller.renameColumm(column.getID());});
@@ -268,8 +283,10 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         // Set the size constraints for columnNameAndOptions
         HBox.setHgrow(columnLabel, Priority.ALWAYS); // Make the label expand horizontally
         HBox.setHgrow(columnOptions, Priority.NEVER); // Make the button keep its preferred width
+        HBox.setHgrow(TaskBtnVBox, Priority.NEVER); // Make the button keep its preferred width
 
-        columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions);
+        columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions, TaskBtnVBox);
+        columnNameAndOptions.setSpacing(5);
         columnNameAndOptions.setId("columnHeader");
 
         // Set the size constraints for columnBox
@@ -281,15 +298,21 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         controller.presenter.populateTasksForEachColumn(columnBox, column.getTaskModels(),
                 controller);
 
-        Button addTaskButton = new Button("Add Task");
-        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox,
-                controller));
-
-        columnBox.getChildren().add(addTaskButton);
+        //columnBox.getChildren().add(TaskBtnVBox);
+        //VBox.setVgrow(TaskBtnVBox, Priority.NEVER);
+//        TaskBtnVBox.setAlignment(Pos.BOTTOM_RIGHT);
+        columnBox.setSpacing(10);
         scrollPane.setContent(columnBox);
 
         // Add the column UI to the container of all columns (HBox)
         controller.columnsContainer.getChildren().add(scrollPane);
+        this.VBoxContainer.add(columnBox);
+
+        columnBox.setOnDragOver(event -> {
+            //System.out.println("INSIDE DESTINATION");
+            this.dragDestination = columnBox;
+            event.consume();
+        });
     }
 
     /**
@@ -303,13 +326,25 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      */
     void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
         // Iterate through the list of tasks and create an HBox for each task
+        // Create a card (rectangle) to enclose the task
+
         for (TaskModel task : tasks) {
-            HBox hbox = new HBox();
+            // Create the card content
 
-            Label taskName = new Label(task.getName());
-//            Button taskOptionsButton = new Button("...");
+            Rectangle cardBackground = new Rectangle(columnBox.getWidth(), 50, Color.LIGHTBLUE);
+            Text textContent = new Text(task.getName());
+            cardBackground.setArcHeight(10.0d);
+            cardBackground.setArcWidth(10.0d);
+            StackPane cardContent = new StackPane(cardBackground, textContent);
 
-            // Create menu button and its options.
+            // Create the card (HBox) to hold the content
+            HBox hbox = new HBox(cardContent);
+            hbox.setStyle("-fx-border-radius: 10.0d;" +
+                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-width: 2px;"); // Add a border for better visibility
+            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+
+            //Create menu button and its options.
             MenuButton taskOptionsButton = new MenuButton("");
             MenuItem renameTaskButton = new MenuItem("Rename Task");
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
@@ -321,7 +356,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 projectViewingAndModificationController.renameTask(task, hbox);});
             changeTaskDetailsButton.setOnAction(event -> {
                 projectViewingAndModificationController.changeTaskDetails(
-                    task, hbox);});
+                        task, hbox);});
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, hbox);});
 
@@ -339,10 +374,100 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
             });
 
-            hbox.getChildren().addAll(taskName, taskOptionsButton);
+            SetHBoxFeatures(columnBox, hbox);
+
+            hbox.setSpacing(5); // Set spacing between text and menuButton
+            hbox.setPadding(new Insets(2)); // Add some padding for better appearance
+            hbox.getChildren().addAll(taskOptionsButton);
+            columnBox.setSpacing(10);
             columnBox.getChildren().add(hbox);
         }
     }
+
+    private void SetHBoxFeatures(VBox columnBox, HBox hbox) {
+        // Set the unique identifier for the HBox
+        hbox.setId(UUID.randomUUID().toString());
+
+        // Set mouse event handlers for dragging the card
+        hbox.setOnDragDetected(event -> {
+            Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
+
+            ClipboardContent content = new ClipboardContent();
+            content.putString(hbox.getId()); // Use the unique identifier for the HBox as the data to be transferred
+            dragboard.setContent(content);
+            WritableImage snapshot = hbox.snapshot(null, null);
+            dragboard.setDragView(snapshot);
+
+            event.consume();
+        });
+
+        hbox.setOnDragOver(event -> {
+            //System.out.println("INSIDE 1");
+            if (event.getGestureSource() == hbox && event.getDragboard().hasString()) {
+                //System.out.println("INSIDE 1.5");
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+
+            event.consume();
+        });
+
+        hbox.setOnDragDone(event -> {
+            //System.out.println("INSIDE 2");
+
+            Dragboard dragboard = event.getDragboard();
+            boolean success = false;
+
+            if (dragboard.hasString()) {
+                // Find the source HBox based on the unique identifier
+                HBox sourceHBox = findHBoxById(dragboard.getString());
+
+                // Move the HBox to the new column
+                if (sourceHBox != null) {
+                    //System.out.println("INSIDE SUCCESS");
+                    // Find the destination VBox (the column box that the HBox is dragged into)
+
+                    //System.out.println(hbox.getParent().equals(sourceHBox.getParent()));
+                    //VBox destinationColumnBox = (VBox) hbox.getParent();
+
+                    // Remove the HBox from its current column box and add it to the destination column box
+                    //VBox destinationColumnBox = findTargetDestinationVBox(event);
+
+                    if (this.dragDestination != null) {
+                        // Remove the HBox from its current column box and add it to the destination column box
+                        ((VBox) sourceHBox.getParent()).getChildren().remove(sourceHBox);
+                        TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
+                        transition.setToX(this.dragDestination.getLayoutX() - hbox.getLayoutX());
+                        transition.play();
+
+                        transition.setOnFinished(event1 -> {
+                            this.dragDestination.getChildren().add(sourceHBox);
+                        });
+                        success = true;
+                    } else {
+                        System.out.println("Destination VBox not found!");
+                    }
+                }
+            }
+
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
+        // Set the style when the cursor enters the HBox
+        hbox.setOnMouseEntered(e -> {
+            hbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+            hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
+        });
+
+        // Set the style when the cursor exits the HBox
+        hbox.setOnMouseExited(e -> {
+            hbox.setStyle("-fx-border-radius: 10.0d;" +
+                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-width: 2px;");
+            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+        });
+    }
+
 
     /**
      * Handles displaying a popup window when the "Add Task" button is clicked. The popup allows the
@@ -444,5 +569,30 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Return the user input (column name)
         return nameTextField.getText();
+    }
+//    public static HBox createKanbanCard(HBox originalCard, TaskModel taskModel) {
+//        // Create the card content
+//        Rectangle cardBackground = new Rectangle(100, 50, Color.LIGHTBLUE);
+//        Text textContent = new Text(taskModel.getName());
+//        StackPane cardContent = new StackPane(cardBackground, textContent);
+//        cardBackground.setArcHeight(10.0d);
+//        cardBackground.setArcWidth(10.0d);
+//
+//        // Create the card (HBox) to hold the content
+//        HBox card = new HBox(cardContent);
+//        card.getStyleClass().add("kanban-card");
+//
+//        return card;
+//    }
+
+    private HBox findHBoxById(String id) {
+        for (VBox vBox : this.VBoxContainer) {
+            for (Node node2 : vBox.getChildren() ) {
+                if (node2 instanceof HBox && node2.getId().equals(id)) {
+                    return (HBox) node2;
+                }
+            }
+        }
+        return null;
     }
 }

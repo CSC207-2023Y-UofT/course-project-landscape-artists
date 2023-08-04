@@ -1,6 +1,8 @@
 
 package a_enterprise_business_rules.entities;
 
+import b_application_business_rules.entity_models.ColumnModel;
+
 import java.util.List;
 import java.util.Collections;
 
@@ -36,7 +38,7 @@ public class Project {
     /**
      * The columns in the kanban board for this project.
      */
-    private List<Column> columns;
+    private List<ColumnModel> columns;
 
     /**
      * Creates a new project, based in the inputted values.
@@ -46,7 +48,7 @@ public class Project {
      * @param description A description of the task.
      * @param columns     The columns of the project.
      */
-    public Project(String name, UUID ID, String description, List<Column> columns) {
+    public Project(String name, UUID ID, String description, List<ColumnModel> columns) {
         this.name = name;
         this.columns = columns;
         this.description = description;
@@ -112,7 +114,7 @@ public class Project {
      * 
      * @return an <code>List<Column></code> of <Column>s.
      */
-    public List<Column> getColumns() {
+    public List<ColumnModel> getColumns() {
         return this.columns;
     }
 
@@ -121,7 +123,7 @@ public class Project {
      * 
      * @param newColumns The new columns for the project.
      */
-    public void setColumns(List<Column> newColumns) {
+    public void setColumns(List<ColumnModel> newColumns) {
         this.columns = newColumns;
     }
 
@@ -130,7 +132,7 @@ public class Project {
      * 
      * @param newColumn The column to add.
      */
-    public void addColumn(Column newColumn) {
+    public void addColumn(ColumnModel newColumn) {
         this.columns.add(newColumn);
     }
 
@@ -140,7 +142,7 @@ public class Project {
      * @param newColumn The column to add to the project.
      * @param position  The position/index to add the column at.
      */
-    public void addColumnToPosition(Column newColumn, int position) {
+    public void addColumnToPosition(ColumnModel newColumn, int position) {
         this.columns.add(position, newColumn);
     }
 
@@ -154,7 +156,7 @@ public class Project {
      * @throws IllegalArgumentException Throws exception when the specified index is out
      *                                  of bounds.
      */
-    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo)
+    public void moveColumnToPosition(ColumnModel columnToMove, int positionToMoveTo)
             throws NoSuchElementException, IllegalArgumentException {
         // The moving of the columns is done by removing the object from the List
         // and then adding it back at the indicated index
@@ -189,7 +191,7 @@ public class Project {
      * @throws NoSuchElementException Throws exception when the specified column to
      *                                remove is not in the project.
      */
-    public void removeColumn(Column columnToRemove) throws NoSuchElementException {
+    public void removeColumn(ColumnModel columnToRemove) throws NoSuchElementException {
         if (!this.columns.remove(columnToRemove)) {
             // the java.util.List.remove method returns a bool,
             // indicating whether the object was removed or not.

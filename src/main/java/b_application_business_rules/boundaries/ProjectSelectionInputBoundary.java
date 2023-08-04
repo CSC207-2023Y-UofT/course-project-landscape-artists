@@ -9,6 +9,9 @@ public interface ProjectSelectionInputBoundary {
     void setCurrentProject(Project project);
 
     void setCurrentProject(ProjectModel project);
+
+    void setCurrentProject(Project project);
+
     void createProject(String name, String description);
 
     void createProject();
