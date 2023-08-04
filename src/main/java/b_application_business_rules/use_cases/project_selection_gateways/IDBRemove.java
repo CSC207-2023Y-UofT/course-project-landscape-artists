@@ -11,7 +11,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import java.util.UUID;
 
 public interface IDBRemove {
-    public void DBRemove(ProjectModel projectModel, UUID uuid);
-    public void DBRemove(TaskModel taskModel, UUID uuid);
-    public void DBRemove(ColumnModel columnModel, UUID uuid);
+    void DBRemove(ProjectModel projectModel, UUID uuid);
+    void DBRemove(TaskModel taskModel, UUID uuid);
+    void DBRemove(ColumnModel columnModel, UUID uuid);
 }

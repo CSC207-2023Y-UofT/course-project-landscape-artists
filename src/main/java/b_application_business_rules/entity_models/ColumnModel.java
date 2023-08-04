@@ -3,12 +3,7 @@ package b_application_business_rules.entity_models;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Task;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A column model within the productivity application.
@@ -235,6 +230,22 @@ public class ColumnModel {
         columnModelStringRepresentation += "]";
 
         return columnModelStringRepresentation;
+    }
+
+    /**
+     * Returns a Column Entity from Column Model.
+     *
+     * {@inheritDoc}
+     *
+     * @return a Column Entity.
+     */
+    public Column getColumnEntity() {
+        List<Task> taskEntities = new ArrayList<>();
+        for (TaskModel taskModel: taskModels) {
+            taskEntities.add(taskModel.getTaskEntity());
+        }
+
+        return new Column(name, taskEntities, ID);
     }
 
     // TODO:turn this into its own class

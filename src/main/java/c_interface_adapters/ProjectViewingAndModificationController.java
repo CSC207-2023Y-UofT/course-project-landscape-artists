@@ -8,6 +8,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -31,6 +32,12 @@ public class ProjectViewingAndModificationController {
     Label projectName;
     @FXML
     HBox columnsContainer;
+    @FXML
+    Label projectDescription;
+    @FXML
+    Button backButton;
+    @FXML
+    Button addColumnButton;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
@@ -47,9 +54,17 @@ public class ProjectViewingAndModificationController {
 
 
     public void setup(ProjectModel projectModel) {
+        setButtonStyles();
+
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
+
+    }
+
+    private void setButtonStyles() {
+        backButton.getStyleClass().add("back-button-custom");
+        addColumnButton.getStyleClass().add("add-column-button-custom");
     }
 
     void deleteColumn(UUID id) {
@@ -63,8 +78,8 @@ public class ProjectViewingAndModificationController {
     }
 
 
-    void deleteTask(TaskModel task, HBox hbox) {
-//        interactor.deleteTask(task, hbox);
+    void deleteTask(TaskModel task, UUID hBoxID, UUID columnBoxID) {
+        interactor.deleteTask(task, hBoxID, columnBoxID);
     }
 
     void changeTaskDetails(TaskModel task, HBox hbox) {
@@ -88,14 +103,14 @@ public class ProjectViewingAndModificationController {
      * Updates the Presenter so an array of Task instances belonging to columnBox is added to the
      * GUI.
      *
-     * @param columnBox      The VBox representing the Column UI where the task will be added.
+     * @param columnBoxID      The VBox representing the Column UI where the task will be added.
      * @param taskName       The name of the new task.
      * @param taskDescription The description of the new task.
      * @param dueDate        The due date of the new task.
      */
-    void handleAddTaskToColumn(VBox columnBox, String taskName, String taskDescription,
+    void handleAddTaskToColumn(String columnBoxID, String taskName, String taskDescription,
                                LocalDateTime dueDate) {
-//        interactor.addNewTask(columnBox, taskName, taskDescription, dueDate);
+        interactor.addNewTask(UUID.fromString(columnBoxID), taskName, taskDescription, dueDate);
     }
 
     /**
@@ -104,7 +119,9 @@ public class ProjectViewingAndModificationController {
      * @param project The Project instance representing the current project.
      */
     private void populateProjectDetails(ProjectModel project) {
+
         projectName.setText(project.getName());
+        projectDescription.setText(project.getDescription());
     }
 
     /**
@@ -115,7 +132,7 @@ public class ProjectViewingAndModificationController {
     private void clickBackButton() {
         interactor.removeCurrentProject();
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+        presenter.setStage(stage);
         presenter.displayAllProjects();
     }
 
@@ -139,9 +156,40 @@ public class ProjectViewingAndModificationController {
     }
     @FXML
     private void handleAddColumnClick() {
-        presenter.displayAddColumnPopup();
-        String tempColumnName = "New Column";
-        interactor.addColumn(tempColumnName);
+        String columnName = presenter.displayAddColumnPopup();
+        interactor.addColumn(columnName);
     }
-
+//    public void moveTask(TaskModel task, VBox targetColumn) {
+//        // Get the current column containing the task
+//        VBox sourceColumn = findColumnContainingTask(task);
+//
+//        // If the task is already in the target column, do nothing
+//        if (sourceColumn == targetColumn) {
+//            return;
+//        }
+//
+//        // Remove the task from the source column
+//        sourceColumn.getChildren().removeIf(node -> node instanceof HBox && ((HBox) node).getUserData() == task);
+//
+//        // Add the task to the target column
+//        targetColumn.getChildren().add(createCard(task));
+//
+//        // Perform any other necessary actions based on your requirements
+//    }
+//
+//    private Node createCard(TaskModel task) {
+//
+//    }
+//
+//    private VBox findColumnContainingTask(TaskModel task) {
+//        List<Node> columns = columnsContainer.getChildren();
+//        for (VBox column : columns) {
+//            for (Node node : column.getChildren()) {
+//                if (node instanceof HBox && ((HBox) node).getUserData() == task) {
+//                    return column;
+//                }
+//            }
+//        }
+//        return null; // Task not found in any column
+//    }
 }

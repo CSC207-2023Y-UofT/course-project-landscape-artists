@@ -390,23 +390,20 @@ class ColumnTest {
         tasks3.add(ttt2);
         tasks3.add(ttt3);
 
-        Column c1 = new Column(new String("test column"), tasks1, cu);
-        Column c2 = new Column(new String("test column"), tasks2, cu);
-        Column c3 = new Column(new String("test column"), tasks3, cu);
+        Column c1 = new Column("test column", tasks1, cu);
+        Column c2 = new Column("test column", tasks2, cu);
+        Column c3 = new Column("test column", tasks3, cu);
 
         // Reflexive Property
-        Assertions.assertTrue(
-                c1.equals(c1));
+        Assertions.assertEquals(c1, c1);
 
         // Symmetric Property
-        Assertions.assertTrue(
-                c1.equals(c2));
-        Assertions.assertTrue(
-                c2.equals(c1));
+        Assertions.assertEquals(c1, c2);
+        Assertions.assertEquals(c2, c1);
 
         // Transitive Property
         if (c1.equals(c2) && c2.equals(c3)) {
-            Assertions.assertTrue(c1.equals(c3));
+            Assertions.assertEquals(c1, c3);
         }
     }
 }

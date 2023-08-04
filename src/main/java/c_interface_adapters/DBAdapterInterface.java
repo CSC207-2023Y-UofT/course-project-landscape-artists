@@ -10,6 +10,6 @@ import java.util.*;
  */
 public interface DBAdapterInterface {
 
-public List<ProjectModel> IDstoProjectModelList();
+List<ProjectModel> IDstoProjectModelList();
 
 }

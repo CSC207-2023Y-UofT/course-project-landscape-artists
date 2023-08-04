@@ -1,12 +1,7 @@
 
 package a_enterprise_business_rules.entities;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A project within the productivity application.
@@ -36,7 +31,7 @@ public class Project {
     /**
      * The columns in the kanban board for this project.
      */
-    private List<Column> columns;
+    private ArrayList<Column> columns;
 
     /**
      * Creates a new project, based in the inputted values.
@@ -46,7 +41,7 @@ public class Project {
      * @param description A description of the task.
      * @param columns     The columns of the project.
      */
-    public Project(String name, UUID ID, String description, List<Column> columns) {
+    public Project(String name, UUID ID, String description, ArrayList<Column> columns) {
         this.name = name;
         this.columns = columns;
         this.description = description;
@@ -112,7 +107,7 @@ public class Project {
      * 
      * @return an <code>List<Column></code> of <Column>s.
      */
-    public List<Column> getColumns() {
+    public ArrayList<Column> getColumns() {
         return this.columns;
     }
 
@@ -121,7 +116,7 @@ public class Project {
      * 
      * @param newColumns The new columns for the project.
      */
-    public void setColumns(List<Column> newColumns) {
+    public void setColumns(ArrayList<Column> newColumns) {
         this.columns = newColumns;
     }
 
@@ -202,6 +197,25 @@ public class Project {
     }
 
     /**
+     * Removes a column with the specified ID from the list of columns in the current project.
+     *
+     * @param idOfColumnToRemove The ID of the column to be removed.
+     * @throws NoSuchElementException If no column with the given ID is found in the project.
+     */
+    public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
+        for (Column column : columns) {
+            if (column.getID().equals(idOfColumnToRemove)) {
+                columns.remove(column);
+                return;
+            }
+        }
+        throw new NoSuchElementException(
+                "The column with ID " + idOfColumnToRemove + " is not in this project");
+    }
+
+
+
+    /**
      * Swaps the order of two columns in the column.
      * 
      * @param col1 The first column.
@@ -242,10 +256,9 @@ public class Project {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Project)) {
+        if (!(o instanceof Project p)) {
             return false;
         }
-        Project p = (Project) o;
         // Checking the equality of each of the attributes
         boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
                 p.getID().equals(this.getID()) &&
