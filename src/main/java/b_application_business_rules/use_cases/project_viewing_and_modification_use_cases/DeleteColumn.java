@@ -2,6 +2,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
@@ -51,6 +52,6 @@ public class DeleteColumn {
 
         // Update the database to remove the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(column, idOfColumn);
+        dbRemoveManager.DBRemove(new ColumnModel(column), idOfColumn);
     }
 }

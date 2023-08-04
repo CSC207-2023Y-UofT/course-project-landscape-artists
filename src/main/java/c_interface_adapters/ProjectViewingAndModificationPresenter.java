@@ -31,10 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The ProjectViewingAndModificationPresenter class is responsible for managing the presentation
@@ -368,6 +365,10 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @param projectViewingAndModificationController
      */
     void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
+        // Create a set to store the unique IDs of the HBox nodes added to the columnBox
+        Set<String> addedHBoxIds = new HashSet<>();
+
+
         // Iterate through the list of tasks and create an HBox for each task
         for (TaskModel task : tasks) {
             // Create the card content
@@ -381,7 +382,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Create the card (HBox) to hold the content
             HBox hbox = new HBox(cardContent);
             hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-color: black;" +
                     "-fx-border-width: 2px;"); // Add a border for better visibility
             hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
 
@@ -422,9 +423,12 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             hbox.setSpacing(5); // Set spacing between text and menuButton
             hbox.setPadding(new Insets(2)); // Add some padding for better appearance
-            hbox.getChildren().addAll(taskOptionsButton);
             columnBox.setSpacing(10);
-            columnBox.getChildren().add(hbox);
+            if (!addedHBoxIds.contains(hbox.getId())) {
+                // Add the HBox to the columnBox if it doesn't exist
+                columnBox.getChildren().add(hbox);
+                addedHBoxIds.add(hbox.getId()); // Add the HBox ID to the set
+            }
         }
     }
 
@@ -499,14 +503,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Set the style when the cursor enters the HBox
         hbox.setOnMouseEntered(e -> {
-            hbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+            hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
             hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
         });
 
         // Set the style when the cursor exits the HBox
         hbox.setOnMouseExited(e -> {
             hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-color: black;" +
                     "-fx-border-width: 2px;");
             hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
         });

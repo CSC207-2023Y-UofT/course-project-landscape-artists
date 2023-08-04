@@ -3,12 +3,7 @@ package b_application_business_rules.entity_models;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Column;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A project model within the productivity application.
@@ -268,9 +263,9 @@ public class ProjectModel {
      * @return a Project Entity.
      */
     public Project getProjectEntity() {
-        List<Column> columnEntities = new ArrayList<>();
+        List<ColumnModel> columnEntities = new ArrayList<>();
         for (ColumnModel columnModel: columnModels) {
-            columnEntities.add(columnModel.getColumnEntity());
+            columnEntities.add(columnModel);
         }
 
         return new Project(name, ID, description, columnEntities);

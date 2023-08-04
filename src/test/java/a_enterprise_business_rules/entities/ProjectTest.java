@@ -3,6 +3,7 @@ package a_enterprise_business_rules.entities;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import b_application_business_rules.entity_models.ColumnModel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -75,17 +76,17 @@ class ProjectTest {
      * Tests getColumns
      */
     void getColumns() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        Column c3 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ColumnModel c3 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
         columns.add(c3);
 
         Project p = new Project(null, null, null, columns);
 
-        ArrayList<Column> columns2 = new ArrayList<Column>();
+        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
         columns2.add(c1);
         columns2.add(c2);
         columns2.add(c3);
@@ -98,17 +99,17 @@ class ProjectTest {
      * Tests setColumns
      */
     void setColumns() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        Column c3 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ColumnModel c3 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
         columns.add(c3);
 
         Project p = new Project(null, null, null, columns);
 
-        ArrayList<Column> columns2 = new ArrayList<Column>();
+        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
         columns2.add(c1);
         columns2.add(c3);
         columns2.add(c1);
@@ -122,11 +123,11 @@ class ProjectTest {
      * Tests addColumn
      */
     void addColumn() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        Column c3 = new Column(null, null, null);
-        Column c4 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ColumnModel c3 = new ColumnModel(null, null, null);
+        ColumnModel c4 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
         columns.add(c3);
@@ -148,11 +149,11 @@ class ProjectTest {
      * Tests addColumnToPosition
      */
     void addColumnToPosition() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        Column c3 = new Column(null, null, null);
-        Column c4 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ColumnModel c3 = new ColumnModel(null, null, null);
+        ColumnModel c4 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
         columns.add(c3);
@@ -174,10 +175,10 @@ class ProjectTest {
      * Tests testMoveColumnToPosition
      */
     void testMoveColumnToPosition() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        Column c3 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ColumnModel c3 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
         columns.add(c3);
@@ -186,7 +187,7 @@ class ProjectTest {
 
         p.moveColumnToPosition(c3, 0);
 
-        ArrayList<Column> columns2 = new ArrayList<Column>();
+        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
         columns2.add(c3);
         columns2.add(c1);
         columns2.add(c2);
@@ -199,9 +200,9 @@ class ProjectTest {
      * Tests removeColumn
      */
     void removeColumn() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
 
@@ -219,18 +220,18 @@ class ProjectTest {
      * Tests swapColumnOrder
      */
     void swapColumnOrder() {
-        Column c1 = new Column(null, null, null);
-        Column c2 = new Column(null, null, null);
-        ArrayList<Column> columns = new ArrayList<Column>();
+        ColumnModel c1 = new ColumnModel(null, null, null);
+        ColumnModel c2 = new ColumnModel(null, null, null);
+        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
         columns.add(c1);
         columns.add(c2);
 
-        ArrayList<Column> columns2 = new ArrayList<Column>();
+        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
         columns.add(c2);
         columns.add(c1);
 
         Project p = new Project(null, null, null, columns);
-        p.swapColumnOrder(c2, c1);
+        p.swapColumnOrder(c2.getColumnEntity(), c1.getColumnEntity());
 
         Assertions.assertEquals(p.getColumns(), columns2);
     }

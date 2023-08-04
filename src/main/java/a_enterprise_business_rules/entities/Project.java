@@ -210,7 +210,7 @@ public class Project {
      * @throws NoSuchElementException If no column with the given ID is found in the project.
      */
     public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
-        for (Column column : columns) {
+        for (ColumnModel column : columns) {
             if (column.getID().equals(idOfColumnToRemove)) {
                 columns.remove(column);
                 return;

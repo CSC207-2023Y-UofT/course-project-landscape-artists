@@ -2,6 +2,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
@@ -41,9 +42,9 @@ public class AddColumn {
     public void addColumn() {
         // Update database to add the column.
         IDBInsert dbInsertManager = new DBManagerInsertController();
-        dbInsertManager.DBInsert(column);
+        dbInsertManager.DBInsert(new ColumnModel(this.column));
 
         // Add the column to the currently opened Project entity.
-        currentProject.addColumn(column);
+        currentProject.addColumn(new ColumnModel(column));
     }
 }
