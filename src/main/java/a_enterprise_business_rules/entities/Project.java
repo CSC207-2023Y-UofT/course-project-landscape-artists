@@ -1,8 +1,6 @@
 
 package a_enterprise_business_rules.entities;
 
-import b_application_business_rules.entity_models.ColumnModel;
-
 import java.util.*;
 
 /**
