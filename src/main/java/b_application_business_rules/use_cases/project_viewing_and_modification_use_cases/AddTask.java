@@ -1,8 +1,10 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.DataAccessInterface;
 
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
@@ -26,12 +28,7 @@ public class AddTask implements DataAccessInterface {
      */
     public void addTask() {
         // Create task entity
-        String name = taskModel.getName();
-        UUID taskID = taskModel.getID();
-        String description = taskModel.getDescription();
-        boolean isCompleted = taskModel.getCompletionStatus();
-        LocalDateTime dueDate = taskModel.getDueDateTime();
-        Task newTask = new Task(name, taskID, description, isCompleted, dueDate);
+        Task task = createTaskEntity(taskModel);
         //Call the method that accesses the database
         addNewTask(taskModel);
     }
@@ -45,5 +42,15 @@ public class AddTask implements DataAccessInterface {
         //Initializing the required controllers
         IDBInsert insertTask = new DBManagerInsertController();
         insertTask.DBInsert(newTask);
+    }
+
+    /**
+     * Creates and returns Task Entity with given Task Model
+     * @param taskModel
+     */
+
+    private Task createTaskEntity(TaskModel taskModel) {
+        return new Task(taskModel.getName(), taskModel.getID(), taskModel.getDescription(),
+                taskModel.getCompletionStatus(), taskModel.getDueDateTime());
     }
 }
