@@ -204,6 +204,25 @@ public class Project {
     }
 
     /**
+     * Removes a column with the specified ID from the list of columns in the current project.
+     *
+     * @param idOfColumnToRemove The ID of the column to be removed.
+     * @throws NoSuchElementException If no column with the given ID is found in the project.
+     */
+    public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
+        for (ColumnModel column : columns) {
+            if (column.getID().equals(idOfColumnToRemove)) {
+                columns.remove(column);
+                return;
+            }
+        }
+        throw new NoSuchElementException(
+                "The column with ID " + idOfColumnToRemove + " is not in this project");
+    }
+
+
+
+    /**
      * Swaps the order of two columns in the column.
      * 
      * @param col1 The first column.
@@ -244,10 +263,9 @@ public class Project {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Project)) {
+        if (!(o instanceof Project p)) {
             return false;
         }
-        Project p = (Project) o;
         // Checking the equality of each of the attributes
         boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
                 p.getID().equals(this.getID()) &&

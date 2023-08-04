@@ -7,8 +7,8 @@ import b_application_business_rules.use_cases.CurrentProjectRepository;
 import java.util.UUID;
 
 public class DeleteProject implements ProjectSelectionInputBoundary{
-    private ProjectSelectionInputBoundary outputBoundary;
-    private CurrentProjectRepository projectRepository;
+    private final ProjectSelectionInputBoundary outputBoundary;
+    private final CurrentProjectRepository projectRepository;
 
     public DeleteProject(ProjectSelectionInputBoundary outputBoundary, CurrentProjectRepository projectRepository){
         this.outputBoundary = outputBoundary;

@@ -10,8 +10,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -111,7 +113,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
             openedProjectController.setup(projectModel);
             stage.setTitle("scene 2");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("ProjectViewingAndModificationStyle.css").toExternalForm());
+            stage.setScene(scene);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -134,23 +138,28 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         if (scene != null) {
             // Find the GridPane that holds the projects (projectsGrid)
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    GridPane projectsGrid = (GridPane) node;
+                if (node instanceof GridPane projectsGrid) {
                     // Iterate over the children of the projectsGrid (HBoxes representing projects)
                     for (Node gridChild : projectsGrid.getChildren()) {
-                        if (gridChild instanceof HBox) {
-                            HBox hbox = (HBox) gridChild;
+                        if (gridChild instanceof HBox hbox) {
                             // Check if the HBox ID matches the UUID of the renamed project
                             Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
                             if (hboxId != null && hboxId.equals(projectUUID)) {
                                 // The HBox matches the provided projectUUID
                                 // Now, find the projectNameButton inside the HBox
                                 for (Node hboxChild : hbox.getChildren()) {
-                                    if (hboxChild instanceof Button) {
-                                        Button projectNameButton = (Button) hboxChild;
+                                    if (hboxChild instanceof Button nameAndDescriptionButton) {
+                                        VBox nameAndDescriptionContainer =
+                                                (VBox) (nameAndDescriptionButton.getGraphic());
 
-                                        // Update the projectNameButton with the new project name
-                                        projectNameButton.setText(newProjectName);
+                                        for (Node nodeInNameAndDescriptionContainer:
+                                                nameAndDescriptionContainer.getChildren()) {
+                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
+                                                Label projectName = (Label) nodeInNameAndDescriptionContainer;
+                                                projectName.setText(newProjectName);
+                                                break;
+                                            }
+                                        }
                                         break;
                                     }
                                 }
@@ -181,26 +190,58 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         if (scene != null) {
             // Find the GridPane that holds the projects (projectsGrid)
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    GridPane projectsGrid = (GridPane) node;
+                if (node instanceof GridPane projectsGrid) {
+                    int numColumns = 2; // Specify the number of columns
+                    int numRows = projectsGrid.getRowCount(); // Get the number of rows currently in the grid
+
                     // Iterate over the children of the projectsGrid (HBoxes representing projects)
                     Iterator<Node> iterator = projectsGrid.getChildren().iterator();
                     while (iterator.hasNext()) {
                         Node gridChild = iterator.next();
-                        if (gridChild instanceof HBox) {
-                            HBox hbox = (HBox) gridChild;
+                        if (gridChild instanceof HBox hbox) {
                             // Check if the HBox ID matches the UUID of the project to be deleted
                             Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
                             if (hboxId != null && hboxId.equals(projectUUID)) {
                                 iterator.remove(); // Use the iterator to safely remove the HBox from the projectsGrid
+                                break;
                             }
                         }
                     }
+
+                    // Rearrange the remaining nodes to fill the empty spaces
+                    int col = 0;
+                    int row = 0;
+                    for (Node child : projectsGrid.getChildren()) {
+                        GridPane.setColumnIndex(child, col);
+                        GridPane.setRowIndex(child, row);
+
+                        col++;
+                        if (col >= numColumns) {
+                            col = 0;
+                            row++;
+                        }
+                    }
+
+                    // Fill the empty spaces with new HBoxes if needed
+                    while (row < numRows) {
+                        HBox placeholderHBox = new HBox();
+                        GridPane.setColumnIndex(placeholderHBox, col);
+                        GridPane.setRowIndex(placeholderHBox, row);
+                        projectsGrid.getChildren().add(placeholderHBox);
+
+                        col++;
+                        if (col >= numColumns) {
+                            col = 0;
+                            row++;
+                        }
+                    }
+
                     break;
                 }
             }
         }
     }
+
 
 
     /**
@@ -218,6 +259,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Stage stage1 = stage;
             stage1.setTitle("Choose project");
             stage1.setScene(scene);
+            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
             stage1.show();
         } catch (IOException e) {
             throw new RuntimeException(e);

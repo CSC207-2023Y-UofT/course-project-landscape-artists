@@ -185,10 +185,9 @@ public class Task {
      */
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Task)) {
+        if (!(o instanceof Task t)) {
             return false;
         }
-        Task t = (Task) o;
         // Checking the equality of each of the attributes
         boolean allAttributesAreEqual = t.getName().equals(this.getName()) &&
                 t.getID().equals(this.getID()) &&

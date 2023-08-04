@@ -1,0 +1,37 @@
+.root {
+    -fx-background-color: #FFFFFF;
+}
+
+.menu-button-custom  {
+    -fx-background-color: transparent; /* Remove the default background color */
+
+    /* Set the dots as the graphic of the MenuButton */
+    -fx-graphic: url('dots.png'); /* Replace 'dot.png' with the path to your image */
+    -fx-alignment: center; /* Align the graphic in the center of the button */
+}
+
+.menu-button-custom .arrow {
+    -fx-padding: 0; /* Remove padding to minimize spacing */
+}
+
+.current-project-button {
+    -fx-background-color: transparent;
+    -fx-border-color: black;
+    -fx-border-width: 0 0 0 2;
+}
+
+.create-project-button-style {
+    -fx-background-color: #F5F7F9;
+    -fx-background-radius: 20;
+    -fx-text-fill: #24292e;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 16px;
+}
+
+#projectName {
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-wrap-text: true;
+}

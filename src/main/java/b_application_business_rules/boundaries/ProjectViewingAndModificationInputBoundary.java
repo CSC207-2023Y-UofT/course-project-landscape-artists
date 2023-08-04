@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public interface ProjectViewingAndModificationInputBoundary {
-    public void removeCurrentProject();
+    void removeCurrentProject();
 
     void addNewTask(UUID idOfColumn, String taskName, String taskDescription,
                     LocalDateTime dueDate);

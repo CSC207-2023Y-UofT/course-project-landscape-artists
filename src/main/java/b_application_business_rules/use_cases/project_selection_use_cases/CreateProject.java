@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CreateProject implements ProjectSelectionInputBoundary {
-    private ProjectSelectionOutputBoundary outputBoundary;
+    private final ProjectSelectionOutputBoundary outputBoundary;
 
     public CreateProject(ProjectSelectionOutputBoundary outputBoundary) {
         this.outputBoundary = outputBoundary;

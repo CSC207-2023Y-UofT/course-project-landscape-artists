@@ -32,6 +32,12 @@ public class ProjectViewingAndModificationController {
     Label projectName;
     @FXML
     HBox columnsContainer;
+    @FXML
+    Label projectDescription;
+    @FXML
+    Button backButton;
+    @FXML
+    Button addColumnButton;
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
@@ -48,9 +54,17 @@ public class ProjectViewingAndModificationController {
 
 
     public void setup(ProjectModel projectModel) {
+        setButtonStyles();
+
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject, this);
+
+    }
+
+    private void setButtonStyles() {
+        backButton.getStyleClass().add("back-button-custom");
+        addColumnButton.getStyleClass().add("add-column-button-custom");
     }
 
     void deleteColumn(UUID id) {
@@ -105,7 +119,9 @@ public class ProjectViewingAndModificationController {
      * @param project The Project instance representing the current project.
      */
     private void populateProjectDetails(ProjectModel project) {
+
         projectName.setText(project.getName());
+        projectDescription.setText(project.getDescription());
     }
 
     /**
@@ -116,7 +132,7 @@ public class ProjectViewingAndModificationController {
     private void clickBackButton() {
         interactor.removeCurrentProject();
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+        presenter.setStage(stage);
         presenter.displayAllProjects();
     }
 
@@ -140,9 +156,8 @@ public class ProjectViewingAndModificationController {
     }
     @FXML
     private void handleAddColumnClick() {
-        presenter.displayAddColumnPopup();
-        String tempColumnName = "New Column";
-        interactor.addColumn(tempColumnName);
+        String columnName = presenter.displayAddColumnPopup();
+        interactor.addColumn(columnName);
     }
 //    public void moveTask(TaskModel task, VBox targetColumn) {
 //        // Get the current column containing the task

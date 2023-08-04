@@ -2,6 +2,7 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -10,10 +11,14 @@ import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -26,10 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The ProjectViewingAndModificationPresenter class is responsible for managing the presentation
@@ -41,7 +43,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     private Stage stage;
     private ProjectViewingAndModificationController controller;
 
-    private List<VBox> VBoxContainer = new ArrayList<VBox>();
+    private final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
     private VBox dragDestination;
 
@@ -60,7 +62,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         stage.setTitle("Current project");
         stage.setScene(scene);
         stage.show();
-    };
+    }
 
     public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
         this.controller = controller;
@@ -98,7 +100,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         try {
             Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
             stage.setTitle("scene 1");
-            stage.setScene(new Scene(root));
+            Scene scene = new Scene(root);
+            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
+            stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -108,6 +112,27 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
 
     }
+
+//    public void dispayProjectDescription(ProjectModel project) {
+//        Stage popupStage = new Stage();
+//        String projectDescription = project.getDescription(); // Provide the project's description here
+//        // Create the label to display the project description
+//        Label descriptionLabel = new Label(projectDescription);
+//        descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions
+//
+//        // Create a StackPane to hold the label
+//        StackPane root = new StackPane(descriptionLabel);
+//
+//        // Set the size for the new window
+//        Scene scene = new Scene(root, 400, 300);
+//
+//        // Set the stage properties
+//        popupStage.setTitle("Project Description");
+//        popupStage.setScene(scene);
+//
+//        // Show the new window
+//        popupStage.show();
+//    }
 
     @Override
     public void displayRenamedTask(UUID taskID, TaskViewModel task) {
@@ -130,8 +155,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 if (node.getId().equals("scrollPaneContainer")) {
 
-                    if (node instanceof ScrollPane){
-                        ScrollPane scrollPane = (ScrollPane) node;
+                    if (node instanceof ScrollPane scrollPane){
                         HBox columnsContainer = (HBox) scrollPane.getContent();
 
                         Iterator<Node> iterator = columnsContainer.getChildren().iterator();
@@ -144,7 +168,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                                     if (item.getId().equals("columnHeader")) {
                                         Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
                                         columnNameUI.setText(columnName);
-                                    };
+                                    }
                                     break;
 
                                 }
@@ -169,8 +193,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 if (node.getId().equals("scrollPaneContainer")) {
 
-                    if (node instanceof ScrollPane){
-                        ScrollPane scrollPane = (ScrollPane) node;
+                    if (node instanceof ScrollPane scrollPane){
                         HBox columnsContainer = (HBox) scrollPane.getContent();
 
                         Iterator<Node> iterator = columnsContainer.getChildren().iterator();
@@ -254,13 +277,25 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         VBox columnBox = new VBox();
         columnBox.setPrefSize(180, 380);
 
+        columnBox.setStyle("-fx-background-color: #F6F8FA");
+
+        // Set styling of the header.
         HBox columnNameAndOptions = new HBox();
+        HBox.setHgrow(columnNameAndOptions, Priority.ALWAYS);
+
+        columnNameAndOptions.setSpacing(40);
+        columnNameAndOptions.setAlignment(Pos.BASELINE_RIGHT);
+
+        VBox.setMargin(columnNameAndOptions, new Insets(10));
+        VBox.setVgrow(columnNameAndOptions, Priority.ALWAYS);
+
 
         columnBox.setId(column.getID().toString());
 
         // Add label for the name of the column
         Label columnLabel = new Label(column.getName());
         columnLabel.setId("columnTitle");
+        columnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
 
         // Add menu button and menu items.
         MenuButton columnOptions = new MenuButton("");
@@ -288,6 +323,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions, TaskBtnVBox);
         columnNameAndOptions.setSpacing(5);
         columnNameAndOptions.setId("columnHeader");
+
+        // set styling of menu button
+        columnOptions.getStyleClass().add("menu-button-custom");
 
         // Set the size constraints for columnBox
         VBox.setVgrow(columnNameAndOptions, Priority.NEVER); // Make columnNameAndOptions keep its preferred height
@@ -325,9 +363,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @param projectViewingAndModificationController
      */
     void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
-        // Iterate through the list of tasks and create an HBox for each task
-        // Create a card (rectangle) to enclose the task
+        // Create a set to store the unique IDs of the HBox nodes added to the columnBox
+        Set<String> addedHBoxIds = new HashSet<>();
 
+
+        // Iterate through the list of tasks and create an HBox for each task
         for (TaskModel task : tasks) {
             // Create the card content
 
@@ -340,7 +380,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Create the card (HBox) to hold the content
             HBox hbox = new HBox(cardContent);
             hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-color: black;" +
                     "-fx-border-width: 2px;"); // Add a border for better visibility
             hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
 
@@ -363,24 +403,30 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,
                     changeTaskDetailsButton, deleteTaskButton);
+            taskOptionsButton.getStyleClass().add("menu-button-custom");
+
 
 
             taskOptionsButton.setStyle("-fx-font-size: 8px;");
 
-            // Associate an instance of a Task for each button.
-            taskOptionsButton.setUserData(task);
+            RadioButton completeTaskButton = new RadioButton();
+//            completeTaskButton.setOnAction(event -> controller.completeTask(task));
 
             taskOptionsButton.setOnAction(actionEvent -> {
                 projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
             });
 
+            hbox.getChildren().addAll(textContent, taskOptionsButton, completeTaskButton);
             SetHBoxFeatures(columnBox, hbox);
 
             hbox.setSpacing(5); // Set spacing between text and menuButton
             hbox.setPadding(new Insets(2)); // Add some padding for better appearance
-            hbox.getChildren().addAll(taskOptionsButton);
             columnBox.setSpacing(10);
-            columnBox.getChildren().add(hbox);
+            if (!addedHBoxIds.contains(hbox.getId())) {
+                // Add the HBox to the columnBox if it doesn't exist
+                columnBox.getChildren().add(hbox);
+                addedHBoxIds.add(hbox.getId()); // Add the HBox ID to the set
+            }
         }
     }
 
@@ -455,14 +501,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Set the style when the cursor enters the HBox
         hbox.setOnMouseEntered(e -> {
-            hbox.setStyle("-fx-border-color: lightblue; -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+            hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
             hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
         });
 
         // Set the style when the cursor exits the HBox
         hbox.setOnMouseExited(e -> {
             hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: rgba(69,89,164,.5);" +
+                    "-fx-border-color: black;" +
                     "-fx-border-width: 2px;");
             hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
         });
