@@ -1,26 +1,25 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
-// Implement models instead of entities
 
-import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
+// Implement entity models instead of entities
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+
 import com.opencsv.CSVWriter;
 
 import java.io.FileWriter;
 import java.util.UUID;
 
 public class DBManagerInsertController implements IDBInsert {
+
     /**
-     * The method is intended to append the ProjectID, Name,
-     * Description and list of column IDs that belong to a project
-     * into the Database
+     * Appends the ProjectID, Name, Description and list of column IDs
+     * that belong to a project into the Database
+     *
      * check DatabaseFiles/Projects/Projects.csv for reference
      * @param projectModel
-     * @return
      */
     public void DBInsert(ProjectModel projectModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
@@ -82,14 +81,15 @@ public class DBManagerInsertController implements IDBInsert {
     }
 
     /**
-     * @param taskModel
+     *
+     * @param taskModel Task model to be inserted in the database.
      */
     public void DBInsert(TaskModel taskModel) {
         try {
             // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
 
-            // create CSVWriter object filewriter object as parameter
+            // create CSVWriter object with the FileWriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile);
 
             // add data to csv

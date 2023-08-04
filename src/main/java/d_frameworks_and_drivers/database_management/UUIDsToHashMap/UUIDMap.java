@@ -1,13 +1,18 @@
 package d_frameworks_and_drivers.database_management.UUIDsToHashMap;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
+
 public class UUIDMap {
+    /**
+     *
+     * @return
+     */
     public static Map<String, String> convertCsvToHashMap() {
         String csvFilePath = "DatabaseFiles/UniqueIDs/UniqueIDs.csv";
         Map<String, String> csvDataMap = new HashMap<>();
@@ -30,6 +35,8 @@ public class UUIDMap {
 
         return csvDataMap;
     }
+
+// Old version
 //    public static void main(String[] args) {
 //        String csvFilePath = "DatabaseFiles/UniqueIDs/UniqueIDs.csv"; // Replace with the path to your CSV file
 //        try {

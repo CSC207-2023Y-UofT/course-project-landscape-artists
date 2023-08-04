@@ -1,19 +1,14 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import com.opencsv.CSVWriter;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.UUID;
+
 
 public class DBManagerSearchController implements IDBSearch {
 
