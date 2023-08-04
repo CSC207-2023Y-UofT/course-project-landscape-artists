@@ -110,7 +110,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     @Override
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
-
+        System.out.println("hi");
     }
 
 //    public void dispayProjectDescription(ProjectModel project) {
@@ -568,7 +568,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             popupStage.close();
 
             // Call the method to handle adding the task to the column
-            projectViewingAndModificationController.handleAddTaskToColumn(columnBox, nameTextField.getText(),
+            projectViewingAndModificationController.handleAddTaskToColumn(columnBox.getId(), nameTextField.getText(),
                     detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
         });
 
