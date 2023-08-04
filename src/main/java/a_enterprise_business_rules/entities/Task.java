@@ -1,6 +1,7 @@
 package a_enterprise_business_rules.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -197,5 +198,19 @@ public class Task {
 
         return allAttributesAreEqual;
     }
+
+    public static Task IDToTask(UUID taskID, ArrayList<Task> listOfTasks) {
+        int i = 0;
+        boolean taskFound = false;
+        Task task = null;
+        // loop until the right task is found
+        while (listOfTasks.size() > i && !taskFound) {
+            if (taskID.equals(listOfTasks.get(i).getID())) {
+                taskFound = true;
+                task = listOfTasks.get(i);
+            }
+            i++;
+        }
+        return task;
 
 }
