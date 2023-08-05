@@ -10,7 +10,7 @@ public class UniqueIDsInitializer {
 
     public UniqueIDsInitializer() {
         // create CSVWriter object filewriter object as parameter
-        File file = new File("DatabaseFiles/UniqueIDs/UniqueIDs.csv");
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/UniqueIDs/UniqueIDs.csv");
         FileWriter outputfile = null;
         try {
             outputfile = new FileWriter(file);
