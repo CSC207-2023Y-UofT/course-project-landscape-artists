@@ -7,20 +7,19 @@ import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -42,30 +41,26 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     private ProjectSelectionViewModel projectSelectionViewModel;
     private ProjectSelectionController controller;
 
-//    /**
-//     * Constructs a new ProjectSelectionPresenter object with the provided ProjectSelectionController.
-//     *
-//     * @param projectSelectionController The ProjectSelectionController associated with this presenter. The controller
-//     *                                   handles user interactions and delegates tasks to the presenter for processing
-//     *                                   project selection and creation actions.
-//     */
-    public void setController(ProjectSelectionController controller) {
-        this.controller = controller;
-    }
-
     /**
-     * Sets the JavaFX Stage to be used for displaying scenes.
+     * Sets the JavaFX Stage to be used for displaying scenes. This is to ensure that the stage is the same between
+     * the controller and the prsenter
      *
      * @param stage The JavaFX Stage to set.
      */
     public void setStage(Stage stage) {
-        System.out.println("STAGE IS SET");
         this.stage = stage;
     }
 
+    /**
+     * Overloads the ProjectSelectionPresenter for when no controller is passed.
+     */
     public ProjectSelectionPresenter( ) {
     }
 
+    /**
+     * This constructor ensures that the Presenter has access to the Controller class. This is essential to assign
+     * event handlers located in the Controller
+     */
     public ProjectSelectionPresenter(ProjectSelectionController controller) {
         this.controller = controller;
     }
@@ -78,19 +73,21 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     @Override
     public void start(Stage stage) throws Exception {
-        System.out.println("START IS CALLED");
         initializeScene(stage);
         setStage(stage);
-        getDatabaseShit();
+        getProjectsFromDatabase();
         populateProjectSelectionUI();
     }
 
-    public void getDatabaseShit() {
-        //         Grab data from database and display it in the scene. An example
-//         would be something like below (Currently don't know which layer to
-//         get all projects):
-//         Gateway gateway = new Gateway();
-//         List<Project> allProjectsInSystem = gateway.getAllProjects();
+    /**
+     * This method interacts with the database to get ProjectModels. Afterwards, projectSelectionViewModel is updated
+     * to hold these ProjectViewModels for better access.
+     *
+     */
+    public void getProjectsFromDatabase() {
+        // PUT METHODS FROM ALEX'S METHOD TO HERE.
+
+
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
         List<TaskViewModel> TaskList = Arrays.asList(
                 new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
@@ -135,33 +132,11 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
     }
 
-    /**
-     *
-     */
-//    @Override
-//    public void displayCurrentProject() {
-//
-//    }
-//
-//    /**
-//     * @param projectModel
-//     */
-//    @Override
-//    public void projectCreated(ProjectModel projectModel) {
-//
-//    }
-//
-//    /**
-//     * @param errorMessage
-//     */
-//    @Override
-//    public void projectCreationFailed(String errorMessage) {
-//
-//    }
 
     /**
      * Displays the current project by loading and setting the scene with the appropriate FXML file.
      * The FXML file contains the layout and UI elements for viewing and modifying the project details.
+     * This switches from the ProjectSelection UI to ProjectViewingAndModification UI.
      */
     @Override
     public void displayCurrentProject(ProjectModel projectModel) {
@@ -304,7 +279,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
     /**
      * Initializes the scene with the provided stage by loading the FXML file containing the layout
-     * and UI elements for choosing a project.
+     * and UI elements for choosing a project. It also updates the Presenter's Controller to be the controller from
+     * the FXML file.
      *
      * @param stage The JavaFX Stage to be used for displaying the project selection scene.
      */
@@ -315,7 +291,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
             // Now that the FXML file is loaded, you can get the controller
             controller = fxmlLoader.getController();
-            System.out.println("CONTROLLER: " + controller);
 
             Scene scene = new Scene(root);
             stage.setTitle("Choose project");
@@ -327,44 +302,38 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         }
     }
 
-    /**
-     * Sets the ProjectSelectionViewModel for the ProjectSelectionPresenter.
-     *
-     * @param projectSelectionViewModel The ProjectSelectionViewModel containing the data to be displayed in the view.
-     *                                  This ViewModel holds information about the projects to be displayed in the
-     *                                  project selection UI.
-     */
-    public void setViewModel(ProjectSelectionViewModel projectSelectionViewModel) {
-        System.out.println("SETTING THE PROJECTSELECTIONVIEWMODEL FOR THE PRESENTER");
-        System.out.println("HERE IT IS: " + projectSelectionViewModel);
-        this.projectSelectionViewModel = projectSelectionViewModel;
-    }
 
     /**
-     * Populates the project selection UI with the list of projects retrieved from the ViewModel.
-     * Projects are displayed in a GridPane, with each project represented by a button.
-     * Each button allows the user to open the corresponding project or perform actions on it,
-     * such as renaming or deleting the project.
+     * This method finds the GridPane (JavaFX) projectsGrid from the current scene. It is used to populate the Grid
+     * Pane with
+     * Project UI.
+     *
+     * @return The GridPane object which will hold the Project UI.
      */
-    public void findProjectsGrid() {
-        System.out.println("STAGE IS: " + stage);
+    public GridPane findGridPane() {
         Scene currentScene = stage.getScene();
-        System.out.println("CURRENT SCENE" + currentScene);
         if (currentScene != null) {
             for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
                 System.out.println(node);
                 if (node instanceof GridPane) {
                     if (node.getId().equals("projectsGrid")) {
                         System.out.println("FOUND THE FREAKING GRIDPANE");
-                        populateProjectSelectionUI2((GridPane) node);
-                        break;
+                        return ((GridPane) node);
                     }
                 }
             }
         }
+        return null;
     }
 
-    private void populateProjectSelectionUI2(GridPane projectsGrid) {
+
+    /**
+     * This populates the projectsGrid GridPane with Project UIs. The Projects are held in projectSelectionViewModel.
+     *
+     */
+    private void populateProjectSelectionUI() {
+        GridPane projectsGrid = findGridPane();
+
         projectsGrid.setHgap(20);
         projectsGrid.setVgap(100);
 
@@ -454,7 +423,15 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         addCreateProjectButton(col, row);
     }
 
+    /**
+     * Simply adds the Create Project Button to the projectsGrid GridPane. The col and row is where it will be set
+     * since it is the last location in projectsGrid that is empty.
+     *
+     * @param col the column number where Create Project Button.
+     * @param row the row number where Create Project Button.
+     */
     void addCreateProjectButton(int col, int row) {
+        GridPane projectsGrid = findGridPane();
         System.out.println("ADD CREATE PROJECT BUTTON IS CALLED");
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
@@ -462,5 +439,51 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         createProjectButton.getStyleClass().add("create-project-button-style");
 
         projectsGrid.add(createProjectButton, col, row);
+    }
+
+    /**
+     * Handles the "Create Project" Popup for the user to input the necessary information.
+     */
+    private void handleCreateProjectPopup(ActionEvent actionEvent) {
+        // Create a new Dialog
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Create Project");
+
+        // Set the button types (OK and Cancel)
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        // Create labels and text fields for project name and description
+        Label nameLabel = new Label("Project Name:");
+        Label descLabel = new Label("Description:");
+        TextField nameTextField = new TextField();
+        TextField descTextField = new TextField();
+
+        // Create a GridPane to layout the labels and text fields
+        GridPane gridPane = new GridPane();
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameTextField, 1, 0);
+        gridPane.add(descLabel, 0, 1);
+        gridPane.add(descTextField, 1, 1);
+
+        // Set the content of the dialog to the GridPane
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Convert the result to a Pair object when the OK button is clicked
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String projectName = nameTextField.getText();
+                String projectDescription = descTextField.getText();
+                return new Pair<>(projectName, projectDescription);
+            }
+            return null;
+        });
+
+        // Show the dialog and wait for the user to close it
+        dialog.showAndWait().ifPresent(project -> {
+            if (project != null) {
+                // Handle the newly created project here
+                controller.createProject(project.getKey(), project.getValue());
+            }
+        });
     }
 }

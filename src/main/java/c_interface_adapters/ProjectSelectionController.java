@@ -32,7 +32,7 @@ import javafx.util.Pair;
 import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
- * ProjectSelectionController class handles the user interface for project selection and creation.
+ * ProjectSelectionController class handles the event handling and controlling of creating and opening a project
  */
 public class ProjectSelectionController {
     // FXML reference to the GridPane that holds the projects in the UI.
@@ -94,57 +94,6 @@ public class ProjectSelectionController {
         interactor.deleteProject(projectUUID);
     }
 
-    /**
-     * Adds the "Create Project" button to the project selection UI.
-     */
-
-
-    /**
-     * Handles the "Create Project" button action by showing a dialog to create a new project.
-     */
-    private void handleCreateProjectPopup(ActionEvent actionEvent) {
-        setPresenterAndInteractor();
-        // Create a new Dialog
-        Dialog<Pair<String, String>> dialog = new Dialog<>();
-        dialog.setTitle("Create Project");
-
-        // Set the button types (OK and Cancel)
-        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        // Create labels and text fields for project name and description
-        Label nameLabel = new Label("Project Name:");
-        Label descLabel = new Label("Description:");
-        TextField nameTextField = new TextField();
-        TextField descTextField = new TextField();
-
-        // Create a GridPane to layout the labels and text fields
-        GridPane gridPane = new GridPane();
-        gridPane.add(nameLabel, 0, 0);
-        gridPane.add(nameTextField, 1, 0);
-        gridPane.add(descLabel, 0, 1);
-        gridPane.add(descTextField, 1, 1);
-
-        // Set the content of the dialog to the GridPane
-        dialog.getDialogPane().setContent(gridPane);
-
-        // Convert the result to a Pair object when the OK button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == ButtonType.OK) {
-                String projectName = nameTextField.getText();
-                String projectDescription = descTextField.getText();
-                return new Pair<>(projectName, projectDescription);
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for the user to close it
-        dialog.showAndWait().ifPresent(project -> {
-            if (project != null) {
-                // Handle the newly created project here
-                createProject(project.getKey(), project.getValue());
-            }
-        });
-    }
 
     /**
      * Creates a new project using the provided Project object and delegates the task to the interactor
@@ -153,13 +102,12 @@ public class ProjectSelectionController {
      * @param name The name of project.
      * @param description Description of project.
      */
-    private void createProject(String name, String description) {
+    void createProject(String name, String description) {
+        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
+        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
+        setPresenterAndInteractor();
         interactor.createProject(name, description);
     }
-
-
-
-
 
     /**
      * Handles the action of selecting a project button from the UI.
