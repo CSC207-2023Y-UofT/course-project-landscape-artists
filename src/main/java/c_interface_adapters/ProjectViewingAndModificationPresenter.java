@@ -214,9 +214,27 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     }
 
-    @Override
-    public void dislayChangedTaskDetails(UUID taskID, TaskViewModel task) {
+    /**
+     * This method renames the existing task and changes the task description and shows the final
+     * changes on the screen
+     *
+     * @param taskID
+     * @param task
+     * @param hbox
+     */
+    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
+        String taskUUID = task.getID().toString();
+        String taskName = task.getName();
 
+        //Removing the existing nane from the Hbox
+        hbox.getChildren().removeAll();
+
+        //Creating a new label and adding them in
+        Label taskLabel = new Label(taskName);
+        Button taskOptionsButton = new Button("...");
+        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+        hbox.getChildren().add(taskLabel);
+        hbox.getChildren().add(taskOptionsButton);
     }
 
     @Override
@@ -396,9 +414,13 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Add event handlers.
             renameTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.renameTask(task, hbox);});
+            //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
-                projectViewingAndModificationController.changeTaskDetails(
-                        task, hbox);});
+                this.handleChangeTaskPopup(task, hbox, controller);
+                //projectViewingAndModificationController.changeTaskDetails(
+                    //task, hbox);
+                });
+
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
                         UUID.fromString(columnBox.getId()));});
@@ -586,6 +608,73 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
+    /**
+     * Creates a popup screen once the changeTaskDetail button is pressed. Takes in user input
+     * on the task name, task description and due date and then calls the
+     * ProjectViewingAndModificationController
+     * @param task
+     * @param hbox
+     * @param projectViewingAndModificationController
+     */
+    void handleChangeTaskPopup(TaskModel task, HBox hbox,
+                               ProjectViewingAndModificationController projectViewingAndModificationController) {
+        projectViewingAndModificationController.setPresenter();
+        // Create a new stage for the popup
+        Stage popupStage = new Stage();
+
+        // Stops all other stages from functioning until popupStage is closed.
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+
+        popupStage.setTitle("Change Task Details");
+
+        // Create the GridPane layout for the popup
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        // Create labels and input fields for Task Details, Task Due Date, and Task Name
+
+        Label nameLabel = new Label("Task Name:");
+        TextField nameTextField = new TextField();
+
+        Label detailsLabel = new Label("Task Details:");
+        TextArea detailsTextArea = new TextArea();
+        detailsTextArea.setPrefRowCount(3);
+
+        Label dueDateLabel = new Label("Task Due Date:");
+        DatePicker dueDatePicker = new DatePicker();
+
+        // Add the components to the GridPane. The number provided implies
+        // which position in the gridPane (i.e. column 0, row 0 is top left).
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameTextField, 1, 0);
+        gridPane.add(detailsLabel, 0, 1);
+        gridPane.add(detailsTextArea, 1, 1);
+        gridPane.add(dueDateLabel, 0, 2);
+        gridPane.add(dueDatePicker, 1, 2);
+
+        // Create the "Change Task" button for submitting the task
+        Button changeTaskButton = new Button("Submit");
+
+        // Handles the action of putting a new task in the correct Column UI.
+        changeTaskButton.setOnAction(event -> {
+            // Close the popup when "Submit" button is pressed
+            popupStage.close();
+
+            // Call the method to handle adding the task to the column
+            projectViewingAndModificationController.changeTaskDetails(task, hbox, nameTextField.getText(),
+                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
+        });
+        // Add the "Change Task" button to the GridPane
+        gridPane.add(changeTaskButton, 0, 3, 2, 1);
+
+        // Create the scene and set it on the stage
+        Scene popupScene = new Scene(gridPane, 800, 200);
+        popupStage.setScene(popupScene);
+
+        // Show the popup
+        popupStage.showAndWait();
+    }
 
     public String displayAddColumnPopup() {
         // Create a new stage for the popup

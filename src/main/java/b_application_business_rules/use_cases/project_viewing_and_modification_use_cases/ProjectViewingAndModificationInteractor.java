@@ -135,10 +135,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         EditTaskDetails useCase = new EditTaskDetails(task, TaskUIid);
         try {
             useCase.editTask();
-            TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
-                    task.getCompletionStatus(), task.getDueDateTime());
-            presenter.dislayChangedTaskDetails(TaskUIid, newTask);
-        } catch (Exception e) {
+            //Call to presenter here was moved to the controller (changeTaskDetails)
+        }
+        catch(Exception e) {
             e.printStackTrace();
         }
     }
