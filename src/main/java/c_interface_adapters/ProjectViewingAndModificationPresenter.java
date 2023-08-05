@@ -7,6 +7,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import com.sun.javafx.stage.StagePeerListener;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
@@ -59,8 +61,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         FXMLLoader fxmlLoader = new FXMLLoader(ProjectViewingAndModificationPresenter.class.getResource("ProjectViewingAndModification.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         controller = fxmlLoader.getController();
-        stage.setTitle("Current project");
+
         stage.setScene(scene);
+        stage.setTitle("Current project");
         stage.show();
     }
 
@@ -109,8 +112,52 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     }
 
     @Override
-    public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
+    public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
+        HBox hbox = new HBox();
+        Label taskName = new Label(newTask.getName());
+        Button taskOptionsButton = new Button("...");
+        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+        hbox.getChildren().add(taskName);
+        hbox.getChildren().add(taskOptionsButton);
+
+        List<TaskModel> taskModelInList = new ArrayList<>();
+        taskModelInList.add(newTask);
+
+//        String stringID = columnBoxID.toString();
+//        VBox columnBox = findVBoxById(stringID);
+//
+//        int buttonIndex = columnBox.getChildren().size() - 1;
+//        columnBox.getChildren().add(buttonIndex, hbox);
         System.out.println("hi");
+
+        String columnUUID = columnBoxID.toString();
+
+        Scene scene = stage.getScene();
+        System.out.println("SCENE "+scene);
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node.getId().equals("scrollPaneContainer")) {
+
+                    if (node instanceof ScrollPane scrollPane){
+                        HBox columnsContainer = (HBox) scrollPane.getContent();
+
+                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+                        while (iterator.hasNext()) {
+                            Node containerChild = iterator.next();
+                            if (containerChild.getId().equals(columnUUID)) {
+                                // Found the column
+                                VBox columnContainer = ((VBox) ((ScrollPane) containerChild).getContent());
+
+                                 populateTasksForEachColumn(columnContainer, taskModelInList);
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
     }
 
 //    public void dispayProjectDescription(ProjectModel project) {
@@ -638,6 +685,15 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 if (node2 instanceof HBox && node2.getId().equals(id)) {
                     return (HBox) node2;
                 }
+            }
+        }
+        return null;
+    }
+
+    private VBox findVBoxById(String id) {
+        for (VBox vBox : this.VBoxContainer) {
+            if (vBox instanceof VBox && vBox.getId().equals(id)) {
+                return vBox;
             }
         }
         return null;

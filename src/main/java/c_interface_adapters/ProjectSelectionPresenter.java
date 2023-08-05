@@ -58,6 +58,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     @Override
     public void start(Stage stage) throws Exception {
+
         setStage(stage);
         initializeScene(stage);
     }
