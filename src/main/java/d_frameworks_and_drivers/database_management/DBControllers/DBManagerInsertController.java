@@ -7,128 +7,99 @@ import b_application_business_rules.entity_models.TaskModel;
 
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 
-import com.opencsv.CSVWriter;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVFormat;
 
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.UUID;
 
 public class DBManagerInsertController implements IDBInsert {
 
     /**
-     * Appends the ProjectID, Name, Description and list of column IDs
-     * that belong to a project into the Database
+     * Adds a project record with ProjectID, Name, Description and list of column IDs
+     * into the Database
      *
-     * check DatabaseFiles/Projects/Projects.csv for reference
      * @param projectModel
      */
     public void DBInsert(ProjectModel projectModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Projects/Projects.csv");
+        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
+        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Projects/Projects.csv");
+            CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
 
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
-
-            // add data to csv
-            String[] data = {
-                    projectModel.getID().toString(),
-                    projectModel.getName(),
-                    projectModel.getDescription(),
-                    entityIDsToListController.EntityIDsToList(projectModel)
-            };
-            writer.writeNext(data);
-
-            // closing writer connection
-            writer.close();
+            // writes a new row/record to the CSV file
+            csvPrinter.printRecord(
+                projectModel.getID().toString(),
+                projectModel.getName(),
+                projectModel.getDescription(),
+                entityIDsToListController.EntityIDsToList(projectModel));
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * The method is intended to append the "ColumnID","Name",
-     * "Description" and "Task ID's" that belong to a Column
-     * into the Database
-     * check DatabaseFiles/Columns/Columns.csv for reference
+     * Adds a column record with fields "ColumnID","Name",
+     * and "Task ID's" into the Database
+     *
      * @param columnModel
-     * @return
      */
     public void DBInsert(ColumnModel columnModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
+        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
+        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
+             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
 
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
-
-            // add data to csv
-            String[] data = {
-                    columnModel.getID().toString(),
-                    columnModel.getName(),
-                    entityIDsToListController.EntityIDsToList(columnModel)
-            };
-            writer.writeNext(data);
-
-            // closing writer connection
-            writer.close();
+            // writes a new row/record to the CSV file
+            csvPrinter.printRecord(
+                columnModel.getID().toString(),
+                columnModel.getName(),
+                entityIDsToListController.EntityIDsToList(columnModel));
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
+     * Adds a task record with fields "TaskID","Name","Description","Completion Status","Due Date"
+     * into the Database
      *
      * @param taskModel Task model to be inserted in the database.
      */
     public void DBInsert(TaskModel taskModel) {
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
+        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
+        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
+             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
 
-            // create CSVWriter object with the FileWriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
-
-            // add data to csv
-            String[] data1 = {
+            // writes a new row/record to the CSV file
+            csvPrinter.printRecord(
                     taskModel.getID().toString(),
                     taskModel.getName(),
                     taskModel.getDescription(),
                     String.valueOf(taskModel.getCompletionStatus()),
-                    taskModel.getDueDateTime().toString()
-            };
-            writer.writeNext(data1);
-
-            // closing writer connection
-            writer.close();
+                    taskModel.getDueDateTime().toString());
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
+     * Adds a record of unique ID into the Database
      * @param uuid
      */
     public void DBInsert(UUID uuid) {
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv");
+        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
+        try (FileWriter outputfile = new FileWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv");
+             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
 
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
-
-            // add data to csv
-            String[] data1 = { uuid.toString(), "true" };
-            writer.writeNext(data1);
-
-            // closing writer connection
-            writer.close();
+            // writes a new row/record to the CSV file
+            csvPrinter.printRecord(uuid.toString(), "true");
         }
-        catch (Exception e) {
+        catch (IOException e) {
             e.printStackTrace();
         }
     }
