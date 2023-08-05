@@ -405,14 +405,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             //Create menu button and its options.
             MenuButton taskOptionsButton = new MenuButton("");
-            MenuItem renameTaskButton = new MenuItem("Rename Task");
+//            MenuItem renameTaskButton = new MenuItem("Rename Task");
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
                     "Details");
             MenuItem deleteTaskButton = new MenuItem("Delete Task");
 
             // Add event handlers.
-            renameTaskButton.setOnAction(event -> {
-                projectViewingAndModificationController.renameTask(task, hbox);});
+//            renameTaskButton.setOnAction(event -> {
+//                projectViewingAndModificationController.renameTask(task, hbox);});
             //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
                 this.handleChangeTaskPopup(task, hbox, controller);
@@ -425,8 +425,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                         UUID.fromString(columnBox.getId()));});
 
             // Add to MenuButton
-            taskOptionsButton.getItems().addAll(renameTaskButton,
-                    changeTaskDetailsButton, deleteTaskButton);
+            taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton);
             taskOptionsButton.getStyleClass().add("menu-button-custom");
 
 

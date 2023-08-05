@@ -116,9 +116,9 @@ public class ProjectViewingAndModificationController {
 
     }
 
-    void renameTask(TaskModel task, HBox hbox) {
-//        interactor.renameTask(task, hbox);
-    }
+//    void renameTask(TaskModel task, HBox hbox) {
+////        interactor.renameTask(task, hbox);
+//    }
 
     /**
      * Handles displaying options when the options button of a task is clicked.
