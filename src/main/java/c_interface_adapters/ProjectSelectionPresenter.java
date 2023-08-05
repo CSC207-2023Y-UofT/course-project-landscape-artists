@@ -197,6 +197,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         // Get the UUID of the renamed project and its new name
         String projectUUID = projectModel.getID().toString();
         String newProjectName = projectModel.getName();
+        String newProjectDescription = projectModel.getDescription();
 
         // Get the current scene of the stage
         Scene scene = stage.getScene();
@@ -222,7 +223,10 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                             if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
                                                 Label projectName = (Label) nodeInNameAndDescriptionContainer;
                                                 projectName.setText(newProjectName);
-                                                break;
+                                            }
+                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectDescription")) {
+                                                Label projectDescription = (Label) nodeInNameAndDescriptionContainer;
+                                                projectDescription.setText(newProjectDescription);
                                             }
                                         }
                                         break;
@@ -390,6 +394,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Label projectDescription = new Label(project.getDescription());
 
             projectName.setId("projectName");
+            projectDescription.setId("projectDescription");
+
 
 
             projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
