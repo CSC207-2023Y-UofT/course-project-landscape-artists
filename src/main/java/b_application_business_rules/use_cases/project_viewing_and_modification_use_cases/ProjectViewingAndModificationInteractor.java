@@ -14,30 +14,38 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 /**
- * The ProjectViewingAndModificationInteractor class is responsible for handling interactions
- * and business logic related to viewing and modifying projects. It implements the
- * ProjectViewingAndModificationInputBoundary interface to define the input boundary methods,
+ * The ProjectViewingAndModificationInteractor class is responsible for handling
+ * interactions
+ * and business logic related to viewing and modifying projects. It implements
+ * the
+ * ProjectViewingAndModificationInputBoundary interface to define the input
+ * boundary methods,
  * which are used by the presenter to interact with this interactor.
  */
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
-    // The currentProjectRepository holds the reference to the CurrentProjectRepository instance.
-    CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getInstance();
+    // The currentProjectRepository holds the reference to the
+    // CurrentProjectRepository instance.
+    CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
 
-    // The presenter holds the reference to the ProjectViewingAndModificationOutputBoundary instance,
+    // The presenter holds the reference to the
+    // ProjectViewingAndModificationOutputBoundary instance,
     // which is responsible for displaying the results of the use cases.
     private final ProjectViewingAndModificationOutputBoundary presenter;
 
     /**
-     * Initializes the ProjectViewingAndModificationInteractor with the provided presenter.
+     * Initializes the ProjectViewingAndModificationInteractor with the provided
+     * presenter.
      *
-     * @param presenter The presenter instance responsible for displaying the results of the use cases.
+     * @param presenter The presenter instance responsible for displaying the
+     *                  results of the use cases.
      */
     public ProjectViewingAndModificationInteractor(ProjectViewingAndModificationOutputBoundary presenter) {
         this.presenter = presenter;
     }
 
     /**
-     * Removes the current project from the CurrentProjectRepository. This method is called when the
+     * Removes the current project from the CurrentProjectRepository. This method is
+     * called when the
      * "Back" button is clicked in the UI to return to the project selection screen.
      */
     @Override
@@ -47,17 +55,17 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
-        //Generate random UUID for task
+        // Generate random UUID for task
         UUID taskID = UUID.randomUUID();
-        //Create TaskModel with given info
+        // Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
-        //initialize use case class
+        // initialize use case class
         AddTask useCase = new AddTask(idOfColumn, newTaskModel);
-        //call use case class to create a new task and save it to the database
+        // call use case class to create a new task and save it to the database
         useCase.addTask();
-        //Initialize TaskViewModel
+        // Initialize TaskViewModel
         TaskViewModel newTask = new TaskViewModel(newTaskModel);
-        //calls presenter to display message
+        // calls presenter to display message
         presenter.displayNewTask(idOfColumn, newTask);
     }
 
@@ -93,7 +101,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayDeletedColumn(c);
     }
 
-
     @Override
     public void renameColumn(UUID columnBoxId) {
         // TODO: DO NECESSARY STUFF.
@@ -115,9 +122,12 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
-     * Changes the task details given the new TaskModel task. Calls the use case to make
-     * changes to the entities and database then calls the presenter to display the updated changes
-     * @param task Task Model
+     * Changes the task details given the new TaskModel task. Calls the use case to
+     * make
+     * changes to the entities and database then calls the presenter to display the
+     * updated changes
+     * 
+     * @param task     Task Model
      * @param TaskUIid ID of task entity
      */
     @Override
@@ -128,8 +138,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
             TaskViewModel newTask = new TaskViewModel(task.getName(), TaskUIid, task.getDescription(),
                     task.getCompletionStatus(), task.getDueDateTime());
             presenter.dislayChangedTaskDetails(TaskUIid, newTask);
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -163,6 +172,5 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     public void deleteProject(ProjectModel project, UUID projectId) {
 
     }
-
 
 }

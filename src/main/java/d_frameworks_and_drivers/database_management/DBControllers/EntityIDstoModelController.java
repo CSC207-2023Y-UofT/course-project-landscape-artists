@@ -42,41 +42,48 @@ public class EntityIDstoModelController implements DBAdapterInterface {
             String[] tempColumnID = projectList.get(3).split(",");
 
             // Iterate through the list of column UUIDS to create a list of ColumnModels
+            //IF AND ONLY IF there is a valid list of column UUIDs
             List<ColumnModel> columnModelList = new ArrayList<>();
-            for (String tempCol : tempColumnID) {
-                //Find the correct column given the string UUID in Column.csv
-                ArrayList<String> columnInfo = searchController.DBColumnSearch(tempCol);
+//            System.out.println("TEMP COLUMN TEST");
+//            System.out.println(Arrays.stream(tempColumnID).toList() == null);
+//            System.out.println(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty());
+            if(!(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty())){
+                for (String tempCol : tempColumnID) {
+                    //Find the correct column given the string UUID in Column.csv
+                    ArrayList<String> columnInfo = searchController.DBColumnSearch(tempCol);
 
-                //Saving the column ID and name
-                UUID columnID = UUID.fromString(columnInfo.get(0));
-                String columnName = columnInfo.get(1);
+                    //Saving the column ID and name
+                    UUID columnID = UUID.fromString(columnInfo.get(0));
+                    String columnName = columnInfo.get(1);
 
-                //Temporary Array of string to hold the task IDs
-                String[] tempTaskID = projectList.get(3).split(",");
+                    //Temporary Array of string to hold the task IDs
+                    String[] tempTaskID = projectList.get(3).split(",");
 
-                List<TaskModel> taskModelList = new ArrayList<>();
-                for (String tempTask: tempTaskID) {
-                    ArrayList<String> taskInfo = searchController.DBTaskSearch(tempTask);
+                    List<TaskModel> taskModelList = new ArrayList<>();
+                    for (String tempTask: tempTaskID) {
+                        ArrayList<String> taskInfo = searchController.DBTaskSearch(tempTask);
 
-                    UUID taskID = UUID.fromString(taskInfo.get(0));
-                    String taskName = taskInfo.get(1);
-                    String taskDescription = taskInfo.get(2);
-                    boolean isCompleted = Boolean.parseBoolean(taskInfo.get(3));
-                    LocalDateTime dueDate = LocalDateTime.parse(taskInfo.get(4));
+                        UUID taskID = UUID.fromString(taskInfo.get(0));
+                        String taskName = taskInfo.get(1);
+                        String taskDescription = taskInfo.get(2);
+                        boolean isCompleted = Boolean.parseBoolean(taskInfo.get(3));
+                        LocalDateTime dueDate = LocalDateTime.parse(taskInfo.get(4));
 
-                    //Creating a TaskModel object
-                    TaskModel newTModel = TaskModelFactory.create(taskName, taskID, taskDescription,
-                            isCompleted, dueDate);
-                    //Appending it to list of TaskModels
-                    taskModelList.add(newTModel);
+                        //Creating a TaskModel object
+                        TaskModel newTModel = TaskModelFactory.create(taskName, taskID, taskDescription,
+                                isCompleted, dueDate);
+                        //Appending it to list of TaskModels
+                        taskModelList.add(newTModel);
+
+                    }
+                    //Creating a ColumnModel object
+                    ColumnModel newCModel = ColumnModelFactory.create(columnName, taskModelList, columnID);
+                    //Appending to the list of ColumnModels
+                    columnModelList.add(newCModel);
 
                 }
-                //Creating a ColumnModel object
-                ColumnModel newCModel = ColumnModelFactory.create(columnName, taskModelList, columnID);
-                //Appending to the list of ColumnModels
-                columnModelList.add(newCModel);
-
             }
+
             //Creating a ProjectModel object
             ProjectModel newPModel = ProjectModelFactory.create(projectName, projectID,
                     projectDescription, columnModelList);
