@@ -2,7 +2,6 @@ package a_enterprise_business_rules.entities;
 
 import java.util.*;
 
-
 /**
  * A column within the productivity application.
  * 
@@ -180,13 +179,13 @@ public class Column {
         int tasksNumber = this.tasks.size();
 
         // Validity check
-        if (taskToMove == null){
+        if (taskToMove == null) {
             throw new IllegalArgumentException("Task cannot be null.");
         }
 
-        if (positionToMoveTo < 0||positionToMoveTo >= tasksNumber){
+        if (positionToMoveTo < 0 || positionToMoveTo >= tasksNumber) {
             throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
-                    "It must be between 0 and " +(tasksNumber - 1) + " inclusive.");
+                    "It must be between 0 and " + (tasksNumber - 1) + " inclusive.");
         }
 
         // Moving the column
@@ -259,12 +258,13 @@ public class Column {
     }
 
     /**
-     * Searches an arraylist of columns and returns one that has the same ID as the given ID. Otherwise, returns null.
+     * Searches an List of columns and returns one that has the same ID as the given
+     * ID. Otherwise, returns null.
      *
      * @param columnID
      * @param listOfColumns
      */
-    public static Column IDToColumn(UUID columnID, ArrayList<Column> listOfColumns) {
+    public static Column IDToColumn(UUID columnID, List<Column> listOfColumns) {
         int i = 0;
         boolean columnFound = false;
         Column column = null;
@@ -278,17 +278,17 @@ public class Column {
         }
         return column;
     }
-// testing IDToColumn helper function (Success!)
-//    public static void main(String[] args) {
-//        UUID id1 = UUID.randomUUID();
-//        UUID id2 = UUID.randomUUID();
-//        Column c1 = new Column("column 1", new ArrayList<Task>(), id1);
-//        Column c2 = new Column("column 2", new ArrayList<Task>(), id2);
-//        ArrayList<Column> listOfColumns = new ArrayList<Column>();
-//        listOfColumns.add(c1);
-//        listOfColumns.add(c2);
-//        Column found = Column.IDToColumn(id2, listOfColumns);
-//        System.out.println(c2.equals(found));
-//    }
+    // testing IDToColumn helper function (Success!)
+    // public static void main(String[] args) {
+    // UUID id1 = UUID.randomUUID();
+    // UUID id2 = UUID.randomUUID();
+    // Column c1 = new Column("column 1", new List<Task>(), id1);
+    // Column c2 = new Column("column 2", new List<Task>(), id2);
+    // List<Column> listOfColumns = new List<Column>();
+    // listOfColumns.add(c1);
+    // listOfColumns.add(c2);
+    // Column found = Column.IDToColumn(id2, listOfColumns);
+    // System.out.println(c2.equals(found));
+    // }
 
 }
