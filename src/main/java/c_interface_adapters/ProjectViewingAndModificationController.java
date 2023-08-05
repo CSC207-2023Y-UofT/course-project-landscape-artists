@@ -5,7 +5,7 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.factories.TaskFactory;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
@@ -100,7 +100,8 @@ public class ProjectViewingAndModificationController {
         boolean taskStatus = task.getCompletionStatus();
 
         //Creating a new TaskModel based on the user input
-        TaskModel changedTask = TaskFactory.create(newTaskName, taskID, newTaskDescription, taskStatus, newDueDate);
+        TaskModel changedTask = TaskModelFactory.create(newTaskName, taskID, newTaskDescription, taskStatus,
+                newDueDate);
         interactor.changeTaskDetails(changedTask, taskID);
 
         //Creating a TaskViewModel for display purposes

@@ -109,18 +109,18 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
 
 		 // Temporary implementation for testing purposes.
-//		 List<TaskModel> TaskList = Arrays.asList(
-//		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
-//		 LocalDateTime.now()),
-//		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
-//		 LocalDateTime.now()));
-//		 List<ColumnModel> ColumnsList = Arrays.asList(
-//		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
-//		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
-//		 ProjectModel projectModel = new ProjectModel(
-//		 "Project P1", UUID.randomUUID(), "", ColumnsList);
-//		 setCurrentProject(projectModel);
-//		 presenter.displayCurrentProject(projectModel);
+		 List<TaskModel> TaskList = Arrays.asList(
+		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
+		 LocalDateTime.now()),
+		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
+		 LocalDateTime.now()));
+		 List<ColumnModel> ColumnsList = Arrays.asList(
+		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
+		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+		 ProjectModel projectModel = new ProjectModel(
+		 "Project P1", UUID.randomUUID(), "", ColumnsList);
+		 setCurrentProject(projectModel);
+		 presenter.displayCurrentProject(projectModel);
 	}
 
 	/**

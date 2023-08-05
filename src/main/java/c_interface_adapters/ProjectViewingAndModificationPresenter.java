@@ -2,7 +2,6 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -13,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -21,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
-import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -214,6 +211,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     }
 
+
     /**
      * This method renames the existing task and changes the task description and shows the final
      * changes on the screen
@@ -222,6 +220,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * @param task
      * @param hbox
      */
+    @Override
     public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
         String taskUUID = task.getID().toString();
         String taskName = task.getName();
