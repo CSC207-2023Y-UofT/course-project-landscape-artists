@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.TaskModel;
 
 import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class EntityIDsToListController implements IEntityIDsToList {
@@ -20,9 +21,13 @@ public class EntityIDsToListController implements IEntityIDsToList {
         List<ColumnModel> columnModelList = projectModel.getColumnModels();
         String columnModelListString = "";
 
+        List<String> ids = new ArrayList<>();
         for ( ColumnModel col: columnModelList ) {
-            String.join(", ", col.getID().toString());
+            ids.add(col.getID().toString());
+
         }
+        columnModelListString = String.join(", ", ids);
+
         return columnModelListString;
     }
 
@@ -36,17 +41,19 @@ public class EntityIDsToListController implements IEntityIDsToList {
     public String EntityIDsToList(ColumnModel columnModel) {
         List<TaskModel> taskModelList = columnModel.getTaskModels();
         String taskModelListString = "";
-        if(taskModelList == null){
+        if (taskModelList == null) {
             return null;
-        }
-        else {
-            for ( TaskModel task: taskModelList ) {
-                String.join(", ", task.getID().toString());
+        } else {
+            List<String> ids = new ArrayList<>();
+            for (TaskModel task : taskModelList) {
+                ids.add(task.getID().toString());
             }
+            taskModelListString = String.join(", ", ids);
+
             return taskModelListString;
         }
 
-
+    }
 
 }
 
