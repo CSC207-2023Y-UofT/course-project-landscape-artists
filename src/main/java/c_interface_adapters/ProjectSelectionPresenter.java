@@ -71,6 +71,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     public void start(Stage stage) throws Exception {
         System.out.println("START IS CALLED");
         setStage(stage);
+        populateProjectSelectionUI();
         initializeScene(stage);
     }
 
@@ -292,4 +293,13 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         this.projectSelectionViewModel = projectSelectionViewModel;
     }
 
+    public void populateProjectSelectionUI() {
+        Scene currentScene = stage.getScene();
+        if (currentScene != null) {
+            for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
+
+            }
+        }
+
+    }
 }
