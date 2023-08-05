@@ -10,7 +10,6 @@ import java.util.Map;
 
 public class UUIDMap {
     /**
-     *
      * @return
      */
     public static Map<String, String> convertCsvToHashMap() {
@@ -36,6 +35,7 @@ public class UUIDMap {
         return csvDataMap;
     }
 
+}
 // Old version
 //    public static void main(String[] args) {
 //        String csvFilePath = "DatabaseFiles/UniqueIDs/UniqueIDs.csv"; // Replace with the path to your CSV file
@@ -50,4 +50,4 @@ public class UUIDMap {
 //            e.printStackTrace();
 //        }
 //    }
-}
+
