@@ -49,14 +49,14 @@ public class ProjectSelectionController {
     // The ProjectSelectionPresenter
     ProjectSelectionPresenter presenter;
 
-//    public ProjectSelectionController() {
-//
-//    }
-//
-//    /**
-//     * Initializes the controller after its root element has been completely processed.
-//     * Populates the project selection UI with the projects from the database.
-//     */
+    public ProjectSelectionController() {
+
+    }
+
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     * Populates the project selection UI with the projects from the database.
+     */
 //    @Override
 //    public void initialize(URL url, ResourceBundle resourceBundle) {
 ////         Grab data from database and display it in the scene. An example

@@ -2,8 +2,10 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ProjectModel;
+import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -21,7 +23,8 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Iterator;
+import java.time.LocalDateTime;
+import java.util.*;
 
 import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
@@ -78,6 +81,43 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         System.out.println("START IS CALLED");
         initializeScene(stage);
         setStage(stage);
+        getDatabaseShit();
+        populateProjectSelectionUI();
+    }
+
+    public void getDatabaseShit() {
+        //         Grab data from database and display it in the scene. An example
+//         would be something like below (Currently don't know which layer to
+//         get all projects):
+//         Gateway gateway = new Gateway();
+//         List<Project> allProjectsInSystem = gateway.getAllProjects();
+//        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
+        List<TaskViewModel> TaskList = Arrays.asList(
+                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
+                        LocalDateTime.now()),
+                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
+                        LocalDateTime.now()));
+        List<ColumnViewModel> ColumnsList = Arrays.asList(
+                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
+                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
+        );
+        ProjectViewModel p1 = new ProjectViewModel(
+                "Project 111111", UUID.randomUUID(),"P1 description",  ColumnsList
+        );
+
+        ProjectViewModel p2 = new ProjectViewModel(
+                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
+        );
+
+        ProjectViewModel p3 = new ProjectViewModel(
+                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
+        );
+
+
+        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
+        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
+//        TODO: END ------------------------------------------------------------
+        // Populate the project selection UI with the projects
         populateProjectSelectionUI();
     }
 
@@ -271,16 +311,18 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     public void initializeScene(Stage stage) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource(
-                    "ProjectSelection.fxml"));
-            controller = fxmlLoader.getController();
+            FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource("ProjectSelection.fxml"));
             Parent root = fxmlLoader.load();
+
+            // Now that the FXML file is loaded, you can get the controller
+            controller = fxmlLoader.getController();
+            System.out.println("CONTROLLER: " + controller);
+
             Scene scene = new Scene(root);
-            Stage stage1 = stage;
-            stage1.setTitle("Choose project");
-            stage1.setScene(scene);
+            stage.setTitle("Choose project");
+            stage.setScene(scene);
             scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
-            stage1.show();
+            stage.show();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -309,6 +351,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                 if (node instanceof GridPane) {
                     if (node.getId().equals("projectsGrid")) {
                         System.out.println("FOUND THE FREAKING GRIDPANE");
+                        populateProjectSelectionUI2((GridPane) node);
                     }
                 }
             }
@@ -332,6 +375,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         rowConstraints.setVgrow(Priority.ALWAYS);
         rowConstraints.setFillHeight(true);
         projectsGrid.getRowConstraints().add(rowConstraints);
+        System.out.println(projectSelectionViewModel);
 
         while (projectSelectionViewModel.hasNext()) {
             ProjectViewModel project = projectSelectionViewModel.next();
@@ -400,7 +444,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                 row++;
             }
         }
-
-        controller.addCreateProjectButton(col, row);
+        System.out.println("CONTROLLER" + controller);
+//        controller.addCreateProjectButton(col, row);
     }
 }
