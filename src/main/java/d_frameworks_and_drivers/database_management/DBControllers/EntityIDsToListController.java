@@ -37,7 +37,7 @@ public class EntityIDsToListController implements IEntityIDsToList {
         List<TaskModel> taskModelList = columnModel.getTaskModels();
         String taskModelListString = "";
 
-        for ( TaskModel task: taskModelList ) {
+        for (TaskModel task: taskModelList ) {
             String.join(", ", task.getID().toString());
         }
         return taskModelListString;

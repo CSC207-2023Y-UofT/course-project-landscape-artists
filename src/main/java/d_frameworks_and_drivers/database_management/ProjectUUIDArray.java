@@ -24,7 +24,7 @@ public class ProjectUUIDArray {
         // Create a CSVParser to read the CSV file
         // Prevent fileReader, csvParser resource leaks by closing after try block
         try (FileReader fileReader = new FileReader(csvFilePath);
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
 
             // Iterate through each CSV line
             for (CSVRecord csvRecord : csvParser) {
