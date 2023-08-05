@@ -2,9 +2,11 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
 import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -46,6 +48,10 @@ public class ProjectSelectionController implements Initializable {
 
     // The ProjectSelectionPresenter
     ProjectSelectionPresenter presenter;
+
+    public ProjectSelectionController() {
+
+    }
 
     /**
      * Initializes the controller after its root element has been completely processed.
@@ -95,7 +101,7 @@ public class ProjectSelectionController implements Initializable {
         // This had to be separate since presenter needs to have a stage.
         // This is not accessible upon initialization.
         ProjectSelectionOutputBoundary presenter =
-                new ProjectSelectionPresenter();
+                new ProjectSelectionPresenter(this);
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
         ((ProjectSelectionPresenter) presenter).setStage(stage);
         ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);

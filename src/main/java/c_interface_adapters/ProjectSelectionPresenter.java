@@ -31,15 +31,18 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     // The JavaFX Stage used for displaying scenes
     private Stage stage;
     private ProjectSelectionViewModel projectSelectionViewModel;
+    private ProjectSelectionController controller;
 
-    /**
-     * Constructs a new ProjectSelectionPresenter object with the provided ProjectSelectionController.
-     *
-     * @param projectSelectionController The ProjectSelectionController associated with this presenter. The controller
-     *                                   handles user interactions and delegates tasks to the presenter for processing
-     *                                   project selection and creation actions.
-     */
-
+//    /**
+//     * Constructs a new ProjectSelectionPresenter object with the provided ProjectSelectionController.
+//     *
+//     * @param projectSelectionController The ProjectSelectionController associated with this presenter. The controller
+//     *                                   handles user interactions and delegates tasks to the presenter for processing
+//     *                                   project selection and creation actions.
+//     */
+    public void setController(ProjectSelectionController controller) {
+        this.controller = controller;
+    }
 
     /**
      * Sets the JavaFX Stage to be used for displaying scenes.
@@ -47,7 +50,15 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * @param stage The JavaFX Stage to set.
      */
     public void setStage(Stage stage) {
+        System.out.println("STAGE IS SET");
         this.stage = stage;
+    }
+
+    public ProjectSelectionPresenter( ) {
+    }
+
+    public ProjectSelectionPresenter(ProjectSelectionController controller) {
+        this.controller = controller;
     }
 
     /**
@@ -58,6 +69,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     @Override
     public void start(Stage stage) throws Exception {
+        System.out.println("START IS CALLED");
         setStage(stage);
         initializeScene(stage);
     }
@@ -254,6 +266,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource(
                     "ProjectSelection.fxml"));
+            controller = fxmlLoader.getController();
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
             Stage stage1 = stage;
@@ -274,6 +287,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      *                                  project selection UI.
      */
     public void setViewModel(ProjectSelectionViewModel projectSelectionViewModel) {
+        System.out.println("SETTING THE PROJECTSELECTIONVIEWMODEL FOR THE PRESENTER");
+        System.out.println("HERE IT IS: " + projectSelectionViewModel);
         this.projectSelectionViewModel = projectSelectionViewModel;
     }
 
