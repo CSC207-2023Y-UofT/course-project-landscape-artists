@@ -4,7 +4,6 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-
 import java.io.FileReader;
 import java.util.ArrayList;
 
@@ -13,7 +12,6 @@ import java.util.ArrayList;
  * String attributes of each project.
  *
  */
-
 public class ProjectUUIDArray {
     /**
      * Converts the csv format of projects to a 2D arraylist
@@ -24,6 +22,7 @@ public class ProjectUUIDArray {
         ArrayList<ArrayList<String>> csvDataArray = new ArrayList<>();
 
         // Create a CSVParser to read the CSV file
+        // Prevent fileReader, csvParser resource leaks by closing after try block
         try (FileReader fileReader = new FileReader(csvFilePath);
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
 
@@ -31,12 +30,12 @@ public class ProjectUUIDArray {
             for (CSVRecord csvRecord : csvParser) {
                 ArrayList<String> projectInfo = new ArrayList<>();
 
-                //Add in the Project attributes a new Arraylist
-                projectInfo.add(csvRecord.get(0));
-                projectInfo.add(csvRecord.get(1));
-                projectInfo.add(csvRecord.get(2));
-                projectInfo.add(csvRecord.get(3));
-                projectInfo.add(csvRecord.get(4));
+                //Add in the Project attributes a new Arraylist  // Extend with isMapped(String) and getHeaderMap()
+                projectInfo.add(csvRecord.get(0)); // "ProjectID",
+                projectInfo.add(csvRecord.get(1));  // "Name",
+                projectInfo.add(csvRecord.get(2)); // "Description",
+                projectInfo.add(csvRecord.get(3)); // "Column ID's"
+
 
                 //Place the newly made arrayList into another ArrayList --> 2D arraylist
                 csvDataArray.add(projectInfo);
