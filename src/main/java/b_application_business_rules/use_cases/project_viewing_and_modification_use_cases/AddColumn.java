@@ -46,7 +46,7 @@ public class AddColumn {
         // Create the column entity
         Column column = createColumnEntity(columnModel);
         // Add the column to the currently opened Project entity.
-        currentProject.addColumn(new ColumnModel(column));
+        currentProject.addColumn(column);
 
         // Update database to add the column.
         IDBInsert dbInsertManager = new DBManagerInsertController();
