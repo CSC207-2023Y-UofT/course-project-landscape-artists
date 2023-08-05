@@ -675,6 +675,19 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
+
+    /**
+     * Displays a pop-up window to allow the user to enter a new column name.
+     * The user can click the "Add" button to confirm the input and add the new column,
+     * or click the "Cancel" button to cancel the operation.
+     * The entered column name (trimmed) will be returned as the value of the {@link javafx.util.Pair}.
+     *
+     * @param addButtonClicked A boolean array used to store the result of the pop-up.
+     *                         The first element (index 0) will be set to {@code true} if the "Add" button is clicked,
+     *                         or {@code false} if the "Cancel" button is clicked.
+     * @return A Pair containing the flag indicating the button clicked
+     *         (true for "Add", false for "Cancel") and the entered column name (trimmed).
+     */
     public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked) {
         // Create a new stage for the popup
         Stage popupStage = new Stage();
