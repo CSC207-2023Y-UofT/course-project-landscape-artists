@@ -9,6 +9,7 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBInse
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * The AddColumn class is responsible for adding a new column to the currently
@@ -54,7 +55,7 @@ public class AddColumn {
 
     /**
      * Creates and returns Column Entity with given Column Model
-     * 
+     *
      * @param columnModel
      */
 

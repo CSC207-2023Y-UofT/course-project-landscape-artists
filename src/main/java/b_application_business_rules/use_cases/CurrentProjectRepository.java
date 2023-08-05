@@ -1,11 +1,10 @@
 package b_application_business_rules.use_cases;
 
+import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.entity_models.ProjectModel;
 
-/**
- * This singleton class will be the respository to store the current project
- * that use cases will access utilize.
- */
+import java.util.UUID;
+
 public class CurrentProjectRepository {
     /** The single instance of this singleton class */
     private static final CurrentProjectRepository currentProjectRepository = new CurrentProjectRepository(null);
@@ -38,4 +37,9 @@ public class CurrentProjectRepository {
         this.setCurrentProject(null);
     }
 
+    public void deleteProject(UUID projectID) {}
+
+    public Project getProjectByID(UUID projectID) {
+        return null;
+    }
 }

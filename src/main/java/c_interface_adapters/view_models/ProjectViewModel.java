@@ -70,9 +70,12 @@ public class ProjectViewModel {
         List<ColumnModel> columnModels = projectModel.getColumnModels(); // Get the tasks
         // Converts Columns to ColumnViewModels and puts it in the columnViewModels
         // attribute
-        for (int i = 0; i < columnModels.size(); i++) {
-            this.addColumnViewModel(new ColumnViewModel(columnModels.get(i)));
+        if(!(columnModels==null || columnModels.isEmpty())){
+            for (ColumnModel columnModel : columnModels) {
+                this.addColumnViewModel(new ColumnViewModel(columnModel));
+            }
         }
+
 
         this.description = projectModel.getDescription();
         this.ID = projectModel.getID();

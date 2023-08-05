@@ -24,10 +24,10 @@ public class DBManagerRemoveController implements IDBRemove {
      * @param projectModel
      */
     public void DBRemove(ProjectModel projectModel, UUID uuid) {
-        File tempFile = new File("DatabaseFiles/Projects/Projects.csv");
-        tempFile.renameTo(new File("DatabaseFiles/Projects/ProjectsTemp.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/ProjectsTemp.csv"));
         ProjectDBInitializer projectDBInitializer = new ProjectDBInitializer();
-        File newFile = new File("DatabaseFiles/Projects/Projects.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
 
         CsvRemovalUpdate(uuid, tempFile, newFile);
     }
@@ -36,10 +36,10 @@ public class DBManagerRemoveController implements IDBRemove {
      * @param taskModel
      */
     public void DBRemove(TaskModel taskModel, UUID uuid) {
-        File tempFile = new File("DatabaseFiles/Columns/Columns.csv");
-        tempFile.renameTo(new File("DatabaseFiles/Columns/ColumnsTemp.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/ColumnsTemp.csv"));
         ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
-        File newFile = new File("DatabaseFiles/Columns/Columns.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
 
         CsvRemovalUpdate(uuid, tempFile, newFile);
 
@@ -49,10 +49,10 @@ public class DBManagerRemoveController implements IDBRemove {
      * @param columnModel
      */
     public void DBRemove(ColumnModel columnModel, UUID uuid) {
-        File tempFile = new File("DatabaseFiles/Tasks/Tasks.csv");
-        tempFile.renameTo(new File("DatabaseFiles/Tasks/TasksTemp.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksTemp.csv"));
         TaskDBInitializer taskDBInitializer = new TaskDBInitializer();
-        File newFile = new File("DatabaseFiles/Tasks/Tasks.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
 
         CsvRemovalUpdate(uuid, tempFile, newFile);
     }
@@ -66,7 +66,7 @@ public class DBManagerRemoveController implements IDBRemove {
             // Iterate through each row in the CSV file
             for (CSVRecord csvRecord : csvParser) {
                 // Check if the current row's column value matches the value to delete
-                String columnValue = csvRecord.get("ProjectID");
+                String columnValue = csvRecord.values()[0];
                 if (!columnValue.equals(uuid.toString())) {
                     // If it does not match, write the row to the new CSV file
                     csvPrinter.printRecord(csvRecord);

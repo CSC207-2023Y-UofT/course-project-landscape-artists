@@ -2,6 +2,9 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
 import a_enterprise_business_rules.entities.Project;
@@ -9,6 +12,7 @@ import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoModelController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -48,6 +52,8 @@ public class ProjectSelectionController implements Initializable {
     // The ProjectSelectionPresenter
     ProjectSelectionPresenter presenter;
 
+    List<ProjectModel> AllProjectsList = new ArrayList<>();
+
     /**
      * Initializes the controller after its root element has been completely
      * processed.
@@ -55,32 +61,77 @@ public class ProjectSelectionController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Grab data from database and display it in the scene. An example
-        // would be something like below (Currently don't know which layer to
-        // get all projects):
-        // Gateway gateway = new Gateway();
-        // List<Project> allProjectsInSystem = gateway.getAllProjects();
-        // TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        List<TaskViewModel> TaskList = Arrays.asList(
-                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
-                        LocalDateTime.now()),
-                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
-                        LocalDateTime.now()));
-        List<ColumnViewModel> ColumnsList = Arrays.asList(
-                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
-                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+//         Grab data from database and display it in the scene. An example
+//         would be something like below (Currently don't know which layer to
+//         get all projects):
+//         Gateway gateway = new Gateway();
+//         List<Project> allProjectsInSystem = gateway.getAllProjects();
+//        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
+
+        List<TaskViewModel> TaskList = new ArrayList<>();
+        TaskList.add(new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
+                LocalDateTime.now()));
+        TaskList.add(new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
+                LocalDateTime.now()));
+
+        List<ColumnViewModel> ColumnsList = new ArrayList<>();
+        ColumnsList.add(new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()));
+        ColumnsList.add(new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+
+
         ProjectViewModel p1 = new ProjectViewModel(
-                "Project 111111", UUID.randomUUID(), "P1 description", ColumnsList);
+                "Project 111111", UUID.randomUUID(),"P1 description",  ColumnsList
+                );
 
         ProjectViewModel p2 = new ProjectViewModel(
-                "Project 111111", UUID.randomUUID(), "P2 description", ColumnsList);
+                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
+        );
 
         ProjectViewModel p3 = new ProjectViewModel(
-                "Project 111111", UUID.randomUUID(), "P2 description", ColumnsList);
+                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
+        );
 
-        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
+
+        List<ProjectViewModel> projectsInSystem = new ArrayList<>();
+        projectsInSystem.add(p1);
+        projectsInSystem.add(p2);
+        projectsInSystem.add(p3);
+//        TODO: END ------------------------------------------------------------
+
+        DBAdapterInterface dbAdapterInterface = new EntityIDstoModelController();
+        AllProjectsList = dbAdapterInterface.IDstoProjectModelList();
+
+        for (ProjectModel proj :AllProjectsList) {
+            if(proj != null){
+                projectsInSystem.add(new ProjectViewModel(proj));
+            } else {
+                continue;
+            }
+
+            List<ColumnModel> colsFromProject = proj.getColumnModels();
+            for (ColumnModel column : colsFromProject) {
+                if(column != null){
+                    ColumnsList.add(new ColumnViewModel(column));
+                } else {
+                    continue;
+                }
+
+                List<TaskModel> tasksFromColumn = column.getTaskModels();
+
+                for (TaskModel tasks: tasksFromColumn) {
+                    if(tasks != null){
+                        TaskList.add(new TaskViewModel(tasks));
+                    }
+                }
+
+            }
+
+        }
+
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
-        // TODO: END ------------------------------------------------------------
+//        System.out.println(projectsInSystem);
+//        System.out.println(dbAdapterInterface.IDstoProjectModelList());
+
         // Populate the project selection UI with the projects
         populateProjectSelectionUI();
     }
