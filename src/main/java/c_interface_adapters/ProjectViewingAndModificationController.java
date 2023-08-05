@@ -71,10 +71,14 @@ public class ProjectViewingAndModificationController {
         setPresenter();
         interactor.deleteColumn(id);
     }
+    
+    
 
-    void renameColumm(UUID id) {
+    void handleEditColumnDetails(UUID id) {
         setPresenter();
-        interactor.editColumnDetails(id);
+        String newColumnName = presenter.displayEditColumnDetails();
+        System.out.println(newColumnName);
+//        interactor.editColumnDetails(id);
     }
 
 
