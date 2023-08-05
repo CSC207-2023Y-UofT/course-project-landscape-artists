@@ -1,5 +1,12 @@
 # General
 
+
+
+
+# CSV file formats
+
+Make sure 1st column (i.e. 0th index) of the csv file is the UUID IDs of that file's main objects.
+
 ## try-with-resources
 When using try-with-resources e.g.
     (FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
