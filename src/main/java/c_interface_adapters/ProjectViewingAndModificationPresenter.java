@@ -328,7 +328,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Add event handler on menu item.
         renameColumnButton.setOnAction(event -> {
-            controller.renameColumm(column.getID());});
+            controller.handleEditColumnDetails(column.getID());});
         deleteColumnButton.setOnAction(event -> {
             controller.deleteColumn(column.getID());});
 
@@ -731,5 +731,65 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             }
         }
         return null;
+    }
+
+    /**
+     * Displays a new popup window for the user to input what the new name should be for the chosen column.
+     */
+    public String displayEditColumnDetails() {
+        final String[] columnNameContainer = {null}; // Container for columnName
+
+        // Create the dialog
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Enter Column Name");
+
+        // Create controls
+        Label label = new Label("Enter the name of the column:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        Button cancelButton = new Button("Cancel");
+
+        okButton.setOnAction(e -> {
+            String inputText = textField.getText().trim();
+            if (!inputText.isEmpty()) {
+                columnNameContainer[0] = inputText;
+                dialogStage.close();
+            } else {
+                // Show an error message or take any other action to inform the user
+                // that a valid name is required.
+                // For simplicity, we'll just show an alert.
+                showAlert("Error", "Column name cannot be empty or whitespace-only.");
+            }
+        });
+
+        cancelButton.setOnAction(e -> {
+            dialogStage.close();
+        });
+
+        // Layout the controls
+        VBox vbox = new VBox(label, textField, new Separator(), new HBox(okButton, cancelButton));
+        vbox.setSpacing(10);
+
+        // Set the scene
+        Scene scene = new Scene(vbox, 300, 150);
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
+
+        return columnNameContainer[0];
+    }
+
+    /**
+     * Displays an alert dialog with the specified title and message.
+     * The alert type is set to ERROR.
+     *
+     * @param title   The title of the alert dialog.
+     * @param message The content message to be displayed in the alert dialog.
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

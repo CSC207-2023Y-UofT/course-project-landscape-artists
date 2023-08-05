@@ -7,6 +7,7 @@ import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -41,7 +42,7 @@ public class DeleteColumn {
      */
     public DeleteColumn(UUID idOfColumn) {
         this.idOfColumn = idOfColumn;
-        this.column = new Column("", null, idOfColumn);
+        this.column = new Column("", new ArrayList<>(), idOfColumn);
     }
 
     /**

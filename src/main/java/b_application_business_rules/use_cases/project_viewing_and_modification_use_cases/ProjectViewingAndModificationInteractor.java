@@ -101,11 +101,21 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayDeletedColumn(c);
     }
 
+    /**
+     * Edits the details of a column identified by the specified columnBoxId.
+     *
+     * @param columnBoxId    The unique identifier (UUID) of the column box containing the column to be edited.
+     * @param newColumnName  The new name for the column.
+     */
     @Override
-    public void renameColumn(UUID columnBoxId) {
-        // TODO: DO NECESSARY STUFF.
-        ColumnModel c = new ColumnModel("Test", new ArrayList<>(), columnBoxId);
-        presenter.displayRenamedColumn(c);
+    public void editColumnDetails(UUID columnBoxId, String newColumnName) {
+        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, new ArrayList<>(), columnBoxId);
+        EditColumnDetails useCase = new EditColumnDetails(updatedColumnModel);
+        useCase.setColumnName(newColumnName);
+
+
+        ColumnModel c = new ColumnModel(newColumnName, new ArrayList<>(), columnBoxId);
+        presenter.displayRenamedColumn(updatedColumnModel);
     }
 
     @Override

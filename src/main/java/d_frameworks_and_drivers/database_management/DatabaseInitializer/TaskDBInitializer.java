@@ -10,7 +10,7 @@ public class TaskDBInitializer {
 
     public TaskDBInitializer() {
         // create CSVWriter object filewriter object as parameter
-        File file = new File("DatabaseFiles/Tasks/Tasks.csv");
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
         FileWriter outputfile = null;
         try {
             outputfile = new FileWriter(file);
