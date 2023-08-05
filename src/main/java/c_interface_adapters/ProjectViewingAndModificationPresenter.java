@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -674,7 +675,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
-    public String displayAddColumnPopup() {
+    public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked) {
         // Create a new stage for the popup
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -687,8 +688,18 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         Button cancelButton = new Button("Cancel");
 
         // Set up event handlers
-        addButton.setOnAction(e -> popupStage.close());
+        addButton.setOnAction(e -> {
+            String columnName = nameTextField.getText().trim();
+            if (columnName.isEmpty()) {
+                showAlert("Error", "Column name cannot be empty.");
+            } else {
+                addButtonClicked[0] = true; // Set the flag to true when "Add" button is clicked
+                popupStage.close();
+            }
+        });
+
         cancelButton.setOnAction(e -> {
+            addButtonClicked[0] = false; // Set the flag to false when "Cancel" button is clicked
             nameTextField.clear();
             popupStage.close();
         });
@@ -703,9 +714,10 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.setScene(popupScene);
         popupStage.showAndWait();
 
-        // Return the user input (column name)
-        return nameTextField.getText();
+        // Return the result as a Pair containing the flag and column name
+        return new Pair<>(addButtonClicked[0], nameTextField.getText().trim());
     }
+
 //    public static HBox createKanbanCard(HBox originalCard, TaskModel taskModel) {
 //        // Create the card content
 //        Rectangle cardBackground = new Rectangle(100, 50, Color.LIGHTBLUE);

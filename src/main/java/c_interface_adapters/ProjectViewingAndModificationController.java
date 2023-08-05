@@ -16,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -194,8 +195,12 @@ public class ProjectViewingAndModificationController {
     }
     @FXML
     private void handleAddColumnClick() {
-        String columnName = presenter.displayAddColumnPopup();
-        interactor.addColumn(columnName);
+        boolean[] addButtonClicked = new boolean[1];
+        Pair<Boolean, String> result = presenter.displayAddColumnPopup(addButtonClicked);
+        if (result.getKey()) {
+            String columnName = result.getValue();
+            interactor.addColumn(columnName);
+        }
     }
 //    public void moveTask(TaskModel task, VBox targetColumn) {
 //        // Get the current column containing the task
