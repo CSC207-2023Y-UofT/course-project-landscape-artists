@@ -74,7 +74,7 @@ public class ProjectViewingAndModificationController {
 
     void renameColumm(UUID id) {
         setPresenter();
-        interactor.renameColumn(id);
+        interactor.editColumnDetails(id);
     }
 
 
