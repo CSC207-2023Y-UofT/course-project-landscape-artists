@@ -709,7 +709,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         alert.showAndWait();
     }
 
-
+    /**
+     * Displays a pop-up window to show the details of a given TaskModel.
+     *
+     * @param taskModel The TaskModel object containing the details of the task to be displayed.
+     */
     public static void displayTaskDetails(TaskModel taskModel) {
         // Create a new stage for the pop-up window
         Stage popupStage = new Stage();
