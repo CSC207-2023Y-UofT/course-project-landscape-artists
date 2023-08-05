@@ -518,37 +518,39 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
 
     public String[] displayRenameProjectPopup() {
-        // Create a TextInputDialog to get the new project name and description from the user
+        // Create a dialog to get the new project name and description from the user
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Rename Project");
         dialog.setHeaderText("Enter the new name and description for the project:");
-        dialog.setContentText("New Project Name:");
+
+        // Create two text fields for the user to enter the name and description
+        TextField nameField = new TextField();
+        nameField.setPromptText("New Project Name");
+        TextField descriptionField = new TextField();
+        descriptionField.setPromptText("New Project Description");
+
+        // Set the dialog content to contain the text fields
+        dialog.getDialogPane().setContent(new VBox(nameField, descriptionField));
 
         // Show the dialog and wait for the user's response
-        String userInput = dialog.showAndWait().orElse(null);
+        dialog.showAndWait();
 
-        if (userInput != null) {
-            // Split the user input into project name and description using a delimiter
-            String[] parts = userInput.split(";", 2);
+        // Get the user input from the text fields
+        String newProjectName = nameField.getText().trim();
+        String newProjectDescription = descriptionField.getText().trim();
 
-            if (parts.length == 2) {
-                String newProjectName = parts[0].trim();
-                String newProjectDescription = parts[1].trim();
-
-                // Check if the new project name and description are not empty or contain only spaces
-                if (!newProjectName.isEmpty() && !newProjectDescription.isEmpty()) {
-                    // Return the valid new project name and description as an array of strings
-                    return new String[]{newProjectName, newProjectDescription};
-                }
-            }
+        // Check if either field is empty
+        if (newProjectName.isEmpty() || newProjectDescription.isEmpty()) {
+            // Show an error alert if either field is empty
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Input");
+            alert.setHeaderText("Invalid Project Name or Description");
+            alert.setContentText("Project name and description cannot be empty.\nPlease enter the new name and description.");
+            alert.showAndWait();
+            return null;
+        } else {
+            // Return the valid new project name and description as an array of strings
+            return new String[]{newProjectName, newProjectDescription};
         }
-
-        // Show an error alert if the input is invalid or canceled
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Invalid Input");
-        alert.setHeaderText("Invalid Project Name or Description");
-        alert.setContentText("Project name and description cannot be empty or contain only spaces.\nPlease enter the new name and description separated by a semicolon.");
-        alert.showAndWait();
-        return null;
     }
 }
