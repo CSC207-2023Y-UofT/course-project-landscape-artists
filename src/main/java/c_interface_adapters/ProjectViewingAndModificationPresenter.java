@@ -31,6 +31,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -392,6 +393,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
                     "Details");
             MenuItem deleteTaskButton = new MenuItem("Delete Task");
+            MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
 
             // Add event handlers.
             renameTaskButton.setOnAction(event -> {
@@ -402,6 +404,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
                         UUID.fromString(columnBox.getId()));});
+            showTaskDetailsButton.setOnAction(event -> {
+                projectViewingAndModificationController.showTaskDetails(task);});
 
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,
@@ -703,5 +707,32 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    public void displayTaskDetails(TaskModel taskModel) {
+        // Create a new stage for the pop-up window
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
+        popupStage.setTitle("Task Details");
+
+        // Create labels to display the task details
+        Label nameLabel = new Label("Name: " + taskModel.getName());
+        Label idLabel = new Label("ID: " + taskModel.getID());
+        Label descriptionLabel = new Label("Description: " + taskModel.getDescription());
+        Label completedLabel = new Label("Is Completed: " + taskModel.getCompletionStatus());
+        Label dueDateLabel = new Label("Due Date: " + taskModel.getDueDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+
+        // Create a VBox to hold the labels
+        VBox vbox = new VBox(10); // 10 pixels spacing between labels
+        vbox.getChildren().addAll(nameLabel, idLabel, descriptionLabel, completedLabel, dueDateLabel);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20)); // Add padding around the VBox
+
+        // Create a scene and set it on the stage
+        Scene scene = new Scene(vbox);
+        popupStage.setScene(scene);
+
+        // Show the pop-up window and wait for it to be closed before returning
+        popupStage.showAndWait();
     }
 }
