@@ -23,6 +23,7 @@ public class DBManagerInsertController implements IDBInsert {
      * Description and list of column IDs that belong to a project
      * into the Database
      * check DatabaseFiles/Projects/Projects.csv for reference
+     *
      * @param projectModel
      * @return
      */
@@ -46,8 +47,7 @@ public class DBManagerInsertController implements IDBInsert {
 
             // closing writer connection
             writer.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -57,6 +57,7 @@ public class DBManagerInsertController implements IDBInsert {
      * "Description" and "Task ID's" that belong to a Column
      * into the Database
      * check src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv for reference
+     *
      * @param columnModel
      * @return
      */
@@ -78,7 +79,7 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(columnModel.getName());
         data.add(entityIDsToListController.EntityIDsToList(columnModel));
         data.add(null);
-        data.add(CurrentProjectRepository.getInstance().getCurrentProject().getID().toString());
+        data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
 
         content.add(data.toArray(new String[0]));
 
@@ -113,8 +114,7 @@ public class DBManagerInsertController implements IDBInsert {
 
             // closing writer connection
             writer.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -136,8 +136,7 @@ public class DBManagerInsertController implements IDBInsert {
 
             // closing writer connection
             writer.close();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

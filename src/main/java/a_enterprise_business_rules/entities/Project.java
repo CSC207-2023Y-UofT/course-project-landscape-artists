@@ -1,14 +1,7 @@
 
 package a_enterprise_business_rules.entities;
 
-import b_application_business_rules.entity_models.ColumnModel;
-
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A project within the productivity application.
@@ -38,7 +31,7 @@ public class Project {
     /**
      * The columns in the kanban board for this project.
      */
-    private List<ColumnModel> columns;
+    private List<Column> columns;
 
     /**
      * Creates a new project, based in the inputted values.
@@ -48,7 +41,7 @@ public class Project {
      * @param description A description of the task.
      * @param columns     The columns of the project.
      */
-    public Project(String name, UUID ID, String description, List<ColumnModel> columns) {
+    public Project(String name, UUID ID, String description, List<Column> columns) {
         this.name = name;
         this.columns = columns;
         this.description = description;
@@ -114,7 +107,7 @@ public class Project {
      * 
      * @return an <code>List<Column></code> of <Column>s.
      */
-    public List<ColumnModel> getColumns() {
+    public List<Column> getColumns() {
         return this.columns;
     }
 
@@ -123,7 +116,7 @@ public class Project {
      * 
      * @param newColumns The new columns for the project.
      */
-    public void setColumns(List<ColumnModel> newColumns) {
+    public void setColumns(List<Column> newColumns) {
         this.columns = newColumns;
     }
 
@@ -132,7 +125,7 @@ public class Project {
      * 
      * @param newColumn The column to add.
      */
-    public void addColumn(ColumnModel newColumn) {
+    public void addColumn(Column newColumn) {
         this.columns.add(newColumn);
     }
 
@@ -142,7 +135,7 @@ public class Project {
      * @param newColumn The column to add to the project.
      * @param position  The position/index to add the column at.
      */
-    public void addColumnToPosition(ColumnModel newColumn, int position) {
+    public void addColumnToPosition(Column newColumn, int position) {
         this.columns.add(position, newColumn);
     }
 
@@ -151,12 +144,14 @@ public class Project {
      *
      * @param columnToMove     The column that needs to be moved.
      * @param positionToMoveTo The position/index to move the column to.
-     * @throws NoSuchElementException Throws exception when the specified column to
-     *                                remove is not in the columns of the project.
-     * @throws IllegalArgumentException Throws exception when the specified index is out
+     * @throws NoSuchElementException   Throws exception when the specified column
+     *                                  to
+     *                                  remove is not in the columns of the project.
+     * @throws IllegalArgumentException Throws exception when the specified index is
+     *                                  out
      *                                  of bounds.
      */
-    public void moveColumnToPosition(ColumnModel columnToMove, int positionToMoveTo)
+    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo)
             throws NoSuchElementException, IllegalArgumentException {
         // The moving of the columns is done by removing the object from the List
         // and then adding it back at the indicated index
@@ -164,13 +159,13 @@ public class Project {
         int columnsNumber = this.columns.size();
 
         // Validity check
-        if (columnToMove == null){
+        if (columnToMove == null) {
             throw new IllegalArgumentException("Column cannot be null.");
         }
 
-        if (positionToMoveTo < 0||positionToMoveTo >= columnsNumber){
+        if (positionToMoveTo < 0 || positionToMoveTo >= columnsNumber) {
             throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
-                    "It must be between 0 and " +(columnsNumber - 1) + " inclusive.");
+                    "It must be between 0 and " + (columnsNumber - 1) + " inclusive.");
         }
 
         // Moving the column
@@ -191,7 +186,7 @@ public class Project {
      * @throws NoSuchElementException Throws exception when the specified column to
      *                                remove is not in the project.
      */
-    public void removeColumn(ColumnModel columnToRemove) throws NoSuchElementException {
+    public void removeColumn(Column columnToRemove) throws NoSuchElementException {
         if (!this.columns.remove(columnToRemove)) {
             // the java.util.List.remove method returns a bool,
             // indicating whether the object was removed or not.
@@ -204,13 +199,15 @@ public class Project {
     }
 
     /**
-     * Removes a column with the specified ID from the list of columns in the current project.
+     * Removes a column with the specified ID from the list of columns in the
+     * current project.
      *
      * @param idOfColumnToRemove The ID of the column to be removed.
-     * @throws NoSuchElementException If no column with the given ID is found in the project.
+     * @throws NoSuchElementException If no column with the given ID is found in the
+     *                                project.
      */
     public void removeColumn(UUID idOfColumnToRemove) throws NoSuchElementException {
-        for (ColumnModel column : columns) {
+        for (Column column : columns) {
             if (column.getID().equals(idOfColumnToRemove)) {
                 columns.remove(column);
                 return;
@@ -219,8 +216,6 @@ public class Project {
         throw new NoSuchElementException(
                 "The column with ID " + idOfColumnToRemove + " is not in this project");
     }
-
-
 
     /**
      * Swaps the order of two columns in the column.

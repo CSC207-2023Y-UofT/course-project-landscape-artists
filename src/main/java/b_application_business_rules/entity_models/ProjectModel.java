@@ -1,6 +1,8 @@
 package b_application_business_rules.entity_models;
 
+import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.AddColumn;
 
 import java.util.*;
 
@@ -58,10 +60,10 @@ public class ProjectModel {
         this.name = project.getName();
 
         // Converting the List of Column objects to a List of ColumnModel objects
-        List<ColumnModel> columns = project.getColumns(); // Get the columns
+        List<Column> columns = project.getColumns(); // Get the columns
         // Converts Columns to ColumnModels and puts it in the columnModels attribute
-        for (ColumnModel cols : columns) {
-            this.addColumnModel(cols);
+        for (Column col : columns) {
+            this.addColumnModel(new ColumnModel(col));
         }
 
         this.description = project.getDescription();
@@ -261,12 +263,15 @@ public class ProjectModel {
      * @return a Project Entity.
      */
     public Project getProjectEntity() {
-        List<ColumnModel> columnEntities = new ArrayList<>();
+        ArrayList<Column> columnEntities = new ArrayList<>();
         for (ColumnModel columnModel: columnModels) {
-            columnEntities.add(columnModel);
+            columnEntities.add(AddColumn.createColumnEntity(columnModel));
         }
 
         return new Project(name, ID, description, columnEntities);
+
     }
+
+
 
 }

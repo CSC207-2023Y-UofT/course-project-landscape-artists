@@ -1,7 +1,5 @@
 package b_application_business_rules.factories;
 
-import a_enterprise_business_rules.entities.*;
-
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 
@@ -11,7 +9,7 @@ import java.util.UUID;
  * A Project factory to create ProjectModels.
  * Each ProjectModel has a name, ID, description and a list of ColumnModels
  */
-public class ProjectFactory {
+public class ProjectModelFactory {
 
     /**
      * Creates a ProjectModel

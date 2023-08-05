@@ -3,10 +3,9 @@ package d_frameworks_and_drivers.database_management.DBControllers;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.*;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.factories.ColumnFactory;
-import b_application_business_rules.factories.ProjectFactory;
-import b_application_business_rules.factories.TaskFactory;
-import b_application_business_rules.use_cases.project_selection_gateways.IEntityIDsToList;
+import b_application_business_rules.factories.ColumnModelFactory;
+import b_application_business_rules.factories.ProjectModelFactory;
+import b_application_business_rules.factories.TaskModelFactory;
 import d_frameworks_and_drivers.database_management.ProjectUUIDArray;
 
 import c_interface_adapters.DBAdapterInterface;
@@ -71,14 +70,14 @@ public class EntityIDstoModelController implements DBAdapterInterface {
                         LocalDateTime dueDate = LocalDateTime.parse(taskInfo.get(4));
 
                         //Creating a TaskModel object
-                        TaskModel newTModel = TaskFactory.create(taskName, taskID, taskDescription,
+                        TaskModel newTModel = TaskModelFactory.create(taskName, taskID, taskDescription,
                                 isCompleted, dueDate);
                         //Appending it to list of TaskModels
                         taskModelList.add(newTModel);
 
                     }
                     //Creating a ColumnModel object
-                    ColumnModel newCModel = ColumnFactory.create(columnName, taskModelList, columnID);
+                    ColumnModel newCModel = ColumnModelFactory.create(columnName, taskModelList, columnID);
                     //Appending to the list of ColumnModels
                     columnModelList.add(newCModel);
 
@@ -86,7 +85,7 @@ public class EntityIDstoModelController implements DBAdapterInterface {
             }
 
             //Creating a ProjectModel object
-            ProjectModel newPModel = ProjectFactory.create(projectName, projectID,
+            ProjectModel newPModel = ProjectModelFactory.create(projectName, projectID,
                     projectDescription, columnModelList);
             //Appending to the list of ProjectModels
             projectModels.add(newPModel);

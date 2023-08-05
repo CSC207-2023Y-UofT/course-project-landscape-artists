@@ -110,7 +110,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     @Override
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
-
+        System.out.println("hi");
     }
 
 //    public void dispayProjectDescription(ProjectModel project) {
@@ -141,7 +141,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     @Override
     public void displayRemovedTask(UUID taskID, TaskViewModel task) {
-
+        System.out.println("hello");
     }
 
     @Override
@@ -398,7 +398,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                 projectViewingAndModificationController.changeTaskDetails(
                         task, hbox);});
             deleteTaskButton.setOnAction(event -> {
-                projectViewingAndModificationController.deleteTask(task, hbox);});
+                projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
+                        UUID.fromString(columnBox.getId()));});
 
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,
@@ -568,7 +569,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             popupStage.close();
 
             // Call the method to handle adding the task to the column
-            projectViewingAndModificationController.handleAddTaskToColumn(columnBox, nameTextField.getText(),
+            projectViewingAndModificationController.handleAddTaskToColumn(columnBox.getId(), nameTextField.getText(),
                     detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
         });
 
