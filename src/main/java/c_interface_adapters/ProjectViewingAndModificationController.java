@@ -199,8 +199,6 @@ public class ProjectViewingAndModificationController {
 /**
  * Handles the event when the "Add Column" button is clicked.
  * Displays a pop-up window to allow the user to enter a new column name.
- * If a valid column name is provided and the "Add" button is clicked, the new column
- * will be added using the {@link Interactor#addColumn(String)} method.
  *
  */
     private void handleAddColumnClick() {
