@@ -116,7 +116,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         ColumnModel c = new ColumnModel(newColumnName, new ArrayList<>(), columnBoxId);
         presenter.displayRenamedColumn(updatedColumnModel);
-        System.out.println("SUCCESS IN INTERACTOR");
     }
 
     @Override
