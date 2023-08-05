@@ -36,38 +36,42 @@ public class EntityIDsToListController implements IEntityIDsToList {
     public String EntityIDsToList(ColumnModel columnModel) {
         List<TaskModel> taskModelList = columnModel.getTaskModels();
         String taskModelListString = "";
-
-        for (TaskModel task: taskModelList ) {
-            String.join(", ", task.getID().toString());
+        if(taskModelList == null){
+            return null;
         }
-        return taskModelListString;
-    }
+        else {
+            for ( TaskModel task: taskModelList ) {
+                String.join(", ", task.getID().toString());
+            }
+            return taskModelListString;
+        }
 
 
 
 }
 
-// Old version
-//String csvFilePath = "DatabaseFiles/Projects/Projects.csv"; // Replace with the path to your CSV file
-//
-//        // Sample list to store in the CSV column
-//        List<String> columnIdList = project.getColumns();
-//        String columnIdListString = "";
-//        try (FileWriter fileWriter = new FileWriter(csvFilePath);
-//             CSVPrinter csvPrinter = new CSVPrinter(
-//                     fileWriter,
-//                     CSVFormat.RFC4180.
-//                             withQuoteMode(CSVFormat.
-//                                     DEFAULT.getQuoteMode()))) {
-//
-//            columnIdListString.join(", ", columnIdList);
-//            // Write the list to the CSV column as a single entry
-//            csvPrinter.printRecord("","","", columnIdListString);
-//
-//            // Flush and close the CSVPrinter
-//            csvPrinter.flush();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//        return columnIdListString;
+/*
+String csvFilePath = "DatabaseFiles/Projects/Projects.csv"; // Replace with the path to your CSV file
+
+        // Sample list to store in the CSV column
+        List<String> columnIdList = project.getColumns();
+        String columnIdListString = "";
+        try (FileWriter fileWriter = new FileWriter(csvFilePath);
+             CSVPrinter csvPrinter = new CSVPrinter(
+                     fileWriter,
+                     CSVFormat.RFC4180.
+                             withQuoteMode(CSVFormat.
+                                     DEFAULT.getQuoteMode()))) {
+
+            columnIdListString.join(", ", columnIdList);
+            // Write the list to the CSV column as a single entry
+            csvPrinter.printRecord("","","", columnIdListString);
+
+            // Flush and close the CSVPrinter
+            csvPrinter.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+        return columnIdListString;
+ */

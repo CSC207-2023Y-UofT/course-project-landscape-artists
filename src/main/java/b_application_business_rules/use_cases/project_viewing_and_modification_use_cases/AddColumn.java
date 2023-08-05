@@ -9,9 +9,11 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBInse
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
- * The AddColumn class is responsible for adding a new column to the currently opened project in the database and the project entity.
+ * The AddColumn class is responsible for adding a new column to the currently
+ * opened project in the database and the project entity.
  */
 public class AddColumn {
 
@@ -23,7 +25,8 @@ public class AddColumn {
     /**
      * The current project being worked on. Received from Singleton data class.
      */
-    private final Project currentProject = CurrentProjectRepository.getInstance().getCurrentProject().getProjectEntity();
+    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
+            .getProjectEntity();
 
     /**
      * Constructs an AddColumn object with the specified column name and column ID.
@@ -36,7 +39,8 @@ public class AddColumn {
 
     /**
      * Adds the new column to the database and the currently opened project entity.
-     * This method performs necessary database access and updates the project entity with the new column.
+     * This method performs necessary database access and updates the project entity
+     * with the new column.
      */
     public void addColumn() {
         // Create the column entity
@@ -51,6 +55,7 @@ public class AddColumn {
 
     /**
      * Creates and returns Column Entity with given Column Model
+     *
      * @param columnModel
      */
 

@@ -22,7 +22,7 @@ public class DBManagerSearchController implements IDBSearch {
     public ArrayList<String> DBColumnSearch(String id) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         ArrayList<String> columnInfo = new ArrayList<>();
-        String csvFilePath = "DatabaseFiles/Column.csv";
+        String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv";
 
         // Opening and reading through the Column.csv file
         try (FileReader fileReader = new FileReader(csvFilePath);

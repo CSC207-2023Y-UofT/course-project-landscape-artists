@@ -2,7 +2,6 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -13,7 +12,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -21,7 +19,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
-import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -98,11 +95,13 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     @Override
     public void displayAllProjects() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
-            stage.setTitle("scene 1");
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
-            stage.setScene(scene);
+            ProjectSelectionPresenter projectSelectionPresenter = new ProjectSelectionPresenter();
+            projectSelectionPresenter.start(stage);
+//            Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
+//            stage.setTitle("scene 1");
+//            Scene scene = new Scene(root);
+//            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
+//            stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -212,9 +211,29 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     }
 
-    @Override
-    public void dislayChangedTaskDetails(UUID taskID, TaskViewModel task) {
 
+    /**
+     * This method renames the existing task and changes the task description and shows the final
+     * changes on the screen
+     *
+     * @param taskID
+     * @param task
+     * @param hbox
+     */
+    @Override
+    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
+        String taskUUID = task.getID().toString();
+        String taskName = task.getName();
+
+        //Removing the existing nane from the Hbox
+        hbox.getChildren().removeAll();
+
+        //Creating a new label and adding them in
+        Label taskLabel = new Label(taskName);
+        Button taskOptionsButton = new Button("...");
+        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+        hbox.getChildren().add(taskLabel);
+        hbox.getChildren().add(taskOptionsButton);
     }
 
     @Override
@@ -309,7 +328,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Add event handler on menu item.
         renameColumnButton.setOnAction(event -> {
-            controller.renameColumm(column.getID());});
+            controller.handleEditColumnDetails(column.getID());});
         deleteColumnButton.setOnAction(event -> {
             controller.deleteColumn(column.getID());});
 
@@ -394,9 +413,13 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             // Add event handlers.
             renameTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.renameTask(task, hbox);});
+            //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
-                projectViewingAndModificationController.changeTaskDetails(
-                        task, hbox);});
+                this.handleChangeTaskPopup(task, hbox, controller);
+                //projectViewingAndModificationController.changeTaskDetails(
+                    //task, hbox);
+                });
+
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
                         UUID.fromString(columnBox.getId()));});
@@ -584,6 +607,73 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
+    /**
+     * Creates a popup screen once the changeTaskDetail button is pressed. Takes in user input
+     * on the task name, task description and due date and then calls the
+     * ProjectViewingAndModificationController
+     * @param task
+     * @param hbox
+     * @param projectViewingAndModificationController
+     */
+    void handleChangeTaskPopup(TaskModel task, HBox hbox,
+                               ProjectViewingAndModificationController projectViewingAndModificationController) {
+        projectViewingAndModificationController.setPresenter();
+        // Create a new stage for the popup
+        Stage popupStage = new Stage();
+
+        // Stops all other stages from functioning until popupStage is closed.
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+
+        popupStage.setTitle("Change Task Details");
+
+        // Create the GridPane layout for the popup
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        // Create labels and input fields for Task Details, Task Due Date, and Task Name
+
+        Label nameLabel = new Label("Task Name:");
+        TextField nameTextField = new TextField();
+
+        Label detailsLabel = new Label("Task Details:");
+        TextArea detailsTextArea = new TextArea();
+        detailsTextArea.setPrefRowCount(3);
+
+        Label dueDateLabel = new Label("Task Due Date:");
+        DatePicker dueDatePicker = new DatePicker();
+
+        // Add the components to the GridPane. The number provided implies
+        // which position in the gridPane (i.e. column 0, row 0 is top left).
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(nameTextField, 1, 0);
+        gridPane.add(detailsLabel, 0, 1);
+        gridPane.add(detailsTextArea, 1, 1);
+        gridPane.add(dueDateLabel, 0, 2);
+        gridPane.add(dueDatePicker, 1, 2);
+
+        // Create the "Change Task" button for submitting the task
+        Button changeTaskButton = new Button("Submit");
+
+        // Handles the action of putting a new task in the correct Column UI.
+        changeTaskButton.setOnAction(event -> {
+            // Close the popup when "Submit" button is pressed
+            popupStage.close();
+
+            // Call the method to handle adding the task to the column
+            projectViewingAndModificationController.changeTaskDetails(task, hbox, nameTextField.getText(),
+                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
+        });
+        // Add the "Change Task" button to the GridPane
+        gridPane.add(changeTaskButton, 0, 3, 2, 1);
+
+        // Create the scene and set it on the stage
+        Scene popupScene = new Scene(gridPane, 800, 200);
+        popupStage.setScene(popupScene);
+
+        // Show the popup
+        popupStage.showAndWait();
+    }
 
     public String displayAddColumnPopup() {
         // Create a new stage for the popup
@@ -641,5 +731,65 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             }
         }
         return null;
+    }
+
+    /**
+     * Displays a new popup window for the user to input what the new name should be for the chosen column.
+     */
+    public String displayEditColumnDetails() {
+        final String[] columnNameContainer = {null}; // Container for columnName
+
+        // Create the dialog
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Enter Column Name");
+
+        // Create controls
+        Label label = new Label("Enter the name of the column:");
+        TextField textField = new TextField();
+        Button okButton = new Button("OK");
+        Button cancelButton = new Button("Cancel");
+
+        okButton.setOnAction(e -> {
+            String inputText = textField.getText().trim();
+            if (!inputText.isEmpty()) {
+                columnNameContainer[0] = inputText;
+                dialogStage.close();
+            } else {
+                // Show an error message or take any other action to inform the user
+                // that a valid name is required.
+                // For simplicity, we'll just show an alert.
+                showAlert("Error", "Column name cannot be empty or whitespace-only.");
+            }
+        });
+
+        cancelButton.setOnAction(e -> {
+            dialogStage.close();
+        });
+
+        // Layout the controls
+        VBox vbox = new VBox(label, textField, new Separator(), new HBox(okButton, cancelButton));
+        vbox.setSpacing(10);
+
+        // Set the scene
+        Scene scene = new Scene(vbox, 300, 150);
+        dialogStage.setScene(scene);
+        dialogStage.showAndWait();
+
+        return columnNameContainer[0];
+    }
+
+    /**
+     * Displays an alert dialog with the specified title and message.
+     * The alert type is set to ERROR.
+     *
+     * @param title   The title of the alert dialog.
+     * @param message The content message to be displayed in the alert dialog.
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

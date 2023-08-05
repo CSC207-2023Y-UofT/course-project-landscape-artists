@@ -17,135 +17,145 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The ProjectSelectionInteractor class is responsible for handling interactions and business logic
- * related to project selection use cases. It implements the ProjectSelectionInputBoundary interface
- * to define the input boundary methods, which are used by the presenter to interact with this interactor.
+ * The ProjectSelectionInteractor class is responsible for handling interactions
+ * and business logic
+ * related to project selection use cases. It implements the
+ * ProjectSelectionInputBoundary interface
+ * to define the input boundary methods, which are used by the presenter to
+ * interact with this interactor.
  */
 public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary {
 
-    // The currentProjectRepository holds the reference to the CurrentProjectRepository instance.
-    private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getInstance();
+	// The currentProjectRepository holds the reference to the
+	// CurrentProjectRepository instance.
+	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
+			.getCurrentprojectrepository();
 
-    // The presenter holds the reference to the ProjectSelectionOutputBoundary instance,
-    // which is responsible for displaying the results of the use cases.
-    private final ProjectSelectionOutputBoundary presenter;
-    private ProjectModel projectModel;
-    private String message;
+	// The presenter holds the reference to the ProjectSelectionOutputBoundary
+	// instance,
+	// which is responsible for displaying the results of the use cases.
+	private final ProjectSelectionOutputBoundary presenter;
+	private ProjectModel projectModel;
+	private String message;
 
-    /**
-     * Initializes the ProjectSelectionInteractor with the provided presenter.
-     *
-     * @param presenter The presenter instance responsible for displaying the results of the use cases.
-     */
-    public ProjectSelectionInteractor(ProjectSelectionOutputBoundary presenter) {
-        this.presenter = presenter;
-    }
+	/**
+	 * Initializes the ProjectSelectionInteractor with the provided presenter.
+	 *
+	 * @param presenter The presenter instance responsible for displaying the
+	 *                  results of the use cases.
+	 */
+	public ProjectSelectionInteractor(ProjectSelectionOutputBoundary presenter) {
+		this.presenter = presenter;
+	}
 
-    @Override
-    public void setCurrentProject(Project project) {
+	/**
+	 * Sets the current project in the CurrentProjectRepository and notifies the
+	 * presenter to display it.
+	 * This method is called when a project is selected by the user in the UI.
+	 * 
+	 * @param project The project selected by the user.
+	 */
+	@Override
+	public void setCurrentProject(Project project) {
+		this.setCurrentProject(new ProjectModel(project));
+	}
 
-    }
+	/**
+	 * Sets the current project in the CurrentProjectRepository and notifies the
+	 * presenter to display it.
+	 * This method is called when a project is selected by the user in the UI.
+	 *
+	 * @param project The project selected by the user.
+	 */
+	public void setCurrentProject(ProjectModel project) {
+		currentProjectRepository.setCurrentProject(project);
+	}
 
-    /**
-     * Sets the current project in the CurrentProjectRepository and notifies the presenter to display it.
-     * This method is called when a project is selected by the user in the UI.
-     *
-     * @param project The project selected by the user.
-     */
+	/**
+	 * Creates a new project. This method is called when the user creates a new
+	 * project in the UI.
+	 * It interacts with the necessary use cases and gateway to create the project.
+	 *
+	 * @param projectName        The name of project.
+	 * @param projectDescription Description of project.
+	 */
+	@Override
+	public void createProject(String projectName, String projectDescription) {
+		// Interact with necessary use cases and gateway to create a project.
+		// Implementation details depend on the specific requirements and architecture
+		// of the application.
+		// For example, the interactor might interact with a ProjectRepository to store
+		// the project in a database.
+		ProjectModel projectModel = new ProjectModel(
+				projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
+		setCurrentProject(projectModel);
+		presenter.displayCurrentProject(projectModel);
+	}
 
-    public void setCurrentProject(ProjectModel project) {
-        currentProjectRepository.setCurrentProject(project);
-    }
+	@Override
+	public void createProject() {
+		new CreateProject();
+	}
 
-    /**
-     * Creates a new project. This method is called when the user creates a new project in the UI.
-     * It interacts with the necessary use cases and gateway to create the project.
-     *
-     * @param projectName The name of project.
-     * @param projectDescription Description of project.
-     */
-    @Override
-    public void createProject(String projectName, String projectDescription) {
-        // Interact with necessary use cases and gateway to create a project.
-        // Implementation details depend on the specific requirements and architecture of the application.
-        // For example, the interactor might interact with a ProjectRepository to store the project in a database.
-        ProjectModel projectModel = new ProjectModel(
-                projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
-        setCurrentProject(projectModel);
-        presenter.displayCurrentProject(projectModel);
-    }
+	@Override
+	public void createProject(ProjectModel projectModel) {
 
-    /**
-     *
-     */
-    @Override
-    public void createProject() {
+	}
 
-    }
+	@Override
+	public void openProject(UUID currentProjectID) {
+		// TODO: Pass the ProjectModel of the Project with the given UUID to the
+		// presenter.
+		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
 
-    /**
-     * @param projectModel
-     */
-    @Override
-    public void createProject(ProjectModel projectModel) {
+		 // Temporary implementation for testing purposes.
+		 List<TaskModel> TaskList = Arrays.asList(
+		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
+		 LocalDateTime.now()),
+		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
+		 LocalDateTime.now()));
+		 List<ColumnModel> ColumnsList = Arrays.asList(
+		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
+		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+		 ProjectModel projectModel = new ProjectModel(
+		 "Project P1", UUID.randomUUID(), "", ColumnsList);
+		 setCurrentProject(projectModel);
+		 presenter.displayCurrentProject(projectModel);
+	}
 
-    }
+	/**
+	 * @param projectUUID
+	 */
+	@Override
+	public void renameProject(UUID projectUUID) {
+		ProjectModel projectModel = new ProjectModel(
+				"Revised project P1", projectUUID, "", new ArrayList<>());
+		presenter.displayRenamedProject(projectModel);
+	}
 
-    @Override
-    public void openProject(UUID currentProjectID) {
-        // TODO: Pass the ProjectModel of the Project with the given UUID to the presenter.
-        // TODO: i.e. presenter.displayCurrentProjct(projectModel);
+	/**
+	 * @param projectUUID
+	 */
+	@Override
+	public void deleteProject(UUID projectUUID) {
+		ProjectModel projectModel = new ProjectModel(
+				"Revised project P1", projectUUID, "", new ArrayList<>());
+		presenter.displayDeletedProject(projectModel);
+	}
 
-        // Temporary implementation for testing purposes.
-        List<TaskModel> TaskList = Arrays.asList(
-                new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
-                        LocalDateTime.now()),
-                new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
-                        LocalDateTime.now()));
-        List<ColumnModel> ColumnsList = Arrays.asList(
-                new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
-                new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
-        );
-        ProjectModel projectModel = new ProjectModel(
-                "Project P1", UUID.randomUUID(), "", ColumnsList);
-        setCurrentProject(projectModel);
-        presenter.displayCurrentProject(projectModel);
-    }
+	/**
+	 * @param message
+	 */
+	@Override
+	public void projectDeletionFailed(String message) {
 
-    /**
-     * @param projectUUID
-     */
-    @Override
-    public void renameProject(UUID projectUUID) {
-        ProjectModel projectModel = new ProjectModel(
-                "Revised project P1", projectUUID, "", new ArrayList<>());
-        presenter.displayRenamedProject(projectModel);
-    }
+	}
 
-    /**
-     * @param projectUUID
-     */
-    @Override
-    public void deleteProject(UUID projectUUID) {
-        ProjectModel projectModel = new ProjectModel(
-                "Revised project P1", projectUUID, "", new ArrayList<>());
-        presenter.displayDeletedProject(projectModel);
-    }
+	/**
+	 * @param projectID
+	 */
+	@Override
+	public void projectDeleted(UUID projectID) {
 
-    /**
-     * @param message
-     */
-    @Override
-    public void projectDeletionFailed(String message) {
-
-    }
-
-    /**
-     * @param projectID
-     */
-    @Override
-    public void projectDeleted(UUID projectID) {
-
-    }
+	}
 }
-

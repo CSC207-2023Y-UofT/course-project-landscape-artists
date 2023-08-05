@@ -13,7 +13,7 @@ import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 
 
-
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.util.UUID;
@@ -37,7 +37,8 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     //void displayRenamedColumn(ColumnModel column);
 
-    void dislayChangedTaskDetails(UUID taskID, TaskViewModel task);
+    void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox);
+
     void dislayChangedTaskDate(UUID taskID, TaskViewModel task);
     void displayRenamedProject(ProjectViewModel project, UUID projectId);
     void displayDeleteProject(ProjectViewModel project, UUID projectId);

@@ -10,7 +10,7 @@ public class ProjectDBInitializer {
 
     public ProjectDBInitializer() {
         // create CSVWriter object filewriter object as parameter
-        File file = new File("DatabaseFiles/Projects/Projects.csv");
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
         FileWriter outputfile = null;
         try {
             outputfile = new FileWriter(file);
