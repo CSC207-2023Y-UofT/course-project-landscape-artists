@@ -14,6 +14,7 @@ import java.util.UUID;
  */
 public class CSVReader implements AutoCloseable {
     private File csvFile;
+    private FileReader fileReader;
     private CSVParser csvParser;
 
     /**
@@ -30,7 +31,7 @@ public class CSVReader implements AutoCloseable {
      * @throws IOException If an I/O error occurs.
      */
     private void openResources() throws IOException {
-        FileReader fileReader = new FileReader(this.csvFile);
+        fileReader = new FileReader(this.csvFile);
         csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""));
     }
 
