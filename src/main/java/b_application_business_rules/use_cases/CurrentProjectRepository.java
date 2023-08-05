@@ -1,7 +1,7 @@
 package b_application_business_rules.use_cases;
 
 import b_application_business_rules.entity_models.ProjectModel;
-s
+
 /**
  * This singleton class will be the respository to store the current project
  * that use cases will access utilize.
