@@ -55,107 +55,16 @@ public class ProjectSelectionController {
         // This had to be separate since presenter needs to have a stage.
         ProjectSelectionOutputBoundary presenter =
                 new ProjectSelectionPresenter(this);
+        // Grabs the stage currently used.
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
+
+        // Sets the stage of the Presenter so methods in it changes the same stage.
         ((ProjectSelectionPresenter) presenter).setStage(stage);
-        ((ProjectSelectionPresenter) presenter).setViewModel(projectSelectionViewModel);
+
+        // Set the Presenter class in the Controller.
         this.presenter = (ProjectSelectionPresenter) presenter;
 
         interactor = new ProjectSelectionInteractor(presenter);
-    }
-
-    /**
-     * Populates the project selection UI with the list of projects retrieved from the ViewModel.
-     * Projects are displayed in a GridPane, with each project represented by a button.
-     * Each button allows the user to open the corresponding project or perform actions on it,
-     * such as renaming or deleting the project.
-     */
-    private void populateProjectSelectionUI() {
-        projectsGrid.setHgap(20);
-        projectsGrid.setVgap(100);
-
-        for (int col = 0; col < 2; col++) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setHgrow(Priority.ALWAYS);
-            columnConstraints.setFillWidth(true);
-        }
-
-        int row = 0;
-        int col = 0;
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setFillHeight(true);
-        projectsGrid.getRowConstraints().add(rowConstraints);
-
-        while (projectSelectionViewModel.hasNext()) {
-            ProjectViewModel project = projectSelectionViewModel.next();
-
-            // Create the currentProjectButton
-
-            Label projectName = new Label(project.getName());
-            Label projectDescription = new Label(project.getDescription());
-
-            projectName.setId("projectName");
-
-
-            projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-
-            VBox nameAndDescriptionContainer = new VBox(projectName, projectDescription);
-
-            nameAndDescriptionContainer.setAlignment(Pos.CENTER);
-            nameAndDescriptionContainer.setPadding(new Insets(10));
-            nameAndDescriptionContainer.setSpacing(5);
-
-            projectName.setMaxWidth(150);
-            projectDescription.setMaxWidth(150);
-            projectName.setWrapText(true);
-            projectDescription.setWrapText(true);
-
-            // Center the text in each label
-            projectName.setAlignment(Pos.CENTER);
-            projectDescription.setAlignment(Pos.CENTER);
-
-            Button currentProjectButton = new Button();
-
-            currentProjectButton.setGraphic(nameAndDescriptionContainer);
-            
-            currentProjectButton.getStyleClass().add("current-project-button");
-
-
-            currentProjectButton.setUserData(project.getID());
-            currentProjectButton.setOnAction(this::handleChosenProjectButton);
-            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
-            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
-            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
-
-            // Create the MenuButton
-            MenuButton menuButton = new MenuButton();
-            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
-            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
-
-            menuButton.getStyleClass().add("menu-button-custom");
-
-            // Add event handlers for the MenuItems
-            renameProjectMenuItem.setOnAction(event -> handleRenameProject(project.getID()));
-            deleteProjectMenuItem.setOnAction(event -> handleDeleteProject(project.getID()));
-
-            // Add MenuItems to the MenuButton
-            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
-
-
-            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
-            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
-            buttonContainer.setId(project.getID().toString());
-            projectsGrid.add(buttonContainer, col, row);
-
-            col++;
-            if (col >= 2) {
-                col = 0;
-                row++;
-            }
-        }
-
-        addCreateProjectButton(col, row);
     }
 
     /**
@@ -166,18 +75,21 @@ public class ProjectSelectionController {
      * @param projectUUID The UUID of the project to be renamed.
      */
     void handleRenameProject(UUID projectUUID) {
+        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
+        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         setPresenterAndInteractor();
         interactor.renameProject(projectUUID);
     }
 
     /**
-     * Handles the action of renaming a project. When the user selects the "Rename Project" option from
-     * the menu associated with a project button, this method is called. It sets up the presenter and
-     * calls the interactor to initiate the renaming process for the specified project.
+     * Handles the action of deleting a project. When the user clicks "delete" project, the event handler
+     * automatically passes the projectUUID associated to the deleted.
      *
-     * @param projectUUID The UUID of the project to be renamed.
+     * @param projectUUID The UUID of the project to be deleted.
      */
     void handleDeleteProject(UUID projectUUID) {
+        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
+        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         setPresenterAndInteractor();
         interactor.deleteProject(projectUUID);
     }
@@ -185,15 +97,7 @@ public class ProjectSelectionController {
     /**
      * Adds the "Create Project" button to the project selection UI.
      */
-    void addCreateProjectButton(int col, int row) {
-        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED");
-        Button createProjectButton = new Button("+");
-        createProjectButton.setOnAction(this::handleCreateProjectPopup);
 
-        createProjectButton.getStyleClass().add("create-project-button-style");
-
-        projectsGrid.add(createProjectButton, col, row);
-    }
 
     /**
      * Handles the "Create Project" button action by showing a dialog to create a new project.

@@ -340,7 +340,13 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         this.projectSelectionViewModel = projectSelectionViewModel;
     }
 
-    public void populateProjectSelectionUI() {
+    /**
+     * Populates the project selection UI with the list of projects retrieved from the ViewModel.
+     * Projects are displayed in a GridPane, with each project represented by a button.
+     * Each button allows the user to open the corresponding project or perform actions on it,
+     * such as renaming or deleting the project.
+     */
+    public void findProjectsGrid() {
         System.out.println("STAGE IS: " + stage);
         Scene currentScene = stage.getScene();
         System.out.println("CURRENT SCENE" + currentScene);
@@ -445,6 +451,16 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             }
         }
         System.out.println("CONTROLLER" + controller);
-        controller.addCreateProjectButton(col, row);
+        addCreateProjectButton(col, row);
+    }
+
+    void addCreateProjectButton(int col, int row) {
+        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED");
+        Button createProjectButton = new Button("+");
+        createProjectButton.setOnAction(this::handleCreateProjectPopup);
+
+        createProjectButton.getStyleClass().add("create-project-button-style");
+
+        projectsGrid.add(createProjectButton, col, row);
     }
 }
