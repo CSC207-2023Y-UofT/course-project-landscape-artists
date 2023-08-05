@@ -10,6 +10,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVWriter;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.util.UUID;
 
@@ -52,15 +53,16 @@ public class DBManagerInsertController implements IDBInsert {
      * The method is intended to append the "ColumnID","Name",
      * "Description" and "Task ID's" that belong to a Column
      * into the Database
-     * check DatabaseFiles/Columns/Columns.csv for reference
+     * check src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv for reference
      * @param columnModel
      * @return
      */
     public void DBInsert(ColumnModel columnModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
         try {
             // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
+            FileWriter outputfile = new FileWriter(file);
 
             // create CSVWriter object filewriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile);

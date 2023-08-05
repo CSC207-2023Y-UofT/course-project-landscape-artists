@@ -33,6 +33,7 @@ public class AddColumn {
      */
     public AddColumn(String columnName, UUID idOfColumn) {
         this.column = new Column(columnName, new ArrayList<>(), idOfColumn);
+
     }
 
     /**
