@@ -1,11 +1,14 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoModelController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -40,6 +43,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     private Stage stage;
     private ProjectSelectionViewModel projectSelectionViewModel;
     private ProjectSelectionController controller;
+    List<ProjectModel> AllProjectsList = new ArrayList<>();
 
     /**
      * Sets the JavaFX Stage to be used for displaying scenes. This is to ensure that the stage is the same between
@@ -85,36 +89,64 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      *
      */
     public void getProjectsFromDatabase() {
-        // PUT METHODS FROM ALEX'S METHOD TO HERE.
-
-
+        //         Grab data from database and display it in the scene. An example
+//         would be something like below (Currently don't know which layer to
+//         get all projects):
+//         Gateway gateway = new Gateway();
+//         List<Project> allProjectsInSystem = gateway.getAllProjects();
 //        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-        List<TaskViewModel> TaskList = Arrays.asList(
-                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
-                        LocalDateTime.now()),
-                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
-                        LocalDateTime.now()));
-        List<ColumnViewModel> ColumnsList = Arrays.asList(
-                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
-                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
-        );
+
+        List<TaskViewModel> TaskList = new ArrayList<>();
+        TaskList.add(new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
+                LocalDateTime.now()));
+        TaskList.add(new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
+                LocalDateTime.now()));
+
+        List<ColumnViewModel> ColumnsList = new ArrayList<>();
+        ColumnsList.add(new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()));
+        ColumnsList.add(new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+
+
         ProjectViewModel p1 = new ProjectViewModel(
                 "Project 111111", UUID.randomUUID(),"P1 description",  ColumnsList
         );
 
-        ProjectViewModel p2 = new ProjectViewModel(
-                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
-        );
 
-        ProjectViewModel p3 = new ProjectViewModel(
-                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
-        );
-
-
-        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
-        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
+        List<ProjectViewModel> projectsInSystem = new ArrayList<>();
+        projectsInSystem.add(p1);
 //        TODO: END ------------------------------------------------------------
-        // Populate the project selection UI with the projects
+
+        DBAdapterInterface dbAdapterInterface = new EntityIDstoModelController();
+        AllProjectsList = dbAdapterInterface.IDstoProjectModelList();
+
+        for (ProjectModel proj :AllProjectsList) {
+            if(proj != null){
+                projectsInSystem.add(new ProjectViewModel(proj));
+            } else {
+                continue;
+            }
+
+            List<ColumnModel> colsFromProject = proj.getColumnModels();
+            for (ColumnModel column : colsFromProject) {
+                if(column != null){
+                    ColumnsList.add(new ColumnViewModel(column));
+                } else {
+                    continue;
+                }
+
+                List<TaskModel> tasksFromColumn = column.getTaskModels();
+
+                for (TaskModel tasks: tasksFromColumn) {
+                    if(tasks != null){
+                        TaskList.add(new TaskViewModel(tasks));
+                    }
+                }
+
+            }
+
+        }
+
+        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
     }
 
     @Override
@@ -314,10 +346,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         Scene currentScene = stage.getScene();
         if (currentScene != null) {
             for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
-                System.out.println(node);
                 if (node instanceof GridPane) {
                     if (node.getId().equals("projectsGrid")) {
-                        System.out.println("FOUND THE FREAKING GRIDPANE");
                         return ((GridPane) node);
                     }
                 }
@@ -350,7 +380,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         rowConstraints.setVgrow(Priority.ALWAYS);
         rowConstraints.setFillHeight(true);
         projectsGrid.getRowConstraints().add(rowConstraints);
-        System.out.println(projectSelectionViewModel);
 
         while (projectSelectionViewModel.hasNext()) {
             ProjectViewModel project = projectSelectionViewModel.next();
@@ -419,7 +448,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                 row++;
             }
         }
-        System.out.println("CONTROLLER" + controller);
         addCreateProjectButton(col, row);
     }
 
@@ -432,7 +460,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     void addCreateProjectButton(int col, int row) {
         GridPane projectsGrid = findGridPane();
-        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED");
+        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED, HERE ARE COL AND ROW");
+        System.out.println("COL: " + col + "ROW: " + row);
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
 
