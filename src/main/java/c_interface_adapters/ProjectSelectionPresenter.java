@@ -515,4 +515,29 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             }
         });
     }
+
+    public String displayRenameProjectPopup() {
+        // Create a TextInputDialog to get the new project name from the user
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Rename Project");
+        dialog.setHeaderText("Enter the new name for the project:");
+        dialog.setContentText("New Project Name:");
+
+        // Show the dialog and wait for the user's response
+        return dialog.showAndWait().map(newProjectName -> {
+            // Check if the new project name is empty or contains only spaces
+            if (newProjectName.trim().isEmpty()) {
+                // Show an error alert if the input is empty or contains only spaces
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText("Invalid Project Name");
+                alert.setContentText("Project name cannot be empty or contain only spaces.");
+                alert.showAndWait();
+                return null;
+            } else {
+                // Return the valid new project name
+                return newProjectName;
+            }
+        }).orElse(null);
+    }
 }
