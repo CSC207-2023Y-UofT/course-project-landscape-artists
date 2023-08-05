@@ -212,7 +212,7 @@ public class ProjectSelectionController {
      *
      * @param projectUUID The UUID of the project to be renamed.
      */
-    private void handleRenameProject(UUID projectUUID) {
+    void handleRenameProject(UUID projectUUID) {
         setPresenter();
         interactor.renameProject(projectUUID);
     }
@@ -224,7 +224,7 @@ public class ProjectSelectionController {
      *
      * @param projectUUID The UUID of the project to be renamed.
      */
-    private void handleDeleteProject(UUID projectUUID) {
+    void handleDeleteProject(UUID projectUUID) {
         setPresenter();
         interactor.deleteProject(projectUUID);
     }
@@ -232,7 +232,7 @@ public class ProjectSelectionController {
     /**
      * Adds the "Create Project" button to the project selection UI.
      */
-    private void addCreateProjectButton(int col, int row) {
+    void addCreateProjectButton(int col, int row) {
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
 
@@ -306,7 +306,7 @@ public class ProjectSelectionController {
     /**
      * Handles the action of selecting a project button from the UI.
      */
-    private void handleChosenProjectButton(ActionEvent actionEvent) {
+    public void handleChosenProjectButton(ActionEvent actionEvent) {
         setPresenter();
         Button buttonClicked = (Button) actionEvent.getSource();
         UUID currentProjectID = (UUID) buttonClicked.getUserData();

@@ -6,18 +6,24 @@ import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.Iterator;
+
+import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * The ProjectSelectionPresenter class is responsible for managing the presentation logic for the
@@ -70,9 +76,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     @Override
     public void start(Stage stage) throws Exception {
         System.out.println("START IS CALLED");
+        initializeScene(stage);
         setStage(stage);
         populateProjectSelectionUI();
-        initializeScene(stage);
     }
 
     @Override
@@ -294,12 +300,107 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
     public void populateProjectSelectionUI() {
+        System.out.println("STAGE IS: " + stage);
         Scene currentScene = stage.getScene();
+        System.out.println("CURRENT SCENE" + currentScene);
         if (currentScene != null) {
             for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
+                System.out.println(node);
+                if (node instanceof GridPane) {
+                    if (node.getId().equals("projectsGrid")) {
+                        System.out.println("FOUND THE FREAKING GRIDPANE");
+                    }
+                }
+            }
+        }
+    }
 
+    private void populateProjectSelectionUI2(GridPane projectsGrid) {
+        projectsGrid.setHgap(20);
+        projectsGrid.setVgap(100);
+
+        for (int col = 0; col < 2; col++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow(Priority.ALWAYS);
+            columnConstraints.setFillWidth(true);
+        }
+
+        int row = 0;
+        int col = 0;
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setFillHeight(true);
+        projectsGrid.getRowConstraints().add(rowConstraints);
+
+        while (projectSelectionViewModel.hasNext()) {
+            ProjectViewModel project = projectSelectionViewModel.next();
+
+            // Create the currentProjectButton
+
+            Label projectName = new Label(project.getName());
+            Label projectDescription = new Label(project.getDescription());
+
+            projectName.setId("projectName");
+
+
+            projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+
+            VBox nameAndDescriptionContainer = new VBox(projectName, projectDescription);
+
+            nameAndDescriptionContainer.setAlignment(Pos.CENTER);
+            nameAndDescriptionContainer.setPadding(new Insets(10));
+            nameAndDescriptionContainer.setSpacing(5);
+
+            projectName.setMaxWidth(150);
+            projectDescription.setMaxWidth(150);
+            projectName.setWrapText(true);
+            projectDescription.setWrapText(true);
+
+            // Center the text in each label
+            projectName.setAlignment(Pos.CENTER);
+            projectDescription.setAlignment(Pos.CENTER);
+
+            Button currentProjectButton = new Button();
+
+            currentProjectButton.setGraphic(nameAndDescriptionContainer);
+
+            currentProjectButton.getStyleClass().add("current-project-button");
+
+
+            currentProjectButton.setUserData(project.getID());
+            currentProjectButton.setOnAction(event -> {controller.handleChosenProjectButton(event);});
+            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
+            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
+            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
+
+            // Create the MenuButton
+            MenuButton menuButton = new MenuButton();
+            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+
+            menuButton.getStyleClass().add("menu-button-custom");
+
+            // Add event handlers for the MenuItems
+            renameProjectMenuItem.setOnAction(event -> controller.handleRenameProject(project.getID()));
+            deleteProjectMenuItem.setOnAction(event -> controller.handleDeleteProject(project.getID()));
+
+            // Add MenuItems to the MenuButton
+            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+
+
+            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
+            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+            buttonContainer.setId(project.getID().toString());
+            projectsGrid.add(buttonContainer, col, row);
+
+            col++;
+            if (col >= 2) {
+                col = 0;
+                row++;
             }
         }
 
+        controller.addCreateProjectButton(col, row);
     }
 }
