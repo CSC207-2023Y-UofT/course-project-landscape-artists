@@ -1,20 +1,19 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-// Implement entity models instead of entities
+import b_application_business_rules.AdapterConvertEntity;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import d_frameworks_and_drivers.database_management.DBAdapters.CSVWriter;
 
-import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVFormat;
-
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.UUID;
 
+
 public class DBManagerInsertController implements IDBInsert {
+
 
     /**
      * Adds a project record with ProjectID, Name, Description and list of column IDs
@@ -23,17 +22,10 @@ public class DBManagerInsertController implements IDBInsert {
      * @param projectModel
      */
     public void DBInsert(ProjectModel projectModel) {
-        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
-        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Projects/Projects.csv");
-            CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
-
-            // writes a new row/record to the CSV file
-            csvPrinter.printRecord(
-                projectModel.getID().toString(),
-                projectModel.getName(),
-                projectModel.getDescription(),
-                entityIDsToListController.EntityIDsToList(projectModel));
+        // Try with resources: CSVWriter
+        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Projects/Projects.csv")) {
+            // Converts to string representation and inserts in csv db
+            csvWriter.insert(AdapterConvertEntity.toStringList(projectModel));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -47,16 +39,10 @@ public class DBManagerInsertController implements IDBInsert {
      * @param columnModel
      */
     public void DBInsert(ColumnModel columnModel) {
-        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
-        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
-             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
-
-            // writes a new row/record to the CSV file
-            csvPrinter.printRecord(
-                columnModel.getID().toString(),
-                columnModel.getName(),
-                entityIDsToListController.EntityIDsToList(columnModel));
+        // Try with resources: CSVWriter
+        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Columns/Columns.csv")) {
+            // Converts to string representation and inserts in csv db
+            csvWriter.insert(AdapterConvertEntity.toStringList(columnModel));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -70,17 +56,10 @@ public class DBManagerInsertController implements IDBInsert {
      * @param taskModel Task model to be inserted in the database.
      */
     public void DBInsert(TaskModel taskModel) {
-        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
-        try (FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
-             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
-
-            // writes a new row/record to the CSV file
-            csvPrinter.printRecord(
-                    taskModel.getID().toString(),
-                    taskModel.getName(),
-                    taskModel.getDescription(),
-                    String.valueOf(taskModel.getCompletionStatus()),
-                    taskModel.getDueDateTime().toString());
+        // Try with resources: CSVWriter
+        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Tasks/Tasks.csv")) {
+            // Converts to string representation and inserts in csv db
+            csvWriter.insert(AdapterConvertEntity.toStringList(taskModel));
         }
         catch (IOException e) {
             e.printStackTrace();
@@ -92,12 +71,10 @@ public class DBManagerInsertController implements IDBInsert {
      * @param uuid
      */
     public void DBInsert(UUID uuid) {
-        // Try with resource: create FileWriter and  csvPrinter object as resources - closes automatically
-        try (FileWriter outputfile = new FileWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv");
-             CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader())) {
-
-            // writes a new row/record to the CSV file
-            csvPrinter.printRecord(uuid.toString(), "true");
+        // Try with resources: CSVWriter
+        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv")) {
+            // Converts to string representation and inserts in csv db
+            csvWriter.insert(uuid.toString(), "true");
         }
         catch (IOException e) {
             e.printStackTrace();
