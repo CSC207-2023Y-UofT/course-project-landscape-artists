@@ -33,11 +33,16 @@ public class EntityIDsToListController implements IEntityIDsToList {
     public String EntityIDsToList(ColumnModel columnModel) {
         List<TaskModel> taskModelList = columnModel.getTaskModels();
         String taskModelListString = "";
-
-        for ( TaskModel task: taskModelList ) {
-            String.join(", ", task.getID().toString());
+        if(taskModelList == null){
+            return null;
         }
-        return taskModelListString;
+        else {
+            for ( TaskModel task: taskModelList ) {
+                String.join(", ", task.getID().toString());
+            }
+            return taskModelListString;
+        }
+
     }
 
 
