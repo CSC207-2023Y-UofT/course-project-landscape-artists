@@ -33,73 +33,26 @@ import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * ProjectSelectionController class handles the user interface for project selection and creation.
- * It implements the Initializable interface to initialize the controller.
  */
 public class ProjectSelectionController {
-    // FXML reference to the GridPane that holds the projects
+    // FXML reference to the GridPane that holds the projects in the UI.
     @FXML
     private GridPane projectsGrid;
 
-    // The interactor for project selection and creation
+    // The interactor for project selection and creation. It implements ProjectSelectionInputBoundary.
     private ProjectSelectionInputBoundary interactor;
 
     // The ProjectSelectionViewModel to pass data to the view.
     ProjectSelectionViewModel projectSelectionViewModel;
 
-    // The ProjectSelectionPresenter
+    // The presenter associated with the controller in Project Selection UI.
     ProjectSelectionPresenter presenter;
 
-    public ProjectSelectionController() {
-
-    }
-
     /**
-     * Initializes the controller after its root element has been completely processed.
-     * Populates the project selection UI with the projects from the database.
+     * Sets up the Controller's Presenter and Interactor.
      */
-//    @Override
-//    public void initialize(URL url, ResourceBundle resourceBundle) {
-////         Grab data from database and display it in the scene. An example
-////         would be something like below (Currently don't know which layer to
-////         get all projects):
-////         Gateway gateway = new Gateway();
-////         List<Project> allProjectsInSystem = gateway.getAllProjects();
-////        TODO: TEMPORARY IMPLEMENTATION FOR TESTING PURPOSES ------------------
-//        List<TaskViewModel> TaskList = Arrays.asList(
-//                new TaskViewModel("Task1", UUID.randomUUID(), "Task1", true,
-//                LocalDateTime.now()),
-//                new TaskViewModel("Task2", UUID.randomUUID(), "Task2", true,
-//                        LocalDateTime.now()));
-//        List<ColumnViewModel> ColumnsList = Arrays.asList(
-//                new ColumnViewModel("COLUMN 1", TaskList, UUID.randomUUID()),
-//                new ColumnViewModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID())
-//        );
-//        ProjectViewModel p1 = new ProjectViewModel(
-//                "Project 111111", UUID.randomUUID(),"P1 description",  ColumnsList
-//                );
-//
-//        ProjectViewModel p2 = new ProjectViewModel(
-//                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
-//        );
-//
-//        ProjectViewModel p3 = new ProjectViewModel(
-//                "Project 111111", UUID.randomUUID(),"P2 description",  ColumnsList
-//        );
-//
-//
-//        List<ProjectViewModel> projectsInSystem = Arrays.asList(p1, p2, p3);
-//        projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
-////        TODO: END ------------------------------------------------------------
-//        // Populate the project selection UI with the projects
-//        populateProjectSelectionUI();
-//    }
-
-    /**
-     * Sets up the output boundary of the interactor.
-     */
-    private void setPresenter() {
+    private void setPresenterAndInteractor() {
         // This had to be separate since presenter needs to have a stage.
-        // This is not accessible upon initialization.
         ProjectSelectionOutputBoundary presenter =
                 new ProjectSelectionPresenter(this);
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
@@ -213,7 +166,7 @@ public class ProjectSelectionController {
      * @param projectUUID The UUID of the project to be renamed.
      */
     void handleRenameProject(UUID projectUUID) {
-        setPresenter();
+        setPresenterAndInteractor();
         interactor.renameProject(projectUUID);
     }
 
@@ -225,7 +178,7 @@ public class ProjectSelectionController {
      * @param projectUUID The UUID of the project to be renamed.
      */
     void handleDeleteProject(UUID projectUUID) {
-        setPresenter();
+        setPresenterAndInteractor();
         interactor.deleteProject(projectUUID);
     }
 
@@ -233,6 +186,7 @@ public class ProjectSelectionController {
      * Adds the "Create Project" button to the project selection UI.
      */
     void addCreateProjectButton(int col, int row) {
+        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED");
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
 
@@ -245,7 +199,7 @@ public class ProjectSelectionController {
      * Handles the "Create Project" button action by showing a dialog to create a new project.
      */
     private void handleCreateProjectPopup(ActionEvent actionEvent) {
-        setPresenter();
+        setPresenterAndInteractor();
         // Create a new Dialog
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Create Project");
@@ -307,7 +261,7 @@ public class ProjectSelectionController {
      * Handles the action of selecting a project button from the UI.
      */
     public void handleChosenProjectButton(ActionEvent actionEvent) {
-        setPresenter();
+        setPresenterAndInteractor();
         Button buttonClicked = (Button) actionEvent.getSource();
         UUID currentProjectID = (UUID) buttonClicked.getUserData();
         interactor.openProject(currentProjectID);

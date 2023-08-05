@@ -118,7 +118,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
 //        TODO: END ------------------------------------------------------------
         // Populate the project selection UI with the projects
-        populateProjectSelectionUI();
     }
 
     @Override
@@ -352,6 +351,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                     if (node.getId().equals("projectsGrid")) {
                         System.out.println("FOUND THE FREAKING GRIDPANE");
                         populateProjectSelectionUI2((GridPane) node);
+                        break;
                     }
                 }
             }
@@ -445,6 +445,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             }
         }
         System.out.println("CONTROLLER" + controller);
-//        controller.addCreateProjectButton(col, row);
+        controller.addCreateProjectButton(col, row);
     }
 }
