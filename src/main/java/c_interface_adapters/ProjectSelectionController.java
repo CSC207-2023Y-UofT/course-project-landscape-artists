@@ -79,7 +79,7 @@ public class ProjectSelectionController {
         // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         setPresenterAndInteractor();
         String[] newNameAndNewDescription = presenter.displayRenameProjectPopup();
-        if (newNameAndNewDescription.length != 0) {
+        if (newNameAndNewDescription != null) {
             String newName = newNameAndNewDescription[0];
             String newDescription = newNameAndNewDescription[1];
             interactor.renameProject(projectUUID, newName, newDescription);
