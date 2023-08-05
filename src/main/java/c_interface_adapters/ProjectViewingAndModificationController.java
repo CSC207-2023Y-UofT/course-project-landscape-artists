@@ -162,6 +162,10 @@ public class ProjectViewingAndModificationController {
         String columnName = presenter.displayAddColumnPopup();
         interactor.addColumn(columnName);
     }
+
+    public void showTaskDetails(TaskModel task) {
+        presenter.displayTaskDetails(task);
+    }
 //    public void moveTask(TaskModel task, VBox targetColumn) {
 //        // Get the current column containing the task
 //        VBox sourceColumn = findColumnContainingTask(task);
