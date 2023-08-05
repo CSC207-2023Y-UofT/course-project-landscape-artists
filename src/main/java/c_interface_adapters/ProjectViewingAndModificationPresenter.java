@@ -98,11 +98,13 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     @Override
     public void displayAllProjects() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
-            stage.setTitle("scene 1");
-            Scene scene = new Scene(root);
-            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
-            stage.setScene(scene);
+            ProjectSelectionPresenter projectSelectionPresenter = new ProjectSelectionPresenter();
+            projectSelectionPresenter.start(stage);
+//            Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
+//            stage.setTitle("scene 1");
+//            Scene scene = new Scene(root);
+//            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
+//            stage.setScene(scene);
         } catch (Exception e) {
             e.printStackTrace();
         }
