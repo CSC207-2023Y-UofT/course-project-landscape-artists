@@ -261,8 +261,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             stage1.setScene(scene);
             scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
             stage1.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

@@ -1,4 +1,4 @@
-package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
+package b_application_business_rules.use_cases.project_selection_use_cases;
 
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
