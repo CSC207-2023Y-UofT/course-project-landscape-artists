@@ -409,7 +409,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             // Add to MenuButton
             taskOptionsButton.getItems().addAll(renameTaskButton,
-                    changeTaskDetailsButton, deleteTaskButton);
+                    changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
             taskOptionsButton.getStyleClass().add("menu-button-custom");
 
 
@@ -709,26 +709,50 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         alert.showAndWait();
     }
 
-    public void displayTaskDetails(TaskModel taskModel) {
+
+    public static void displayTaskDetails(TaskModel taskModel) {
         // Create a new stage for the pop-up window
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
         popupStage.setTitle("Task Details");
 
-        // Create labels to display the task details
-        Label nameLabel = new Label("Name: " + taskModel.getName());
-        Label idLabel = new Label("ID: " + taskModel.getID());
-        Label descriptionLabel = new Label("Description: " + taskModel.getDescription());
-        Label completedLabel = new Label("Is Completed: " + taskModel.getCompletionStatus());
-        Label dueDateLabel = new Label("Due Date: " + taskModel.getDueDateTime().format(DateTimeFormatter.ISO_DATE_TIME));
+        // Create labels to display the task details with inline styles
+        Label nameLabel = new Label("Name:");
+        nameLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
 
-        // Create a VBox to hold the labels
+        Label idLabel = new Label("ID:");
+        idLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label descriptionLabel = new Label("Description:");
+        descriptionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label completedLabel = new Label("Is Completed:");
+        completedLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+        Label dueDateLabel = new Label("Due Date:");
+        dueDateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        // Create labels for the task details (values)
+        Label nameValueLabel = new Label(taskModel.getName());
+        Label idValueLabel = new Label(taskModel.getID().toString());
+        Label descriptionValueLabel = new Label(taskModel.getDescription());
+        Label completedValueLabel = new Label(taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed");
+        Label dueDateValueLabel = new Label(taskModel.getDueDateTime().format(dateFormatter));
+
+        // Create a VBox to hold the labels with inline styles
         VBox vbox = new VBox(10); // 10 pixels spacing between labels
-        vbox.getChildren().addAll(nameLabel, idLabel, descriptionLabel, completedLabel, dueDateLabel);
+        vbox.getChildren().addAll(
+                nameLabel, nameValueLabel,
+                idLabel, idValueLabel,
+                descriptionLabel, descriptionValueLabel,
+                completedLabel, completedValueLabel,
+                dueDateLabel, dueDateValueLabel
+        );
         vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(20)); // Add padding around the VBox
+        vbox.setPadding(new Insets(20));
 
-        // Create a scene and set it on the stage
+        // Set the scene on the stage
         Scene scene = new Scene(vbox);
         popupStage.setScene(scene);
 

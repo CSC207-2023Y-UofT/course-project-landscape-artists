@@ -110,7 +110,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 		 // Temporary implementation for testing purposes.
 		 List<TaskModel> TaskList = Arrays.asList(
-		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
+		 new TaskModel("Task1", UUID.randomUUID(), "Task1", false,
 		 LocalDateTime.now()),
 		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
 		 LocalDateTime.now()));
