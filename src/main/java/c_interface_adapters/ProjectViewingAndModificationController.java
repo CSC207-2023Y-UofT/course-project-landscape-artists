@@ -78,7 +78,7 @@ public class ProjectViewingAndModificationController {
         setPresenter();
         String newColumnName = presenter.displayEditColumnDetails();
         System.out.println(newColumnName);
-//        interactor.editColumnDetails(id);
+        interactor.editColumnDetails(id, newColumnName);
     }
 
 
