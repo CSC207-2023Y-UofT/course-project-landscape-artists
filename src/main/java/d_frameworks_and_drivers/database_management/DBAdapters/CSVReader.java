@@ -1,13 +1,10 @@
-package d_frameworks_and_drivers.database_management.DBcsv;
+package d_frameworks_and_drivers.database_management.DBAdapters;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -15,15 +12,26 @@ import java.util.UUID;
 /**
  *  CSVReader frameworks and driver class.
  */
-public class CSVReader{
-    protected File csvFile;
+public class CSVReader implements AutoCloseable {
+    private File csvFile;
+    private CSVParser csvParser;
 
     /**
      * Creates a new CSVReader given the filePath to csv to read.
      * @param filePath
      */
-    public CSVReader(String filePath) throws FileNotFoundException {
+    public CSVReader(String filePath) throws FileNotFoundException, IOException {
         this.csvFile = new File(filePath);
+    }
+
+    /**
+     * Opens the resources and initializes the CSV parser.
+     *
+     * @throws IOException If an I/O error occurs.
+     */
+    private void openResources() throws IOException {
+        FileReader fileReader = new FileReader(this.csvFile);
+        csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""));
     }
 
     /**
@@ -76,7 +84,19 @@ public class CSVReader{
         return outputMap;
     }
 
-
+    /**
+     * Close the CSVParser when the CSVReader is no longer needed.
+     */
+    @Override
+    public void close() {
+        try {
+            if (this.csvParser != null) {
+                this.csvParser.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }
