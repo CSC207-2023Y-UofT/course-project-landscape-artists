@@ -55,7 +55,14 @@ public class ProjectViewingAndModificationController {
         interactor = new ProjectViewingAndModificationInteractor(presenter);
     }
 
-
+    /**
+     * Sets up the project details view with the provided ProjectModel.
+     * This method configures the button styles, populates the project details,
+     * and fetches the list of columns from the ProjectModel to display them using the presenter.
+     *
+     * @param projectModel The ProjectModel containing the details of the project to be displayed.
+     *                     It should include the project's name, description, ID, and a list of ColumnModels.
+     */
     public void setup(ProjectModel projectModel) {
         setButtonStyles();
 
@@ -65,18 +72,34 @@ public class ProjectViewingAndModificationController {
 
     }
 
+    /**
+     * Sets the styles for the buttons in the view.
+     * This method adds custom CSS class names to the back button and add column button
+     * to apply specific styles defined in the CSS stylesheet.
+     */
     private void setButtonStyles() {
         backButton.getStyleClass().add("back-button-custom");
         addColumnButton.getStyleClass().add("add-column-button-custom");
     }
 
+    /**
+     * Deletes the column with the specified UUID by interacting with the presenter and interactor.
+     * This method sets up the presenter and calls the interactor to delete the column.
+     *
+     * @param id The UUID of the column to be deleted.
+     */
     void deleteColumn(UUID id) {
         setPresenter();
         interactor.deleteColumn(id);
     }
-    
-    
 
+    /**
+     * Handles the action when the user wants to edit the details of a column with the specified UUID.
+     * This method sets up the presenter for column editing, displays a pop-up window to get the new column name from the user,
+     * and calls the interactor to update the column details with the new name.
+     *
+     * @param id The UUID of the column whose details are to be edited.
+     */
     void handleEditColumnDetails(UUID id) {
         setPresenter();
         String newColumnName = presenter.displayEditColumnDetails();
@@ -208,6 +231,18 @@ public class ProjectViewingAndModificationController {
             String columnName = result.getValue();
             interactor.addColumn(columnName);
         }
+    }
+
+
+    /**
+     * Displays the detailed information of a specific task in a pop-up window.
+     * The TaskModel object contains the attributes and details of the task to be displayed.
+     *
+     * @param task The TaskModel object representing the task whose details will be displayed.
+     *             It should contain the task's name, ID, description, completion status, and due date.
+     */
+    public void showTaskDetails(TaskModel task) {
+        presenter.displayTaskDetails(task);
     }
 //    public void moveTask(TaskModel task, VBox targetColumn) {
 //        // Get the current column containing the task
