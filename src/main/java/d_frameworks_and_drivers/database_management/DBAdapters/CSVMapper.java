@@ -10,18 +10,18 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- *  CSVReader frameworks and driver class.
+ *  CSVSearcher frameworks and driver class.
  */
-public class CSVReader implements AutoCloseable {
+public class CSVMapper implements AutoCloseable {
     private File csvFile;
     private FileReader fileReader;
     private CSVParser csvParser;
 
     /**
-     * Creates a new CSVReader given the filePath to csv to read.
+     * Creates a new CSVSearcher given the filePath to csv to read.
      * @param filePath
      */
-    public CSVReader(String filePath) throws FileNotFoundException, IOException {
+    public CSVMapper(String filePath) throws FileNotFoundException, IOException {
         this.csvFile = new File(filePath);
     }
 
@@ -45,7 +45,7 @@ public class CSVReader implements AutoCloseable {
         Map<UUID, CSVRecord> outputMap = new HashMap<>();
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
         try (FileReader fileReader = new FileReader(this.csvFile);
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())){
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
 
 
             // Iterate through each CSV record/row and append Map<UUID, CSVRecord>
@@ -71,7 +71,7 @@ public class CSVReader implements AutoCloseable {
         Map<String, String> outputMap = new HashMap<>();
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
         try (FileReader fileReader = new FileReader(csvFile);
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT)){
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
             // Iterate through each CSV record/row and append outputMap
             for (CSVRecord csvRecord : csvParser) {
                 String key = csvRecord.get(keyColumn);
@@ -86,7 +86,32 @@ public class CSVReader implements AutoCloseable {
     }
 
     /**
-     * Close the CSVParser when the CSVReader is no longer needed.
+     * Returns a Mapping from the string of key column field to the corresponding record
+     * @param keyColumn index of csv key column with string values only
+     * @param valueColumn index of csv value column
+     * @return Mapping from the string of key column field to the corresponding record
+     */
+    public Map<String, CSVRecord> getStringToRecordMap(int keyColumn){
+        Map<String, CSVRecord> outputMap = new HashMap<>();
+        // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
+        try (FileReader fileReader = new FileReader(csvFile);
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
+            // Iterate through each CSV record/row and append outputMap
+            for (CSVRecord csvRecord : csvParser) {
+                if (!(csvRecord.get(keyColumn) instanceof String)) {
+                    throw new IllegalArgumentException("The key column contains non-string values. Cannot map.");
+                }
+                outputMap.put(csvRecord.get(keyColumn), csvRecord);
+
+            }
+
+        } catch (IOException e){
+            throw new RuntimeException("Error getting String-to-String map from CSV file: " + e.getMessage(), e);
+        }
+        return outputMap;
+    }
+    /**
+     * Close the CSVParser when the CSVSearcher is no longer needed.
      */
     @Override
     public void close() {
