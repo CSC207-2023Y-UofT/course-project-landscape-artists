@@ -30,6 +30,11 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.IOException;
+
+import java.time.LocalDate;
+
+import java.time.format.DateTimeFormatter;
+
 import java.util.*;
 
 /**
@@ -224,18 +229,23 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      */
     @Override
     public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
-        String taskUUID = task.getID().toString();
+        System.out.println("IN PRESENTER");
         String taskName = task.getName();
+        System.out.println("Name of task in displayChangedTaskDetails " + taskName);
 
         //Removing the existing nane from the Hbox
         hbox.getChildren().removeAll();
-
-        //Creating a new label and adding them in
-        Label taskLabel = new Label(taskName);
-        Button taskOptionsButton = new Button("...");
-        taskOptionsButton.setStyle("-fx-font-size: 8px;");
-        hbox.getChildren().add(taskLabel);
-        hbox.getChildren().add(taskOptionsButton);
+        System.out.println("ID OF ACTUAL TASK" + taskID);
+        System.out.println("ID OF HBOX UI" + hbox);
+        for (Node node: hbox.getChildren()) {
+            System.out.println("ITEM IN HBOX " + node);
+            if (node instanceof Text) {
+                System.out.println("FOUND THE TEXT");
+                ((Text) node).setText(taskName);
+                System.out.println("TEXT UPDATED");
+                break;
+            }
+        }
     }
 
     @Override
@@ -324,8 +334,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         MenuItem deleteColumnButton = new MenuItem("Delete Column");
 
         Button addTaskButton = new Button("Add Task");
-        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox,
-                controller));
+        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox));
         HBox TaskBtnVBox = new HBox(addTaskButton);
 
         // Add event handler on menu item.
@@ -410,13 +419,16 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
                     "Details");
             MenuItem deleteTaskButton = new MenuItem("Delete Task");
+            MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
 
             // Add event handlers.
 //            renameTaskButton.setOnAction(event -> {
 //                projectViewingAndModificationController.renameTask(task, hbox);});
             //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
+
                 this.handleChangeTaskPopup(task, hbox, controller, UUID.fromString(columnBox.getId()));
+
                 //projectViewingAndModificationController.changeTaskDetails(
                     //task, hbox);
                 });
@@ -424,9 +436,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
                         UUID.fromString(columnBox.getId()));});
+            showTaskDetailsButton.setOnAction(event -> {
+                projectViewingAndModificationController.showTaskDetails(task);});
 
             // Add to MenuButton
-            taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton);
+
+            taskOptionsButton.getItems().addAll(renameTaskButton,
+                    changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
+
             taskOptionsButton.getStyleClass().add("menu-button-custom");
 
 
@@ -547,10 +564,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * the selected column.
      *
      * @param columnBox                               The VBox representing the Column UI where the task will be added.
-     * @param projectViewingAndModificationController
      */
-    void handleAddTaskPopup(VBox columnBox, ProjectViewingAndModificationController projectViewingAndModificationController) {
-        projectViewingAndModificationController.setPresenter();
+    void handleAddTaskPopup(VBox columnBox) {
+        controller.setPresenter();
         // Create a new stage for the popup
         Stage popupStage = new Stage();
 
@@ -565,7 +581,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         gridPane.setVgap(10);
 
         // Create labels and input fields for Task Details, Task Due Date, and Task Name
-
         Label nameLabel = new Label("Task Name:");
         TextField nameTextField = new TextField();
 
@@ -590,12 +605,20 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Handles the action of putting a new task in the correct Column UI.
         addTaskToColumnButton.setOnAction(event -> {
-            // Close the popup when "Submit" button is pressed
-            popupStage.close();
+            String taskName = nameTextField.getText().trim();
+            String taskDetails = detailsTextArea.getText().trim();
+            LocalDate dueDate = dueDatePicker.getValue();
 
-            // Call the method to handle adding the task to the column
-            projectViewingAndModificationController.handleAddTaskToColumn(columnBox.getId(), nameTextField.getText(),
-                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
+            if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+                // Show an alert if any of the fields are empty
+                showAlert("Error", "All fields are required. Please fill in all the details.");
+            } else {
+                // Close the popup when "Submit" button is pressed
+                popupStage.close();
+
+                // Call the method to handle adding the task to the column
+                controller.handleAddTaskToColumn(columnBox.getId(), taskName, taskDetails, dueDate.atStartOfDay());
+            }
         });
 
         // Add the "Add" button to the GridPane
@@ -616,13 +639,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      *
      * @param task
      * @param hbox
-     * @param projectViewingAndModificationController
      * @param uuid
      */
-    void handleChangeTaskPopup(TaskModel task, HBox hbox,
-                               ProjectViewingAndModificationController projectViewingAndModificationController,
-                               UUID uuid) {
-        projectViewingAndModificationController.setPresenter();
+    void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
+        controller.setPresenter();
+      
         // Create a new stage for the popup
         Stage popupStage = new Stage();
 
@@ -637,7 +658,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         gridPane.setVgap(10);
 
         // Create labels and input fields for Task Details, Task Due Date, and Task Name
-
         Label nameLabel = new Label("Task Name:");
         TextField nameTextField = new TextField();
 
@@ -662,13 +682,24 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
         // Handles the action of putting a new task in the correct Column UI.
         changeTaskButton.setOnAction(event -> {
-            // Close the popup when "Submit" button is pressed
-            popupStage.close();
+            String taskName = nameTextField.getText().trim();
+            String taskDetails = detailsTextArea.getText().trim();
+            LocalDate dueDate = dueDatePicker.getValue();
 
-            // Call the method to handle adding the task to the column
-            projectViewingAndModificationController.changeTaskDetails(task, hbox, nameTextField.getText(),
-                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay(), uuid);
+
+            if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+                // Show an alert if any of the fields are empty
+                showAlert("Error", "All fields are required. Please fill in all the details.");
+            } else {
+                // Close the popup when "Submit" button is pressed
+                popupStage.close();
+
+                // Call the method to handle changing the task details
+                controller.changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(), uuid);
+            }
+
         });
+
         // Add the "Change Task" button to the GridPane
         gridPane.add(changeTaskButton, 0, 3, 2, 1);
 
@@ -819,5 +850,60 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Displays a pop-up window to show the details of a given TaskModel.
+     *
+     * @param taskModel The TaskModel object containing the details of the task to be displayed.
+     */
+    public static void displayTaskDetails(TaskModel taskModel) {
+        // Create a new stage for the pop-up window
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
+        popupStage.setTitle("Task Details");
+
+        // Create labels to display the task details with inline styles
+        Label nameLabel = new Label("Name:");
+        nameLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label idLabel = new Label("ID:");
+        idLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label descriptionLabel = new Label("Description:");
+        descriptionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label completedLabel = new Label("Is Completed:");
+        completedLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+        Label dueDateLabel = new Label("Due Date:");
+        dueDateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        // Create labels for the task details (values)
+        Label nameValueLabel = new Label(taskModel.getName());
+        Label idValueLabel = new Label(taskModel.getID().toString());
+        Label descriptionValueLabel = new Label(taskModel.getDescription());
+        Label completedValueLabel = new Label(taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed");
+        Label dueDateValueLabel = new Label(taskModel.getDueDateTime().format(dateFormatter));
+
+        // Create a VBox to hold the labels with inline styles
+        VBox vbox = new VBox(10); // 10 pixels spacing between labels
+        vbox.getChildren().addAll(
+                nameLabel, nameValueLabel,
+                idLabel, idValueLabel,
+                descriptionLabel, descriptionValueLabel,
+                completedLabel, completedValueLabel,
+                dueDateLabel, dueDateValueLabel
+        );
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20));
+
+        // Set the scene on the stage
+        Scene scene = new Scene(vbox);
+        popupStage.setScene(scene);
+
+        // Show the pop-up window and wait for it to be closed before returning
+        popupStage.showAndWait();
     }
 }
