@@ -132,8 +132,8 @@ public class ProjectViewingAndModificationController {
         interactor.changeTaskDetails(changedTask, taskID);
 
         //Creating a TaskViewModel for display purposes
-        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
-                task.getCompletionStatus(), task.getDueDateTime());
+        TaskViewModel newTask = new TaskViewModel(newTaskName, taskID, newTaskName,
+                taskStatus, newDueDate);
 
         //Calling a handler to display the final task changes
         presenter.displayChangedTaskDetails(taskID, newTask, hbox);
