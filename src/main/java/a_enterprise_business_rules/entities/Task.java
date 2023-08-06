@@ -199,6 +199,12 @@ public class Task {
         return allAttributesAreEqual;
     }
 
+    /**
+     *
+     * @param taskID
+     * @param listOfTasks
+     * @return
+     */
     public static Task IDToTask(UUID taskID, ArrayList<Task> listOfTasks) {
         int i = 0;
         boolean taskFound = false;
@@ -213,4 +219,6 @@ public class Task {
         }
         return task;
     }
+
+
 }
