@@ -5,7 +5,9 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
+import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -14,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -108,13 +111,38 @@ public class ProjectViewingAndModificationController {
         interactor.deleteTask(task, hBoxID, columnBoxID);
     }
 
-    void changeTaskDetails(TaskModel task, HBox hbox) {
-//        interactor.changeTaskDetails(task, hbox);
+    /**
+     * Receives the user input from the presenter and calls the interactor to make the changes
+     * to the database. If the action is successful, calls the presenter to display the final
+     * changes
+     * @param task
+     * @param hbox
+     * @param newTaskName
+     * @param newTaskDescription
+     * @param newDueDate
+     */
+    void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
+                           String newTaskDescription, LocalDateTime newDueDate) {
+        UUID taskID = task.getID();
+        boolean taskStatus = task.getCompletionStatus();
+
+        //Creating a new TaskModel based on the user input
+        TaskModel changedTask = TaskModelFactory.create(newTaskName, taskID, newTaskDescription, taskStatus,
+                newDueDate);
+        interactor.changeTaskDetails(changedTask, taskID);
+
+        //Creating a TaskViewModel for display purposes
+        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
+                task.getCompletionStatus(), task.getDueDateTime());
+
+        //Calling a handler to display the final task changes
+        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
+
     }
 
-    void renameTask(TaskModel task, HBox hbox) {
-//        interactor.renameTask(task, hbox);
-    }
+//    void renameTask(TaskModel task, HBox hbox) {
+////        interactor.renameTask(task, hbox);
+//    }
 
     /**
      * Handles displaying options when the options button of a task is clicked.
@@ -139,11 +167,19 @@ public class ProjectViewingAndModificationController {
         interactor.addNewTask(UUID.fromString(columnBoxID), taskName, taskDescription, dueDate);
     }
 
+    //void handleChangeTaskDetails(VBox columnBox, String taskName, String taskDescription,
+                                 //LocalDateTime dueDate) {
+
+        //interactor.changeTaskDetails();
+
+    //}
+
     /**
      * Populates the project details on the UI, including the project name.
      *
      * @param project The Project instance representing the current project.
      */
+
     private void populateProjectDetails(ProjectModel project) {
 
         projectName.setText(project.getName());
@@ -181,16 +217,20 @@ public class ProjectViewingAndModificationController {
         }
     }
 
-    /**
-     * Handles the click event when the "Add Column" button is clicked in the UI.
-     * This method is triggered by the user's interaction with the button.
-     * It displays a pop-up window to prompt the user to enter a new column name,
-     * and then adds the new column to the database using the ColumnInteractor.
-     */
+
     @FXML
+/**
+ * Handles the event when the "Add Column" button is clicked.
+ * Displays a pop-up window to allow the user to enter a new column name.
+ *
+ */
     private void handleAddColumnClick() {
-        String columnName = presenter.displayAddColumnPopup();
-        interactor.addColumn(columnName);
+        boolean[] addButtonClicked = new boolean[1];
+        Pair<Boolean, String> result = presenter.displayAddColumnPopup(addButtonClicked);
+        if (result.getKey()) {
+            String columnName = result.getValue();
+            interactor.addColumn(columnName);
+        }
     }
 
 
