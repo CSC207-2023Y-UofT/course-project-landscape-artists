@@ -1,6 +1,6 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import d_frameworks_and_drivers.database_management.DBAdapters.CSVReader;
+import d_frameworks_and_drivers.database_management.DBAdapters.CSVMapper;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,9 +15,9 @@ public class UniqueIDsReader implements c_interface_adapters.UniqueIDsReader {
     public Map<String, String> getMap() {
         // Use the first header as the key and the second header as the value in the HashMap
         // Assuming the first header is in the 0th column, the second header is in the 1st column
-        try (CSVReader csvReader = new CSVReader("DatabaseFiles/UniqueIDs/UniqueIDs.csv")){
+        try (CSVMapper csvMapper = new CSVMapper("DatabaseFiles/UniqueIDs/UniqueIDs.csv")){
 
-            return csvReader.getStringToStringMap(0, 1);
+            return csvMapper.getStringToStringMap(0, 1);
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
