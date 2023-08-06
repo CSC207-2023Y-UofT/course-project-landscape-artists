@@ -90,34 +90,5 @@ public class DBManagerRemoveController implements IDBRemove {
         }
     }
 
-    /**
-     *  Updates the tempFile to newFile by removing one record with a given ID.
-     * @param uuid
-     * @param tempFile
-     * @param newFile
-     */
-    private void CsvBatchRemovalUpdate(List<UUID> uuid, File tempFile, File newFile) {
-        try (FileReader fileReader = new FileReader(tempFile);
-             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader());
-             FileWriter fileWriter = new FileWriter(newFile);
-             CSVPrinter csvPrinter = new CSVPrinter(fileWriter, CSVFormat.DEFAULT.withHeader())) {
 
-            // Iterate through each row in the CSV file
-            for (CSVRecord csvRecord : csvParser) {
-                // Check if the current row's column value matches the value to delete
-                String columnValue = csvRecord.get(0);
-                if (!columnValue.equals(uuid.toString())) {
-                    // If it does not match, write the row to the new CSV file
-                    csvPrinter.printRecord(csvRecord);
-                }
-            }
-
-            // Flush the CSVPrinter
-            csvPrinter.flush();
-            //
-            tempFile.delete();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

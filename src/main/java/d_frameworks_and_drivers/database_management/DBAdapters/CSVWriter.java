@@ -17,6 +17,7 @@ public class CSVWriter implements AutoCloseable {
 
     /**
      * Creates a new CSVRemover given the filePath to csv to read.
+     *
      * @param filePath
      */
     public CSVWriter(String filePath) throws FileNotFoundException {
@@ -24,9 +25,9 @@ public class CSVWriter implements AutoCloseable {
     }
 
     /**
-    * Opens the resources and initializes the fields.
-    *
-    * @throws IOException If an I/O error occurs.
+     * Opens the resources and initializes the fields.
+     *
+     * @throws IOException If an I/O error occurs.
      */
     private void openResources() throws IOException {
         fileWriter = new FileWriter(csvFile);
@@ -38,7 +39,7 @@ public class CSVWriter implements AutoCloseable {
      *
      * @param inputRecord a list of strings
      */
-    public void insert(List<String> inputRecord){
+    public void insert(List<String> inputRecord) {
         // Get the header size from the CSV file, assuming the CSV file has a header
         int headerNumber = -1;
 
@@ -70,14 +71,14 @@ public class CSVWriter implements AutoCloseable {
      *
      * @param strings one or more string parameters
      */
-    public void insert(String... strings){
-        if (strings.length == 0){
+    public void insert(String... strings) {
+        if (strings.length == 0) {
             throw new IllegalArgumentException("At least one argument is required.");
         }
 
         List<String> inputRecord = new ArrayList<>();
 
-        for (String s : strings){
+        for (String s : strings) {
             inputRecord.add(s);
         }
 
@@ -107,7 +108,7 @@ public class CSVWriter implements AutoCloseable {
         }
     }
 
-//        /**
+//    /**
 //     * Updates the tempFile to newFile by removing one record with a given ID.
 //     *
 //     * @param uuid
@@ -116,7 +117,7 @@ public class CSVWriter implements AutoCloseable {
 //     */
 //    private void remove(UUID uuid) {
 //        try (FileReader fileReader = new FileReader(csvFile);
-//             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
+//             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
 //
 //            List<CSVRecord> records = csvParser.getRecords();
 //
@@ -130,21 +131,11 @@ public class CSVWriter implements AutoCloseable {
 //            CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFormat);
 //            csvPrinter.printRecords(records);
 //
-//        } catch (IOException e){
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
 //    }
 
-
-    /**
-     *  Updates the tempFile to newFile by removing one record with a given ID.
-     * @param uuid
-     * @param tempFile
-     * @param newFile
-     */
-    private void CsvBatchRemovalUpdate(List<UUID> uuid, File tempFile, File newFile) {
-
-    }
 
 
 
