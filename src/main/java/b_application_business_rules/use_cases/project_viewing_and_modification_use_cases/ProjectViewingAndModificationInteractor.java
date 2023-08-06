@@ -153,6 +153,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
+    public void moveTask(UUID souceColumnID, UUID targetColumnID, TaskModel taskModel ) {}
+
+    @Override
     public void renameTask(TaskModel task, UUID TaskUIid) {
 
     }
