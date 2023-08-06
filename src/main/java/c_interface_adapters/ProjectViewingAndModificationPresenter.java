@@ -26,6 +26,7 @@ import javafx.scene.control.Label;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.*;
@@ -405,14 +406,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             //Create menu button and its options.
             MenuButton taskOptionsButton = new MenuButton("");
-            MenuItem renameTaskButton = new MenuItem("Rename Task");
+//            MenuItem renameTaskButton = new MenuItem("Rename Task");
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
                     "Details");
             MenuItem deleteTaskButton = new MenuItem("Delete Task");
 
             // Add event handlers.
-            renameTaskButton.setOnAction(event -> {
-                projectViewingAndModificationController.renameTask(task, hbox);});
+//            renameTaskButton.setOnAction(event -> {
+//                projectViewingAndModificationController.renameTask(task, hbox);});
             //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
                 this.handleChangeTaskPopup(task, hbox, controller);
@@ -425,8 +426,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                         UUID.fromString(columnBox.getId()));});
 
             // Add to MenuButton
-            taskOptionsButton.getItems().addAll(renameTaskButton,
-                    changeTaskDetailsButton, deleteTaskButton);
+            taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton);
             taskOptionsButton.getStyleClass().add("menu-button-custom");
 
 
@@ -675,7 +675,19 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.showAndWait();
     }
 
-    public String displayAddColumnPopup() {
+
+    /**
+     * Displays a pop-up window to allow the user to enter a new column name.
+     * The user can click the "Add" button to confirm the input and add the new column,
+     * or click the "Cancel" button to cancel the operation.
+     *
+     * @param addButtonClicked A boolean array used to store the result of the pop-up.
+     *                         The first element (index 0) will be set to true or false if "Add" button is clicked or
+     *                         not.
+     * @return A Pair containing the flag indicating the button clicked
+     *         (true for "Add", false for "Cancel") and the entered column name (trimmed).
+     */
+    public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked) {
         // Create a new stage for the popup
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
@@ -688,8 +700,18 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         Button cancelButton = new Button("Cancel");
 
         // Set up event handlers
-        addButton.setOnAction(e -> popupStage.close());
+        addButton.setOnAction(e -> {
+            String columnName = nameTextField.getText().trim();
+            if (columnName.isEmpty()) {
+                showAlert("Error", "Column name cannot be empty.");
+            } else {
+                addButtonClicked[0] = true; // Set the flag to true when "Add" button is clicked
+                popupStage.close();
+            }
+        });
+
         cancelButton.setOnAction(e -> {
+            addButtonClicked[0] = false; // Set the flag to false when "Cancel" button is clicked
             nameTextField.clear();
             popupStage.close();
         });
@@ -704,9 +726,10 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         popupStage.setScene(popupScene);
         popupStage.showAndWait();
 
-        // Return the user input (column name)
-        return nameTextField.getText();
+        // Return the result as a Pair containing the flag and column name
+        return new Pair<>(addButtonClicked[0], nameTextField.getText().trim());
     }
+
 //    public static HBox createKanbanCard(HBox originalCard, TaskModel taskModel) {
 //        // Create the card content
 //        Rectangle cardBackground = new Rectangle(100, 50, Color.LIGHTBLUE);
