@@ -153,7 +153,13 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void moveTask(UUID souceColumnID, UUID targetColumnID, TaskModel taskModel ) {}
+    public void moveTask(UUID souceColumnID, UUID targetColumnID, TaskModel taskModel) {
+        ColumnModel sourceColumn = new ColumnModel("", new ArrayList<>(), souceColumnID);
+        ColumnModel targetColumn = new ColumnModel("", new ArrayList<>(), souceColumnID);
+
+        MoveTask useCase = new MoveTask(sourceColumn, targetColumn, taskModel);
+        useCase.moveTask();
+    }
 
     @Override
     public void renameTask(TaskModel task, UUID TaskUIid) {

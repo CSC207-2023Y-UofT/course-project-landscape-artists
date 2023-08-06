@@ -18,35 +18,34 @@ public class MoveTask {
     /** The column to move the task to */
     private ColumnModel column2;
     /** The project the columns are in */
-    private ProjectModel project;
+    private TaskModel task;
 
     /**
      * Constructs an MoveTask object with the specified columns
      *
      * @param column1 The column to move the task from
      * @param column2 The column to move the task to
-     * @param project The project the columns are in
+     * @param task The task itself
      */
-    public MoveTask(ColumnModel column1, ColumnModel column2, ProjectModel project) {
+    public MoveTask(ColumnModel column1, ColumnModel column2, TaskModel task) {
         this.column1 = column1;
         this.column2 = column2;
-        this.project = project;
+        this.task = task;
     }
 
     /**
      * Moves the task from one column to another.
-     * 
-     * @param task The task to move.
+     *
      */
-    public void moveTask(TaskModel task) {
+    public void moveTask() {
         this.column1.removeTaskModel(task);
         this.column2.addTaskModel(task);
 
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.project, this.project.getID());
+        databaseRemover.DBRemove(this.task, this.task.getID());
 
         IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(this.project);
+        databaseInserter.DBInsert(this.task);
 
     }
 
