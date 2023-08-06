@@ -3,10 +3,12 @@ package d_frameworks_and_drivers.database_management.DBAdapters;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CSVWriter implements AutoCloseable {
     protected File csvFile;
@@ -14,7 +16,7 @@ public class CSVWriter implements AutoCloseable {
     private CSVPrinter csvPrinter;
 
     /**
-     * Creates a new CSVWriter given the filePath to csv to read.
+     * Creates a new CSVRemover given the filePath to csv to read.
      * @param filePath
      */
     public CSVWriter(String filePath) throws FileNotFoundException {
@@ -104,6 +106,46 @@ public class CSVWriter implements AutoCloseable {
             e.printStackTrace();
         }
     }
+
+//        /**
+//     * Updates the tempFile to newFile by removing one record with a given ID.
+//     *
+//     * @param uuid
+//     * @param tempFile
+//     * @param newFile
+//     */
+//    private void remove(UUID uuid) {
+//        try (FileReader fileReader = new FileReader(csvFile);
+//             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
+//
+//            List<CSVRecord> records = csvParser.getRecords();
+//
+//            if (recordIndex < 0 || recordIndex >= records.size()) {
+//                throw new IllegalArgumentException("Invalid recordIndex: " + recordIndex);
+//            }
+//
+//            records.remove(recordIndex);
+//
+//            FileWriter fileWriter = new FileWriter(csvFile);
+//            CSVPrinter csvPrinter = new CSVPrinter(fileWriter, csvFormat);
+//            csvPrinter.printRecords(records);
+//
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//    }
+
+
+    /**
+     *  Updates the tempFile to newFile by removing one record with a given ID.
+     * @param uuid
+     * @param tempFile
+     * @param newFile
+     */
+    private void CsvBatchRemovalUpdate(List<UUID> uuid, File tempFile, File newFile) {
+
+    }
+
 
 
     /**
