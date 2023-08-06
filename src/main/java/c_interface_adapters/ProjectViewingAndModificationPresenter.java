@@ -223,18 +223,23 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      */
     @Override
     public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
-        String taskUUID = task.getID().toString();
+        System.out.println("IN PRESENTER");
         String taskName = task.getName();
+        System.out.println("Name of task in displayChangedTaskDetails " + taskName);
 
         //Removing the existing nane from the Hbox
         hbox.getChildren().removeAll();
-
-        //Creating a new label and adding them in
-        Label taskLabel = new Label(taskName);
-        Button taskOptionsButton = new Button("...");
-        taskOptionsButton.setStyle("-fx-font-size: 8px;");
-        hbox.getChildren().add(taskLabel);
-        hbox.getChildren().add(taskOptionsButton);
+        System.out.println("ID OF ACTUAL TASK" + taskID);
+        System.out.println("ID OF HBOX UI" + hbox);
+        for (Node node: hbox.getChildren()) {
+            System.out.println("ITEM IN HBOX " + node);
+            if (node instanceof Text) {
+                System.out.println("FOUND THE TEXT");
+                ((Text) node).setText(taskName);
+                System.out.println("TEXT UPDATED");
+                break;
+            }
+        }
     }
 
     @Override
