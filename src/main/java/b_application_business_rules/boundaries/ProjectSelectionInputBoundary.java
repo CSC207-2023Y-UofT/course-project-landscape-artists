@@ -26,6 +26,6 @@ public interface ProjectSelectionInputBoundary {
 
     void openProject(UUID currentProjectID);
 
-    void renameProject(UUID projectUUID);
+    void renameProject(UUID projectUUID, String newName, String newDescription);
 
 }

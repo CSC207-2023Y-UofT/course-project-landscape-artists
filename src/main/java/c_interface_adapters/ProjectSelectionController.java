@@ -78,7 +78,12 @@ public class ProjectSelectionController {
         // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
         // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         setPresenterAndInteractor();
-        interactor.renameProject(projectUUID);
+        String[] newNameAndNewDescription = presenter.displayRenameProjectPopup();
+        if (newNameAndNewDescription != null) {
+            String newName = newNameAndNewDescription[0];
+            String newDescription = newNameAndNewDescription[1];
+            interactor.renameProject(projectUUID, newName, newDescription);
+        }
     }
 
     /**

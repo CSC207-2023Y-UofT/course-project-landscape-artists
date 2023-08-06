@@ -197,6 +197,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         // Get the UUID of the renamed project and its new name
         String projectUUID = projectModel.getID().toString();
         String newProjectName = projectModel.getName();
+        String newProjectDescription = projectModel.getDescription();
 
         // Get the current scene of the stage
         Scene scene = stage.getScene();
@@ -222,7 +223,10 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                                             if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
                                                 Label projectName = (Label) nodeInNameAndDescriptionContainer;
                                                 projectName.setText(newProjectName);
-                                                break;
+                                            }
+                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectDescription")) {
+                                                Label projectDescription = (Label) nodeInNameAndDescriptionContainer;
+                                                projectDescription.setText(newProjectDescription);
                                             }
                                         }
                                         break;
@@ -390,6 +394,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Label projectDescription = new Label(project.getDescription());
 
             projectName.setId("projectName");
+            projectDescription.setId("projectDescription");
+
 
 
             projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
@@ -514,5 +520,53 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
                 controller.createProject(project.getKey(), project.getValue());
             }
         });
+    }
+
+    /**
+     * Displays a popup for the user to input the new name and description. If either is empty, then show an alert
+     * message saying it is invalid.
+     *
+     * @return An array of strings containing the new project name and description entered by the user, respectively.
+     */
+    public String[] displayRenameProjectPopup() {
+        // Create a dialog to get the new project name and description from the user
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Rename Project");
+        dialog.setHeaderText("Enter the new name and description for the project:");
+
+        // Create two text fields for the user to enter the name and description
+        TextField nameField = new TextField();
+        nameField.setPromptText("New Project Name");
+        TextField descriptionField = new TextField();
+        descriptionField.setPromptText("New Project Description");
+
+        // Set the dialog content to contain the text fields
+        dialog.getDialogPane().setContent(new VBox(nameField, descriptionField));
+
+        // Show the dialog and wait for the user's response
+        Optional<String> result = dialog.showAndWait();
+
+        // Check if the user clicked "OK" and get the user input from the text fields
+        if (result.isPresent()) {
+            String newProjectName = nameField.getText().trim();
+            String newProjectDescription = descriptionField.getText().trim();
+
+            // Check if either field is empty
+            if (newProjectName.isEmpty() || newProjectDescription.isEmpty()) {
+                // Show an error alert if either field is empty
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Input");
+                alert.setHeaderText("Invalid Project Name or Description");
+                alert.setContentText("Project name and description cannot be empty.\nPlease enter the new name and description.");
+                alert.showAndWait();
+                return null;
+            } else {
+                // Return the valid new project name and description as an array of strings
+                return new String[]{newProjectName, newProjectDescription};
+            }
+        } else {
+            // Return null if the user clicked "Cancel" or closed the dialog
+            return null;
+        }
     }
 }

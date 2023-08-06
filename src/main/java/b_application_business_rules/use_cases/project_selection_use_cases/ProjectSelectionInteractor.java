@@ -125,12 +125,18 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	/**
 	 * @param projectUUID
+	 * @param newName
+	 * @param newDescription
 	 */
 	@Override
-	public void renameProject(UUID projectUUID) {
-		ProjectModel projectModel = new ProjectModel(
-				"Revised project P1", projectUUID, "", new ArrayList<>());
-		presenter.displayRenamedProject(projectModel);
+	public void renameProject(UUID projectUUID, String newName, String newDescription) {
+		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
+		EditProjectDetails useCase = new EditProjectDetails(editedProjectModel);
+
+		useCase.setName(newName);
+		useCase.setDescription(newDescription);
+
+		presenter.displayRenamedProject(editedProjectModel);
 	}
 
 	/**
