@@ -29,6 +29,7 @@ import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.IOException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -410,6 +411,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
                     "Details");
             MenuItem deleteTaskButton = new MenuItem("Delete Task");
+            MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
 
             // Add event handlers.
 //            renameTaskButton.setOnAction(event -> {
@@ -424,9 +426,14 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             deleteTaskButton.setOnAction(event -> {
                 projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
                         UUID.fromString(columnBox.getId()));});
+            showTaskDetailsButton.setOnAction(event -> {
+                projectViewingAndModificationController.showTaskDetails(task);});
 
             // Add to MenuButton
-            taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton);
+
+            taskOptionsButton.getItems().addAll(renameTaskButton,
+                    changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
+
             taskOptionsButton.getStyleClass().add("menu-button-custom");
 
 
@@ -814,5 +821,60 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    /**
+     * Displays a pop-up window to show the details of a given TaskModel.
+     *
+     * @param taskModel The TaskModel object containing the details of the task to be displayed.
+     */
+    public static void displayTaskDetails(TaskModel taskModel) {
+        // Create a new stage for the pop-up window
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL); // Block interactions with other windows
+        popupStage.setTitle("Task Details");
+
+        // Create labels to display the task details with inline styles
+        Label nameLabel = new Label("Name:");
+        nameLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label idLabel = new Label("ID:");
+        idLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label descriptionLabel = new Label("Description:");
+        descriptionLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        Label completedLabel = new Label("Is Completed:");
+        completedLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+        Label dueDateLabel = new Label("Due Date:");
+        dueDateLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+
+        // Create labels for the task details (values)
+        Label nameValueLabel = new Label(taskModel.getName());
+        Label idValueLabel = new Label(taskModel.getID().toString());
+        Label descriptionValueLabel = new Label(taskModel.getDescription());
+        Label completedValueLabel = new Label(taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed");
+        Label dueDateValueLabel = new Label(taskModel.getDueDateTime().format(dateFormatter));
+
+        // Create a VBox to hold the labels with inline styles
+        VBox vbox = new VBox(10); // 10 pixels spacing between labels
+        vbox.getChildren().addAll(
+                nameLabel, nameValueLabel,
+                idLabel, idValueLabel,
+                descriptionLabel, descriptionValueLabel,
+                completedLabel, completedValueLabel,
+                dueDateLabel, dueDateValueLabel
+        );
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20));
+
+        // Set the scene on the stage
+        Scene scene = new Scene(vbox);
+        popupStage.setScene(scene);
+
+        // Show the pop-up window and wait for it to be closed before returning
+        popupStage.showAndWait();
     }
 }
