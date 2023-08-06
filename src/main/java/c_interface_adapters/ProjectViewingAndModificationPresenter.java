@@ -45,6 +45,9 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     private VBox dragDestination;
 
+    private VBox dragSource;
+
+
     /**
      * Initializes the JavaFX application and sets up the initial scene to display the current
      * project details and associated tasks.
@@ -284,6 +287,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     void populateColumns(List<ColumnModel> columns, ProjectViewingAndModificationController projectViewingAndModificationController) {
         // Iterate through the list of columns and create a VBox for each column
         for (ColumnModel column : columns) {
+            System.out.println("ID OF COLUMN: " + column.getID());
             displayNewColumn(column);
         }
     }
@@ -441,7 +445,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             });
 
             hbox.getChildren().addAll(textContent, taskOptionsButton, completeTaskButton);
-            SetHBoxFeatures(columnBox, hbox);
+            SetHBoxFeatures(columnBox, hbox, task);
 
             hbox.setSpacing(5); // Set spacing between text and menuButton
             hbox.setPadding(new Insets(2)); // Add some padding for better appearance
@@ -454,13 +458,15 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         }
     }
 
-    private void SetHBoxFeatures(VBox columnBox, HBox hbox) {
+    private void SetHBoxFeatures(VBox columnBox, HBox hbox, TaskModel task) {
         // Set the unique identifier for the HBox
         hbox.setId(UUID.randomUUID().toString());
 
         // Set mouse event handlers for dragging the card
         hbox.setOnDragDetected(event -> {
             Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
+
+            dragSource = (VBox) hbox.getParent();
 
             ClipboardContent content = new ClipboardContent();
             content.putString(hbox.getId()); // Use the unique identifier for the HBox as the data to be transferred
@@ -510,9 +516,11 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
                         transition.play();
 
                         transition.setOnFinished(event1 -> {
+                            controller.moveTask(dragSource.getId(), dragDestination.getId(), task);
                             this.dragDestination.getChildren().add(sourceHBox);
                         });
                         success = true;
+
                     } else {
                         System.out.println("Destination VBox not found!");
                     }

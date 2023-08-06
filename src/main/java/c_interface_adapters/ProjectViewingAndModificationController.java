@@ -209,6 +209,11 @@ public class ProjectViewingAndModificationController {
             interactor.addColumn(columnName);
         }
     }
+
+    public void moveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
+        System.out.println(sourceColumnID+ "  " + targetColumnID);
+        interactor.moveTask(UUID.fromString(sourceColumnID), UUID.fromString(targetColumnID), task);
+    }
 //    public void moveTask(TaskModel task, VBox targetColumn) {
 //        // Get the current column containing the task
 //        VBox sourceColumn = findColumnContainingTask(task);
