@@ -266,17 +266,14 @@ public class Column {
      */
     public static Column IDToColumn(UUID columnID, List<Column> listOfColumns) {
         int i = 0;
-        boolean columnFound = false;
-        Column column = null;
         // loop until the right column is found
-        while (listOfColumns.size() > i && !columnFound) {
+        while (listOfColumns.size() > i) {
             if (columnID.equals(listOfColumns.get(i).getID())) {
-                columnFound = true;
-                column = listOfColumns.get(i);
+                return listOfColumns.get(i);
             }
             i++;
         }
-        return column;
+        return null;
     }
     // testing IDToColumn helper function (Success!)
     // public static void main(String[] args) {

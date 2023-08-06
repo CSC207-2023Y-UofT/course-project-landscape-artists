@@ -2,6 +2,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import b_application_business_rules.DataAccessInterface;
 
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
@@ -31,13 +32,13 @@ public class EditTaskDetails implements DataAccessInterface {
     /**
      * This method makes edits to the task
      */
-    public void editTask() {
+    public void editTask(UUID parentColumn) {
         // Call the update function since the model is new but the one in csv is old
         // There is no model for the old task, so we make one in updateTaskDetail
 
         // Assume the user ALWAYS changes both name and description when changing one
         // For the sake of simplicity
-        updateTaskDetail(taskID, taskModel);
+        updateTaskDetail(taskID, taskModel, parentColumn);
     }
 
     /**
@@ -49,7 +50,7 @@ public class EditTaskDetails implements DataAccessInterface {
      * @param updatedTask
      */
     @Override
-    public void updateTaskDetail(UUID taskID, TaskModel updatedTask) {
+    public void updateTaskDetail(UUID taskID, TaskModel updatedTask, UUID parentColumn) {
         // Initializing the controllers
         IDBRemove removeTask = new DBManagerRemoveController();
         IDBInsert insertTask = new DBManagerInsertController();
@@ -71,7 +72,7 @@ public class EditTaskDetails implements DataAccessInterface {
         removeTask.DBRemove(oldTask, taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask);
+        insertTask.DBInsert(updatedTask, parentColumn);
 
     }
 }

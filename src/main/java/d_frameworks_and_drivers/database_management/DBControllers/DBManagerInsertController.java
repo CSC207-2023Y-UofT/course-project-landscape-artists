@@ -9,6 +9,7 @@ import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
+import com.sun.glass.ui.Clipboard;
 
 import java.io.File;
 import java.io.FileReader;
@@ -29,24 +30,31 @@ public class DBManagerInsertController implements IDBInsert {
      */
     public void DBInsert(ProjectModel projectModel) {
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Projects/Projects.csv");
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
+        List<String[]> content = new ArrayList<>();
 
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
+        // Read the existing content of the CSV file into memory
+        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+            content.addAll(reader.readAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            // add data to csv
-            String[] data = {
-                    projectModel.getID().toString(),
-                    projectModel.getName(),
-                    projectModel.getDescription(),
-                    entityIDsToListController.EntityIDsToList(projectModel)
-            };
-            writer.writeNext(data);
+        StringBuilder columnTaskList = new StringBuilder();
+        //convert taskModel list to list of string
 
-            // closing writer connection
-            writer.close();
+        // Add data to the CSV
+        List<String> data = new ArrayList<>();
+        data.add(projectModel.getID().toString());
+        data.add(projectModel.getName());
+        data.add(projectModel.getDescription());
+        data.add(entityIDsToListController.EntityIDsToList(projectModel));
+
+        content.add(data.toArray(new String[0]));
+
+        // Write the updated content back to the CSV file
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            writer.writeAll(content);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,12 +81,13 @@ public class DBManagerInsertController implements IDBInsert {
             e.printStackTrace();
         }
 
+        StringBuilder columnTaskList = new StringBuilder();
+
         // Add data to the CSV
         List<String> data = new ArrayList<>();
         data.add(columnModel.getID().toString());
         data.add(columnModel.getName());
         data.add(entityIDsToListController.EntityIDsToList(columnModel));
-        data.add(null);
         data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
 
         content.add(data.toArray(new String[0]));
@@ -94,26 +103,31 @@ public class DBManagerInsertController implements IDBInsert {
     /**
      * @param taskModel
      */
-    public void DBInsert(TaskModel taskModel) {
-        try {
-            // create FileWriter object with file as parameter
-            FileWriter outputfile = new FileWriter("DatabaseFiles/Tasks/Tasks.csv");
+    public void DBInsert(TaskModel taskModel, UUID parentColumn) {
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
+        List<String[]> content = new ArrayList<>();
 
-            // create CSVWriter object filewriter object as parameter
-            CSVWriter writer = new CSVWriter(outputfile);
+        // Read the existing content of the CSV file into memory
+        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+            content.addAll(reader.readAll());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-            // add data to csv
-            String[] data1 = {
-                    taskModel.getID().toString(),
-                    taskModel.getName(),
-                    taskModel.getDescription(),
-                    String.valueOf(taskModel.getCompletionStatus()),
-                    taskModel.getDueDateTime().toString()
-            };
-            writer.writeNext(data1);
+        // Add data to the CSV
+        List<String> data = new ArrayList<>();
+        data.add(taskModel.getID().toString());
+        data.add(taskModel.getName());
+        data.add(taskModel.getDescription());
+        data.add(String.valueOf(taskModel.getCompletionStatus()));
+        data.add(taskModel.getDueDateTime().toString());
+        data.add(parentColumn.toString());
 
-            // closing writer connection
-            writer.close();
+        content.add(data.toArray(new String[0]));
+
+        // Write the updated content back to the CSV file
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            writer.writeAll(content);
         } catch (Exception e) {
             e.printStackTrace();
         }

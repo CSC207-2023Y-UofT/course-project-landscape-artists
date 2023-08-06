@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -386,7 +387,6 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
         // Create a set to store the unique IDs of the HBox nodes added to the columnBox
         Set<String> addedHBoxIds = new HashSet<>();
 
-
         // Iterate through the list of tasks and create an HBox for each task
         for (TaskModel task : tasks) {
             // Create the card content
@@ -416,7 +416,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 //                projectViewingAndModificationController.renameTask(task, hbox);});
             //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
-                this.handleChangeTaskPopup(task, hbox, controller);
+                this.handleChangeTaskPopup(task, hbox, controller, UUID.fromString(columnBox.getId()));
                 //projectViewingAndModificationController.changeTaskDetails(
                     //task, hbox);
                 });
@@ -520,6 +520,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             }
 
             event.setDropCompleted(success);
+            DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+            dbManagerSearchController.DBTaskSearch(hbox.getId());
             event.consume();
         });
 
@@ -611,12 +613,15 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * Creates a popup screen once the changeTaskDetail button is pressed. Takes in user input
      * on the task name, task description and due date and then calls the
      * ProjectViewingAndModificationController
+     *
      * @param task
      * @param hbox
      * @param projectViewingAndModificationController
+     * @param uuid
      */
     void handleChangeTaskPopup(TaskModel task, HBox hbox,
-                               ProjectViewingAndModificationController projectViewingAndModificationController) {
+                               ProjectViewingAndModificationController projectViewingAndModificationController,
+                               UUID uuid) {
         projectViewingAndModificationController.setPresenter();
         // Create a new stage for the popup
         Stage popupStage = new Stage();
@@ -662,7 +667,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             // Call the method to handle adding the task to the column
             projectViewingAndModificationController.changeTaskDetails(task, hbox, nameTextField.getText(),
-                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay());
+                    detailsTextArea.getText(), dueDatePicker.getValue().atStartOfDay(), uuid);
         });
         // Add the "Change Task" button to the GridPane
         gridPane.add(changeTaskButton, 0, 3, 2, 1);

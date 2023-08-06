@@ -30,7 +30,7 @@ public class AddTask {
      * This method creates the task and calls the method that will add the task to
      * the database
      */
-    public void addTask() {
+    public void addTask(UUID idOfColumn) {
         // Create task entity
         Task task = createTaskEntity(taskModel);
 
@@ -38,6 +38,7 @@ public class AddTask {
         // First get the list of columns in the current project
         List<Column> listOfColumns = currentProject.getColumns();
         // Then search for the column entity
+        System.out.println(idOfColumn.toString());
         Column currentColumn = Column.IDToColumn(idOfColumn, listOfColumns);
         // Then add the task to the columns list of tasks
         currentColumn.getTasks().add(task);
@@ -45,7 +46,7 @@ public class AddTask {
         // Initializing the required controllers and calls method that adds task to the
         // database
         IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(taskModel);
+        insertTask.DBInsert(taskModel, idOfColumn);
     }
 
     /**

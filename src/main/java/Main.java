@@ -7,8 +7,6 @@ import java.util.UUID;
 
 public class  Main {
     public static void main(String[] args) {
-        System.out.println(ProjectUUIDArray.convertCsvToArrayList());
-        System.out.println("Main Above");
         Application.launch(ProjectSelectionPresenter.class, args);
     }
 }

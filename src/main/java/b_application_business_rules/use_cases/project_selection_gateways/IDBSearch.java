@@ -7,6 +7,7 @@ import java.util.*;
 public interface IDBSearch {
 
     ArrayList<String> DBColumnSearch(String id);
+    ArrayList<String> DBProjectSearch(String id);
 
     ArrayList<String> DBTaskSearch(String id);
 }

@@ -9,6 +9,8 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -104,6 +106,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	@Override
 	public void openProject(UUID currentProjectID) {
+		IDbIdToModel iDbIdToModel = new DbIDToModel();
 		// TODO: Pass the ProjectModel of the Project with the given UUID to the
 		// presenter.
 		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
@@ -119,8 +122,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
 		 ProjectModel projectModel = new ProjectModel(
 		 "Project P1", UUID.randomUUID(), "", ColumnsList);
-		 setCurrentProject(projectModel);
-		 presenter.displayCurrentProject(projectModel);
+		 ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
+		 setCurrentProject(ProjectFromDB);
+		 presenter.displayCurrentProject(ProjectFromDB);
 	}
 
 	/**

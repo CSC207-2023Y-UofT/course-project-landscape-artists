@@ -62,7 +62,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // initialize use case class
         AddTask useCase = new AddTask(idOfColumn, newTaskModel);
         // call use case class to create a new task and save it to the database
-        useCase.addTask();
+        useCase.addTask(idOfColumn);
         // Initialize TaskViewModel
         TaskViewModel newTask = new TaskViewModel(newTaskModel);
         // calls presenter to display message
@@ -141,10 +141,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      * @param TaskUIid ID of task entity
      */
     @Override
-    public void changeTaskDetails(TaskModel task, UUID TaskUIid) {
+    public void changeTaskDetails(TaskModel task, UUID TaskUIid, UUID ParentColumn) {
         EditTaskDetails useCase = new EditTaskDetails(task, TaskUIid);
         try {
-            useCase.editTask();
+            useCase.editTask(ParentColumn);
             //Call to presenter here was moved to the controller (changeTaskDetails)
         }
         catch(Exception e) {
