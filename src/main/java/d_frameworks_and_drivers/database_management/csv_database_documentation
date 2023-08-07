@@ -1,0 +1,34 @@
+# General
+
+
+
+
+# CSV file formats
+
+Make sure 1st column (i.e. 0th index) of the csv file is the UUID IDs of that file's main objects.
+
+## try-with-resources
+When using try-with-resources e.g.
+    (FileWriter outputfile = new FileWriter("DatabaseFiles/Columns/Columns.csv");
+    CSVPrinter csvPrinter = new CSVPrinter(outputfile, CSVFormat.DEFAULT.withHeader()))
+- make sure objects are AutoCloseable; they will close automatically after try block ends
+
+# org.apache.commons.csv.CSVFormat;
+
+## DEFAULT format:
+        only non-empty rows/records are processed.
+        Windows record/row separator used ("\r\n") -> potential errors in Unix-based systems ?
+        processes duplicate csv headers without errors -> avoid duplicates in headers
+        "" quotes enclose field values (in a single cell)
+        , delimeter separates fields
+
+## withHeader()
+- use only if csv files have first row with headers already
+
+# org.apache.commons.csv.CSVParser;
+
+##
+
+# org.apache.commons.csv.CSVRecord;
+
+##
