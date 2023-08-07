@@ -21,10 +21,11 @@ import java.time.LocalDateTime;
  */
 public class EntityIDstoModelController implements DBAdapterInterface {
     DBManagerSearchController searchController = new DBManagerSearchController();
-
+    IDListsToModelList idListsToModelList = new IDListsToModelList();
     /**
      * Converts all the projects in Projects.csv into ProjectModel instances and returns a
      * list of ProjectModels.
+     *
      * @return A list of ProjectModels
      */
     public List<ProjectModel> IDstoProjectModelList() {
@@ -33,7 +34,7 @@ public class EntityIDstoModelController implements DBAdapterInterface {
 
         // Iterate through the list of project UUIDS to create a list of ProjectModels
         List<ProjectModel> projectModels = new ArrayList<>();
-        for (ArrayList<String> projectList: projectListString) {
+        for (ArrayList<String> projectList : projectListString) {
 
             //Saving the project ID, name and description
             UUID projectID = UUID.fromString(projectList.get(0));
@@ -49,7 +50,7 @@ public class EntityIDstoModelController implements DBAdapterInterface {
 //            System.out.println("TEMP COLUMN TEST");
 //            System.out.println(Arrays.stream(tempColumnID).toList() == null);
 //            System.out.println(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty());
-            if(!(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty())){
+            if (!(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty())) {
                 for (String tempCol : tempColumnID) {
                     //Find the correct column given the string UUID in Column.csv
                     ArrayList<String> columnInfo = searchController.DBColumnSearch(tempCol);
@@ -62,7 +63,7 @@ public class EntityIDstoModelController implements DBAdapterInterface {
                     String[] tempTaskID = projectList.get(3).split(",");
 
                     List<TaskModel> taskModelList = new ArrayList<>();
-                    for (String tempTask: tempTaskID) {
+                    for (String tempTask : tempTaskID) {
                         ArrayList<String> taskInfo = searchController.DBTaskSearch(tempTask);
 
                         UUID taskID = UUID.fromString(taskInfo.get(0));
@@ -93,5 +94,17 @@ public class EntityIDstoModelController implements DBAdapterInterface {
             projectModels.add(newPModel);
         }
         return projectModels;
+    }
+
+    /**
+     * @param projectUUID
+     * @return
+     */
+    public ProjectModel IDsToProjectModel(UUID projectUUID) {
+        ArrayList<String> DbEntry = searchController.DBProjectSearch(projectUUID.toString());
+        String[] columnIDs = DbEntry.get(3).split(",");
+        
+        return new ProjectModel(DbEntry.get(1), projectUUID,  DbEntry.get(2), idListsToModelList.IdToColumnModelList(List.of(columnIDs)));
+
     }
 }

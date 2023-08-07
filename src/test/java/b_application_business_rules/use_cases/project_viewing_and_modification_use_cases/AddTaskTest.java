@@ -37,7 +37,8 @@ public class AddTaskTest {
     public void testAddTask() {
         AddTask addTaskUseCase = new AddTask(c.getID(), t1);
 
-        addTaskUseCase.addTask();
+        UUID idOfColumn = UUID.randomUUID();
+        addTaskUseCase.addTask(idOfColumn);
 
         assertTrue(c.getTasks().get(0).getName().equals("t1"));
     }

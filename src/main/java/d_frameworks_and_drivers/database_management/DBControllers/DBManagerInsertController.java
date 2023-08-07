@@ -5,7 +5,11 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import d_frameworks_and_drivers.database_management.DBAdapters.CSVWriter;
+
+import com.opencsv.CSVReader;
+import com.opencsv.CSVWriter;
+import com.sun.glass.ui.Clipboard;
+
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,12 +26,35 @@ public class DBManagerInsertController implements IDBInsert {
      * @param projectModel
      */
     public void DBInsert(ProjectModel projectModel) {
-        // Try with resources: CSVWriter
-        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Projects/Projects.csv")) {
-            // Converts to string representation and inserts in csv db
-            csvWriter.insert(AdapterConvertEntity.toStringList(projectModel));
+
+        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
+        List<String[]> content = new ArrayList<>();
+
+        // Read the existing content of the CSV file into memory
+        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+            content.addAll(reader.readAll());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (IOException e) {
+
+        StringBuilder columnTaskList = new StringBuilder();
+        //convert taskModel list to list of string
+
+        // Add data to the CSV
+        List<String> data = new ArrayList<>();
+        data.add(projectModel.getID().toString());
+        data.add(projectModel.getName());
+        data.add(projectModel.getDescription());
+        data.add(entityIDsToListController.EntityIDsToList(projectModel));
+
+        content.add(data.toArray(new String[0]));
+
+        // Write the updated content back to the CSV file
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            writer.writeAll(content);
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
@@ -44,7 +71,24 @@ public class DBManagerInsertController implements IDBInsert {
             // Converts to string representation and inserts in csv db
             csvWriter.insert(AdapterConvertEntity.toStringList(columnModel));
         }
-        catch (IOException e) {
+
+
+        StringBuilder columnTaskList = new StringBuilder();
+
+        // Add data to the CSV
+        List<String> data = new ArrayList<>();
+        data.add(columnModel.getID().toString());
+        data.add(columnModel.getName());
+        data.add(entityIDsToListController.EntityIDsToList(columnModel));
+        data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
+
+        content.add(data.toArray(new String[0]));
+
+        // Write the updated content back to the CSV file
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            writer.writeAll(content);
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }
@@ -55,13 +99,34 @@ public class DBManagerInsertController implements IDBInsert {
      *
      * @param taskModel Task model to be inserted in the database.
      */
-    public void DBInsert(TaskModel taskModel) {
-        // Try with resources: CSVWriter
-        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Tasks/Tasks.csv")) {
-            // Converts to string representation and inserts in csv db
-            csvWriter.insert(AdapterConvertEntity.toStringList(taskModel));
+
+    public void DBInsert(TaskModel taskModel, UUID parentColumn) {
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
+        List<String[]> content = new ArrayList<>();
+
+        // Read the existing content of the CSV file into memory
+        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+            content.addAll(reader.readAll());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (IOException e) {
+
+        // Add data to the CSV
+        List<String> data = new ArrayList<>();
+        data.add(taskModel.getID().toString());
+        data.add(taskModel.getName());
+        data.add(taskModel.getDescription());
+        data.add(String.valueOf(taskModel.getCompletionStatus()));
+        data.add(taskModel.getDueDateTime().toString());
+        data.add(parentColumn.toString());
+
+        content.add(data.toArray(new String[0]));
+
+        // Write the updated content back to the CSV file
+        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            writer.writeAll(content);
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
     }

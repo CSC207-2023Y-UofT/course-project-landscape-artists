@@ -23,7 +23,9 @@ public class EntityIDsToListController implements IEntityIDsToList {
 
         List<String> ids = new ArrayList<>();
         for ( ColumnModel col: columnModelList ) {
+
             ids.add(col.getID().toString());
+
 
         }
         columnModelListString = String.join(", ", ids);
@@ -43,10 +45,12 @@ public class EntityIDsToListController implements IEntityIDsToList {
         String taskModelListString = "";
         if (taskModelList == null) {
             return null;
+
         } else {
             List<String> ids = new ArrayList<>();
             for (TaskModel task : taskModelList) {
                 ids.add(task.getID().toString());
+
             }
             taskModelListString = String.join(", ", ids);
 

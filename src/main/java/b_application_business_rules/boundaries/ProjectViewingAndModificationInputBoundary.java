@@ -24,7 +24,7 @@ public interface ProjectViewingAndModificationInputBoundary {
 
     void deleteTask(TaskModel task, UUID TaskUIid, UUID ColumnID);
 
-    void changeTaskDetails(TaskModel task, UUID TaskUIid);
+    void changeTaskDetails(TaskModel task, UUID TaskUIid, UUID ParentColumn);
 
     void renameTask(TaskModel task, UUID TaskUIid);
 

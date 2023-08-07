@@ -8,9 +8,9 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -115,21 +115,23 @@ public class ProjectViewingAndModificationController {
      * Receives the user input from the presenter and calls the interactor to make the changes
      * to the database. If the action is successful, calls the presenter to display the final
      * changes
+     *
      * @param task
      * @param hbox
      * @param newTaskName
      * @param newTaskDescription
      * @param newDueDate
+     * @param uuid
      */
     void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
-                           String newTaskDescription, LocalDateTime newDueDate) {
+                           String newTaskDescription, LocalDateTime newDueDate, UUID uuid) {
         UUID taskID = task.getID();
         boolean taskStatus = task.getCompletionStatus();
 
         //Creating a new TaskModel based on the user input
         TaskModel changedTask = TaskModelFactory.create(newTaskName, taskID, newTaskDescription, taskStatus,
                 newDueDate);
-        interactor.changeTaskDetails(changedTask, taskID);
+        interactor.changeTaskDetails(changedTask, taskID, uuid);
 
         //Creating a TaskViewModel for display purposes
         TaskViewModel newTask = new TaskViewModel(newTaskName, taskID, newTaskName,
