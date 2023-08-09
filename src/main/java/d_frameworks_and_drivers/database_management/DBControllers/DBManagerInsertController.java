@@ -4,6 +4,7 @@ import b_application_business_rules.AdapterConvertEntity;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 
 import com.opencsv.CSVReader;
@@ -11,8 +12,9 @@ import com.opencsv.CSVWriter;
 import com.sun.glass.ui.Clipboard;
 
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -67,13 +69,19 @@ public class DBManagerInsertController implements IDBInsert {
      */
     public void DBInsert(ColumnModel columnModel) {
         // Try with resources: CSVWriter
-        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/Columns/Columns.csv")) {
-            // Converts to string representation and inserts in csv db
-            csvWriter.insert(AdapterConvertEntity.toStringList(columnModel));
+        EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
+        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
+        List<String[]> content = new ArrayList<>();
+
+        // Read the existing content of the CSV file into memory
+        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+            content.addAll(reader.readAll());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-
         StringBuilder columnTaskList = new StringBuilder();
+        //convert taskModel list to list of string
 
         // Add data to the CSV
         List<String> data = new ArrayList<>();
@@ -137,9 +145,9 @@ public class DBManagerInsertController implements IDBInsert {
      */
     public void DBInsert(UUID uuid) {
         // Try with resources: CSVWriter
-        try (CSVWriter csvWriter = new CSVWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv")) {
+        try (CSVWriter csvWriter = new CSVWriter(new FileWriter("DatabaseFiles/UniqueIDs/UniqueIDs.csv"))) {
             // Converts to string representation and inserts in csv db
-            csvWriter.insert(uuid.toString(), "true");
+            csvWriter.writeNext(new String[]{uuid.toString(),"true"});
         }
         catch (IOException e) {
             e.printStackTrace();

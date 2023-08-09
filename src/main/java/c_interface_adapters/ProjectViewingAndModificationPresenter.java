@@ -427,7 +427,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
             //Event handler for the changing task details. Calls another method on this presenter
             changeTaskDetailsButton.setOnAction(event -> {
 
-                this.handleChangeTaskPopup(task, hbox, controller, UUID.fromString(columnBox.getId()));
+                this.handleChangeTaskPopup(task, hbox, UUID.fromString(columnBox.getId()));
 
                 //projectViewingAndModificationController.changeTaskDetails(
                     //task, hbox);
@@ -441,7 +441,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             // Add to MenuButton
 
-            taskOptionsButton.getItems().addAll(renameTaskButton,
+            taskOptionsButton.getItems().addAll(
                     changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
 
             taskOptionsButton.getStyleClass().add("menu-button-custom");
