@@ -25,9 +25,12 @@ public class UIComponentLocator {
                 HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
 
                 for (Node containerChild : columnsContainer.getChildren()) {
-                    if (containerChild.getId().equals(columnUUID)) {
-                        columnUI = (VBox) ((ScrollPane) containerChild).getContent();
-                        break;
+                    System.out.println(containerChild);
+                    if (containerChild.getId() != null ){
+                        if (containerChild.getId().equals(columnUUID)) {
+                            columnUI = (VBox) ((ScrollPane) containerChild).getContent();
+                            break;
+                        }
                     }
                 }
             }

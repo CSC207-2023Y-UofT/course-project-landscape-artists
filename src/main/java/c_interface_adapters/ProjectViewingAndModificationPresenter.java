@@ -209,6 +209,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         String columnName = column.getName();
 
         VBox columnUI = uiComponentLocator.getColumnUI(columnUUID);
+        System.out.println("Column UI" + columnUI);
         if (columnUI != null) {
             Label columnNameUI = uiComponentLocator.getColumnNameUI(columnUI);
             if (columnNameUI != null) {
@@ -402,6 +403,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox));
         HBox TaskBtnVBox = new HBox(addTaskButton);
 
+        scrollPane.setId(column.getID().toString());
+
         configureSizeConstraints(columnNameAndOptions, columnOptions, TaskBtnVBox);
         configureStyling(columnOptions);
 
@@ -510,7 +513,138 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         controller.columnsContainer.getChildren().add(scrollPane);
     }
 
-
+    // TODO: THIS WAS THE INITIAL. MAYBE USE THIS INSTEAD BUT FIX IT UP.
+//    /**
+//     * Displays a new column UI element.
+//     *
+//     * @param column The ColumnModel representing the new column.
+//     */
+//    public void displayNewColumn(ColumnModel column) {
+//        ScrollPane scrollPane = createScrollPane();
+//        scrollPane.setId(column.getID().toString());
+//
+//        VBox columnBox = createColumnBox();
+//        columnBox.setId(column.getID().toString());
+//
+//        HBox columnNameAndOptions = createColumnNameAndOptions(column, columnBox);
+//        VBox.setMargin(columnNameAndOptions, new Insets(10));
+//
+//        columnBox.getChildren().add(columnNameAndOptions);
+//        populateTasksForEachColumn(columnBox, column.getTaskModels(), controller);
+//
+//        columnBox.setSpacing(10);
+//        scrollPane.setContent(columnBox);
+//
+//        HBox columnsContainer = uiComponentLocator.findColumnsContainer();
+//        columnsContainer.getChildren().add(scrollPane);
+//        this.VBoxContainer.add(columnBox);
+//
+//        columnBox.setOnDragOver(event -> {
+//            this.dragDestination = columnBox;
+//            event.consume();
+//        });
+//    }
+//
+//    /**
+//     * Creates a new ScrollPane with predefined dimensions.
+//     *
+//     * @return The created ScrollPane.
+//     */
+//    private ScrollPane createScrollPane() {
+//        ScrollPane scrollPane = new ScrollPane();
+//        scrollPane.setPrefSize(200, 400);
+//        return scrollPane;
+//    }
+//
+//
+//    /**
+//     * Creates a new VBox for the column with predefined dimensions and background color.
+//     *
+//     * @return The created VBox.
+//     */
+//    private VBox createColumnBox() {
+//        VBox columnBox = new VBox();
+//        columnBox.setPrefSize(180, 380);
+//        columnBox.setStyle("-fx-background-color: #F6F8FA");
+//        return columnBox;
+//    }
+//
+//    /**
+//     * Creates a new HBox for the column name and options.
+//     *
+//     * @param column The ColumnModel associated with the column.
+//     * @param columnBox The VBox representing the column.
+//     * @return The created HBox.
+//     */
+//    private HBox createColumnNameAndOptions(ColumnModel column, VBox columnBox) {
+//        HBox columnNameAndOptions = new HBox();
+//        HBox.setHgrow(columnNameAndOptions, Priority.ALWAYS);
+//        columnNameAndOptions.setAlignment(Pos.BASELINE_RIGHT);
+//        columnNameAndOptions.setSpacing(5);
+//
+//        Label columnLabel = createColumnLabel(column);
+//        MenuButton columnOptions = createColumnOptions(column);
+//        Button addTaskButton = createAddTaskButton(columnBox, column);
+//
+//        columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions, addTaskButton);
+//        return columnNameAndOptions;
+//    }
+//
+//    /**
+//     * Creates a label for the column name with specific styling.
+//     *
+//     * @param column The ColumnModel associated with the column.
+//     * @return The created label.
+//     */
+//    private Label createColumnLabel(ColumnModel column) {
+//        Label columnLabel = new Label(column.getName());
+//        columnLabel.setId("columnTitle");
+//        columnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+//        HBox.setHgrow(columnLabel, Priority.ALWAYS);
+//        return columnLabel;
+//    }
+//
+//    /**
+//     * Creates a MenuButton for column options with associated actions and styling.
+//     *
+//     * @param column The ColumnModel associated with the column.
+//     * @return The created MenuButton.
+//     */
+//    private MenuButton createColumnOptions(ColumnModel column) {
+//        MenuButton columnOptions = new MenuButton("");
+//        MenuItem renameColumnButton = new MenuItem("Rename Column");
+//        MenuItem deleteColumnButton = new MenuItem("Delete Column");
+//
+//        renameColumnButton.setOnAction(event -> {
+//            controller.handleEditColumnDetails(column.getID());
+//        });
+//
+//        deleteColumnButton.setOnAction(event -> {
+//            controller.deleteColumn(column.getID());
+//        });
+//
+//        columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
+//        columnOptions.getStyleClass().add("menu-button-custom");
+//        HBox.setHgrow(columnOptions, Priority.NEVER);
+//        return columnOptions;
+//    }
+//
+//    /**
+//     * Creates a Button for adding a task with associated actions.
+//     *
+//     * @param columnBox The VBox representing the column.
+//     * @param column The ColumnModel associated with the column.
+//     * @return The created Button.
+//     */
+//    private Button createAddTaskButton(VBox columnBox, ColumnModel column) {
+//        Button addTaskButton = new Button("Add Task");
+//        addTaskButton.setOnAction(event -> {
+//            controller.presenter.handleAddTaskPopup(columnBox);
+//        });
+//        HBox.setHgrow(addTaskButton, Priority.NEVER);
+//        return addTaskButton;
+//    }
+    // TODO: END
 
 
     /**
