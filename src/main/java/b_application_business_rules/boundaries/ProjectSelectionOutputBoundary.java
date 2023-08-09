@@ -3,6 +3,8 @@ import b_application_business_rules.entity_models.ProjectModel;
 
 import b_application_business_rules.entity_models.ProjectModel;
 
+import java.io.IOException;
+
 public interface ProjectSelectionOutputBoundary {
 
     void displayCurrentProject();

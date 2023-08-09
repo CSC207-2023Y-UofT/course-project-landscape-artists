@@ -490,23 +490,15 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * @param projectModel The ProjectModel containing the project details to be displayed.
      */
     public void displayCurrentProject(ProjectModel projectModel) {
-        try {
-//            System.out.println("displayCurrentProject method is called.");
-//            FXMLLoader fxmlLoader = loadFXML("ProjectViewingAndModification.fxml");
-//            Parent root = fxmlLoader.load();
-//            ProjectViewingAndModificationController openedProjectController = getController(fxmlLoader);
-//            openedProjectController.setup(projectModel);
-            // MAKE THIS GO TO PRESENTER START
+
 
             ProjectViewingAndModificationPresenter nextPresenter = new ProjectViewingAndModificationPresenter();
-            nextPresenter.start(stage, projectModel);
+            nextPresenter.setUpProjectViewingAndModificationScene(stage, projectModel);
 
 
 
-//            setUpScene(root, "scene 2", "ProjectViewingAndModificationStyle.css");
-        } catch (IOException e) {
-            throw new RuntimeException("Error while displaying current project.", e);
-        }
+
+
     }
 
 

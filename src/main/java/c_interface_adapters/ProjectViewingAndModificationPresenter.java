@@ -54,30 +54,33 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private VBox dragDestination;
 
     /**
-     * Initializes the second scene and sets it up to display the current
-     * project to the UI passed as projectModel.
+     * Sets up the next scene for displaying the details of a selected project.
+     * This method initializes the second scene and prepares it to display the details
+     * of the selected project to the UI. It is typically invoked by the
+     * ProjectSelectionPresenter's `displayCurrentProject` method, passing the
+     * corresponding `ProjectModel`.
      *
-     * @param stage The main stage of the JavaFX application.
+     * @param stage The main stage of the JavaFX application. This is the same stage
+     *              currently being used by
      * @param projectModel The ProjectModel of the project selected by the user.
      * @throws IOException If an I/O error occurs during loading of the FXML file.
      */
-    public void start(Stage stage, ProjectModel projectModel) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(ProjectViewingAndModificationPresenter.class.getResource("ProjectViewingAndModification.fxml"));
-//        Scene scene = new Scene(fxmlLoader.load());
-        Parent root = fxmlLoader.load();
+    public void setUpProjectViewingAndModificationScene(Stage stage, ProjectModel projectModel) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ProjectViewingAndModificationPresenter.class.getResource("ProjectViewingAndModification.fxml"));
+            Parent root = fxmlLoader.load();
 
-        controller = fxmlLoader.getController();
+            controller = fxmlLoader.getController();
 
-        controller.setup(projectModel);
-        this.stage = stage;
+            controller.setup(projectModel);
+            this.stage = stage;
 
-
-//        stage.setTitle("Current project");
-//        stage.setScene(scene);
-//        stage.show();
-
-        setUpScene(root, "Current project", "ProjectViewingAndModificationStyle.css");
+            setUpScene(root, "Current project", "ProjectViewingAndModificationStyle.css");
+        } catch (IOException e) {
+            throw new RuntimeException("Error while starting the project view.", e);
+        }
     }
+
 
     private void setUpScene(Parent root, String title, String stylesheetPath) {
         Scene scene = new Scene(root);
