@@ -44,16 +44,16 @@ public class ProjectViewingAndModificationController {
     ProjectViewingAndModificationInputBoundary interactor;
     ProjectViewingAndModificationPresenter presenter;
 
-    /**
-     * Constructor for the ProjectViewingAndModificationController class. Initializes the
-     * interactor with a presenter and sets it as the interactor for the controller.
-     */
-    public ProjectViewingAndModificationController() {
-        ProjectViewingAndModificationOutputBoundary presenter =
-                new ProjectViewingAndModificationPresenter(this);
-        this.presenter = (ProjectViewingAndModificationPresenter) presenter;
-        interactor = new ProjectViewingAndModificationInteractor(presenter);
-    }
+//    /**
+//     * Constructor for the ProjectViewingAndModificationController class. Initializes the
+//     * interactor with a presenter and sets it as the interactor for the controller.
+//     */
+//    public ProjectViewingAndModificationController() {
+//        presenter =
+//                new ProjectViewingAndModificationPresenter(this);
+//        interactor =
+//                new ProjectViewingAndModificationInteractor(presenter);
+//    }
 
     /**
      * Sets up the project details view with the provided ProjectModel.
@@ -64,6 +64,11 @@ public class ProjectViewingAndModificationController {
      *                     It should include the project's name, description, ID, and a list of ColumnModels.
      */
     public void setup(ProjectModel projectModel) {
+        presenter =
+                new ProjectViewingAndModificationPresenter(this);
+        interactor =
+                new ProjectViewingAndModificationInteractor(presenter);
+
         setButtonStyles();
 
         populateProjectDetails(projectModel);
