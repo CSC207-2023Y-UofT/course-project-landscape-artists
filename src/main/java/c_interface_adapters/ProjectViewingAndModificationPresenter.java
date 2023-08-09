@@ -78,6 +78,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
             System.out.println("LABEL PROJECT NAME " + findProjectNameUI());
             populateProjectDetails(projectModel);
+            List<ColumnModel> columnsInProject = projectModel.getColumnModels();
+            populateColumns(columnsInProject);
         } catch (IOException e) {
             throw new RuntimeException("Error while starting the project view.", e);
         }

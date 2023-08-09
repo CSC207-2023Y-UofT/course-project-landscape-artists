@@ -64,8 +64,8 @@ public class ProjectViewingAndModificationController {
         setButtonStyles();
 
 //        populateProjectDetails(projectModel);
-        List<ColumnModel> columnsInProject = projectModel.getColumnModels();
-        presenter.populateColumns(columnsInProject);
+//        List<ColumnModel> columnsInProject = projectModel.getColumnModels();
+//        presenter.populateColumns(columnsInProject);
     }
 
 //    /**
