@@ -41,19 +41,10 @@ public class ProjectViewingAndModificationController {
     Button backButton;
     @FXML
     Button addColumnButton;
-    ProjectViewingAndModificationInputBoundary interactor;
-    ProjectViewingAndModificationPresenter presenter;
+    static ProjectViewingAndModificationInputBoundary interactor;
+    static ProjectViewingAndModificationPresenter presenter;
 
-//    /**
-//     * Constructor for the ProjectViewingAndModificationController class. Initializes the
-//     * interactor with a presenter and sets it as the interactor for the controller.
-//     */
-//    public ProjectViewingAndModificationController() {
-//        presenter =
-//                new ProjectViewingAndModificationPresenter(this);
-//        interactor =
-//                new ProjectViewingAndModificationInteractor(presenter);
-//    }
+
 
     /**
      * Sets up the project details view with the provided ProjectModel.
@@ -72,21 +63,21 @@ public class ProjectViewingAndModificationController {
 
         setButtonStyles();
 
-        populateProjectDetails(projectModel);
+//        populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
         presenter.populateColumns(columnsInProject);
     }
 
-    /**
-     * Populates the project details on the UI, including the project name and description.
-     *
-     * @param project The Project instance representing the current project.
-     */
-    private void populateProjectDetails(ProjectModel project) {
-
-        projectName.setText(project.getName());
-        projectDescription.setText(project.getDescription());
-    }
+//    /**
+//     * Populates the project details on the UI, including the project name and description.
+//     *
+//     * @param project The Project instance representing the current project.
+//     */
+//    private void populateProjectDetails(ProjectModel project) {
+//
+//        projectName.setText(project.getName());
+//        projectDescription.setText(project.getDescription());
+//    }
 
     /**
      * Sets the styles for the buttons in the view.
@@ -179,8 +170,6 @@ public class ProjectViewingAndModificationController {
     @FXML
     private void clickBackButton() {
         interactor.removeCurrentProject();
-        Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        presenter.setStage(stage);
         presenter.displayAllProjects();
     }
 

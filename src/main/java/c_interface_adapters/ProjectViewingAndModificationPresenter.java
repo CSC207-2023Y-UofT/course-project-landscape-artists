@@ -9,7 +9,6 @@ import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
 import javafx.animation.TranslateTransition;
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -46,8 +45,8 @@ import java.util.*;
  * interface to handle interactions with the project viewing and modification scene.
  */
 public class ProjectViewingAndModificationPresenter implements ProjectViewingAndModificationOutputBoundary {
-    private Stage stage;
-    private ProjectViewingAndModificationController controller;
+    private static Stage stage;
+    private static ProjectViewingAndModificationController controller;
 
     private final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
@@ -76,9 +75,20 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
             this.stage = stage;
 
             setUpScene(root, "Current project", "ProjectViewingAndModificationStyle.css");
+
+            System.out.println("LABEL PROJECT NAME " + findProjectNameUI());
+            populateProjectDetails(projectModel);
         } catch (IOException e) {
             throw new RuntimeException("Error while starting the project view.", e);
         }
+    }
+
+    public void populateProjectDetails(ProjectModel projectModel) {
+        Label projectNameLabel = findProjectNameUI();
+        Label projectDescriptionLabel = findProjectDescriptionUI();
+
+        projectNameLabel.setText(projectModel.getName());
+        projectDescriptionLabel.setText(projectModel.getDescription());
     }
 
 
@@ -89,6 +99,35 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         stage.setTitle(title);
     }
 
+    public Label findProjectNameUI() {
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            System.out.println("findProjectNameUI is run");
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                System.out.println(node);
+                if (node.getId().equals("projectName")) {
+                    return (Label) node;
+                }
+            }
+        }
+        return null;
+    }
+
+    public Label findProjectDescriptionUI() {
+        Scene scene = stage.getScene();
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            System.out.println("findProjectNameUI is run");
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                System.out.println(node);
+                if (node.getId().equals("projectDescription")) {
+                    return (Label) node;
+                }
+            }
+        }
+        return null;
+    }
     public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
         this.controller = controller;
     }
@@ -919,4 +958,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         // Show the pop-up window and wait for it to be closed before returning
         popupStage.showAndWait();
     }
+
+
 }
