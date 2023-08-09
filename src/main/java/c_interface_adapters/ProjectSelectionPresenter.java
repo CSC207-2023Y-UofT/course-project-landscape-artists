@@ -170,10 +170,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
     }
 
-    /**
-     * This populates the projectsGrid GridPane with Project UIs. The Projects are held in projectSelectionViewModel.
-     *
-     */
+
 //    private void populateProjectSelectionUI() {
 //        GridPane projectsGrid = findGridPane();
 //
@@ -266,12 +263,19 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 //        addCreateProjectButton(col, row);
 //    }
 
+    /**
+     * This populates the projectsGrid GridPane with Project UIs. The Projects are held in projectSelectionViewModel.
+
+     */
     private void populateProjectSelectionUI() {
         configureProjectsGrid();
         populateProjectButtons();
         addCreateProjectButton();
     }
 
+    /**
+     * Configures the projects grid by setting horizontal and vertical gaps and applying column and row constraints.
+     */
     private void configureProjectsGrid() {
         GridPane projectsGrid = findGridPane();
         projectsGrid.setHgap(20);
@@ -279,6 +283,11 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         setColumnAndRowConstraints(projectsGrid);
     }
 
+    /**
+     * Sets column and row constraints for the provided GridPane.
+     *
+     * @param projectsGrid The GridPane to set constraints for.
+     */
     private void setColumnAndRowConstraints(GridPane projectsGrid) {
         for (int col = 0; col < 2; col++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
@@ -292,6 +301,9 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         projectsGrid.getRowConstraints().add(rowConstraints);
     }
 
+    /**
+     * Populates the projects grid with project buttons and their respective menu buttons.
+     */
     private void populateProjectButtons() {
         GridPane projectsGrid = findGridPane();
 
@@ -310,6 +322,12 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         }
     }
 
+    /**
+     * Creates a button for the given project.
+     *
+     * @param project The project for which to create the button.
+     * @return The created button.
+     */
     private Button createCurrentProjectButton(ProjectViewModel project) {
         Button currentProjectButton = new Button();
         VBox nameAndDescriptionContainer = createNameAndDescriptionContainer(project);
@@ -319,6 +337,12 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return currentProjectButton;
     }
 
+    /**
+     * Creates a VBox container for the project's name and description labels.
+     *
+     * @param project The project for which to create the container.
+     * @return The created VBox container.
+     */
     private VBox createNameAndDescriptionContainer(ProjectViewModel project) {
         Label projectName = new Label(project.getName());
         Label projectDescription = new Label(project.getDescription());
@@ -334,6 +358,13 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return new VBox(projectName, projectDescription);
     }
 
+    /**
+     * Configures the appearance of the current project button.
+     *
+     * @param currentProjectButton    The current project button to configure.
+     * @param nameAndDescriptionContainer The VBox container with project name and description labels.
+     * @param project                 The project associated with the button.
+     */
     private void configureCurrentProjectButton(Button currentProjectButton, VBox nameAndDescriptionContainer, ProjectViewModel project) {
         currentProjectButton.setGraphic(nameAndDescriptionContainer);
         currentProjectButton.getStyleClass().add("current-project-button");
@@ -342,6 +373,12 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         currentProjectButton.setMaxWidth(Double.MAX_VALUE);
     }
 
+    /**
+     * Creates a menu button for the given project with rename and delete options.
+     *
+     * @param project The project for which to create the menu button.
+     * @return The created menu button.
+     */
     private MenuButton createMenuButton(ProjectViewModel project) {
         MenuButton menuButton = new MenuButton();
         MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
@@ -353,18 +390,35 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return menuButton;
     }
 
+    /**
+     * Creates a container for the current project button and menu button.
+     *
+     * @param currentProjectButton The current project button.
+     * @param menuButton           The menu button.
+     * @param project              The project associated with the buttons.
+     * @return The created HBox container.
+     */
     private HBox createButtonContainer(Button currentProjectButton, MenuButton menuButton, ProjectViewModel project) {
         HBox buttonContainer = new HBox(currentProjectButton, menuButton);
         buttonContainer.setId(project.getID().toString());
         return buttonContainer;
     }
 
+    /**
+     * Adds a "Create Project" button to the projects grid.
+     */
     private void addCreateProjectButton() {
         GridPane projectsGrid = findGridPane();
         Button createProjectButton = createCreateProjectButton();
         projectsGrid.add(createProjectButton, getCurrentColumn(), getCurrentRow());
     }
 
+
+    /**
+     * Creates a "Create Project" button with appropriate styling and action handling.
+     *
+     * @return The created "Create Project" button.
+     */
     private Button createCreateProjectButton() {
         Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(this::handleCreateProjectPopup);
@@ -372,10 +426,20 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return createProjectButton;
     }
 
+    /**
+     * Retrieves the current column index for positioning elements in the grid.
+     *
+     * @return The current column index.
+     */
     private int getCurrentColumn() {
         return currentColumn;
     }
 
+    /**
+     * Retrieves the current row index for positioning elements in the grid.
+     *
+     * @return The current row index.
+     */
     private int getCurrentRow() {
         return currentRow;
     }
@@ -397,29 +461,74 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
 
+//    /**
+//     * Displays the current project by loading and setting the scene with the appropriate FXML file.
+//     * The FXML file contains the layout and UI elements for viewing and modifying the project details.
+//     * This switches from the ProjectSelection UI to ProjectViewingAndModification UI.
+//     */
+//    @Override
+//    public void displayCurrentProject(ProjectModel projectModel) {
+//        try {
+//            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ProjectViewingAndModification.fxml"));
+//            Parent root = fxmlLoader.load();
+//            ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
+//            openedProjectController.setup(projectModel);
+//
+//            stage.setTitle("scene 2");
+//            Scene scene = new Scene(root);
+//
+//            scene.getStylesheets().add(getClass().getResource("ProjectViewingAndModificationStyle.css").toExternalForm());
+//            stage.setScene(scene);
+//            stage.setScene(scene);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
     /**
-     * Displays the current project by loading and setting the scene with the appropriate FXML file.
-     * The FXML file contains the layout and UI elements for viewing and modifying the project details.
-     * This switches from the ProjectSelection UI to ProjectViewingAndModification UI.
+     * Displays the provided projectModel to the UI.
+     *
+     * @param projectModel The ProjectModel containing the project details to be displayed.
      */
-    @Override
     public void displayCurrentProject(ProjectModel projectModel) {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ProjectViewingAndModification.fxml"));
+            FXMLLoader fxmlLoader = loadFXML("ProjectViewingAndModification.fxml");
             Parent root = fxmlLoader.load();
-            ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
+            ProjectViewingAndModificationController openedProjectController = getController(fxmlLoader);
             openedProjectController.setup(projectModel);
-            System.out.println("THIS IS STAGE AT displayCurrentProject: " + stage);
-            System.out.println("CLASS INSTANCE AT displayCurrentProject " + this);
-            stage.setTitle("scene 2");
-            Scene scene = new Scene(root);
 
-            scene.getStylesheets().add(getClass().getResource("ProjectViewingAndModificationStyle.css").toExternalForm());
-            stage.setScene(scene);
-            stage.setScene(scene);
+            setUpScene(root, "scene 2", "ProjectViewingAndModificationStyle.css");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error while displaying current project.", e);
         }
+    }
+
+    /**
+     * Loads an FXML layout from the specified resource path.
+     *
+     * @param resourcePath The path to the FXML resource.
+     * @return The FXMLLoader instance for the loaded FXML layout.
+     * @throws IOException If an I/O error occurs during resource loading.
+     */
+    private FXMLLoader loadFXML(String resourcePath) throws IOException {
+        return new FXMLLoader(getClass().getResource(resourcePath));
+    }
+
+    private <T> T getController(FXMLLoader fxmlLoader) {
+        return fxmlLoader.getController();
+    }
+
+    /**
+     * Sets up the scene for displaying the UI to the stage.
+     *
+     * @param root The root node of the UI scene.
+     * @param title The title of the stage.
+     * @param stylesheetPath The path to the CSS stylesheet for styling the UI.
+     */
+    private void setUpScene(Parent root, String title, String stylesheetPath) {
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource(stylesheetPath).toExternalForm());
+        stage.setScene(scene);
+        stage.setTitle(title);
     }
 
     /**
