@@ -224,32 +224,34 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
     @Override
     public void displayDeletedColumn(ColumnModel columnModel) {
+//        String columnUUID = columnModel.getID().toString();
+//
+//        Scene scene = stage.getScene();
+//        System.out.println("SCENE "+scene);
+//        if (scene != null) {
+//            // Find the HBox that corresponds to the provided projectUUID
+//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+//                if (node.getId().equals("scrollPaneContainer")) {
+//
+//                    if (node instanceof ScrollPane scrollPane){
+//                        HBox columnsContainer = (HBox) scrollPane.getContent();
+//
+//                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+//                        while (iterator.hasNext()) {
+//                            Node containerChild = iterator.next();
+//                            if (containerChild.getId().equals(columnUUID)) {
+//                                columnsContainer.getChildren().remove(containerChild);
+//                                break;
+//                            }
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         String columnUUID = columnModel.getID().toString();
 
-        Scene scene = stage.getScene();
-        System.out.println("SCENE "+scene);
-        if (scene != null) {
-            // Find the HBox that corresponds to the provided projectUUID
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node.getId().equals("scrollPaneContainer")) {
-
-                    if (node instanceof ScrollPane scrollPane){
-                        HBox columnsContainer = (HBox) scrollPane.getContent();
-
-                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
-                        while (iterator.hasNext()) {
-                            Node containerChild = iterator.next();
-                            if (containerChild.getId().equals(columnUUID)) {
-                                columnsContainer.getChildren().remove(containerChild);
-                                break;
-                            }
-                        }
-                        break;
-                    }
-                }
-            }
-        }
-
+        uiComponentLocator.removeColumnUI(columnUUID);
     }
 
 
