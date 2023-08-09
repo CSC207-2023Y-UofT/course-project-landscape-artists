@@ -40,6 +40,7 @@ public class UIComponentLocator {
         Label columnNameUI = null;
 
         for (Node item : columnUI.getChildren()) {
+            System.out.println("IN getColumnNameUI" + item);
             if (item.getId().equals("columnHeader")) {
                 columnNameUI = (Label) ((HBox) item).getChildren().get(0);
                 break;
