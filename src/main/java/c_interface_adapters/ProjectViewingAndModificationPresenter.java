@@ -52,6 +52,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
     private VBox dragDestination;
 
+    private static UIComponentLocator uiComponentLocator;
+
     /**
      * Sets up the next scene for displaying the details of a selected project.
      * This method initializes the second scene and prepares it to display the details
@@ -76,7 +78,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
             setUpScene(root, "Current project", "ProjectViewingAndModificationStyle.css");
 
-            System.out.println("LABEL PROJECT NAME " + findProjectNameUI());
             populateProjectDetails(projectModel);
             List<ColumnModel> columnsInProject = projectModel.getColumnModels();
             populateColumns(columnsInProject);
@@ -99,6 +100,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         scene.getStylesheets().add(getClass().getResource(stylesheetPath).toExternalForm());
         stage.setScene(scene);
         stage.setTitle(title);
+
+        uiComponentLocator = new UIComponentLocator(scene);
     }
 
     public Label findProjectNameUI() {
@@ -138,20 +141,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         this.controller = new ProjectViewingAndModificationController();
     }
 
-    /**
-     * Sets the main stage for the presenter.
-     *
-     * @param stage The main stage of the JavaFX application.
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
 
-    /**
-     * Retrieves the current project from the CurrentProjectRepository.
-     *
-     * @return The current Project instance.
-     */
 
     /**
      * Displays the scene with all projects when the "Back" button is clicked.
@@ -161,11 +151,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         try {
             ProjectSelectionPresenter projectSelectionPresenter = new ProjectSelectionPresenter();
             projectSelectionPresenter.start(stage);
-//            Parent root = FXMLLoader.load(getClass().getResource("ProjectSelection.fxml"));
-//            stage.setTitle("scene 1");
-//            Scene scene = new Scene(root);
-//            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
-//            stage.setScene(scene);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -176,26 +162,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         System.out.println("hi");
     }
 
-//    public void dispayProjectDescription(ProjectModel project) {
-//        Stage popupStage = new Stage();
-//        String projectDescription = project.getDescription(); // Provide the project's description here
-//        // Create the label to display the project description
-//        Label descriptionLabel = new Label(projectDescription);
-//        descriptionLabel.setWrapText(true); // Enable text wrapping for long descriptions
-//
-//        // Create a StackPane to hold the label
-//        StackPane root = new StackPane(descriptionLabel);
-//
-//        // Set the size for the new window
-//        Scene scene = new Scene(root, 400, 300);
-//
-//        // Set the stage properties
-//        popupStage.setTitle("Project Description");
-//        popupStage.setScene(scene);
-//
-//        // Show the new window
-//        popupStage.show();
-//    }
 
     @Override
     public void displayRenamedTask(UUID taskID, TaskViewModel task) {
@@ -209,39 +175,50 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
     @Override
     public void displayRenamedColumn(ColumnModel column) {
+//        String columnUUID = column.getID().toString();
+//        String columnName = column.getName();
+//
+//        Scene scene = stage.getScene();
+//        if (scene != null) {
+//            // Find the HBox that corresponds to the provided projectUUID
+//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+//                if (node.getId().equals("scrollPaneContainer")) {
+//
+//                    if (node instanceof ScrollPane scrollPane){
+//                        HBox columnsContainer = (HBox) scrollPane.getContent();
+//
+//                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
+//                        while (iterator.hasNext()) {
+//                            Node containerChild = iterator.next();
+//                            if (containerChild.getId().equals(columnUUID)) {
+//                                VBox columnUI = (VBox) (((ScrollPane) containerChild).getContent());
+//                                for (Node item: columnUI.getChildren()) {
+//
+//                                    if (item.getId().equals("columnHeader")) {
+//                                        Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
+//                                        columnNameUI.setText(columnName);
+//                                    }
+//                                    break;
+//
+//                                }
+//                            }
+//                        }
+//                        break;
+//                    }
+//                }
+//            }
+//        }
         String columnUUID = column.getID().toString();
         String columnName = column.getName();
 
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            // Find the HBox that corresponds to the provided projectUUID
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node.getId().equals("scrollPaneContainer")) {
-
-                    if (node instanceof ScrollPane scrollPane){
-                        HBox columnsContainer = (HBox) scrollPane.getContent();
-
-                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
-                        while (iterator.hasNext()) {
-                            Node containerChild = iterator.next();
-                            if (containerChild.getId().equals(columnUUID)) {
-                                VBox columnUI = (VBox) (((ScrollPane) containerChild).getContent());
-                                for (Node item: columnUI.getChildren()) {
-
-                                    if (item.getId().equals("columnHeader")) {
-                                        Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
-                                        columnNameUI.setText(columnName);
-                                    }
-                                    break;
-
-                                }
-                            }
-                        }
-                        break;
-                    }
-                }
+        VBox columnUI = uiComponentLocator.getColumnUI(columnUUID);
+        if (columnUI != null) {
+            Label columnNameUI = uiComponentLocator.getColumnNameUI(columnUI);
+            if (columnNameUI != null) {
+                columnNameUI.setText(columnName);
             }
         }
+
 
     }
 
