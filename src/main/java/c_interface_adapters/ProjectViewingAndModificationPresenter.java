@@ -2,6 +2,7 @@ package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -13,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -43,7 +45,7 @@ import java.util.*;
  * class to enable JavaFX initialization, and it implements the ProjectViewingAndModificationOutputBoundary
  * interface to handle interactions with the project viewing and modification scene.
  */
-public class ProjectViewingAndModificationPresenter extends Application implements ProjectViewingAndModificationOutputBoundary {
+public class ProjectViewingAndModificationPresenter implements ProjectViewingAndModificationOutputBoundary {
     private Stage stage;
     private ProjectViewingAndModificationController controller;
 
@@ -52,33 +54,44 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
     private VBox dragDestination;
 
     /**
-     * Initializes the JavaFX application and sets up the initial scene to display the current
-     * project details and associated tasks.
+     * Initializes the second scene and sets it up to display the current
+     * project to the UI passed as projectModel.
      *
      * @param stage The main stage of the JavaFX application.
+     * @param projectModel The ProjectModel of the project selected by the user.
      * @throws IOException If an I/O error occurs during loading of the FXML file.
      */
-    @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage, ProjectModel projectModel) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(ProjectViewingAndModificationPresenter.class.getResource("ProjectViewingAndModification.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+//        Scene scene = new Scene(fxmlLoader.load());
+        Parent root = fxmlLoader.load();
+
         controller = fxmlLoader.getController();
-        stage.setTitle("Current project");
+
+        controller.setup(projectModel);
+        this.stage = stage;
+
+
+//        stage.setTitle("Current project");
+//        stage.setScene(scene);
+//        stage.show();
+
+        setUpScene(root, "Current project", "ProjectViewingAndModificationStyle.css");
+    }
+
+    private void setUpScene(Parent root, String title, String stylesheetPath) {
+        Scene scene = new Scene(root);
+        scene.getStylesheets().add(getClass().getResource(stylesheetPath).toExternalForm());
         stage.setScene(scene);
-        stage.show();
+        stage.setTitle(title);
     }
 
     public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
         this.controller = controller;
     }
 
-    /**
-     * The main entry point for the JavaFX application.
-     *
-     * @param args The command line arguments.
-     */
-    public static void main(String[] args) {
-        launch();
+    public ProjectViewingAndModificationPresenter() {
+        this.controller = new ProjectViewingAndModificationController();
     }
 
     /**
@@ -290,9 +303,8 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
      * displayed within a ScrollPane to enable scrolling if the content exceeds the display area.
      *
      * @param columns                                 The list of Column instances associated with the current project.
-     * @param projectViewingAndModificationController
      */
-    void populateColumns(List<ColumnModel> columns, ProjectViewingAndModificationController projectViewingAndModificationController) {
+    void populateColumns(List<ColumnModel> columns) {
         // Iterate through the list of columns and create a VBox for each column
         for (ColumnModel column : columns) {
             displayNewColumn(column);

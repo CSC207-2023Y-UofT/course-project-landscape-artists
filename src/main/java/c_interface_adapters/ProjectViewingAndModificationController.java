@@ -64,6 +64,7 @@ public class ProjectViewingAndModificationController {
      *                     It should include the project's name, description, ID, and a list of ColumnModels.
      */
     public void setup(ProjectModel projectModel) {
+        // MAKE THIS INITIALIZE AND STATIC PRESENTERS AND INTERACTOR
         presenter =
                 new ProjectViewingAndModificationPresenter(this);
         interactor =
@@ -73,8 +74,18 @@ public class ProjectViewingAndModificationController {
 
         populateProjectDetails(projectModel);
         List<ColumnModel> columnsInProject = projectModel.getColumnModels();
-        presenter.populateColumns(columnsInProject, this);
+        presenter.populateColumns(columnsInProject);
+    }
 
+    /**
+     * Populates the project details on the UI, including the project name and description.
+     *
+     * @param project The Project instance representing the current project.
+     */
+    private void populateProjectDetails(ProjectModel project) {
+
+        projectName.setText(project.getName());
+        projectDescription.setText(project.getDescription());
     }
 
     /**
@@ -85,6 +96,25 @@ public class ProjectViewingAndModificationController {
     private void setButtonStyles() {
         backButton.getStyleClass().add("back-button-custom");
         addColumnButton.getStyleClass().add("add-column-button-custom");
+    }
+
+    /**
+     * Sets the presenter for the controller and retrieves the current scene and stage. It then sets
+     * the retrieved stage as the stage for the presenter.
+     */
+    void setPresenter() {
+        try {
+            Scene scene = projectName.getScene();
+            ProjectViewingAndModificationOutputBoundary presenter =
+                    new ProjectViewingAndModificationPresenter(this);
+            Stage stage = (Stage) projectName.getScene().getWindow();
+
+            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+
+            interactor = new ProjectViewingAndModificationInteractor(presenter);
+        } catch (Error e) {
+            System.out.println(e);
+        }
     }
 
     /**
@@ -181,17 +211,6 @@ public class ProjectViewingAndModificationController {
 
     //}
 
-    /**
-     * Populates the project details on the UI, including the project name.
-     *
-     * @param project The Project instance representing the current project.
-     */
-
-    private void populateProjectDetails(ProjectModel project) {
-
-        projectName.setText(project.getName());
-        projectDescription.setText(project.getDescription());
-    }
 
     /**
      * Handles the event when the "Back" button is clicked. Removes the current project and displays
@@ -203,25 +222,6 @@ public class ProjectViewingAndModificationController {
         Stage stage = (Stage) columnsContainer.getScene().getWindow();
         presenter.setStage(stage);
         presenter.displayAllProjects();
-    }
-
-    /**
-     * Sets the presenter for the controller and retrieves the current scene and stage. It then sets
-     * the retrieved stage as the stage for the presenter.
-     */
-    void setPresenter() {
-        try {
-            Scene scene = projectName.getScene();
-            ProjectViewingAndModificationOutputBoundary presenter =
-                    new ProjectViewingAndModificationPresenter(this);
-            Stage stage = (Stage) projectName.getScene().getWindow();
-
-            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
-
-            interactor = new ProjectViewingAndModificationInteractor(presenter);
-        } catch (Error e) {
-            System.out.println(e);
-        }
     }
 
 
