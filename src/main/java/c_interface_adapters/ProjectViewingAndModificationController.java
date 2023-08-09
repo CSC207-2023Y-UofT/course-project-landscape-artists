@@ -103,18 +103,18 @@ public class ProjectViewingAndModificationController {
      * the retrieved stage as the stage for the presenter.
      */
     void setPresenter() {
-        try {
-            Scene scene = projectName.getScene();
-            ProjectViewingAndModificationOutputBoundary presenter =
-                    new ProjectViewingAndModificationPresenter(this);
-            Stage stage = (Stage) projectName.getScene().getWindow();
-
-            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
-
-            interactor = new ProjectViewingAndModificationInteractor(presenter);
-        } catch (Error e) {
-            System.out.println(e);
-        }
+//        try {
+//            Scene scene = projectName.getScene();
+//            ProjectViewingAndModificationOutputBoundary presenter =
+//                    new ProjectViewingAndModificationPresenter(this);
+//            Stage stage = (Stage) projectName.getScene().getWindow();
+//
+//            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
+//
+//            interactor = new ProjectViewingAndModificationInteractor(presenter);
+//        } catch (Error e) {
+//            System.out.println(e);
+//        }
     }
 
     /**

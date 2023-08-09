@@ -42,6 +42,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
     private int currentColumn = 0;
     private int currentRow = 0;
+    private TextField nameTextField;
+    private TextField descTextField;
 
     /**
      * Overloads the ProjectSelectionPresenter for when no controller is passed.
@@ -420,7 +422,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     private Button createCreateProjectButton() {
         Button createProjectButton = new Button("+");
-        createProjectButton.setOnAction(this::showCreateProjectDialog);
+        createProjectButton.setOnAction(this::handleCreateProjectPopup);
         createProjectButton.getStyleClass().add("create-project-button-style");
         return createProjectButton;
     }
@@ -863,20 +865,36 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 //    }
 
     /**
-     * Shows a dialog for creating a new project and returns the user's input.
+     * Handles the action event triggered by the "Create Project" button. Displays a dialog to collect
+     * project information from the user and creates a project using the provided information.
      *
-     * @return An Optional containing the project name and description, or empty if canceled.
+     * @param actionEvent The action event triggered by the "Create Project" button.
      */
-    public Optional<Pair<String, String>> showCreateProjectDialog(ActionEvent actionEvent) {
+    private void handleCreateProjectPopup(ActionEvent actionEvent) {
+
+        Optional<Pair<String, String>> result = showDialog();
+
+        result.ifPresent(project -> {
+            controller.createProject(project.getKey(), project.getValue());
+        });
+    }
+
+    /**
+     * Displays a dialog to collect project information from the user.
+     *
+     * @return An optional Pair containing the project name and description if the user confirms,
+     *         otherwise an empty optional.
+     */
+    public Optional<Pair<String, String>> showDialog() {
         Dialog<Pair<String, String>> dialog = createDialog();
         setDialogContent(dialog);
         return showDialogAndWait(dialog);
     }
 
     /**
-     * Creates a new dialog for project creation.
+     * Creates a new dialog instance for collecting project information.
      *
-     * @return The created dialog.
+     * @return The created dialog instance.
      */
     private Dialog<Pair<String, String>> createDialog() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
@@ -886,15 +904,15 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
     /**
-     * Sets the content of the dialog with labels and text fields for project information.
+     * Sets the content of the dialog to include input fields for project name and description.
      *
-     * @param dialog The dialog to set content for.
+     * @param dialog The dialog instance to set the content for.
      */
     private void setDialogContent(Dialog<Pair<String, String>> dialog) {
         Label nameLabel = new Label("Project Name:");
         Label descLabel = new Label("Description:");
-        TextField nameTextField = new TextField();
-        TextField descTextField = new TextField();
+        nameTextField = new TextField();
+        descTextField = new TextField();
 
         GridPane gridPane = new GridPane();
         gridPane.add(nameLabel, 0, 0);
@@ -906,17 +924,86 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
     /**
-     * Shows the dialog, waits for the user to close it, and handles the project creation.
+     * Shows the dialog and waits for user input. Converts the result of the dialog button press
+     * to a Pair of project name and description.
      *
-     * @param dialog The dialog to show and wait for.
-     * @return An Optional containing the project name and description, or empty if canceled.
+     * @param dialog The dialog instance to show.
+     * @return An optional Pair containing the project name and description if the user confirms,
+     *         otherwise an empty optional.
      */
     private Optional<Pair<String, String>> showDialogAndWait(Dialog<Pair<String, String>> dialog) {
-        dialog.showAndWait().ifPresent(project -> {
-            controller.createProject(project.getKey(), project.getValue());
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String projectName = nameTextField.getText();
+                String projectDescription = descTextField.getText();
+                return new Pair<>(projectName, projectDescription);
+            }
+            return null; // Return null for other button types or cancellation
         });
-        return Optional.empty(); // If needed, provide meaningful return value
+
+        return dialog.showAndWait();
     }
+
+
+
+//    /**
+//     * Shows a dialog for creating a new project and returns the user's input.
+//     *
+//     * @return An Optional containing the project name and description, or empty if canceled.
+//     */
+//    public Optional<Pair<String, String>> showCreateProjectDialog(ActionEvent actionEvent) {
+//        Dialog<Pair<String, String>> dialog = createDialog();
+//        setDialogContent(dialog);
+//        return showDialogAndWait(dialog);
+//    }
+//
+//
+//    /**
+//     * Creates a new dialog for project creation.
+//     *
+//     * @return The created dialog.
+//     */
+//    private Dialog<Pair<String, String>> createDialog() {
+//        Dialog<Pair<String, String>> dialog = new Dialog<>();
+//        dialog.setTitle("Create Project");
+//        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+//        return dialog;
+//    }
+//
+//    /**
+//     * Sets the content of the dialog with labels and text fields for project information.
+//     *
+//     * @param dialog The dialog to set content for.
+//     */
+//    private void setDialogContent(Dialog<Pair<String, String>> dialog) {
+//        Label nameLabel = new Label("Project Name:");
+//        Label descLabel = new Label("Description:");
+//        TextField nameTextField = new TextField();
+//        TextField descTextField = new TextField();
+//
+//        GridPane gridPane = new GridPane();
+//        gridPane.add(nameLabel, 0, 0);
+//        gridPane.add(nameTextField, 1, 0);
+//        gridPane.add(descLabel, 0, 1);
+//        gridPane.add(descTextField, 1, 1);
+//
+//        dialog.getDialogPane().setContent(gridPane);
+//    }
+//
+//    /**
+//     * Shows the dialog, waits for the user to close it, and handles the project creation.
+//     *
+//     * @param dialog The dialog to show and wait for.
+//     * @return An Optional containing the project name and description, or empty if canceled.
+//     */
+//    private Optional<Pair<String, String>> showDialogAndWait(Dialog<Pair<String, String>> dialog) {
+//        System.out.println("DIALOG " + dialog);
+//        dialog.showAndWait().ifPresent(project -> {
+//            System.out.println(project);
+//            controller.createProject(project.getKey(), project.getValue());
+//        });
+//        return Optional.empty(); // If needed, provide meaningful return value
+//    }
 
 //    /**
 //     * Displays a popup for the user to input the new name and description. If either is empty, then show an alert
