@@ -48,9 +48,9 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private static Stage stage;
     private static ProjectViewingAndModificationController controller;
 
-    private final List<VBox> VBoxContainer = new ArrayList<VBox>();
+    private static final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
-    private VBox dragDestination;
+    private static VBox dragDestination;
 
     private static UIComponentLocator uiComponentLocator;
 
@@ -108,7 +108,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         Scene scene = stage.getScene();
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
-            System.out.println("findProjectNameUI is run");
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
                 System.out.println(node);
                 if (node.getId().equals("projectName")) {
@@ -123,9 +122,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         Scene scene = stage.getScene();
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
-            System.out.println("findProjectNameUI is run");
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                System.out.println(node);
                 if (node.getId().equals("projectDescription")) {
                     return (Label) node;
                 }
@@ -389,11 +386,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         this.VBoxContainer.add(columnBox);
 
         columnBox.setOnDragOver(event -> {
-            //System.out.println("INSIDE DESTINATION");
+            System.out.println("INSIDE DESTINATION");
             this.dragDestination = columnBox;
             event.consume();
         });
     }
+
 
 //    /**
 //     * Displays a new column UI element.
@@ -667,6 +665,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
                     if (this.dragDestination != null) {
                         // Remove the HBox from its current column box and add it to the destination column box
                         ((VBox) sourceHBox.getParent()).getChildren().remove(sourceHBox);
+                        System.out.println("ITEMS INSIDE SOURCE HBOX " + sourceHBox.getChildren());
                         TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
                         transition.setToX(this.dragDestination.getLayoutX() - hbox.getLayoutX());
                         transition.play();
@@ -700,6 +699,17 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
                     "-fx-border-width: 2px;");
             hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
         });
+    }
+
+    private HBox findHBoxById(String id) {
+        for (VBox vBox : this.VBoxContainer) {
+            for (Node node2 : vBox.getChildren() ) {
+                if (node2 instanceof HBox && node2.getId().equals(id)) {
+                    return (HBox) node2;
+                }
+            }
+        }
+        return null;
     }
 
 
@@ -924,17 +934,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 //        return card;
 //    }
 
-    private HBox findHBoxById(String id) {
-        for (VBox vBox : this.VBoxContainer) {
-            for (Node node2 : vBox.getChildren() ) {
-                System.out.println("NODE IN findHBoxById " + node2);
-//                if (node2 instanceof HBox && node2.getId().equals(id)) {
-//                    return (HBox) node2;
-//                }
-            }
-        }
-        return null;
-    }
+
 
     /**
      * Displays a new popup window for the user to input what the new name should be for the chosen column.
