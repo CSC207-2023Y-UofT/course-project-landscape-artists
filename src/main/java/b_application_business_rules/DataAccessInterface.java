@@ -20,7 +20,7 @@ public interface DataAccessInterface {
 
     }
 
-    default void updateTaskDetail(UUID taskID, TaskModel updatedTask) {
+    default void updateTaskDetail(UUID taskID, TaskModel updatedTask, UUID parentColumn) {
 
     }
 

@@ -3,12 +3,7 @@ package c_interface_adapters.view_models;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 /**
  * A column view model within the productivity application.
@@ -33,7 +28,7 @@ public class ColumnViewModel {
      * The <code>List</code> of task view models that the column view model
      * holds/contains.
      */
-    private List<TaskViewModel> taskViewModels;
+    private List<TaskViewModel> taskViewModels = new ArrayList<>();
 
     /**
      * Creates a new column view model, based in the inputted values.

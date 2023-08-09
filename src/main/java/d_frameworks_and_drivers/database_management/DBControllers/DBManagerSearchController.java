@@ -1,19 +1,18 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import com.opencsv.CSVWriter;
+
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
+
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
+
 
 public class DBManagerSearchController implements IDBSearch {
 
@@ -25,6 +24,7 @@ public class DBManagerSearchController implements IDBSearch {
      * @return columnInfo
      */
     public ArrayList<String> DBColumnSearch(String id) {
+        System.out.println(id);
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         ArrayList<String> columnInfo = new ArrayList<>();
         String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv";
@@ -36,20 +36,62 @@ public class DBManagerSearchController implements IDBSearch {
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
-                String firstHeaderValue = csvRecord.get(0);
+                ArrayList result = new ArrayList<>(List.of(csvRecord.values()));
+                String firstHeaderValue = result.get(0).toString();
+                System.out.println("-----------");
+                System.out.println(result);
+                System.out.println(id);
+                System.out.println(firstHeaderValue.equals(id));
+                System.out.println("-----------");
+
                 // Once matching ID is found, column attributes are saved and exit loop
-                if (firstHeaderValue == id) {
-                    columnInfo.add(csvRecord.get(0));
-                    columnInfo.add(csvRecord.get(1));
-                    columnInfo.add(csvRecord.get(2));
+                if (firstHeaderValue.equals(id)) {
+                    System.out.println("INSIDE IF FOR COLUMN SEARCH");
+
+                    columnInfo.add(result.get(0).toString());
+                    columnInfo.add(result.get(1).toString());
+                    columnInfo.add(result.get(2).toString());
                     break;
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println(columnInfo);
         return columnInfo;
+    }
+
+    /**
+     * @param id
+     * @return
+     */
+    public ArrayList<String> DBProjectSearch(String id) {
+        ArrayList<String> projectInfo = new ArrayList<>();
+        String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv";
+
+        // Opening and reading through the Column.csv file
+        try (FileReader fileReader = new FileReader(csvFilePath);
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
+
+            // Iterate through each CSV record until the matching ID is found
+            for (CSVRecord csvRecord : csvParser) {
+                ArrayList result = new ArrayList<>(List.of(csvRecord.values()));
+                String firstHeaderValue = result.get(0).toString();
+                // Once matching ID is found, column attributes are saved and exit loop
+                if (firstHeaderValue.equals(id)) {
+                    projectInfo.add(result.get(0).toString());
+                    projectInfo.add(result.get(1).toString());
+                    projectInfo.add(result.get(2).toString());
+                    projectInfo.add(result.get(3).toString());
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        System.out.println(projectInfo);
+
+        return projectInfo;
     }
 
     /**
@@ -62,7 +104,7 @@ public class DBManagerSearchController implements IDBSearch {
      */
     public ArrayList<String> DBTaskSearch(String id) {
         ArrayList<String> taskInfo = new ArrayList<>();
-        String csvFilePath = "DatabaseFiles/Task.csv";
+        String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv";
 
         // Opening and reading through the Column.csv file
         try (FileReader fileReader = new FileReader(csvFilePath);
@@ -71,9 +113,10 @@ public class DBManagerSearchController implements IDBSearch {
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
-                String firstHeaderValue = csvRecord.get(0);
+                ArrayList result = new ArrayList<>(List.of(csvRecord.values()));
+                String firstHeaderValue = result.get(0).toString();
                 // Once matching ID is found, column attributes are saved and exit loop
-                if (firstHeaderValue == id) {
+                if (firstHeaderValue.equals(id)) {
                     taskInfo.add(csvRecord.get(0));
                     taskInfo.add(csvRecord.get(1));
                     taskInfo.add(csvRecord.get(2));
@@ -88,4 +131,5 @@ public class DBManagerSearchController implements IDBSearch {
 
         return taskInfo;
     }
+
 }
