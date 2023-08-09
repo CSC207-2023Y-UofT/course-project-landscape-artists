@@ -37,28 +37,18 @@ import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
  * project details.
  */
 public class ProjectSelectionPresenter extends Application implements ProjectSelectionOutputBoundary {
-
-
-    // The JavaFX Stage used for displaying scenes
     private static Stage stage;
     private ProjectSelectionViewModel projectSelectionViewModel;
     private ProjectSelectionController controller;
-    List<ProjectModel> AllProjectsList = new ArrayList<>();
 
-    /**
-     * Sets the JavaFX Stage to be used for displaying scenes. This is to ensure that the stage is the same between
-     * the controller and the prsenter
-     *
-     * @param stage The JavaFX Stage to set.
-     */
-    public void setStage(Stage stage) {
-        this.stage = stage;
-    }
+    private int currentColumn = 0;
+    private int currentRow = 0;
 
     /**
      * Overloads the ProjectSelectionPresenter for when no controller is passed.
      */
-    public ProjectSelectionPresenter( ) {
+    public ProjectSelectionPresenter() {
+        this.controller = new ProjectSelectionController();
     }
 
     /**
@@ -76,10 +66,42 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * @throws Exception If any exception occurs during application startup.
      */
     @Override
-    public void start(Stage stage) throws Exception {
-        initializeScene(stage);
-        getProjectsFromDatabase();
-        populateProjectSelectionUI();
+    public void start(Stage stage) {
+        try {
+            initializeScene(stage);
+            getProjectsFromDatabase();
+            populateProjectSelectionUI();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Initializes the scene with the provided stage by loading the FXML file containing the layout
+     * and UI elements for choosing a project. It also updates the Presenter's Controller to be the controller from
+     * the FXML file.
+     *
+     * @param primaryStage The JavaFX Stage to be used for displaying the project selection scene.
+     */
+    public void initializeScene(Stage primaryStage) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource("ProjectSelection.fxml"));
+            Parent root = fxmlLoader.load();
+
+            // Now that the FXML file is loaded, you can get the controller
+            controller = fxmlLoader.getController();
+
+            Scene scene = new Scene(root);
+            this.stage = primaryStage;
+            System.out.println("IN INITIALZIE SCENE, THIS IS STAGE " + stage);
+            stage.setTitle("Choose project");
+            System.out.println("CLASS INSTANCE AT initializeScene " + this);
+            stage.setScene(scene);
+            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -116,7 +138,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 //        TODO: END ------------------------------------------------------------
 
         DBAdapterInterface dbAdapterInterface = new EntityIDstoModelController();
-        AllProjectsList = dbAdapterInterface.IDstoProjectModelList();
+        List<ProjectModel> AllProjectsList = dbAdapterInterface.IDstoProjectModelList();
 
         for (ProjectModel proj :AllProjectsList) {
             if(proj != null){
@@ -147,6 +169,217 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
     }
+
+    /**
+     * This populates the projectsGrid GridPane with Project UIs. The Projects are held in projectSelectionViewModel.
+     *
+     */
+//    private void populateProjectSelectionUI() {
+//        GridPane projectsGrid = findGridPane();
+//
+//        projectsGrid.setHgap(20);
+//        projectsGrid.setVgap(100);
+//
+//        for (int col = 0; col < 2; col++) {
+//            ColumnConstraints columnConstraints = new ColumnConstraints();
+//            columnConstraints.setHgrow(Priority.ALWAYS);
+//            columnConstraints.setFillWidth(true);
+//        }
+//
+//        int row = 0;
+//        int col = 0;
+//
+//        RowConstraints rowConstraints = new RowConstraints();
+//        rowConstraints.setVgrow(Priority.ALWAYS);
+//        rowConstraints.setFillHeight(true);
+//        projectsGrid.getRowConstraints().add(rowConstraints);
+//
+//        while (projectSelectionViewModel.hasNext()) {
+//            ProjectViewModel project = projectSelectionViewModel.next();
+//
+//            // Create the currentProjectButton
+//
+//            Label projectName = new Label(project.getName());
+//            Label projectDescription = new Label(project.getDescription());
+//
+//            projectName.setId("projectName");
+//            projectDescription.setId("projectDescription");
+//
+//
+//
+//            projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+//
+//            VBox nameAndDescriptionContainer = new VBox(projectName, projectDescription);
+//
+//            nameAndDescriptionContainer.setAlignment(Pos.CENTER);
+//            nameAndDescriptionContainer.setPadding(new Insets(10));
+//            nameAndDescriptionContainer.setSpacing(5);
+//
+//            projectName.setMaxWidth(150);
+//            projectDescription.setMaxWidth(150);
+//            projectName.setWrapText(true);
+//            projectDescription.setWrapText(true);
+//
+//            // Center the text in each label
+//            projectName.setAlignment(Pos.CENTER);
+//            projectDescription.setAlignment(Pos.CENTER);
+//
+//            Button currentProjectButton = new Button();
+//
+//            currentProjectButton.setGraphic(nameAndDescriptionContainer);
+//
+//            currentProjectButton.getStyleClass().add("current-project-button");
+//
+//
+//            currentProjectButton.setUserData(project.getID());
+//            currentProjectButton.setOnAction(event -> {controller.handleChosenProjectButton(event);});
+//            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
+//            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
+//            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
+//
+//            // Create the MenuButton
+//            MenuButton menuButton = new MenuButton();
+//            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+//            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+//
+//            menuButton.getStyleClass().add("menu-button-custom");
+//
+//            // Add event handlers for the MenuItems
+//            renameProjectMenuItem.setOnAction(event -> controller.handleRenameProject(project.getID()));
+//            deleteProjectMenuItem.setOnAction(event -> controller.handleDeleteProject(project.getID()));
+//
+//            // Add MenuItems to the MenuButton
+//            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+//
+//
+//            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
+//            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+//            buttonContainer.setId(project.getID().toString());
+//            projectsGrid.add(buttonContainer, col, row);
+//
+//            col++;
+//            if (col >= 2) {
+//                col = 0;
+//                row++;
+//            }
+//        }
+//        addCreateProjectButton(col, row);
+//    }
+
+    private void populateProjectSelectionUI() {
+        configureProjectsGrid();
+        populateProjectButtons();
+        addCreateProjectButton();
+    }
+
+    private void configureProjectsGrid() {
+        GridPane projectsGrid = findGridPane();
+        projectsGrid.setHgap(20);
+        projectsGrid.setVgap(100);
+        setColumnAndRowConstraints(projectsGrid);
+    }
+
+    private void setColumnAndRowConstraints(GridPane projectsGrid) {
+        for (int col = 0; col < 2; col++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow(Priority.ALWAYS);
+            columnConstraints.setFillWidth(true);
+        }
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setFillHeight(true);
+        projectsGrid.getRowConstraints().add(rowConstraints);
+    }
+
+    private void populateProjectButtons() {
+        GridPane projectsGrid = findGridPane();
+
+        while (projectSelectionViewModel.hasNext()) {
+            ProjectViewModel project = projectSelectionViewModel.next();
+            Button currentProjectButton = createCurrentProjectButton(project);
+            MenuButton menuButton = createMenuButton(project);
+            HBox buttonContainer = createButtonContainer(currentProjectButton, menuButton, project);
+            projectsGrid.add(buttonContainer, currentColumn, currentRow);
+
+            currentColumn++;
+            if (currentColumn >= 2) {
+                currentColumn = 0;
+                currentRow++;
+            }
+        }
+    }
+
+    private Button createCurrentProjectButton(ProjectViewModel project) {
+        Button currentProjectButton = new Button();
+        VBox nameAndDescriptionContainer = createNameAndDescriptionContainer(project);
+        configureCurrentProjectButton(currentProjectButton, nameAndDescriptionContainer, project);
+        currentProjectButton.setUserData(project.getID());
+        currentProjectButton.setOnAction(event -> controller.handleChosenProjectButton(event));
+        return currentProjectButton;
+    }
+
+    private VBox createNameAndDescriptionContainer(ProjectViewModel project) {
+        Label projectName = new Label(project.getName());
+        Label projectDescription = new Label(project.getDescription());
+        projectName.setId("projectName");
+        projectDescription.setId("projectDescription");
+        projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        projectName.setMaxWidth(150);
+        projectDescription.setMaxWidth(150);
+        projectName.setWrapText(true);
+        projectDescription.setWrapText(true);
+        projectName.setAlignment(Pos.CENTER);
+        projectDescription.setAlignment(Pos.CENTER);
+        return new VBox(projectName, projectDescription);
+    }
+
+    private void configureCurrentProjectButton(Button currentProjectButton, VBox nameAndDescriptionContainer, ProjectViewModel project) {
+        currentProjectButton.setGraphic(nameAndDescriptionContainer);
+        currentProjectButton.getStyleClass().add("current-project-button");
+        currentProjectButton.setWrapText(true);
+        currentProjectButton.setMinWidth(USE_PREF_SIZE);
+        currentProjectButton.setMaxWidth(Double.MAX_VALUE);
+    }
+
+    private MenuButton createMenuButton(ProjectViewModel project) {
+        MenuButton menuButton = new MenuButton();
+        MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+        MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+        menuButton.getStyleClass().add("menu-button-custom");
+        renameProjectMenuItem.setOnAction(event -> controller.handleRenameProject(project.getID()));
+        deleteProjectMenuItem.setOnAction(event -> controller.handleDeleteProject(project.getID()));
+        menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+        return menuButton;
+    }
+
+    private HBox createButtonContainer(Button currentProjectButton, MenuButton menuButton, ProjectViewModel project) {
+        HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+        buttonContainer.setId(project.getID().toString());
+        return buttonContainer;
+    }
+
+    private void addCreateProjectButton() {
+        GridPane projectsGrid = findGridPane();
+        Button createProjectButton = createCreateProjectButton();
+        projectsGrid.add(createProjectButton, getCurrentColumn(), getCurrentRow());
+    }
+
+    private Button createCreateProjectButton() {
+        Button createProjectButton = new Button("+");
+        createProjectButton.setOnAction(this::handleCreateProjectPopup);
+        createProjectButton.getStyleClass().add("create-project-button-style");
+        return createProjectButton;
+    }
+
+    private int getCurrentColumn() {
+        return currentColumn;
+    }
+
+    private int getCurrentRow() {
+        return currentRow;
+    }
+
 
     @Override
     public void displayCurrentProject() {
@@ -317,35 +550,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
 
     /**
-     * Initializes the scene with the provided stage by loading the FXML file containing the layout
-     * and UI elements for choosing a project. It also updates the Presenter's Controller to be the controller from
-     * the FXML file.
-     *
-     * @param stage The JavaFX Stage to be used for displaying the project selection scene.
-     */
-    public void initializeScene(Stage primaryStage) {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource("ProjectSelection.fxml"));
-            Parent root = fxmlLoader.load();
-
-            // Now that the FXML file is loaded, you can get the controller
-            controller = fxmlLoader.getController();
-
-            Scene scene = new Scene(root);
-            this.stage = primaryStage;
-            System.out.println("IN INITIALZIE SCENE, THIS IS STAGE " + stage);
-            stage.setTitle("Choose project");
-            System.out.println("CLASS INSTANCE AT initializeScene " + this);
-            stage.setScene(scene);
-            scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
-            stage.show();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    /**
      * This method finds the GridPane (JavaFX) projectsGrid from the current scene. It is used to populate the Grid
      * Pane with
      * Project UI.
@@ -367,101 +571,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
 
-    /**
-     * This populates the projectsGrid GridPane with Project UIs. The Projects are held in projectSelectionViewModel.
-     *
-     */
-    private void populateProjectSelectionUI() {
-        GridPane projectsGrid = findGridPane();
 
-        projectsGrid.setHgap(20);
-        projectsGrid.setVgap(100);
-
-        for (int col = 0; col < 2; col++) {
-            ColumnConstraints columnConstraints = new ColumnConstraints();
-            columnConstraints.setHgrow(Priority.ALWAYS);
-            columnConstraints.setFillWidth(true);
-        }
-
-        int row = 0;
-        int col = 0;
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setFillHeight(true);
-        projectsGrid.getRowConstraints().add(rowConstraints);
-
-        while (projectSelectionViewModel.hasNext()) {
-            ProjectViewModel project = projectSelectionViewModel.next();
-
-            // Create the currentProjectButton
-
-            Label projectName = new Label(project.getName());
-            Label projectDescription = new Label(project.getDescription());
-
-            projectName.setId("projectName");
-            projectDescription.setId("projectDescription");
-
-
-
-            projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-
-            VBox nameAndDescriptionContainer = new VBox(projectName, projectDescription);
-
-            nameAndDescriptionContainer.setAlignment(Pos.CENTER);
-            nameAndDescriptionContainer.setPadding(new Insets(10));
-            nameAndDescriptionContainer.setSpacing(5);
-
-            projectName.setMaxWidth(150);
-            projectDescription.setMaxWidth(150);
-            projectName.setWrapText(true);
-            projectDescription.setWrapText(true);
-
-            // Center the text in each label
-            projectName.setAlignment(Pos.CENTER);
-            projectDescription.setAlignment(Pos.CENTER);
-
-            Button currentProjectButton = new Button();
-
-            currentProjectButton.setGraphic(nameAndDescriptionContainer);
-
-            currentProjectButton.getStyleClass().add("current-project-button");
-
-
-            currentProjectButton.setUserData(project.getID());
-            currentProjectButton.setOnAction(event -> {controller.handleChosenProjectButton(event);});
-            currentProjectButton.setWrapText(true); // Allow the button to wrap its text and show the whole content
-            currentProjectButton.setMinWidth(USE_PREF_SIZE); // Allow the button to resize based on its content
-            currentProjectButton.setMaxWidth(Double.MAX_VALUE); // Allow the button to take up available space
-
-            // Create the MenuButton
-            MenuButton menuButton = new MenuButton();
-            MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
-            MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
-
-            menuButton.getStyleClass().add("menu-button-custom");
-
-            // Add event handlers for the MenuItems
-            renameProjectMenuItem.setOnAction(event -> controller.handleRenameProject(project.getID()));
-            deleteProjectMenuItem.setOnAction(event -> controller.handleDeleteProject(project.getID()));
-
-            // Add MenuItems to the MenuButton
-            menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
-
-
-            // Add currentProjectButton and menuButton to a container (HBox) for better layout control
-            HBox buttonContainer = new HBox(currentProjectButton, menuButton);
-            buttonContainer.setId(project.getID().toString());
-            projectsGrid.add(buttonContainer, col, row);
-
-            col++;
-            if (col >= 2) {
-                col = 0;
-                row++;
-            }
-        }
-        addCreateProjectButton(col, row);
-    }
 
     /**
      * Simply adds the Create Project Button to the projectsGrid GridPane. The col and row is where it will be set
