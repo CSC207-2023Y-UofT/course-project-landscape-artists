@@ -59,7 +59,7 @@ public class ProjectSelectionController {
         Stage stage = (Stage) projectsGrid.getScene().getWindow();
 
         // Sets the stage of the Presenter so methods in it changes the same stage.
-        ((ProjectSelectionPresenter) presenter).setStage(stage);
+//        ((ProjectSelectionPresenter) presenter).setStage(stage);
 
         // Set the Presenter class in the Controller.
         this.presenter = (ProjectSelectionPresenter) presenter;

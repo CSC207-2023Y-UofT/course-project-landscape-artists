@@ -40,7 +40,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
 
     // The JavaFX Stage used for displaying scenes
-    private Stage stage;
+    private static Stage stage;
     private ProjectSelectionViewModel projectSelectionViewModel;
     private ProjectSelectionController controller;
     List<ProjectModel> AllProjectsList = new ArrayList<>();
@@ -177,9 +177,13 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Parent root = fxmlLoader.load();
             ProjectViewingAndModificationController openedProjectController = fxmlLoader.getController();
             openedProjectController.setup(projectModel);
+            System.out.println("THIS IS STAGE AT displayCurrentProject: " + stage);
+            System.out.println("CLASS INSTANCE AT displayCurrentProject " + this);
             stage.setTitle("scene 2");
             Scene scene = new Scene(root);
+
             scene.getStylesheets().add(getClass().getResource("ProjectViewingAndModificationStyle.css").toExternalForm());
+            stage.setScene(scene);
             stage.setScene(scene);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -320,7 +324,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      *
      * @param stage The JavaFX Stage to be used for displaying the project selection scene.
      */
-    public void initializeScene(Stage stage) {
+    public void initializeScene(Stage primaryStage) {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(ProjectSelectionPresenter.class.getResource("ProjectSelection.fxml"));
             Parent root = fxmlLoader.load();
@@ -329,7 +333,10 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             controller = fxmlLoader.getController();
 
             Scene scene = new Scene(root);
+            this.stage = primaryStage;
+            System.out.println("IN INITIALZIE SCENE, THIS IS STAGE " + stage);
             stage.setTitle("Choose project");
+            System.out.println("CLASS INSTANCE AT initializeScene " + this);
             stage.setScene(scene);
             scene.getStylesheets().add(getClass().getResource("ProjectSelectionStyle.css").toExternalForm());
             stage.show();

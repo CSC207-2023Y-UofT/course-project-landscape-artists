@@ -439,7 +439,7 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
             // Add to MenuButton
 
-            taskOptionsButton.getItems().addAll(renameTaskButton,
+            taskOptionsButton.getItems().addAll(
                     changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
 
             taskOptionsButton.getStyleClass().add("menu-button-custom");
