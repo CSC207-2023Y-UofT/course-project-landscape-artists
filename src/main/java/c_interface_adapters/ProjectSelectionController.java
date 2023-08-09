@@ -34,13 +34,13 @@ import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 /**
  * ProjectSelectionController class handles the event handling and controlling of creating and opening a project
  */
-public class ProjectSelectionController {
+public class ProjectSelectionController implements Initializable {
     // FXML reference to the GridPane that holds the projects in the UI.
     @FXML
     private GridPane projectsGrid;
 
     // The interactor for project selection and creation. It implements ProjectSelectionInputBoundary.
-    private ProjectSelectionInputBoundary interactor;
+    private static ProjectSelectionInputBoundary interactor;
 
     // The ProjectSelectionViewModel to pass data to the view.
     ProjectSelectionViewModel projectSelectionViewModel;
@@ -48,23 +48,12 @@ public class ProjectSelectionController {
     // The presenter associated with the controller in Project Selection UI.
     ProjectSelectionPresenter presenter;
 
-    /**
-     * Sets up the Controller's Presenter and Interactor.
-     */
-    private void setPresenterAndInteractor() {
-        // This had to be separate since presenter needs to have a stage.
-        ProjectSelectionOutputBoundary presenter =
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        presenter =
                 new ProjectSelectionPresenter(this);
-        // Grabs the stage currently used.
-        Stage stage = (Stage) projectsGrid.getScene().getWindow();
-
-        // Sets the stage of the Presenter so methods in it changes the same stage.
-//        ((ProjectSelectionPresenter) presenter).setStage(stage);
-
-        // Set the Presenter class in the Controller.
-        this.presenter = (ProjectSelectionPresenter) presenter;
-
-        interactor = new ProjectSelectionInteractor(presenter);
+        interactor =
+                new ProjectSelectionInteractor(presenter);
     }
 
     /**
@@ -77,7 +66,7 @@ public class ProjectSelectionController {
     void handleRenameProject(UUID projectUUID) {
         // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
         // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
+//        setPresenterAndInteractor();
         String[] newNameAndNewDescription = presenter.displayRenameProjectPopup();
         if (newNameAndNewDescription != null) {
             String newName = newNameAndNewDescription[0];
@@ -95,7 +84,7 @@ public class ProjectSelectionController {
     void handleDeleteProject(UUID projectUUID) {
         // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
         // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
+//        setPresenterAndInteractor();
         interactor.deleteProject(projectUUID);
     }
 
@@ -110,7 +99,7 @@ public class ProjectSelectionController {
     void createProject(String name, String description) {
         // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
         // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
+//        setPresenterAndInteractor();
         interactor.createProject(name, description);
     }
 
@@ -118,9 +107,11 @@ public class ProjectSelectionController {
      * Handles the action of selecting a project button from the UI.
      */
     public void handleChosenProjectButton(ActionEvent actionEvent) {
-        setPresenterAndInteractor();
+//        setPresenterAndInteractor();
         Button buttonClicked = (Button) actionEvent.getSource();
         UUID currentProjectID = (UUID) buttonClicked.getUserData();
         interactor.openProject(currentProjectID);
     }
+
+
 }
