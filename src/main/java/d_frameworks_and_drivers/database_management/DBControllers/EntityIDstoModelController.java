@@ -12,6 +12,7 @@ import d_frameworks_and_drivers.database_management.ProjectUUIDArray;
 
 import c_interface_adapters.DBAdapterInterface;
 
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.time.LocalDateTime;
 
@@ -60,17 +61,24 @@ public class EntityIDstoModelController implements DBAdapterInterface {
                     String columnName = columnInfo.get(1);
 
                     //Temporary Array of string to hold the task IDs
-                    String[] tempTaskID = projectList.get(3).split(",");
+                    List<String> tempTaskID = Arrays.stream(columnInfo.get(2).split(",")).toList();
+
+                    System.out.println("Task ID ARRAY");
+                    System.out.println(tempTaskID);
 
                     List<TaskModel> taskModelList = new ArrayList<>();
                     for (String tempTask : tempTaskID) {
+                        System.out.println("Task ID");
+                        System.out.println(tempTask);
                         ArrayList<String> taskInfo = searchController.DBTaskSearch(tempTask);
 
+                        System.out.println("TaskInfo");
+                        System.out.println(taskInfo);
                         UUID taskID = UUID.fromString(taskInfo.get(0));
                         String taskName = taskInfo.get(1);
                         String taskDescription = taskInfo.get(2);
                         boolean isCompleted = Boolean.parseBoolean(taskInfo.get(3));
-                        LocalDateTime dueDate = LocalDateTime.parse(taskInfo.get(4));
+                        LocalDateTime dueDate = LocalDateTime.parse(taskInfo.get(4), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
                         //Creating a TaskModel object
                         TaskModel newTModel = TaskModelFactory.create(taskName, taskID, taskDescription,

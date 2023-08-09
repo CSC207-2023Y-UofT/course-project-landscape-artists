@@ -24,6 +24,7 @@ public class DBManagerSearchController implements IDBSearch {
      * @return columnInfo
      */
     public ArrayList<String> DBColumnSearch(String id) {
+        System.out.println(id);
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         ArrayList<String> columnInfo = new ArrayList<>();
         String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv";
@@ -40,14 +41,16 @@ public class DBManagerSearchController implements IDBSearch {
                 System.out.println("-----------");
                 System.out.println(result);
                 System.out.println(id);
-                System.out.println(firstHeaderValue);
+                System.out.println(firstHeaderValue.equals(id));
                 System.out.println("-----------");
 
                 // Once matching ID is found, column attributes are saved and exit loop
                 if (firstHeaderValue.equals(id)) {
-                    columnInfo.add(csvRecord.get(0));
-                    columnInfo.add(csvRecord.get(1));
-                    columnInfo.add(csvRecord.get(2));
+                    System.out.println("INSIDE IF FOR COLUMN SEARCH");
+
+                    columnInfo.add(result.get(0).toString());
+                    columnInfo.add(result.get(1).toString());
+                    columnInfo.add(result.get(2).toString());
                     break;
                 }
             }

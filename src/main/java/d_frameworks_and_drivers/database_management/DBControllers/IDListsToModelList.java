@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModelList;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -17,12 +18,18 @@ public class IDListsToModelList implements IDbIdToModelList {
      * @return
      */
     public List<ColumnModel> IdToColumnModelList(List<String> IDlist) {
+        IDlist = List.of(IDlist.get(0).split(","));
         List<ColumnModel> resultColumnModels = new ArrayList<>();
+        System.out.println("---------IDlist");
+        System.out.println(IDlist.get(0));
         for (String col : IDlist) {
             List<String> temp = dbManagerSearchController.DBColumnSearch(col);
+            System.out.println("IDs Lists To Model List");
+            System.out.println(col);
+            System.out.println(List.of(temp.get(2).split(",")));
             ColumnModel columnModelTemp = new ColumnModel(
                     temp.get(1),
-                    IdToTaskModelList(List.of(temp.get(3).split(","))),
+                    IdToTaskModelList(List.of(temp.get(2).split(","))),
                     UUID.fromString(temp.get(0))
             );
             resultColumnModels.add(columnModelTemp);
@@ -35,6 +42,7 @@ public class IDListsToModelList implements IDbIdToModelList {
      * @return
      */
     public List<TaskModel> IdToTaskModelList(List<String> IDlist) {
+        IDlist = List.of(IDlist.get(0).split(","));
         List<TaskModel> resultTaskModels = new ArrayList<>();
         for (String task : IDlist) {
             List<String> temp = dbManagerSearchController.DBTaskSearch(task);
@@ -43,7 +51,7 @@ public class IDListsToModelList implements IDbIdToModelList {
                     UUID.fromString(temp.get(0)),
                     temp.get(2),
                     !temp.get(3).isEmpty(),
-                    LocalDateTime.parse(temp.get(4)));
+                    LocalDateTime.parse(temp.get(4), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             resultTaskModels.add(TaskModelTemp);
         }
         return resultTaskModels;
@@ -54,6 +62,7 @@ public class IDListsToModelList implements IDbIdToModelList {
      * @return
      */
     public List<ProjectModel> IdToProjectModelList(List<String> IDlist) {
+        IDlist = List.of(IDlist.get(0).split(","));
         List<ProjectModel> resultProjectModels = new ArrayList<>();
         for (String project : IDlist) {
             List<String> temp = dbManagerSearchController.DBProjectSearch(project);

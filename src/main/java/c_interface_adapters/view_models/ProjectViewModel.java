@@ -3,12 +3,7 @@ package c_interface_adapters.view_models;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.ColumnModel;
 
-import java.util.List;
-import java.util.Collections;
-
-import java.util.UUID;
-
-import java.util.NoSuchElementException;
+import java.util.*;
 
 
 /**
@@ -41,7 +36,7 @@ public class ProjectViewModel {
     /**
      * The column view models in the kanban board for this project view model.
      */
-    private List<ColumnViewModel> columnViewModels;
+    private List<ColumnViewModel> columnViewModels = new ArrayList<>();
 
     /**
      * Creates a new project view model, based in the inputted values.
