@@ -934,8 +934,8 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     private Optional<Pair<String, String>> showDialogAndWait(Dialog<Pair<String, String>> dialog) {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == ButtonType.OK) {
-                String projectName = nameTextField.getText();
-                String projectDescription = descTextField.getText();
+                String projectName = getNameTextField().getText();
+                String projectDescription = getDescTextField().getText();
                 return new Pair<>(projectName, projectDescription);
             }
             return null; // Return null for other button types or cancellation
@@ -943,6 +943,16 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
         return dialog.showAndWait();
     }
+
+    // Getter methods for nameTextField and descTextField
+    public TextField getNameTextField() {
+        return nameTextField;
+    }
+
+    public TextField getDescTextField() {
+        return descTextField;
+    }
+
 
 
 
@@ -1064,6 +1074,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
         return result.orElse(null);
     }
+
     /**
      * Displays a dialog to rename a project and captures the user's input.
      *
@@ -1098,6 +1109,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
         return Optional.empty();
     }
+
 
     /**
      * Validates whether the provided project name and description are not empty.

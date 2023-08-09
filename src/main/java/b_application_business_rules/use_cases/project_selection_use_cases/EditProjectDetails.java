@@ -64,7 +64,7 @@ public class EditProjectDetails {
         IDBRemove databaseRemover = new DBManagerRemoveController();
         databaseRemover.DBRemove(this.currentProjectModel, this.currentProjectModel.getID());
 
-        this.currentProjectModel.setName(newDescription);
+        this.currentProjectModel.setDescription(newDescription);
 
         IDBInsert databaseInserter = new DBManagerInsertController();
         databaseInserter.DBInsert(this.currentProjectModel);

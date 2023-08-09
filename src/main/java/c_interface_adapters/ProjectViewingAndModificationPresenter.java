@@ -468,9 +468,9 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
             RadioButton completeTaskButton = new RadioButton();
 //            completeTaskButton.setOnAction(event -> controller.completeTask(task));
 
-            taskOptionsButton.setOnAction(actionEvent -> {
-                projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
-            });
+//            taskOptionsButton.setOnAction(actionEvent -> {
+//                projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
+//            });
 
             hbox.getChildren().addAll(textContent, taskOptionsButton, completeTaskButton);
             SetHBoxFeatures(columnBox, hbox);
@@ -581,7 +581,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param columnBox                               The VBox representing the Column UI where the task will be added.
      */
     void handleAddTaskPopup(VBox columnBox) {
-        controller.setPresenter();
         // Create a new stage for the popup
         Stage popupStage = new Stage();
 
@@ -657,7 +656,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param uuid
      */
     void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
-        controller.setPresenter();
       
         // Create a new stage for the popup
         Stage popupStage = new Stage();

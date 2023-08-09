@@ -99,32 +99,12 @@ public class ProjectViewingAndModificationController {
     }
 
     /**
-     * Sets the presenter for the controller and retrieves the current scene and stage. It then sets
-     * the retrieved stage as the stage for the presenter.
-     */
-    void setPresenter() {
-//        try {
-//            Scene scene = projectName.getScene();
-//            ProjectViewingAndModificationOutputBoundary presenter =
-//                    new ProjectViewingAndModificationPresenter(this);
-//            Stage stage = (Stage) projectName.getScene().getWindow();
-//
-//            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
-//
-//            interactor = new ProjectViewingAndModificationInteractor(presenter);
-//        } catch (Error e) {
-//            System.out.println(e);
-//        }
-    }
-
-    /**
      * Deletes the column with the specified UUID by interacting with the presenter and interactor.
      * This method sets up the presenter and calls the interactor to delete the column.
      *
      * @param id The UUID of the column to be deleted.
      */
     void deleteColumn(UUID id) {
-        setPresenter();
         interactor.deleteColumn(id);
     }
 
@@ -136,7 +116,6 @@ public class ProjectViewingAndModificationController {
      * @param id The UUID of the column whose details are to be edited.
      */
     void handleEditColumnDetails(UUID id) {
-        setPresenter();
         String newColumnName = presenter.displayEditColumnDetails();
         interactor.editColumnDetails(id, newColumnName);
     }
@@ -177,18 +156,6 @@ public class ProjectViewingAndModificationController {
 
     }
 
-//    void renameTask(TaskModel task, HBox hbox) {
-////        interactor.renameTask(task, hbox);
-//    }
-
-    /**
-     * Handles displaying options when the options button of a task is clicked.
-     *
-     * @param actionEvent An ActionEvent representing the options button click.
-     */
-    void handleTaskOptions(ActionEvent actionEvent, TaskModel task, VBox columnBox) {
-        // This has access to VBox for presentation purposes.
-    }
 
     /**
      * Updates the Presenter so an array of Task instances belonging to columnBox is added to the
@@ -203,13 +170,6 @@ public class ProjectViewingAndModificationController {
                                LocalDateTime dueDate) {
         interactor.addNewTask(UUID.fromString(columnBoxID), taskName, taskDescription, dueDate);
     }
-
-    //void handleChangeTaskDetails(VBox columnBox, String taskName, String taskDescription,
-                                 //LocalDateTime dueDate) {
-
-        //interactor.changeTaskDetails();
-
-    //}
 
 
     /**
@@ -251,37 +211,4 @@ public class ProjectViewingAndModificationController {
     public void showTaskDetails(TaskModel task) {
         presenter.displayTaskDetails(task);
     }
-//    public void moveTask(TaskModel task, VBox targetColumn) {
-//        // Get the current column containing the task
-//        VBox sourceColumn = findColumnContainingTask(task);
-//
-//        // If the task is already in the target column, do nothing
-//        if (sourceColumn == targetColumn) {
-//            return;
-//        }
-//
-//        // Remove the task from the source column
-//        sourceColumn.getChildren().removeIf(node -> node instanceof HBox && ((HBox) node).getUserData() == task);
-//
-//        // Add the task to the target column
-//        targetColumn.getChildren().add(createCard(task));
-//
-//        // Perform any other necessary actions based on your requirements
-//    }
-//
-//    private Node createCard(TaskModel task) {
-//
-//    }
-//
-//    private VBox findColumnContainingTask(TaskModel task) {
-//        List<Node> columns = columnsContainer.getChildren();
-//        for (VBox column : columns) {
-//            for (Node node : column.getChildren()) {
-//                if (node instanceof HBox && ((HBox) node).getUserData() == task) {
-//                    return column;
-//                }
-//            }
-//        }
-//        return null; // Task not found in any column
-//    }
 }
