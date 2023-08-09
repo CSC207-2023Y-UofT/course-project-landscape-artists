@@ -502,6 +502,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         }
     }
 
+
     /**
      * Loads an FXML layout from the specified resource path.
      *
@@ -531,63 +532,174 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         stage.setTitle(title);
     }
 
-    /**
-     * Displays the renamed project on the user interface. When a project is renamed, this method is called to
-     * update the corresponding HBox in the projectsGrid (GridPane) with the new project name. The HBox represents
-     * the renamed project on the UI.
-     *
-     * @param projectModel The ProjectModel of the renamed project containing the updated project information.
-     */
+//    /**
+//     * Displays the renamed project on the user interface. When a project is renamed, this method is called to
+//     * update the corresponding HBox in the projectsGrid (GridPane) with the new project name. The HBox represents
+//     * the renamed project on the UI.
+//     *
+//     * @param projectModel The ProjectModel of the renamed project containing the updated project information.
+//     */
+//    public void displayRenamedProject(ProjectModel projectModel) {
+//        // Get the UUID of the renamed project and its new name
+//        String projectUUID = projectModel.getID().toString();
+//        String newProjectName = projectModel.getName();
+//        String newProjectDescription = projectModel.getDescription();
+//
+//        // Get the current scene of the stage
+//        Scene scene = stage.getScene();
+//        if (scene != null) {
+//            // Find the GridPane that holds the projects (projectsGrid)
+//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+//                if (node instanceof GridPane projectsGrid) {
+//                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
+//                    for (Node gridChild : projectsGrid.getChildren()) {
+//                        if (gridChild instanceof HBox hbox) {
+//                            // Check if the HBox ID matches the UUID of the renamed project
+//                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+//                            if (hboxId != null && hboxId.equals(projectUUID)) {
+//                                // The HBox matches the provided projectUUID
+//                                // Now, find the projectNameButton inside the HBox
+//                                for (Node hboxChild : hbox.getChildren()) {
+//                                    if (hboxChild instanceof Button nameAndDescriptionButton) {
+//                                        VBox nameAndDescriptionContainer =
+//                                                (VBox) (nameAndDescriptionButton.getGraphic());
+//
+//                                        for (Node nodeInNameAndDescriptionContainer:
+//                                                nameAndDescriptionContainer.getChildren()) {
+//                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
+//                                                Label projectName = (Label) nodeInNameAndDescriptionContainer;
+//                                                projectName.setText(newProjectName);
+//                                            }
+//                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectDescription")) {
+//                                                Label projectDescription = (Label) nodeInNameAndDescriptionContainer;
+//                                                projectDescription.setText(newProjectDescription);
+//                                            }
+//                                        }
+//                                        break;
+//                                    }
+//                                }
+//                                break;
+//                            }
+//                        }
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//    }
     public void displayRenamedProject(ProjectModel projectModel) {
-        // Get the UUID of the renamed project and its new name
         String projectUUID = projectModel.getID().toString();
         String newProjectName = projectModel.getName();
         String newProjectDescription = projectModel.getDescription();
 
-        // Get the current scene of the stage
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            // Find the GridPane that holds the projects (projectsGrid)
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane projectsGrid) {
-                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
-                    for (Node gridChild : projectsGrid.getChildren()) {
-                        if (gridChild instanceof HBox hbox) {
-                            // Check if the HBox ID matches the UUID of the renamed project
-                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
-                            if (hboxId != null && hboxId.equals(projectUUID)) {
-                                // The HBox matches the provided projectUUID
-                                // Now, find the projectNameButton inside the HBox
-                                for (Node hboxChild : hbox.getChildren()) {
-                                    if (hboxChild instanceof Button nameAndDescriptionButton) {
-                                        VBox nameAndDescriptionContainer =
-                                                (VBox) (nameAndDescriptionButton.getGraphic());
+        GridPane projectsGrid = findGridPane();
 
-                                        for (Node nodeInNameAndDescriptionContainer:
-                                                nameAndDescriptionContainer.getChildren()) {
-                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectName")) {
-                                                Label projectName = (Label) nodeInNameAndDescriptionContainer;
-                                                projectName.setText(newProjectName);
-                                            }
-                                            if (nodeInNameAndDescriptionContainer.getId().equals("projectDescription")) {
-                                                Label projectDescription = (Label) nodeInNameAndDescriptionContainer;
-                                                projectDescription.setText(newProjectDescription);
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                    break;
+        for (Node node : projectsGrid.getChildren()) {
+            if (node instanceof HBox && projectUUID.equals(node.getId())) {
+                HBox targetHBox = (HBox) node;
+                Button nameAndDescriptionButton = findButtonInChildren(targetHBox);
+
+                if (nameAndDescriptionButton != null) {
+                    VBox nameAndDescriptionContainer = (VBox) nameAndDescriptionButton.getGraphic();
+                    updateNameAndDescription(nameAndDescriptionContainer, newProjectName, newProjectDescription);
+                    break; // Exit loop after finding and updating the correct project
+                }
+            }
+        }
+    }
+
+    private Button findButtonInChildren(HBox hbox) {
+        for (Node hboxChild : hbox.getChildren()) {
+            if (hboxChild instanceof Button) {
+                return (Button) hboxChild;
+            }
+        }
+        return null;
+    }
+
+    private void updateNameAndDescription(VBox container, String newName, String newDescription) {
+        for (Node node : container.getChildren()) {
+            if (node.getId() != null) {
+                if ("projectName".equals(node.getId())) {
+                    Label projectName = (Label) node;
+                    projectName.setText(newName);
+                }
+                if ("projectDescription".equals(node.getId())) {
+                    Label projectDescription = (Label) node;
+                    projectDescription.setText(newDescription);
                 }
             }
         }
     }
 
 
+//    /**
+//     * Displays the deleted project on the user interface. When a project is deleted, this method is called to
+//     * remove the corresponding HBox from the projectsGrid (GridPane) in the scene. The HBox represents the
+//     * deleted project on the UI.
+//     *
+//     * @param projectModel The ProjectModel of the project to be deleted from the UI.
+//     */
+//    public void displayDeletedProject(ProjectModel projectModel) {
+//        // Get the UUID of the project to be deleted
+//        String projectUUID = projectModel.getID().toString();
+//
+//        // Get the current scene of the stage
+//        Scene scene = stage.getScene();
+//        if (scene != null) {
+//            // Find the GridPane that holds the projects (projectsGrid)
+//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+//                if (node instanceof GridPane projectsGrid) {
+//                    int numColumns = 2; // Specify the number of columns
+//                    int numRows = projectsGrid.getRowCount(); // Get the number of rows currently in the grid
+//
+//                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
+//                    Iterator<Node> iterator = projectsGrid.getChildren().iterator();
+//                    while (iterator.hasNext()) {
+//                        Node gridChild = iterator.next();
+//                        if (gridChild instanceof HBox hbox) {
+//                            // Check if the HBox ID matches the UUID of the project to be deleted
+//                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
+//                            if (hboxId != null && hboxId.equals(projectUUID)) {
+//                                iterator.remove(); // Use the iterator to safely remove the HBox from the projectsGrid
+//                                break;
+//                            }
+//                        }
+//                    }
+//
+//                    // Rearrange the remaining nodes to fill the empty spaces
+//                    int col = 0;
+//                    int row = 0;
+//                    for (Node child : projectsGrid.getChildren()) {
+//                        GridPane.setColumnIndex(child, col);
+//                        GridPane.setRowIndex(child, row);
+//
+//                        col++;
+//                        if (col >= numColumns) {
+//                            col = 0;
+//                            row++;
+//                        }
+//                    }
+//
+//                    // Fill the empty spaces with new HBoxes if needed
+//                    while (row < numRows) {
+//                        HBox placeholderHBox = new HBox();
+//                        GridPane.setColumnIndex(placeholderHBox, col);
+//                        GridPane.setRowIndex(placeholderHBox, row);
+//                        projectsGrid.getChildren().add(placeholderHBox);
+//
+//                        col++;
+//                        if (col >= numColumns) {
+//                            col = 0;
+//                            row++;
+//                        }
+//                    }
+//
+//                    break;
+//                }
+//            }
+//        }
+//    }
     /**
      * Displays the deleted project on the user interface. When a project is deleted, this method is called to
      * remove the corresponding HBox from the projectsGrid (GridPane) in the scene. The HBox represents the
@@ -596,63 +708,88 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * @param projectModel The ProjectModel of the project to be deleted from the UI.
      */
     public void displayDeletedProject(ProjectModel projectModel) {
-        // Get the UUID of the project to be deleted
         String projectUUID = projectModel.getID().toString();
 
-        // Get the current scene of the stage
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            // Find the GridPane that holds the projects (projectsGrid)
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane projectsGrid) {
-                    int numColumns = 2; // Specify the number of columns
-                    int numRows = projectsGrid.getRowCount(); // Get the number of rows currently in the grid
+        GridPane projectsGrid = findGridPane();
 
-                    // Iterate over the children of the projectsGrid (HBoxes representing projects)
-                    Iterator<Node> iterator = projectsGrid.getChildren().iterator();
-                    while (iterator.hasNext()) {
-                        Node gridChild = iterator.next();
-                        if (gridChild instanceof HBox hbox) {
-                            // Check if the HBox ID matches the UUID of the project to be deleted
-                            Object hboxId = hbox.getId(); // Assuming you set the projectUUID as hboxId of the HBox
-                            if (hboxId != null && hboxId.equals(projectUUID)) {
-                                iterator.remove(); // Use the iterator to safely remove the HBox from the projectsGrid
-                                break;
-                            }
-                        }
-                    }
+        if (projectsGrid != null) {
+            HBox targetHBox = findHBoxWithId(projectsGrid, projectUUID);
 
-                    // Rearrange the remaining nodes to fill the empty spaces
-                    int col = 0;
-                    int row = 0;
-                    for (Node child : projectsGrid.getChildren()) {
-                        GridPane.setColumnIndex(child, col);
-                        GridPane.setRowIndex(child, row);
-
-                        col++;
-                        if (col >= numColumns) {
-                            col = 0;
-                            row++;
-                        }
-                    }
-
-                    // Fill the empty spaces with new HBoxes if needed
-                    while (row < numRows) {
-                        HBox placeholderHBox = new HBox();
-                        GridPane.setColumnIndex(placeholderHBox, col);
-                        GridPane.setRowIndex(placeholderHBox, row);
-                        projectsGrid.getChildren().add(placeholderHBox);
-
-                        col++;
-                        if (col >= numColumns) {
-                            col = 0;
-                            row++;
-                        }
-                    }
-
-                    break;
-                }
+            if (targetHBox != null) {
+                removeHBoxAndUpdateLayout(projectsGrid, targetHBox);
             }
+        }
+    }
+
+    /**
+     * Finds the HBox in the provided GridPane that has the specified UUID as its ID.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param projectUUID The UUID of the project to be found.
+     * @return The HBox representing the project with the specified UUID, or null if not found.
+     */
+    private HBox findHBoxWithId(GridPane projectsGrid, String projectUUID) {
+        for (Node node : projectsGrid.getChildren()) {
+            if (node instanceof HBox && projectUUID.equals(node.getId())) {
+                return (HBox) node;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Removes the specified HBox from the projectsGrid and updates the layout of the GridPane.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param targetHBox The HBox to be removed.
+     */
+    private void removeHBoxAndUpdateLayout(GridPane projectsGrid, HBox targetHBox) {
+        int numColumns = 2; // Specify the number of columns
+
+        projectsGrid.getChildren().remove(targetHBox);
+
+        rearrangeGridPaneLayout(projectsGrid, numColumns);
+    }
+
+    /**
+     * Rearranges the layout of the GridPane after removing an HBox.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param numColumns The number of columns in the GridPane.
+     */
+    private void rearrangeGridPaneLayout(GridPane projectsGrid, int numColumns) {
+        int col = 0;
+        int row = 0;
+
+        for (Node child : projectsGrid.getChildren()) {
+            GridPane.setColumnIndex(child, col);
+            GridPane.setRowIndex(child, row);
+
+            col++;
+            if (col >= numColumns) {
+                col = 0;
+                row++;
+            }
+        }
+
+        fillEmptySpacesWithPlaceholders(projectsGrid, row, numColumns);
+    }
+
+    /**
+     * Fills the empty spaces in the GridPane with placeholder HBoxes.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param row The row index where placeholders should be added.
+     * @param numColumns The number of columns in the GridPane.
+     */
+    private void fillEmptySpacesWithPlaceholders(GridPane projectsGrid, int row, int numColumns) {
+        while (row < projectsGrid.getRowCount()) {
+            HBox placeholderHBox = new HBox();
+            GridPane.setColumnIndex(placeholderHBox, 0);
+            GridPane.setRowIndex(placeholderHBox, row);
+            projectsGrid.getChildren().add(placeholderHBox);
+
+            row++;
         }
     }
 
@@ -679,27 +816,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return null;
     }
 
-
-
-
-    /**
-     * Simply adds the Create Project Button to the projectsGrid GridPane. The col and row is where it will be set
-     * since it is the last location in projectsGrid that is empty.
-     *
-     * @param col the column number where Create Project Button.
-     * @param row the row number where Create Project Button.
-     */
-    void addCreateProjectButton(int col, int row) {
-        GridPane projectsGrid = findGridPane();
-        System.out.println("ADD CREATE PROJECT BUTTON IS CALLED, HERE ARE COL AND ROW");
-        System.out.println("COL: " + col + "ROW: " + row);
-        Button createProjectButton = new Button("+");
-        createProjectButton.setOnAction(this::handleCreateProjectPopup);
-
-        createProjectButton.getStyleClass().add("create-project-button-style");
-
-        projectsGrid.add(createProjectButton, col, row);
-    }
 
     /**
      * Handles the "Create Project" Popup for the user to input the necessary information.
