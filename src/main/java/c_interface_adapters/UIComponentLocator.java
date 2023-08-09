@@ -75,4 +75,16 @@ public class UIComponentLocator {
         }
         return null;
     }
+
+    public HBox findColumnsContainer() {
+        if (scene != null) {
+            Node scrollPaneContainer = findNodeById("scrollPaneContainer");
+            if (scrollPaneContainer instanceof ScrollPane) {
+                HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
+                return columnsContainer;
+            }
+        }
+
+        return null;
+    }
 }
