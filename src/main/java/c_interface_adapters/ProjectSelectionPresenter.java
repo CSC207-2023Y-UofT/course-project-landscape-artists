@@ -12,7 +12,6 @@ import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoMod
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -421,10 +420,11 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     private Button createCreateProjectButton() {
         Button createProjectButton = new Button("+");
-        createProjectButton.setOnAction(this::handleCreateProjectPopup);
+        createProjectButton.setOnAction(this::showCreateProjectDialog);
         createProjectButton.getStyleClass().add("create-project-button-style");
         return createProjectButton;
     }
+
 
     /**
      * Retrieves the current column index for positioning elements in the grid.
@@ -817,51 +817,155 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
 
+//    /**
+//     * Handles the "Create Project" Popup for the user to input the necessary information.
+//     */
+//    private void handleCreateProjectPopup(ActionEvent actionEvent) {
+//        // Create a new Dialog
+//        Dialog<Pair<String, String>> dialog = new Dialog<>();
+//        dialog.setTitle("Create Project");
+//
+//        // Set the button types (OK and Cancel)
+//        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+//
+//        // Create labels and text fields for project name and description
+//        Label nameLabel = new Label("Project Name:");
+//        Label descLabel = new Label("Description:");
+//        TextField nameTextField = new TextField();
+//        TextField descTextField = new TextField();
+//
+//        // Create a GridPane to layout the labels and text fields
+//        GridPane gridPane = new GridPane();
+//        gridPane.add(nameLabel, 0, 0);
+//        gridPane.add(nameTextField, 1, 0);
+//        gridPane.add(descLabel, 0, 1);
+//        gridPane.add(descTextField, 1, 1);
+//
+//        // Set the content of the dialog to the GridPane
+//        dialog.getDialogPane().setContent(gridPane);
+//
+//        // Convert the result to a Pair object when the OK button is clicked
+//        dialog.setResultConverter(dialogButton -> {
+//            if (dialogButton == ButtonType.OK) {
+//                String projectName = nameTextField.getText();
+//                String projectDescription = descTextField.getText();
+//                return new Pair<>(projectName, projectDescription);
+//            }
+//            return null;
+//        });
+//
+//        // Show the dialog and wait for the user to close it
+//        dialog.showAndWait().ifPresent(project -> {
+//            if (project != null) {
+//                // Handle the newly created project here
+//                controller.createProject(project.getKey(), project.getValue());
+//            }
+//        });
+//    }
+
     /**
-     * Handles the "Create Project" Popup for the user to input the necessary information.
+     * Shows a dialog for creating a new project and returns the user's input.
+     *
+     * @return An Optional containing the project name and description, or empty if canceled.
      */
-    private void handleCreateProjectPopup(ActionEvent actionEvent) {
-        // Create a new Dialog
+    public Optional<Pair<String, String>> showCreateProjectDialog(ActionEvent actionEvent) {
+        Dialog<Pair<String, String>> dialog = createDialog();
+        setDialogContent(dialog);
+        return showDialogAndWait(dialog);
+    }
+
+    /**
+     * Creates a new dialog for project creation.
+     *
+     * @return The created dialog.
+     */
+    private Dialog<Pair<String, String>> createDialog() {
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Create Project");
-
-        // Set the button types (OK and Cancel)
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        return dialog;
+    }
 
-        // Create labels and text fields for project name and description
+    /**
+     * Sets the content of the dialog with labels and text fields for project information.
+     *
+     * @param dialog The dialog to set content for.
+     */
+    private void setDialogContent(Dialog<Pair<String, String>> dialog) {
         Label nameLabel = new Label("Project Name:");
         Label descLabel = new Label("Description:");
         TextField nameTextField = new TextField();
         TextField descTextField = new TextField();
 
-        // Create a GridPane to layout the labels and text fields
         GridPane gridPane = new GridPane();
         gridPane.add(nameLabel, 0, 0);
         gridPane.add(nameTextField, 1, 0);
         gridPane.add(descLabel, 0, 1);
         gridPane.add(descTextField, 1, 1);
 
-        // Set the content of the dialog to the GridPane
         dialog.getDialogPane().setContent(gridPane);
-
-        // Convert the result to a Pair object when the OK button is clicked
-        dialog.setResultConverter(dialogButton -> {
-            if (dialogButton == ButtonType.OK) {
-                String projectName = nameTextField.getText();
-                String projectDescription = descTextField.getText();
-                return new Pair<>(projectName, projectDescription);
-            }
-            return null;
-        });
-
-        // Show the dialog and wait for the user to close it
-        dialog.showAndWait().ifPresent(project -> {
-            if (project != null) {
-                // Handle the newly created project here
-                controller.createProject(project.getKey(), project.getValue());
-            }
-        });
     }
+
+    /**
+     * Shows the dialog, waits for the user to close it, and handles the project creation.
+     *
+     * @param dialog The dialog to show and wait for.
+     * @return An Optional containing the project name and description, or empty if canceled.
+     */
+    private Optional<Pair<String, String>> showDialogAndWait(Dialog<Pair<String, String>> dialog) {
+        dialog.showAndWait().ifPresent(project -> {
+            controller.createProject(project.getKey(), project.getValue());
+        });
+        return Optional.empty(); // If needed, provide meaningful return value
+    }
+
+//    /**
+//     * Displays a popup for the user to input the new name and description. If either is empty, then show an alert
+//     * message saying it is invalid.
+//     *
+//     * @return An array of strings containing the new project name and description entered by the user, respectively.
+//     */
+//    public String[] displayRenameProjectPopup() {
+//        // Create a dialog to get the new project name and description from the user
+//        TextInputDialog dialog = new TextInputDialog();
+//        dialog.setTitle("Rename Project");
+//        dialog.setHeaderText("Enter the new name and description for the project:");
+//
+//        // Create two text fields for the user to enter the name and description
+//        TextField nameField = new TextField();
+//        nameField.setPromptText("New Project Name");
+//        TextField descriptionField = new TextField();
+//        descriptionField.setPromptText("New Project Description");
+//
+//        // Set the dialog content to contain the text fields
+//        dialog.getDialogPane().setContent(new VBox(nameField, descriptionField));
+//
+//        // Show the dialog and wait for the user's response
+//        Optional<String> result = dialog.showAndWait();
+//
+//        // Check if the user clicked "OK" and get the user input from the text fields
+//        if (result.isPresent()) {
+//            String newProjectName = nameField.getText().trim();
+//            String newProjectDescription = descriptionField.getText().trim();
+//
+//            // Check if either field is empty
+//            if (newProjectName.isEmpty() || newProjectDescription.isEmpty()) {
+//                // Show an error alert if either field is empty
+//                Alert alert = new Alert(Alert.AlertType.ERROR);
+//                alert.setTitle("Invalid Input");
+//                alert.setHeaderText("Invalid Project Name or Description");
+//                alert.setContentText("Project name and description cannot be empty.\nPlease enter the new name and description.");
+//                alert.showAndWait();
+//                return null;
+//            } else {
+//                // Return the valid new project name and description as an array of strings
+//                return new String[]{newProjectName, newProjectDescription};
+//            }
+//        } else {
+//            // Return null if the user clicked "Cancel" or closed the dialog
+//            return null;
+//        }
+//    }
 
     /**
      * Displays a popup for the user to input the new name and description. If either is empty, then show an alert
@@ -870,44 +974,67 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * @return An array of strings containing the new project name and description entered by the user, respectively.
      */
     public String[] displayRenameProjectPopup() {
-        // Create a dialog to get the new project name and description from the user
+        Optional<String[]> result = showRenameProject();
+
+        return result.orElse(null);
+    }
+    /**
+     * Displays a dialog to rename a project and captures the user's input.
+     *
+     * @return An optional string array containing the new project name and description if the user provided valid input,
+     *         or an empty optional if the user canceled the dialog or provided invalid input.
+     */
+    public Optional<String[]> showRenameProject() {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Rename Project");
         dialog.setHeaderText("Enter the new name and description for the project:");
 
-        // Create two text fields for the user to enter the name and description
         TextField nameField = new TextField();
         nameField.setPromptText("New Project Name");
         TextField descriptionField = new TextField();
         descriptionField.setPromptText("New Project Description");
 
-        // Set the dialog content to contain the text fields
         dialog.getDialogPane().setContent(new VBox(nameField, descriptionField));
 
-        // Show the dialog and wait for the user's response
         Optional<String> result = dialog.showAndWait();
 
-        // Check if the user clicked "OK" and get the user input from the text fields
         if (result.isPresent()) {
             String newProjectName = nameField.getText().trim();
             String newProjectDescription = descriptionField.getText().trim();
 
-            // Check if either field is empty
-            if (newProjectName.isEmpty() || newProjectDescription.isEmpty()) {
-                // Show an error alert if either field is empty
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Invalid Input");
-                alert.setHeaderText("Invalid Project Name or Description");
-                alert.setContentText("Project name and description cannot be empty.\nPlease enter the new name and description.");
-                alert.showAndWait();
-                return null;
+            if (isInputValid(newProjectName, newProjectDescription)) {
+                return Optional.of(new String[]{newProjectName, newProjectDescription});
             } else {
-                // Return the valid new project name and description as an array of strings
-                return new String[]{newProjectName, newProjectDescription};
+                showErrorAlert("Invalid Project Name or Description",
+                        "Project name and description cannot be empty.\nPlease enter the new name and description.");
             }
-        } else {
-            // Return null if the user clicked "Cancel" or closed the dialog
-            return null;
         }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Validates whether the provided project name and description are not empty.
+     *
+     * @param newProjectName        The new project name to be validated.
+     * @param newProjectDescription The new project description to be validated.
+     * @return True if both the project name and description are not empty, false otherwise.
+     */
+    private boolean isInputValid(String newProjectName, String newProjectDescription) {
+        return !newProjectName.isEmpty() && !newProjectDescription.isEmpty();
+    }
+
+    /**
+     * Displays an error alert dialog with the specified header and content.
+     *
+     * @param header  The header text of the error alert.
+     * @param content The content text of the error alert.
+     */
+    private void showErrorAlert(String header, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Invalid Input");
+        alert.setHeaderText(header);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
