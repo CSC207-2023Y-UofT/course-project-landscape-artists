@@ -109,6 +109,32 @@ public class CSVMapper implements AutoCloseable {
         }
         return outputMap;
     }
+
+
+    /**
+     * Returns a Mapping from the string of key column field to the corresponding record
+     * @param keyColumn index of csv key column with string values only
+     * @return Mapping from the string of key column field to the corresponding record
+     */
+    public Map<String, CSVRecord> getStringToRecordMap(String keyColumn){
+        Map<String, CSVRecord> outputMap = new HashMap<>();
+        // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
+        try (FileReader fileReader = new FileReader(csvFile);
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))){
+            // Iterate through each CSV record/row and append outputMap
+            for (CSVRecord csvRecord : csvParser) {
+                if (!(csvRecord.get(keyColumn) instanceof String)) {
+                    throw new IllegalArgumentException("The key column contains non-string values. Cannot map.");
+                }
+                outputMap.put(csvRecord.get(keyColumn), csvRecord);
+
+            }
+
+        } catch (IOException e){
+            throw new RuntimeException("Error getting String-to-String map from CSV file: " + e.getMessage(), e);
+        }
+        return outputMap;
+    }
     /**
      * Close the CSVParser when the CSVSearcher is no longer needed.
      */
