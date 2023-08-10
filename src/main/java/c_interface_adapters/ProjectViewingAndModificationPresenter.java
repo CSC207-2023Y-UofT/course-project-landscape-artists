@@ -780,6 +780,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 //            }
 //        }
 //    }
+    /**
+     * Populates the specified column box with task cards based on the provided task models.
+     *
+     * @param columnBox The VBox to populate with task cards.
+     * @param tasks     The list of TaskModel objects representing the tasks.
+     */
     void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks) {
         Set<String> addedHBoxIds = new HashSet<>();
 
@@ -794,6 +800,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         }
     }
 
+    /**
+     * Creates a task card (HBox) for the given task.
+     *
+     * @param task The TaskModel object representing the task.
+     * @return The created HBox representing the task card.
+     */
     private HBox createTaskCard(TaskModel task) {
         Rectangle cardBackground = new Rectangle(0, 0, Color.LIGHTBLUE);
         Text textContent = new Text(task.getName());
@@ -813,6 +825,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         return hbox;
     }
 
+
+    /**
+     * Sets task options and related UI elements for the task card.
+     *
+     * @param hbox        The HBox representing the task card.
+     * @param task        The TaskModel object representing the task.
+     * @param columnBoxId The ID of the parent column box.
+     */
     private void setTaskOptions( HBox hbox, TaskModel task, String columnBoxId) {
         MenuButton taskOptionsButton = createTaskOptionsMenu(task, hbox, columnBoxId);
         RadioButton completeTaskButton = new RadioButton();
@@ -821,7 +841,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         SetHBoxFeatures(hbox);
     }
 
-
+    /**
+     * Creates a menu button with task-specific options for the task card.
+     *
+     * @param task        The TaskModel object representing the task.
+     * @param hbox        The HBox representing the task card.
+     * @param columnBoxId The ID of the parent column box.
+     * @return The created MenuButton with task options.
+     */
     private MenuButton createTaskOptionsMenu(TaskModel task, HBox hbox, String columnBoxId) {
         MenuButton taskOptionsButton = new MenuButton("");
         MenuItem changeTaskDetailsButton = new MenuItem("Change Task Details");
