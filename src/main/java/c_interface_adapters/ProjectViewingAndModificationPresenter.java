@@ -150,17 +150,33 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         }
     }
 
+    /**
+     * Displays a new task in the specified column.
+     *
+     * @param columnBoxID The UUID of the column box where the task will be displayed.
+     * @param newTask     The ViewModel representing the new task.
+     */
     @Override
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
         System.out.println("hi");
     }
 
-
+    /**
+     * Displays the removal of a task.
+     *
+     * @param taskID The UUID of the task being removed.
+     * @param task   The ViewModel representing the removed task.
+     */
     @Override
     public void displayRemovedTask(UUID taskID, TaskViewModel task) {
         System.out.println("hello");
     }
 
+    /**
+     * Displays the renaming of a column.
+     *
+     * @param column The ColumnModel containing the updated column information.
+     */
     @Override
     public void displayRenamedColumn(ColumnModel column) {
         String columnUUID = column.getID().toString();
@@ -178,6 +194,11 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
     }
 
+    /**
+     * Displays the deletion of a column.
+     *
+     * @param columnModel The ColumnModel representing the deleted column.
+     */
     @Override
     public void displayDeletedColumn(ColumnModel columnModel) {
         String columnUUID = columnModel.getID().toString();
