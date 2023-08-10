@@ -392,26 +392,31 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 //            event.consume();
 //        });
 //    }
+
+    /**
+     * Displays a new column in the task management application.
+     *
+     * @param column The ColumnModel representing the new column to be displayed.
+     */
     public void displayNewColumn(ColumnModel column) {
         ScrollPane scrollPane = createScrollPane();
         VBox columnBox = createColumnBox(column);
-        HBox columnNameAndOptions = createColumnNameAndOptions(column);
+        HBox columnNameAndOptions = createColumnNameAndOptions();
         Label columnLabel = createColumnLabel(column.getName());
-        MenuButton columnOptions = createColumnOptions(column);
+        MenuButton columnOptions = createColumnOptions();
         addMenuItems(columnOptions, column);
-        Button addTaskButton = createAddTaskButton(column);
+        Button addTaskButton = createAddTaskButton();
         addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox));
         HBox TaskBtnVBox = new HBox(addTaskButton);
 
         scrollPane.setId(column.getID().toString());
 
         configureSizeConstraints(columnNameAndOptions, columnOptions, TaskBtnVBox);
-        configureStyling(columnOptions);
 
         columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions, TaskBtnVBox);
 
         columnBox.getChildren().add(columnNameAndOptions);
-        controller.presenter.populateTasksForEachColumn(columnBox, column.getTaskModels(), controller);
+        populateTasksForEachColumn(columnBox, column.getTaskModels());
 
         configureColumnBox(columnBox, scrollPane);
         addToColumnsContainer(scrollPane);
@@ -419,6 +424,13 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
         configureDragAndDropHandling(columnBox);
     }
+
+    /**
+     * Creates and returns a Label for the column name.
+     *
+     * @param columnName The name of the column.
+     * @return The created Label.
+     */
     private Label createColumnLabel(String columnName) {
         Label columnLabel = new Label(columnName);
         columnLabel.setId("columnTitle");
@@ -426,12 +438,24 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         return columnLabel;
     }
 
+
+    /**
+     * Creates and returns a ScrollPane for the column.
+     *
+     * @return The created ScrollPane.
+     */
     private ScrollPane createScrollPane() {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setPrefSize(200, 400);
         return scrollPane;
     }
 
+    /**
+     * Creates and returns a VBox for the column.
+     *
+     * @param column The ColumnModel representing the column.
+     * @return The created VBox.
+     */
     private VBox createColumnBox(ColumnModel column) {
         VBox columnBox = new VBox();
         columnBox.setPrefSize(180, 380);
@@ -440,7 +464,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         return columnBox;
     }
 
-    private HBox createColumnNameAndOptions(ColumnModel column) {
+    /**
+     * Creates and returns an HBox for the column name and options.
+     *
+     * @return The created HBox holding column name and options.
+     */
+    private HBox createColumnNameAndOptions() {
         HBox columnNameAndOptions = new HBox();
         HBox.setHgrow(columnNameAndOptions, Priority.ALWAYS);
         columnNameAndOptions.setSpacing(40);
@@ -452,29 +481,36 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         return columnNameAndOptions;
     }
 
+    /**
+     * Configures drag-and-drop handling for the given column box.
+     *
+     * @param columnBox The VBox representing the column.
+     */
     private void configureDragAndDropHandling(VBox columnBox) {
         columnBox.setOnDragOver(event -> {
             this.dragDestination = columnBox;
             event.consume();
         });
-
-        // You might need to add the actual drag-and-drop logic here
     }
 
-
-    private void addColumnLabel(HBox columnNameAndOptions, String columnName) {
-        Label columnLabel = new Label(columnName);
-        columnLabel.setId("columnTitle");
-        columnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        columnNameAndOptions.getChildren().add(columnLabel);
-    }
-
-    private MenuButton createColumnOptions(ColumnModel column) {
+    /**
+     * Creates and returns a MenuButton for column options.
+     *
+     * @return The created MenuButton.
+     */
+    private MenuButton createColumnOptions() {
         MenuButton columnOptions = new MenuButton("");
         columnOptions.getStyleClass().add("menu-button-custom");
         return columnOptions;
     }
 
+
+    /**
+     * Adds menu items (options) to the column options menu button.
+     *
+     * @param columnOptions The MenuButton for column options.
+     * @param column The ColumnModel representing the column.
+     */
     private void addMenuItems(MenuButton columnOptions, ColumnModel column) {
         MenuItem renameColumnButton = new MenuItem("Rename Column");
         MenuItem deleteColumnButton = new MenuItem("Delete Column");
@@ -489,28 +525,48 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
     }
 
-    private Button createAddTaskButton(ColumnModel column) {
+    /**
+     * Creates and returns a button for adding a task.
+     *
+     * @return The created Button.
+     */
+    private Button createAddTaskButton() {
         Button addTaskButton = new Button("Add Task");
         return addTaskButton;
     }
 
+    /**
+     * Configures size constraints for UI elements.
+     *
+     * @param columnNameAndOptions The HBox containing column name and options.
+     * @param columnOptions The MenuButton for column options.
+     * @param TaskBtnVBox The HBox containing the add task button.
+     */
     private void configureSizeConstraints(HBox columnNameAndOptions, MenuButton columnOptions, HBox TaskBtnVBox) {
         HBox.setHgrow(columnOptions, Priority.NEVER);
         HBox.setHgrow(TaskBtnVBox, Priority.NEVER);
         VBox.setVgrow(columnNameAndOptions, Priority.NEVER);
     }
 
-    private void configureStyling(MenuButton columnOptions) {
-        // Styling configuration for columnOptions
-    }
-
+    /**
+     * Configures the column box and its associated scroll pane.
+     *
+     * @param columnBox The VBox representing the column.
+     * @param scrollPane The ScrollPane containing the column.
+     */
     private void configureColumnBox(VBox columnBox, ScrollPane scrollPane) {
         columnBox.setSpacing(10);
         scrollPane.setContent(columnBox);
     }
 
+    /**
+     * Adds the scroll pane to the columns container.
+     *
+     * @param scrollPane The ScrollPane containing the column.
+     */
     private void addToColumnsContainer(ScrollPane scrollPane) {
-        controller.columnsContainer.getChildren().add(scrollPane);
+        HBox columnsContainer = uiComponentLocator.findColumnsContainer();
+        columnsContainer.getChildren().add(scrollPane);
     }
 
     // TODO: THIS WAS THE INITIAL. MAYBE USE THIS INSTEAD BUT FIX IT UP.
@@ -647,95 +703,149 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     // TODO: END
 
 
-    /**
-     * Populates the UI with tasks for each column. For each task, an HBox is created with the task
-     * name and an options button. The HBox is then added to the VBox representing the column UI.
-     *
-     * @param columnBox                               The VBox representing the Column UI. Items added to this JavaFX component
-     *                                                are stacked vertically.
-     * @param tasks                                   The list of Task instances belonging to the columnBox.
-     * @param projectViewingAndModificationController
-     */
-    void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
-        // Create a set to store the unique IDs of the HBox nodes added to the columnBox
+//    /**
+//     * Populates the UI with tasks for each column. For each task, an HBox is created with the task
+//     * name and an options button. The HBox is then added to the VBox representing the column UI.
+//     *
+//     * @param columnBox                               The VBox representing the Column UI. Items added to this JavaFX component
+//     *                                                are stacked vertically.
+//     * @param tasks                                   The list of Task instances belonging to the columnBox.
+//     * @param projectViewingAndModificationController
+//     */
+//    void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks, ProjectViewingAndModificationController projectViewingAndModificationController) {
+//        // Create a set to store the unique IDs of the HBox nodes added to the columnBox
+//        Set<String> addedHBoxIds = new HashSet<>();
+//
+//        // Iterate through the list of tasks and create an HBox for each task
+//        for (TaskModel task : tasks) {
+//            // Create the card content
+//
+//            Rectangle cardBackground = new Rectangle(columnBox.getWidth(), 50, Color.LIGHTBLUE);
+//            Text textContent = new Text(task.getName());
+//            cardBackground.setArcHeight(10.0d);
+//            cardBackground.setArcWidth(10.0d);
+//            StackPane cardContent = new StackPane(cardBackground, textContent);
+//
+//            // Create the card (HBox) to hold the content
+//            HBox hbox = new HBox(cardContent);
+//            hbox.setStyle("-fx-border-radius: 10.0d;" +
+//                    "-fx-border-color: black;" +
+//                    "-fx-border-width: 2px;"); // Add a border for better visibility
+//            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+//
+//            //Create menu button and its options.
+//            MenuButton taskOptionsButton = new MenuButton("");
+////            MenuItem renameTaskButton = new MenuItem("Rename Task");
+//            MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
+//                    "Details");
+//            MenuItem deleteTaskButton = new MenuItem("Delete Task");
+//            MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
+//
+//            //Event handler for the changing task details. Calls another method on this presenter
+//            changeTaskDetailsButton.setOnAction(event -> {
+//
+//                this.handleChangeTaskPopup(task, hbox, UUID.fromString(columnBox.getId()));
+//
+//                });
+//
+//            deleteTaskButton.setOnAction(event -> {
+//                projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
+//                        UUID.fromString(columnBox.getId()));});
+//            showTaskDetailsButton.setOnAction(event -> {
+//                projectViewingAndModificationController.showTaskDetails(task);});
+//
+//            // Add to MenuButton
+//
+//            taskOptionsButton.getItems().addAll(
+//                    changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
+//
+//            taskOptionsButton.getStyleClass().add("menu-button-custom");
+//
+//
+//
+//            taskOptionsButton.setStyle("-fx-font-size: 8px;");
+//
+//            RadioButton completeTaskButton = new RadioButton();
+//
+//            hbox.getChildren().addAll(textContent, taskOptionsButton, completeTaskButton);
+//            SetHBoxFeatures(columnBox, hbox);
+//
+//            hbox.setSpacing(5); // Set spacing between text and menuButton
+//            hbox.setPadding(new Insets(2)); // Add some padding for better appearance
+//            columnBox.setSpacing(10);
+//            if (!addedHBoxIds.contains(hbox.getId())) {
+//                // Add the HBox to the columnBox if it doesn't exist
+//                columnBox.getChildren().add(hbox);
+//                addedHBoxIds.add(hbox.getId()); // Add the HBox ID to the set
+//            }
+//        }
+//    }
+    void populateTasksForEachColumn(VBox columnBox, List<TaskModel> tasks) {
         Set<String> addedHBoxIds = new HashSet<>();
 
-        // Iterate through the list of tasks and create an HBox for each task
         for (TaskModel task : tasks) {
-            // Create the card content
+            HBox hbox = createTaskCard(task);
+            setTaskOptions( hbox, task, columnBox.getId());
 
-            Rectangle cardBackground = new Rectangle(columnBox.getWidth(), 50, Color.LIGHTBLUE);
-            Text textContent = new Text(task.getName());
-            cardBackground.setArcHeight(10.0d);
-            cardBackground.setArcWidth(10.0d);
-            StackPane cardContent = new StackPane(cardBackground, textContent);
-
-            // Create the card (HBox) to hold the content
-            HBox hbox = new HBox(cardContent);
-            hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: black;" +
-                    "-fx-border-width: 2px;"); // Add a border for better visibility
-            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
-
-            //Create menu button and its options.
-            MenuButton taskOptionsButton = new MenuButton("");
-//            MenuItem renameTaskButton = new MenuItem("Rename Task");
-            MenuItem changeTaskDetailsButton = new MenuItem("Change Task " +
-                    "Details");
-            MenuItem deleteTaskButton = new MenuItem("Delete Task");
-            MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
-
-            // Add event handlers.
-//            renameTaskButton.setOnAction(event -> {
-//                projectViewingAndModificationController.renameTask(task, hbox);});
-            //Event handler for the changing task details. Calls another method on this presenter
-            changeTaskDetailsButton.setOnAction(event -> {
-
-                this.handleChangeTaskPopup(task, hbox, UUID.fromString(columnBox.getId()));
-
-                //projectViewingAndModificationController.changeTaskDetails(
-                    //task, hbox);
-                });
-
-            deleteTaskButton.setOnAction(event -> {
-                projectViewingAndModificationController.deleteTask(task, UUID.fromString(hbox.getId()),
-                        UUID.fromString(columnBox.getId()));});
-            showTaskDetailsButton.setOnAction(event -> {
-                projectViewingAndModificationController.showTaskDetails(task);});
-
-            // Add to MenuButton
-
-            taskOptionsButton.getItems().addAll(
-                    changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
-
-            taskOptionsButton.getStyleClass().add("menu-button-custom");
-
-
-
-            taskOptionsButton.setStyle("-fx-font-size: 8px;");
-
-            RadioButton completeTaskButton = new RadioButton();
-//            completeTaskButton.setOnAction(event -> controller.completeTask(task));
-
-//            taskOptionsButton.setOnAction(actionEvent -> {
-//                projectViewingAndModificationController.handleTaskOptions(actionEvent, task, columnBox);
-//            });
-
-            hbox.getChildren().addAll(textContent, taskOptionsButton, completeTaskButton);
-            SetHBoxFeatures(columnBox, hbox);
-
-            hbox.setSpacing(5); // Set spacing between text and menuButton
-            hbox.setPadding(new Insets(2)); // Add some padding for better appearance
-            columnBox.setSpacing(10);
             if (!addedHBoxIds.contains(hbox.getId())) {
-                // Add the HBox to the columnBox if it doesn't exist
                 columnBox.getChildren().add(hbox);
-                addedHBoxIds.add(hbox.getId()); // Add the HBox ID to the set
+                addedHBoxIds.add(hbox.getId());
             }
         }
     }
 
-    private void SetHBoxFeatures(VBox columnBox, HBox hbox) {
+    private HBox createTaskCard(TaskModel task) {
+        Rectangle cardBackground = new Rectangle(0, 0, Color.LIGHTBLUE);
+        Text textContent = new Text(task.getName());
+        cardBackground.setArcHeight(10.0d);
+        cardBackground.setArcWidth(10.0d);
+        StackPane cardContent = new StackPane(cardBackground, textContent);
+
+        HBox hbox = new HBox(cardContent);
+        hbox.setStyle("-fx-border-radius: 10.0d;" +
+                "-fx-border-color: black;" +
+                "-fx-border-width: 2px;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+
+        hbox.setSpacing(5);
+        hbox.setPadding(new Insets(2));
+
+        return hbox;
+    }
+
+    private void setTaskOptions( HBox hbox, TaskModel task, String columnBoxId) {
+        MenuButton taskOptionsButton = createTaskOptionsMenu(task, hbox, columnBoxId);
+        RadioButton completeTaskButton = new RadioButton();
+
+        hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
+        SetHBoxFeatures(hbox);
+    }
+
+
+    private MenuButton createTaskOptionsMenu(TaskModel task, HBox hbox, String columnBoxId) {
+        MenuButton taskOptionsButton = new MenuButton("");
+        MenuItem changeTaskDetailsButton = new MenuItem("Change Task Details");
+        MenuItem deleteTaskButton = new MenuItem("Delete Task");
+        MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
+
+        changeTaskDetailsButton.setOnAction(event -> {
+            handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId));
+        });
+        deleteTaskButton.setOnAction(event -> {
+            controller.deleteTask(task, UUID.fromString(hbox.getId()), UUID.fromString(columnBoxId));
+        });
+        showTaskDetailsButton.setOnAction(event -> {
+            controller.showTaskDetails(task);
+        });
+
+        taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
+        taskOptionsButton.getStyleClass().add("menu-button-custom");
+        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+
+        return taskOptionsButton;
+    }
+
+    private void SetHBoxFeatures(HBox hbox) {
         // Set the unique identifier for the HBox
         hbox.setId(UUID.randomUUID().toString());
 
