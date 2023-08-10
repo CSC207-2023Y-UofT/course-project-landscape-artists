@@ -838,7 +838,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         RadioButton completeTaskButton = new RadioButton();
 
         hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
-        SetHBoxFeatures(hbox);
+        configureHBoxFeatures(hbox);
     }
 
     /**
@@ -872,97 +872,217 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         return taskOptionsButton;
     }
 
-    private void SetHBoxFeatures(HBox hbox) {
-        // Set the unique identifier for the HBox
+//    private void SetHBoxFeatures(HBox hbox) {
+//        // Set the unique identifier for the HBox
+//        hbox.setId(UUID.randomUUID().toString());
+//
+//        // Set mouse event handlers for dragging the card
+//        hbox.setOnDragDetected(event -> {
+//            Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
+//
+//            ClipboardContent content = new ClipboardContent();
+//            content.putString(hbox.getId()); // Use the unique identifier for the HBox as the data to be transferred
+//            dragboard.setContent(content);
+//            WritableImage snapshot = hbox.snapshot(null, null);
+//            dragboard.setDragView(snapshot);
+//
+//            event.consume();
+//        });
+//
+//        hbox.setOnDragOver(event -> {
+//            //System.out.println("INSIDE 1");
+//            if (event.getGestureSource() == hbox && event.getDragboard().hasString()) {
+//                //System.out.println("INSIDE 1.5");
+//                event.acceptTransferModes(TransferMode.MOVE);
+//            }
+//
+//            event.consume();
+//        });
+//
+//        hbox.setOnDragDone(event -> {
+//            //System.out.println("INSIDE 2");
+//
+//            Dragboard dragboard = event.getDragboard();
+//            boolean success = false;
+//            System.out.println("DRAGBOARD" + dragboard.hasString());
+//
+//            if (dragboard.hasString()) {
+//                // Find the source HBox based on the unique identifier
+//                HBox sourceHBox = findHBoxById(dragboard.getString());
+//
+//                System.out.println("SOURCE HBOX" + sourceHBox);
+//
+//                // Move the HBox to the new column
+//                if (sourceHBox != null) {
+//                    System.out.println("INSIDE SUCCESS");
+//                    // Find the destination VBox (the column box that the HBox is dragged into)
+//
+//                    //System.out.println(hbox.getParent().equals(sourceHBox.getParent()));
+//                    //VBox destinationColumnBox = (VBox) hbox.getParent();
+//
+//                    // Remove the HBox from its current column box and add it to the destination column box
+//                    //VBox destinationColumnBox = findTargetDestinationVBox(event);
+//                    System.out.println("DRAG DESTINATION " + dragDestination);
+//                    if (this.dragDestination != null) {
+//                        System.out.println("DRAGDESTINATION IS NOT NULL");
+//                        // Remove the HBox from its current column box and add it to the destination column box
+//                        ((VBox) sourceHBox.getParent()).getChildren().remove(sourceHBox);
+//                        System.out.println("ITEMS INSIDE SOURCE HBOX " + sourceHBox.getChildren());
+//                        TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
+//                        transition.setToX(this.dragDestination.getLayoutX() - hbox.getLayoutX());
+//                        transition.play();
+//
+//                        transition.setOnFinished(event1 -> {
+//                            this.dragDestination.getChildren().add(sourceHBox);
+//                        });
+//                        success = true;
+//                    } else {
+//                        System.out.println("Destination VBox not found!");
+//                    }
+//                }
+//            }
+//
+//            event.setDropCompleted(success);
+//            DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+//            dbManagerSearchController.DBTaskSearch(hbox.getId());
+//            event.consume();
+//        });
+//
+//        // Set the style when the cursor enters the HBox
+//        hbox.setOnMouseEntered(e -> {
+//            hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+//            hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
+//        });
+//
+//        // Set the style when the cursor exits the HBox
+//        hbox.setOnMouseExited(e -> {
+//            hbox.setStyle("-fx-border-radius: 10.0d;" +
+//                    "-fx-border-color: black;" +
+//                    "-fx-border-width: 2px;");
+//            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+//        });
+//    }
+    /**
+     * Configures various features for an HBox, including drag-and-drop behavior and mouse actions.
+     * Generates a unique identifier for the HBox and sets up its behavior.
+     *
+     * @param hbox The HBox to configure.
+     */
+    private void configureHBoxFeatures(HBox hbox) {
         hbox.setId(UUID.randomUUID().toString());
+        configureDragAndDropBehavior(hbox);
+        configureHBoxStyleOnMouseActions(hbox);
+    }
 
-        // Set mouse event handlers for dragging the card
+    /**
+     * Configures drag-and-drop behavior for an HBox.
+     *
+     * @param hbox The HBox to configure drag-and-drop behavior for.
+     */
+    private void configureDragAndDropBehavior(HBox hbox) {
         hbox.setOnDragDetected(event -> {
             Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
-
             ClipboardContent content = new ClipboardContent();
-            content.putString(hbox.getId()); // Use the unique identifier for the HBox as the data to be transferred
+            content.putString(hbox.getId());
             dragboard.setContent(content);
             WritableImage snapshot = hbox.snapshot(null, null);
             dragboard.setDragView(snapshot);
-
             event.consume();
         });
 
         hbox.setOnDragOver(event -> {
-            //System.out.println("INSIDE 1");
             if (event.getGestureSource() == hbox && event.getDragboard().hasString()) {
-                //System.out.println("INSIDE 1.5");
                 event.acceptTransferModes(TransferMode.MOVE);
             }
-
             event.consume();
         });
 
         hbox.setOnDragDone(event -> {
-            //System.out.println("INSIDE 2");
-
-            Dragboard dragboard = event.getDragboard();
-            boolean success = false;
-            System.out.println("DRAGBOARD" + dragboard.hasString());
-
-            if (dragboard.hasString()) {
-                // Find the source HBox based on the unique identifier
-                HBox sourceHBox = findHBoxById(dragboard.getString());
-
-                System.out.println("SOURCE HBOX" + sourceHBox);
-
-                // Move the HBox to the new column
-                if (sourceHBox != null) {
-                    System.out.println("INSIDE SUCCESS");
-                    // Find the destination VBox (the column box that the HBox is dragged into)
-
-                    //System.out.println(hbox.getParent().equals(sourceHBox.getParent()));
-                    //VBox destinationColumnBox = (VBox) hbox.getParent();
-
-                    // Remove the HBox from its current column box and add it to the destination column box
-                    //VBox destinationColumnBox = findTargetDestinationVBox(event);
-                    System.out.println("DRAG DESTINATION " + dragDestination);
-                    if (this.dragDestination != null) {
-                        System.out.println("DRAGDESTINATION IS NOT NULL");
-                        // Remove the HBox from its current column box and add it to the destination column box
-                        ((VBox) sourceHBox.getParent()).getChildren().remove(sourceHBox);
-                        System.out.println("ITEMS INSIDE SOURCE HBOX " + sourceHBox.getChildren());
-                        TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
-                        transition.setToX(this.dragDestination.getLayoutX() - hbox.getLayoutX());
-                        transition.play();
-
-                        transition.setOnFinished(event1 -> {
-                            this.dragDestination.getChildren().add(sourceHBox);
-                        });
-                        success = true;
-                    } else {
-                        System.out.println("Destination VBox not found!");
-                    }
-                }
-            }
-
-            event.setDropCompleted(success);
-            DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
-            dbManagerSearchController.DBTaskSearch(hbox.getId());
+            handleDragDone(hbox, event);
             event.consume();
-        });
-
-        // Set the style when the cursor enters the HBox
-        hbox.setOnMouseEntered(e -> {
-            hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
-            hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
-        });
-
-        // Set the style when the cursor exits the HBox
-        hbox.setOnMouseExited(e -> {
-            hbox.setStyle("-fx-border-radius: 10.0d;" +
-                    "-fx-border-color: black;" +
-                    "-fx-border-width: 2px;");
-            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
         });
     }
 
+    /**
+     * Handles the completion of a drag-and-drop operation.
+     *
+     * @param hbox  The source HBox being dragged.
+     * @param event The DragEvent associated with the operation.
+     */
+    private void handleDragDone(HBox hbox, DragEvent event) {
+        Dragboard dragboard = event.getDragboard();
+        boolean success = false;
+        if (dragboard.hasString()) {
+            HBox sourceHBox = findHBoxById(dragboard.getString());
+            if (sourceHBox != null && this.dragDestination != null) {
+                moveHBoxToDestination(sourceHBox, hbox);
+                success = true;
+            }
+        }
+        event.setDropCompleted(success);
+        // ... Perform additional tasks after drag-and-drop
+    }
+
+    /**
+     * Configures the visual style of an HBox based on mouse actions.
+     *
+     * @param hbox The HBox to configure the style for.
+     */
+    private void configureHBoxStyleOnMouseActions(HBox hbox) {
+        hbox.setOnMouseEntered(e -> {
+            applyHBoxHoverStyle(hbox);
+        });
+
+        hbox.setOnMouseExited(e -> {
+            resetHBoxStyle(hbox);
+        });
+    }
+
+    /**
+     * Applies a hover style to the given HBox on mouse enter.
+     *
+     * @param hbox The HBox to apply the hover style to.
+     */
+    private void applyHBoxHoverStyle(HBox hbox) {
+        hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
+    }
+
+    /**
+     * Resets the style of the given HBox on mouse exit.
+     *
+     * @param hbox The HBox to reset the style for.
+     */
+    private void resetHBoxStyle(HBox hbox) {
+        hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+    }
+
+    /**
+     * Moves an HBox to a specified destination HBox within a VBox.
+     *
+     * @param sourceHBox      The source HBox being moved.
+     * @param destinationHBox The destination HBox where the source HBox should be placed.
+     */
+    private void moveHBoxToDestination(HBox sourceHBox, HBox destinationHBox) {
+        VBox sourceColumnBox = (VBox) sourceHBox.getParent();
+        sourceColumnBox.getChildren().remove(sourceHBox);
+
+        TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
+        transition.setToX(this.dragDestination.getLayoutX() - destinationHBox.getLayoutX());
+        transition.play();
+
+        transition.setOnFinished(event -> {
+            this.dragDestination.getChildren().add(sourceHBox);
+        });
+    }
+
+    /**
+     * Finds an HBox by its unique identifier within the set of VBox containers.
+     *
+     * @param id The unique identifier of the HBox to find.
+     * @return The found HBox, or null if not found.
+     */
     private HBox findHBoxById(String id) {
         System.out.println("this.VBoxContainer " + this.VBoxContainer);
         for (VBox vBox : this.VBoxContainer) {
