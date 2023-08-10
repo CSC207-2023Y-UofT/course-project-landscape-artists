@@ -12,6 +12,6 @@ public class DeleteProjectController {
     }
 
     public void handleDeleteProject(UUID projectId) {
-        presenter.handleDeleteProject(projectId);
+//        presenter.handleDeleteProject(projectId);
     }
 }
