@@ -72,7 +72,7 @@ public class EditTaskDetails implements DataAccessInterface {
         removeTask.DBRemove(oldTask, taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask, parentColumn);
+        insertTask.DBInsert(updatedTask);
 
     }
 
