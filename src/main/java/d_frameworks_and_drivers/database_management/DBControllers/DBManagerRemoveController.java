@@ -23,6 +23,7 @@ import java.util.UUID;
 
 public class DBManagerRemoveController implements IDBRemove {
     /**
+     *
      * @param projectModel
      */
     public void DBRemove(ProjectModel projectModel, UUID uuid) {

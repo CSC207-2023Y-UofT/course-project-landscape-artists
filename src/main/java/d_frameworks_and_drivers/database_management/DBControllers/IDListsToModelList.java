@@ -14,8 +14,9 @@ import java.util.UUID;
 public class IDListsToModelList implements IDbIdToModelList {
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of column entity models given a list of UUID IDs as strings for the columns.
+     * @param IDlist a list of UUID IDs as strings for the columns
+     * @return a list of column entity models
      */
     public List<ColumnModel> IdToColumnModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
@@ -38,8 +39,9 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of task entity models given a list of UUID IDs as strings for the tasks.
+     * @param IDlist a list of UUID IDs as strings for the tasks
+     * @return a list of task entity models
      */
     public List<TaskModel> IdToTaskModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
@@ -58,8 +60,9 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of project entity models given a list of UUID IDs as strings for the projects.
+     * @param IDlist a list of UUID IDs as strings for the projects
+     * @return a list of project entity models
      */
     public List<ProjectModel> IdToProjectModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));

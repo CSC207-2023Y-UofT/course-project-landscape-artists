@@ -10,6 +10,7 @@ import com.opencsv.CSVWriter;
 
 public class DBInitializer {
     String [] DBNames = {"Projects", "Columns", "Tasks"};
+
     CSVWriter writer;
     public DBInitializer(){
         {

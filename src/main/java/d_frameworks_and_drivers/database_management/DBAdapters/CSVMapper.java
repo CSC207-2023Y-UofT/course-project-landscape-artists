@@ -88,7 +88,6 @@ public class CSVMapper implements AutoCloseable {
     /**
      * Returns a Mapping from the string of key column field to the corresponding record
      * @param keyColumn index of csv key column with string values only
-     * @param valueColumn index of csv value column
      * @return Mapping from the string of key column field to the corresponding record
      */
     public Map<String, CSVRecord> getStringToRecordMap(int keyColumn){

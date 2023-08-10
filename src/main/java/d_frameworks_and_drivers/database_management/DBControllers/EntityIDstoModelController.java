@@ -105,8 +105,9 @@ public class EntityIDstoModelController implements DBAdapterInterface {
     }
 
     /**
-     * @param projectUUID
-     * @return
+     * Returns a project model given its UUID ID.
+     * @param projectUUID UUID ID
+     * @return a project model
      */
     public ProjectModel IDsToProjectModel(UUID projectUUID) {
         ArrayList<String> DbEntry = searchController.DBProjectSearch(projectUUID.toString());

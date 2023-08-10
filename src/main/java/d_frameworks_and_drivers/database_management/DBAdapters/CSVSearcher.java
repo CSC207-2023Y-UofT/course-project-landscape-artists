@@ -38,10 +38,11 @@ public class CSVSearcher implements AutoCloseable {
     }
 
     /**
-     * Searches for and returns csv record corresponding to field value given field/column index
+     * Searches for and returns csv record corresponding to field value given column header string
      *
-     * @param fieldIndex
-     * @param fieldValue
+     * @param fieldIndex field where to do the search
+     * @param fieldValue search keys list
+     * @return csv record
      */
     public CSVRecord getRecord(int fieldIndex, String fieldValue) throws IOException {
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
@@ -66,8 +67,9 @@ public class CSVSearcher implements AutoCloseable {
     /**
      * Searches for and returns csv record corresponding to field value given column header string
      *
-     * @param fieldIndex
-     * @param fieldValue
+     * @param keyHeader field where to do the search
+     * @param fieldValue search keys list
+     * @return csv record
      */
     public CSVRecord getRecord(String keyHeader, String fieldValue) throws IOException {
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
@@ -89,10 +91,10 @@ public class CSVSearcher implements AutoCloseable {
     }
 
     /**
-     *
-     * @param fieldIndex
-     * @param searchKeys
-     * @return
+     *  Returns a list of csv records given field where to do the search and search keys list.
+     * @param fieldIndex field where to do the search
+     * @param searchKeys search keys list
+     * @return list of csv records
      */
     public List<CSVRecord> getRecordsList(int fieldIndex, List<String> searchKeys){
         List<CSVRecord> output = new ArrayList<>();
@@ -117,13 +119,34 @@ public class CSVSearcher implements AutoCloseable {
         }
     }
 
-
-
-
-
-
-
-
+    /**
+     *  Returns a list of csv records given field where to do the search and search keys list.
+     * @param field field where to do the search
+     * @param searchKeys search keys list
+     * @return list of csv records
+     */
+    public List<CSVRecord> getRecordsList(String field, List<String> searchKeys){
+        List<CSVRecord> output = new ArrayList<>();
+        // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
+        try (FileReader fileReader = new FileReader(csvFile);
+             CSVMapper csvMapper = new CSVMapper(csvFile.getPath());
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
+            // first, generate map of from column with search keys to records
+            Map<String,CSVRecord> strRecordMap = csvMapper.getStringToRecordMap(field);
+            // Generate a list of values from the map using searched keys
+            for (String key : searchKeys) {
+                CSVRecord record = strRecordMap.get(key);
+                if (record != null) {
+                    output.add(record);
+                }
+            }
+            return output;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     /**
      * Close the CSVParser when the CSVSearcher is no longer needed.

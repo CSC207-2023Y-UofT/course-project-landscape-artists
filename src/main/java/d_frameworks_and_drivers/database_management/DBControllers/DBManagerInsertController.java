@@ -25,7 +25,7 @@ public class DBManagerInsertController implements IDBInsert {
      * Adds a project record with ProjectID, Name, Description and list of column IDs
      * into the Database
      *
-     * @param projectModel
+     * @param projectModel project model entity to be inserted
      */
     public void DBInsert(ProjectModel projectModel) {
 
@@ -65,7 +65,7 @@ public class DBManagerInsertController implements IDBInsert {
      * Adds a column record with fields "ColumnID","Name",
      * and "Task ID's" into the Database
      *
-     * @param columnModel
+     * @param columnModel column model entity to be inserted
      */
     public void DBInsert(ColumnModel columnModel) {
         // Try with resources: CSVWriter
@@ -141,7 +141,7 @@ public class DBManagerInsertController implements IDBInsert {
 
     /**
      * Adds a record of unique ID into the Database
-     * @param uuid
+     * @param uuid uuuid to be inserted
      */
     public void DBInsert(UUID uuid) {
         // Try with resources: CSVWriter

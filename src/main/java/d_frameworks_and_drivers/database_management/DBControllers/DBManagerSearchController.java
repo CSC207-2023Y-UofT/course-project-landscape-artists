@@ -62,8 +62,11 @@ public class DBManagerSearchController implements IDBSearch {
     }
 
     /**
-     * @param id
-     * @return
+     * Searches project.csv for the entry with the UUID matching the id parameter
+     * then reads that line and converts it to an arraylist, with first element containing UUID,
+     * second element containing name and third - description, forth - containing list of column UUIDs
+     * * @param id project UUID ID as string
+     * @return arraylist of strings with project values from database
      */
     public ArrayList<String> DBProjectSearch(String id) {
         ArrayList<String> projectInfo = new ArrayList<>();
