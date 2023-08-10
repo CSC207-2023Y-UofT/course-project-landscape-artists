@@ -6,6 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ *  Class not used. For future extension
+ */
 public class UniqueIDsReader {
     /**
      * Returns a Mapping from the string of key column field to the string of the value column field.
