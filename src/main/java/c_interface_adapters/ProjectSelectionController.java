@@ -1,70 +1,39 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
-import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
-import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
-import c_interface_adapters.view_models.ColumnViewModel;
-import c_interface_adapters.view_models.ProjectSelectionViewModel;
-import c_interface_adapters.view_models.ProjectViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
 
 import java.net.URL;
-import java.time.LocalDateTime;
 import java.util.*;
-
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
-import javafx.util.Pair;
-
-import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * ProjectSelectionController class handles the event handling and controlling of creating and opening a project
  */
-public class ProjectSelectionController {
-    // FXML reference to the GridPane that holds the projects in the UI.
-    @FXML
-    private GridPane projectsGrid;
-
+public class ProjectSelectionController implements Initializable {
     // The interactor for project selection and creation. It implements ProjectSelectionInputBoundary.
-    private ProjectSelectionInputBoundary interactor;
-
-    // The ProjectSelectionViewModel to pass data to the view.
-    ProjectSelectionViewModel projectSelectionViewModel;
+    private static ProjectSelectionInputBoundary interactor;
 
     // The presenter associated with the controller in Project Selection UI.
     ProjectSelectionPresenter presenter;
 
     /**
-     * Sets up the Controller's Presenter and Interactor.
+     * Initializes the controller upon loading the associated FXML file. This method creates instances
+     * of the presenter and interactor, setting up the communication and logic for project selection.
+     *
+     * @param url            The location used to resolve relative paths for the root object, or null if
+     *                       the location is not known.
+     * @param resourceBundle The resource bundle to be used by this controller, or null if the
+     *                       controller doesn't require it.
      */
-    private void setPresenterAndInteractor() {
-        // This had to be separate since presenter needs to have a stage.
-        ProjectSelectionOutputBoundary presenter =
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        presenter =
                 new ProjectSelectionPresenter(this);
-        // Grabs the stage currently used.
-        Stage stage = (Stage) projectsGrid.getScene().getWindow();
-
-        // Sets the stage of the Presenter so methods in it changes the same stage.
-        ((ProjectSelectionPresenter) presenter).setStage(stage);
-
-        // Set the Presenter class in the Controller.
-        this.presenter = (ProjectSelectionPresenter) presenter;
-
-        interactor = new ProjectSelectionInteractor(presenter);
+        interactor =
+                new ProjectSelectionInteractor(presenter);
     }
 
     /**
@@ -75,9 +44,6 @@ public class ProjectSelectionController {
      * @param projectUUID The UUID of the project to be renamed.
      */
     void handleRenameProject(UUID projectUUID) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
         String[] newNameAndNewDescription = presenter.displayRenameProjectPopup();
         if (newNameAndNewDescription != null) {
             String newName = newNameAndNewDescription[0];
@@ -93,9 +59,6 @@ public class ProjectSelectionController {
      * @param projectUUID The UUID of the project to be deleted.
      */
     void handleDeleteProject(UUID projectUUID) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
         interactor.deleteProject(projectUUID);
     }
 
@@ -108,9 +71,6 @@ public class ProjectSelectionController {
      * @param description Description of project.
      */
     void createProject(String name, String description) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
-        setPresenterAndInteractor();
         interactor.createProject(name, description);
     }
 
@@ -118,7 +78,6 @@ public class ProjectSelectionController {
      * Handles the action of selecting a project button from the UI.
      */
     public void handleChosenProjectButton(ActionEvent actionEvent) {
-        setPresenterAndInteractor();
         Button buttonClicked = (Button) actionEvent.getSource();
         UUID currentProjectID = (UUID) buttonClicked.getUserData();
         interactor.openProject(currentProjectID);
