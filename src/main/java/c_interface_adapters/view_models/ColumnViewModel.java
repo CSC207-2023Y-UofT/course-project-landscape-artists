@@ -248,16 +248,4 @@ public class ColumnViewModel {
         return columnViewModelStringRepresentation;
     }
 
-    // TODO:turn this into its own class
-    // private UUID getValidColumnID(){
-    // this.ID = UUID.randomUUID();
-    // DBManagerInsertController dbManagerInsertController = new
-    // DBManagerInsertController();
-    // while(uuidMap.containsKey(this.ID.toString())){
-    // this.ID = UUID.randomUUID();
-    // }
-    // dbManagerInsertController.DBInsert(this.ID);
-    // return this.ID;
-    // }
-
 }

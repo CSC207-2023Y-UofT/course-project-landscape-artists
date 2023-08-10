@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
@@ -7,7 +8,9 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -59,14 +62,23 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         UUID taskID = UUID.randomUUID();
         // Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
+
+        Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
+                .getProjectEntity();
+
         // initialize use case class
-        AddTask useCase = new AddTask(idOfColumn, newTaskModel);
+        AddTask useCase = new AddTask(idOfColumn, newTaskModel, currentProject);
         // call use case class to create a new task and save it to the database
-        useCase.addTask(idOfColumn);
+        useCase.addTask();
         // Initialize TaskViewModel
         TaskViewModel newTask = new TaskViewModel(newTaskModel);
         // calls presenter to display message
         presenter.displayNewTask(idOfColumn, newTask);
+
+        // Initializing the required controllers and calls method that adds task to the
+        // database
+        IDBInsert insertTask = new DBManagerInsertController();
+        insertTask.DBInsert(newTaskModel, idOfColumn);
     }
 
     /**
@@ -150,36 +162,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         catch(Exception e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void renameTask(TaskModel task, UUID TaskUIid) {
-
-    }
-
-    @Override
-    public void removeTask(TaskModel task, UUID columnId) {
-
-    }
-
-    @Override
-    public void addTask(TaskModel task, UUID targetColumnId) {
-
-    }
-
-    @Override
-    public void changeTaskDate(TaskModel task, UUID targetColumnId) {
-
-    }
-
-    @Override
-    public void renameProject(ProjectModel project, UUID projectId) {
-
-    }
-
-    @Override
-    public void deleteProject(ProjectModel project, UUID projectId) {
-
     }
 
 }
