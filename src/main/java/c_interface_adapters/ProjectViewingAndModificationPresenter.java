@@ -4,10 +4,8 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -34,7 +32,6 @@ import java.io.IOException;
 
 import java.time.LocalDate;
 
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.*;
@@ -267,16 +264,15 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param hbox
      */
     @Override
-    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox) {
+    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox, UUID columnID) {
         String taskName = task.getName();
+        System.out.println("IN PRESENTER DISPLAY CHANGED TASK DETAILS");
 
-        //Removing the existing nane from the Hbox
-        hbox.getChildren().removeAll();
-        for (Node node: hbox.getChildren()) {
-            if (node instanceof Text) {
-                ((Text) node).setText(taskName);
-                break;
-            }
+        Text taskNameUI = uiComponentLocator.findTaskName(taskID, columnID);
+        if (taskNameUI != null) {
+            taskNameUI.setText(task.getName());
+        } else {
+            System.out.println("TASK IS NOT IN THE COLUMN");
         }
     }
 
@@ -814,6 +810,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private HBox createTaskCard(TaskModel task) {
         Rectangle cardBackground = new Rectangle(0, 0, Color.LIGHTBLUE);
         Text textContent = new Text(task.getName());
+        textContent.setId("taskName");
         cardBackground.setArcHeight(10.0d);
         cardBackground.setArcWidth(10.0d);
         StackPane cardContent = new StackPane(cardBackground, textContent);
@@ -826,6 +823,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
         hbox.setSpacing(5);
         hbox.setPadding(new Insets(2));
+        hbox.setId(task.getID().toString());
 
         return hbox;
     }
@@ -974,7 +972,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param hbox The HBox to configure.
      */
     private void configureHBoxFeatures(HBox hbox) {
-        hbox.setId(UUID.randomUUID().toString());
+//        hbox.setId(UUID.randomUUID().toString());
         configureDragAndDropBehavior(hbox);
         configureHBoxStyleOnMouseActions(hbox);
     }
@@ -1251,11 +1249,11 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 //        // Show the popup
 //        popupStage.showAndWait();
 //    }
-    public void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
+    public void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID columnID) {
         Stage popupStage = createPopupStage();
         GridPane gridPane = createGridPane();
         addComponentsToGridPane(gridPane);
-        Button changeTaskButton = createChangeTaskButton(task, hbox, uuid, popupStage);
+        Button changeTaskButton = createChangeTaskButton(task, hbox, columnID, popupStage);
 
         gridPane.add(changeTaskButton, 0, 3, 2, 1);
 

@@ -5,9 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.Iterator;
+import java.util.UUID;
 
 public class UIComponentLocator {
     private Scene scene;
@@ -90,5 +93,31 @@ public class UIComponentLocator {
         }
 
         return null;
+    }
+
+    public Text findTaskName(UUID taskID, UUID columnID) {
+        VBox columnUI = getColumnUI(String.valueOf(columnID));
+        for (Node nodeInColumnUI: columnUI.getChildren()) {
+            if (nodeInColumnUI.getId() != null) {
+                if (nodeInColumnUI.getId().equals(taskID.toString())) {
+                    for (Node nodeInHBox: ((HBox) nodeInColumnUI).getChildren()) {
+                            if (nodeInHBox instanceof StackPane stackPane) {
+                                for (Node nodeInStackPane: stackPane.getChildren()) {
+                                    if (nodeInStackPane.getId() != null) {
+                                        if (nodeInStackPane.getId().equals("taskName")) {
+                                            return (Text) nodeInStackPane;
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+
+                }
+            }
+        }
+        return null;
+
+
     }
 }

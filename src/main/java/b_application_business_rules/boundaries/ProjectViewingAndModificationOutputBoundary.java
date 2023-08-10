@@ -37,7 +37,7 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     //void displayRenamedColumn(ColumnModel column);
 
-    void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox);
+    void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox, UUID columnID);
 
     void dislayChangedTaskDate(UUID taskID, TaskViewModel task);
     void displayRenamedProject(ProjectViewModel project, UUID projectId);
