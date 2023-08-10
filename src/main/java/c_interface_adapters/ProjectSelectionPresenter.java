@@ -4,7 +4,6 @@ import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProjectUseCase;
 import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
@@ -314,30 +313,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             }
         }
     }
-
-    //Delete project code - TEMP
-    //        TODO: TEMPORARY IMPLEMENTATION
-
-    private DeleteProjectUseCase deleteProjectUseCase;
-
-
-    // Constructor to inject DeleteProjectUseCase dependency
-    public ProjectSelectionPresenter(DeleteProjectUseCase deleteProjectUseCase) {
-        this.deleteProjectUseCase = deleteProjectUseCase;
-    }
-
-    // Method to handle the delete project action from the UI
-    public void handleDeleteProject(UUID projectId) {
-        try {
-            deleteProjectUseCase.deleteProject(projectId);
-        } catch (IllegalArgumentException e) {
-            // Handle error: Project not found with given ID
-            e.printStackTrace();
-            // Show error message to the user, if needed
-        }
-    }
-
-    //Delete project code - TEMP ENDS
 
     /**
      * Initializes the scene with the provided stage by loading the FXML file containing the layout
