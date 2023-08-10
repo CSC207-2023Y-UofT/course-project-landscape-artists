@@ -227,17 +227,8 @@ public class Column {
         return columnStringRepresentation;
     }
 
-    // TODO:turn this into its own class
-    // private UUID getValidColumnID(){
-    // this.ID = UUID.randomUUID();
-    // DBManagerInsertController dbManagerInsertController = new
-    // DBManagerInsertController();
-    // while(uuidMap.containsKey(this.ID.toString())){
-    // this.ID = UUID.randomUUID();
-    // }
-    // dbManagerInsertController.DBInsert(this.ID);
-    // return this.ID;
-    // }
+
+
 
     /**
      * Returns whether this Column and another object are equal.
@@ -258,11 +249,11 @@ public class Column {
     }
 
     /**
-     * Searches an List of columns and returns one that has the same ID as the given
+     * Searches a List of columns and returns one that has the same ID as the given
      * ID. Otherwise, returns null.
      *
-     * @param columnID
-     * @param listOfColumns
+     * @param columnID UUID ID of column searched.
+     * @param listOfColumns List of column entities to do the search in.
      */
     public static Column IDToColumn(UUID columnID, List<Column> listOfColumns) {
         int i = 0;
@@ -286,6 +277,16 @@ public class Column {
     // listOfColumns.add(c2);
     // Column found = Column.IDToColumn(id2, listOfColumns);
     // System.out.println(c2.equals(found));
+    // }
+    // private UUID getValidColumnID(){
+    // this.ID = UUID.randomUUID();
+    // DBManagerInsertController dbManagerInsertController = new
+    // DBManagerInsertController();
+    // while(uuidMap.containsKey(this.ID.toString())){
+    // this.ID = UUID.randomUUID();
+    // }
+    // dbManagerInsertController.DBInsert(this.ID);
+    // return this.ID;
     // }
 
 }

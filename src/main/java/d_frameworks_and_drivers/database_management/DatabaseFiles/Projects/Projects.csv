@@ -1,8 +1,2 @@
 "ProjectID","Name","Description","Column ID's"
-"d3f49ff2-0ff9-4632-ac6c-f21cefffb501","DBInsert 1","checking if the Database registers input into UI","c38bd87b-9c60-4aac-85dd-10567c30af94,52b90186-8db8-42c7-b714-efc2f5baaeb8"
-"eaa3bc8e-02e9-468b-892e-981df97043d0","DBInsert 2","checking if the Database registers input into UI",
-"eabfa91c-8ea9-4d20-b6ff-41dbe132a2ef","DBINSERT 3","checking if the Database registers input into UI",
-"9a74bb2d-14e0-4abe-8a58-a404959b0af0","DBINSERT 4","checking if the Database registers input into UI",
-"ccef01c4-a0d9-4da5-b9c4-a3a637946869","DBINSERT 5","checking if the Database registers input into UI",
-"ce542f01-a7de-467d-90d0-1c1d380e0722","DBINSERT 6","checking if the Database registers input into UI",
-"635e2ea8-7c2b-43db-b031-839ce82f29f1","DBINSERT 7","checking if the Database registers input into UI",
+"d3f49ff2-0ff9-4632-ac6c-f21cefffb501","DBInsert 1","checking if the Database registers input into UI","c38bd87b-9c60-4aac-85dd-10567c30af94, 52b90186-8db8-42c7-b714-efc2f5baaeb8, 3cc9322a-eaea-4e52-9c1f-795a3d3dbccc"

@@ -4,17 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DBManagerSearchControllerTest {
+class EntityIDstoModelControllerTest {
 
     @Test
-    void DBColumnSearch() {
+    void IDstoProjectModelList() {
     }
 
     @Test
-    void DBProjectSearch() {
-    }
-
-    @Test
-    void DBTaskSearch() {
+    void IDsToProjectModel() {
     }
 }
