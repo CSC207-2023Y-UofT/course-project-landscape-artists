@@ -44,7 +44,8 @@ public class ProjectUUIDArray {
         }
 
         return resultList;
-
+    }
+}
         //        ArrayList<ArrayList<String>> csvDataArray = new ArrayList<>();
 //
 //        // Create a CSVParser to read the CSV file
@@ -73,5 +74,4 @@ public class ProjectUUIDArray {
 //        }
 //        System.out.println(csvDataArray);
 //        return csvDataArray;
-    }
-}
+

@@ -7,7 +7,7 @@ import java.io.FileWriter;
 
 
 public class ColumnDBInitializer {
-    String[] ColumnHeaders = {"ColumnID", "Name", "Task ID's", "ProjectID"};
+    String[] ColumnHeaders = {"ColumnID", "Name", "Task ID's"};
 
     /**
      * Initializes column csv file for database with the above headers.

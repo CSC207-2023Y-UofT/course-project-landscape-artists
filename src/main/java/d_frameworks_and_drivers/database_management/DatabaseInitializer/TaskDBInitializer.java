@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class TaskDBInitializer {
-    String[] TaskHeaders = {"TaskID", "Name", "Description", "Completion Status", "Due Date", "ColumnID"};
+    String[] TaskHeaders = {"TaskID", "Name", "Description", "Completion Status", "Due Date"};
 
     /**
      * Initializes tasks csv file for database with the above headers.

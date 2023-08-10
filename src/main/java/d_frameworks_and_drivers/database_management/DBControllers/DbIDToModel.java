@@ -14,8 +14,9 @@ public class DbIDToModel implements IDbIdToModel {
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
     IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
     /**
-     * @param Id
-     * @return
+     * Returns column model given its ID from database
+     * @param Id id of column model
+     * @return column model object
      */
     public ColumnModel IdToColumnModel(String Id) {
         List<String> temp = dbManagerSearchController.DBColumnSearch(Id);
@@ -29,8 +30,9 @@ public class DbIDToModel implements IDbIdToModel {
     }
 
     /**
-     * @param Id
-     * @return
+     * Returns task model given its ID from database
+     * @param Id id of task model
+     * @return task model object
      */
     public TaskModel IdToTaskModel(String Id) {
         List<String> temp = dbManagerSearchController.DBColumnSearch(Id);
@@ -44,8 +46,9 @@ public class DbIDToModel implements IDbIdToModel {
     }
 
     /**
-     * @param Id
-     * @return
+     * Returns project model given its ID from database
+     * @param Id id of project model
+     * @return project model object
      */
     public ProjectModel IdToProjectModel(String Id) {
             List<String> temp = dbManagerSearchController.DBProjectSearch(Id);

@@ -3,14 +3,16 @@ package d_frameworks_and_drivers.database_management.DBAdapters;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
-import org.apache.commons.csv.CSVRecord;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-public class CSVWriter implements AutoCloseable {
+
+/**
+ *  Will not be used due to potential
+ */
+public class DBWriter implements AutoCloseable {
     protected File csvFile;
     private FileWriter fileWriter;
     private CSVPrinter csvPrinter;
@@ -20,7 +22,7 @@ public class CSVWriter implements AutoCloseable {
      *
      * @param filePath
      */
-    public CSVWriter(String filePath) throws FileNotFoundException {
+    public DBWriter(String filePath) throws FileNotFoundException {
         this.csvFile = new File(filePath);
     }
 
