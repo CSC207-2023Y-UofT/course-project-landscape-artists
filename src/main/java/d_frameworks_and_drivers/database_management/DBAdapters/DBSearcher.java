@@ -8,13 +8,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.*;
 import java.util.*;
 
 /**
  *  CSVSearcher frameworks and driver class.
  */
-public class CSVSearcher implements AutoCloseable {
+public class DBSearcher implements AutoCloseable {
     private File csvFile;
     private FileReader fileReader;
     private CSVParser csvParser;
@@ -23,7 +22,7 @@ public class CSVSearcher implements AutoCloseable {
      * Creates a new CSVSearcher given the filePath to csv to read.
      * @param filePath
      */
-    public CSVSearcher(String filePath) throws FileNotFoundException, IOException {
+    public DBSearcher(String filePath) throws FileNotFoundException, IOException {
         this.csvFile = new File(filePath);
     }
 
@@ -40,8 +39,9 @@ public class CSVSearcher implements AutoCloseable {
     /**
      * Searches for and returns csv record corresponding to field value given field/column index
      *
-     * @param fieldIndex
-     * @param fieldValue
+     * @param fieldIndex index of the header/field where to do search
+     * @param fieldValue the key value for which obtain corresponding csv record
+     * @return  one csv record - first one matching given value
      */
     public CSVRecord getRecord(int fieldIndex, String fieldValue) throws IOException {
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
@@ -66,8 +66,9 @@ public class CSVSearcher implements AutoCloseable {
     /**
      * Searches for and returns csv record corresponding to field value given column header string
      *
-     * @param fieldIndex
-     * @param fieldValue
+     * @param keyHeader string name of the header/field where to do search
+     * @param fieldValue the key value for which obtain corresponding csv record
+     * @return one csv record - first one matching given value
      */
     public CSVRecord getRecord(String keyHeader, String fieldValue) throws IOException {
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
@@ -89,19 +90,20 @@ public class CSVSearcher implements AutoCloseable {
     }
 
     /**
-     *
-     * @param fieldIndex
-     * @param searchKeys
-     * @return
+     *  Returns a list of csv records given 0-based field/column index for a corresponding list of search keys, i.e.
+     *  string values in the field/column.
+     * @param fieldIndex 0-based field/column index - where to search keys are
+     * @param searchKeys corresponding list of search keys, i.e.  string values in the field/column.
+     * @return a list of csv records
      */
     public List<CSVRecord> getRecordsList(int fieldIndex, List<String> searchKeys){
         List<CSVRecord> output = new ArrayList<>();
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
         try (FileReader fileReader = new FileReader(csvFile);
-             CSVMapper csvMapper = new CSVMapper(csvFile.getPath());
+             DBMapper DBMapper = new DBMapper(csvFile.getPath());
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
             // first, generate map of from column with search keys to records
-            Map<String,CSVRecord> strRecordMap = csvMapper.getStringToRecordMap(fieldIndex);
+            Map<String,CSVRecord> strRecordMap = DBMapper.getStringToRecordMap(fieldIndex);
             // Generate a list of values from the map using searched keys
             for (String key : searchKeys) {
                 CSVRecord record = strRecordMap.get(key);
@@ -116,14 +118,6 @@ public class CSVSearcher implements AutoCloseable {
             throw new RuntimeException(e);
         }
     }
-
-
-
-
-
-
-
-
 
     /**
      * Close the CSVParser when the CSVSearcher is no longer needed.

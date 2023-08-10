@@ -12,7 +12,7 @@ import java.util.UUID;
 /**
  *  CSVSearcher frameworks and driver class.
  */
-public class CSVMapper implements AutoCloseable {
+public class DBMapper implements AutoCloseable {
     private File csvFile;
     private FileReader fileReader;
     private CSVParser csvParser;
@@ -21,7 +21,7 @@ public class CSVMapper implements AutoCloseable {
      * Creates a new CSVSearcher given the filePath to csv to read.
      * @param filePath
      */
-    public CSVMapper(String filePath) throws FileNotFoundException, IOException {
+    public DBMapper(String filePath) throws FileNotFoundException, IOException {
         this.csvFile = new File(filePath);
     }
 
