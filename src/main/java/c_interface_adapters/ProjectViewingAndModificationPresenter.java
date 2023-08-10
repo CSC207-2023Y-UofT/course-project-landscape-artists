@@ -43,18 +43,31 @@ import java.util.*;
  * interface to handle interactions with the project viewing and modification scene.
  */
 public class ProjectViewingAndModificationPresenter implements ProjectViewingAndModificationOutputBoundary {
+    // Reference to the primary stage for the UI
     private static Stage stage;
+
+    // The controller responsible for handling project-related actions
     private static ProjectViewingAndModificationController controller;
 
+    // A container for storing VBox elements representing columns
     private static final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
+    // The VBox element representing the destination during drag-and-drop operations
     private static VBox dragDestination;
 
+    // The locator for UI components within the scene
     private static UIComponentLocator uiComponentLocator;
 
+    // Text field for entering task names
     TextField nameTextField;
+
+    // Text area for entering task details
     TextArea detailsTextArea;
+
+    // Date picker for selecting task due dates
     DatePicker dueDatePicker;
+
+    // A variable to store the entered column name
     private String columnName;
 
     /**
