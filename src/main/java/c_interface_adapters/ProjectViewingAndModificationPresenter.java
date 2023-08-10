@@ -58,6 +58,23 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private String columnName;
 
     /**
+     * Creates a presenter instance with a provided controller.
+     *
+     * @param controller The controller to associate with the presenter.
+     */
+    public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
+        this.controller = controller;
+    }
+
+    /**
+     * Creates a presenter instance with a default controller.
+     */
+    public ProjectViewingAndModificationPresenter() {
+        this.controller = new ProjectViewingAndModificationController();
+    }
+
+
+    /**
      * Sets up the next scene for displaying the details of a selected project.
      * This method initializes the second scene and prepares it to display the details
      * of the selected project to the UI. It is typically invoked by the
@@ -89,15 +106,26 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         }
     }
 
+    /**
+     * Populates the project details UI elements with data from the given project model.
+     *
+     * @param projectModel The project model containing project details.
+     */
     public void populateProjectDetails(ProjectModel projectModel) {
-        Label projectNameLabel = findProjectNameUI();
-        Label projectDescriptionLabel = findProjectDescriptionUI();
+        Label projectNameLabel = uiComponentLocator.findProjectNameUI();
+        Label projectDescriptionLabel = uiComponentLocator.findProjectDescriptionUI();
 
         projectNameLabel.setText(projectModel.getName());
         projectDescriptionLabel.setText(projectModel.getDescription());
     }
 
-
+    /**
+     * Sets up the scene with the provided root, title, and stylesheet path.
+     *
+     * @param root           The root node of the scene.
+     * @param title          The title of the stage.
+     * @param stylesheetPath The path to the stylesheet to be applied.
+     */
     private void setUpScene(Parent root, String title, String stylesheetPath) {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource(stylesheetPath).toExternalForm());
@@ -106,41 +134,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
         uiComponentLocator = new UIComponentLocator(scene);
     }
-
-    public Label findProjectNameUI() {
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            // Find the HBox that corresponds to the provided projectUUID
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                System.out.println(node);
-                if (node.getId().equals("projectName")) {
-                    return (Label) node;
-                }
-            }
-        }
-        return null;
-    }
-
-    public Label findProjectDescriptionUI() {
-        Scene scene = stage.getScene();
-        if (scene != null) {
-            // Find the HBox that corresponds to the provided projectUUID
-            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                if (node.getId().equals("projectDescription")) {
-                    return (Label) node;
-                }
-            }
-        }
-        return null;
-    }
-    public ProjectViewingAndModificationPresenter(ProjectViewingAndModificationController controller) {
-        this.controller = controller;
-    }
-
-    public ProjectViewingAndModificationPresenter() {
-        this.controller = new ProjectViewingAndModificationController();
-    }
-
 
 
     /**

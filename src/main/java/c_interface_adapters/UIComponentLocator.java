@@ -120,4 +120,39 @@ public class UIComponentLocator {
 
 
     }
+
+    /**
+     * Finds the project name UI element in the scene.
+     *
+     * @return The label element representing the project name.
+     */
+    public Label findProjectDescriptionUI() {
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                if (node.getId().equals("projectDescription")) {
+                    return (Label) node;
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the project name UI element in the scene.
+     *
+     * @return The label element representing the project name.
+     */
+    public Label findProjectNameUI() {
+        if (scene != null) {
+            // Find the HBox that corresponds to the provided projectUUID
+            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
+                System.out.println(node);
+                if (node.getId().equals("projectName")) {
+                    return (Label) node;
+                }
+            }
+        }
+        return null;
+    }
 }
