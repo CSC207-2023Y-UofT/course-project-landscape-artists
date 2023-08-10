@@ -13,6 +13,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemov
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -64,7 +65,9 @@ public class EditTaskDetails implements DataAccessInterface {
         String oldTaskName = oldTaskInfo.get(1);
         String oldTaskDescription = oldTaskInfo.get(2);
         boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
-        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
+//        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
         TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 
@@ -72,7 +75,7 @@ public class EditTaskDetails implements DataAccessInterface {
         removeTask.DBRemove(oldTask, taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask, parentColumn);
+        insertTask.DBInsert(updatedTask);
 
     }
 

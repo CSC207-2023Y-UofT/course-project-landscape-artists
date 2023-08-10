@@ -1,179 +1,362 @@
-//package a_enterprise_business_rules.entities;
-//
-//import java.util.ArrayList;
-//import java.util.UUID;
-//
-//import b_application_business_rules.entity_models.ColumnModel;
-//import org.junit.jupiter.api.Assertions;
-//import org.junit.jupiter.api.Test;
-//
-///**
-// * A class to test the Project entity.
-// */
-//class ProjectTest {
-//
-//    @Test
-//    /**
-//     * Tests the getName method
-//     */
-//    void getName() {
-//        Project p = new Project("test proj", null, null, null);
-//        Assertions.assertEquals(p.getName(), "test proj");
-//    }
-//
-//    @Test
-//    /**
-//     * Tests the setName method
-//     */
-//    void setName() {
-//        Project p = new Project("test proj", null, null, null);
-//        p.setName("new test proj");
-//        Assertions.assertEquals(p.getName(), "new test proj");
-//    }
-//
-//    @Test
-//    /**
-//     * Tests the getID method
-//     */
-//    void getID() {
-//        UUID u = UUID.randomUUID();
-//        Project p = new Project(null, u, null, null);
-//        Assertions.assertEquals(p.getID(), u);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests the setID method
-//     */
-//    void setID() {
-//        UUID u = UUID.randomUUID();
-//        Project p = new Project(null, UUID.randomUUID(), null, null);
-//        p.setID(u);
-//        Assertions.assertEquals(p.getID(), u);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests the getDescription method
-//     */
-//    void getDescription() {
-//        Project p = new Project(null, null, "skippidybopboombadabada", null);
-//        Assertions.assertEquals(p.getDescription(), "skippidybopboombadabada");
-//    }
-//
-//    @Test
-//    /**
-//     * Tests the setDescription method
-//     */
-//    void setDescription() {
-//        Project p = new Project(null, null, "skippidybopboombadabada", null);
-//        p.setDescription("LALALALALAskippidybopboombadabada");
-//        Assertions.assertEquals(p.getDescription(), "LALALALALAskippidybopboombadabada");
-//    }
-//
-//    @Test
-//    /**
-//     * Tests getColumns
-//     */
-//    void getColumns() {
-//        ColumnModel c1 = new ColumnModel(null, null, null);
-//        ColumnModel c2 = new ColumnModel(null, null, null);
-//        ColumnModel c3 = new ColumnModel(null, null, null);
-//        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//
-//        Project p = new Project(null, null, null, columns);
-//
-//        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
-//        columns2.add(c1);
-//        columns2.add(c2);
-//        columns2.add(c3);
-//
-//        Assertions.assertEquals(p.getColumns(), columns2);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests setColumns
-//     */
-//    void setColumns() {
-//        ColumnModel c1 = new ColumnModel(null, null, null);
-//        ColumnModel c2 = new ColumnModel(null, null, null);
-//        ColumnModel c3 = new ColumnModel(null, null, null);
-//        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//
-//        Project p = new Project(null, null, null, columns);
-//
-//        ArrayList<ColumnModel> columns2 = new ArrayList<ColumnModel>();
-//        columns2.add(c1);
-//        columns2.add(c3);
-//        columns2.add(c1);
-//        p.setColumns(columns2);
-//
-//        Assertions.assertEquals(p.getColumns(), columns2);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests addColumn
-//     */
-//    void addColumn() {
-//        ColumnModel c1 = new ColumnModel(null, null, null);
-//        ColumnModel c2 = new ColumnModel(null, null, null);
-//        ColumnModel c3 = new ColumnModel(null, null, null);
-//        ColumnModel c4 = new ColumnModel(null, null, null);
-//        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//
-//        ArrayList<Column> columns2 = new ArrayList<Column>();
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//        columns.add(c4);
-//
-//        Project p = new Project(null, null, null, columns);
-//        p.addColumn(c4);
-//
-//        Assertions.assertEquals(p.getColumns(), columns2);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests addColumnToPosition
-//     */
-//    void addColumnToPosition() {
-//        ColumnModel c1 = new ColumnModel(null, null, null);
-//        ColumnModel c2 = new ColumnModel(null, null, null);
-//        ColumnModel c3 = new ColumnModel(null, null, null);
-//        ColumnModel c4 = new ColumnModel(null, null, null);
-//        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//
-//        ArrayList<Column> columns2 = new ArrayList<Column>();
-//        columns.add(c4);
-//        columns.add(c1);
-//        columns.add(c2);
-//        columns.add(c3);
-//
-//        Project p = new Project(null, null, null, columns);
-//        p.addColumnToPosition(c4, 0);
-//
-//        Assertions.assertEquals(p.getColumns(), columns2);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests testMoveColumnToPosition
-//     */
+package a_enterprise_business_rules.entities;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.UUID;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
+/**
+ * A class to test the Project entity.
+ */
+class ProjectTest {
+
+
+    @Test
+    /**
+     * Tests the getName method
+     */
+    void getName() {
+        Project p = new Project("test proj", null, null, null);
+        Assertions.assertEquals(p.getName(), "test proj");
+    }
+
+    @Test
+    /**
+     * Tests the setName method
+     */
+    void setName() {
+        Project p = new Project("test proj", null, null, null);
+        p.setName("new test proj");
+        Assertions.assertEquals(p.getName(), "new test proj");
+    }
+
+    @Test
+    /**
+     * Tests the getID method
+     */
+    void getID() {
+        UUID u = UUID.randomUUID();
+        Project p = new Project(null, u, null, null);
+        Assertions.assertEquals(p.getID(), u);
+    }
+
+    @Test
+    /**
+     * Tests the setID method
+     */
+    void setID() {
+        UUID u = UUID.randomUUID();
+        Project p = new Project(null, UUID.randomUUID(), null, null);
+        p.setID(u);
+        Assertions.assertEquals(p.getID(), u);
+    }
+
+    @Test
+    /**
+     * Tests the getDescription method
+     */
+    void getDescription() {
+        Project p = new Project(null, null, "skippidybopboombadabada", null);
+        Assertions.assertEquals(p.getDescription(), "skippidybopboombadabada");
+    }
+
+    @Test
+    /**
+     * Tests the setDescription method
+     */
+    void setDescription() {
+        Project p = new Project(null, null, "skippidybopboombadabada", null);
+        p.setDescription("LALALALALAskippidybopboombadabada");
+        Assertions.assertEquals(p.getDescription(), "LALALALALAskippidybopboombadabada");
+    }
+
+    @Test
+    /**
+     * Tests getColumns
+     */
+    void getColumns() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> colResult = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        Project p = new Project(null, null, null, col);
+
+
+        Assertions.assertEquals(p.getColumns(), colResult);
+    }
+
+    @Test
+    /**
+     * Tests setColumns
+     */
+    void setColumns() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> colResult = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        ArrayList<Column> input = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        colResult.add(c2);
+
+        Project p = new Project(null, null, null, col);
+        p.setColumns(input);
+
+        Assertions.assertEquals(p.getColumns(), colResult);
+    }
+
+    @Test
+    /**
+     * Tests addColumn
+     */
+    void addColumn() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> colResult = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+
+
+
+        Project p = new Project(null, null, null, col);
+        p.addColumn(c3);
+
+        Assertions.assertEquals(p.getColumns(), colResult);
+    }
+
+    @Test
+    /**
+     * Tests addColumnToPosition
+     */
+    void addColumnToPosition() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> colResult = new ArrayList<>();
+        colResult.add(c1);
+        colResult.add(c2);
+        colResult.add(c3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        colResult.add(c2);
+
+
+
+        Project p = new Project(null, null, null, col);
+        p.addColumnToPosition(c1, 0);
+        p.addColumnToPosition(c3, 2);
+
+
+        Assertions.assertEquals(p.getColumns(), colResult);
+    }
+
+    /**
+     * Tests testMoveColumnToPosition NOT USED
+     */
 //    void testMoveColumnToPosition() {
 //        ColumnModel c1 = new ColumnModel(null, null, null);
 //        ColumnModel c2 = new ColumnModel(null, null, null);
@@ -194,31 +377,78 @@
 //
 //        Assertions.assertEquals(p.getColumns(), columns2);
 //    }
-//
-//    @Test
-//    /**
-//     * Tests removeColumn
-//     */
-//    void removeColumn() {
-//        ColumnModel c1 = new ColumnModel(null, null, null);
-//        ColumnModel c2 = new ColumnModel(null, null, null);
-//        ArrayList<ColumnModel> columns = new ArrayList<ColumnModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//
-//        ArrayList<Column> columns2 = new ArrayList<Column>();
-//        columns.add(c1);
-//
-//        Project p = new Project(null, null, null, columns);
-//        p.removeColumn(c2);
-//
-//        Assertions.assertEquals(p.getColumns(), columns2);
-//    }
-//
-//    @Test
-//    /**
-//     * Tests swapColumnOrder
-//     */
+
+    @Test
+    /**
+     * Tests removeColumn
+     */
+    void removeColumn() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        col.add(c1);
+        col.add(c2);
+        col.add(c3);
+
+        ArrayList<Column> colResult = new ArrayList<Column>();
+        colResult.add(c1);
+        colResult.add(c3);
+
+        Project p = new Project(null, null, null, col);
+        p.removeColumn(c2);
+
+        Assertions.assertEquals(p.getColumns(), colResult);
+    }
+
+    /**
+     * Tests swapColumnOrder. NOT USED.
+     */
 //    void swapColumnOrder() {
 //        ColumnModel c1 = new ColumnModel(null, null, null);
 //        ColumnModel c2 = new ColumnModel(null, null, null);
@@ -235,26 +465,82 @@
 //
 //        Assertions.assertEquals(p.getColumns(), columns2);
 //    }
-//
-//    @Test
-//    /**
-//     * Tests equals
-//     */
-//    void testEquals() {
-//        Project p1 = new Project(null, null, null, null);
-//        Project p2 = new Project(null, null, null, null);
-//        Project p3 = new Project(null, null, null, null);
-//
-//        // Reflexive Property
-//        Assertions.assertEquals(p1, p1);
-//
-//        // Symmetric Property
-//        Assertions.assertEquals(p1, p2);
-//        Assertions.assertEquals(p2, p1);
-//
-//        // Transitive Property
-//        if (p1.equals(p2) && p2.equals(p3)) {
-//            Assertions.assertEquals(p1, p3);
-//        }
-//    }
-//}
+
+    @Test
+    /**
+     * Tests equals
+     */
+    void testEquals() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+        UUID pu = UUID.randomUUID();
+        String name = "Test project";
+        String description = "Description";
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        col.add(c1);
+        col.add(c2);
+        col.add(c3);
+
+        Project p1 = new Project(name, pu, description, col);
+        Project p2 = new Project(name, pu, description, col);
+        Project p3 = new Project(name, pu, description, col);
+
+        // Reflexive Property
+        Assertions.assertEquals(p1, p1);
+
+        // Symmetric Property
+        Assertions.assertEquals(p1, p2);
+        Assertions.assertEquals(p2, p1);
+
+        // Transitive Property
+        if (p1.equals(p2) && p2.equals(p3)) {
+            Assertions.assertEquals(p1, p3);
+        }
+    }
+}

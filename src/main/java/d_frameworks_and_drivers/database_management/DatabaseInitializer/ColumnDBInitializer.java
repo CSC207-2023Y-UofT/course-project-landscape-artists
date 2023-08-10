@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.FileWriter;
 
 public class ColumnDBInitializer {
-    String[] ColumnHeaders = {"ColumnID", "Name", "Task ID's", "ProjectID"};
+    String[] ColumnHeaders = {"ColumnID", "Name", "Task ID's"};
 
     public ColumnDBInitializer() {
         // create CSVWriter object filewriter object as parameter

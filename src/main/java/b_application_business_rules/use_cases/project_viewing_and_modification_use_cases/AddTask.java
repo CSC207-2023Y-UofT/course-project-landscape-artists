@@ -40,7 +40,7 @@ public class AddTask {
         // Initializing the required controllers and calls method that adds task to the
         // database
         IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(taskModel, idOfColumn);
+        insertTask.DBInsert(taskModel);
     }
 
     /**

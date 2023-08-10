@@ -1,6 +1,7 @@
 package a_enterprise_business_rules.entities;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
@@ -190,4 +191,32 @@ class TaskTest {
             Assertions.assertEquals(t1, t3);
         }
     }
+
+
+    @Test
+    /**
+     * Tests ITToTask
+     */
+    void TestIDToTask() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task output = Task.IDToTask(u2, tasks1);
+        Assertions.assertEquals(output, t2);
+
+    }
+
 }

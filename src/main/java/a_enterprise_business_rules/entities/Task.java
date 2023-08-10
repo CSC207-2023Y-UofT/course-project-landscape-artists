@@ -200,9 +200,10 @@ public class Task {
     }
 
     /**
-     *
-     * @param taskID
-     * @param listOfTasks
+     * Searches a List of tasks and returns one that has the same ID as the given
+     *      * ID. Otherwise, returns null.
+     * @param taskID UUID ID of task searched.
+     * @param listOfTasks List of task entities to do the search in.
      * @return
      */
     public static Task IDToTask(UUID taskID, ArrayList<Task> listOfTasks) {
