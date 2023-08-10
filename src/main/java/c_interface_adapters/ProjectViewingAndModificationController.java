@@ -265,4 +265,30 @@ public class ProjectViewingAndModificationController {
         nameTextField.clear();
         popupStage.close();
     }
+
+    /**
+     * Handles the OK button click event.
+     *
+     * @param textField                              The text field containing the input text.
+     * @param dialogStage                            The dialog stage.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleOkButtonClicked(TextField textField, Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String inputText = textField.getText().trim();
+        if (!inputText.isEmpty()) {
+            projectViewingAndModificationPresenter.columnName = inputText;
+            dialogStage.close();
+        } else {
+            projectViewingAndModificationPresenter.showAlert("Error", "Column name cannot be empty or whitespace-only.");
+        }
+    }
+
+    /**
+     * Handles the Cancel button click event.
+     *
+     * @param dialogStage The dialog stage.
+     */
+    void handleCancelButtonClicked(Stage dialogStage) {
+        dialogStage.close();
+    }
 }

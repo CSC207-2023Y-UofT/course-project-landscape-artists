@@ -388,4 +388,59 @@ public class PresenterUtility {
         TextField nameTextField = (TextField) layout.getChildren().get(1);
         return nameTextField.getText().trim();
     }
+
+    /**
+     * Creates the dialog stage.
+     *
+     * @return The created Stage object.
+     */
+    Stage createDialogStage() {
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Enter Column Name");
+        return dialogStage;
+    }
+
+    /**
+     * Creates the content of the dialog.
+     *
+     * @param dialogStage                            The dialog stage.
+     * @param projectViewingAndModificationPresenter
+     * @return A VBox containing the dialog content.
+     */
+    VBox createDialogContent(Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Label label = new Label("Enter the name of the column:");
+        TextField textField = new TextField();
+        Button okButton = new PresenterUtility().createOkButton(textField, dialogStage, projectViewingAndModificationPresenter);
+        Button cancelButton = new PresenterUtility().createCancelButton(dialogStage);
+
+        VBox vbox = new VBox(label, textField, new Separator(), new HBox(okButton, cancelButton));
+        vbox.setSpacing(10);
+        return vbox;
+    }
+
+    /**
+     * Creates the OK button with an action handler.
+     *
+     * @param textField                              The text field containing the input text.
+     * @param dialogStage                            The dialog stage.
+     * @param projectViewingAndModificationPresenter
+     * @return The created OK button.
+     */
+    Button createOkButton(TextField textField, Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Button okButton = new Button("OK");
+        okButton.setOnAction(e -> ProjectViewingAndModificationPresenter.controller.handleOkButtonClicked(textField, dialogStage, projectViewingAndModificationPresenter));
+        return okButton;
+    }
+
+    /**
+     * Creates the Cancel button with an action handler.
+     *
+     * @param dialogStage The dialog stage.
+     * @return The created Cancel button.
+     */
+    Button createCancelButton(Stage dialogStage) {
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> ProjectViewingAndModificationPresenter.controller.handleCancelButtonClicked(dialogStage));
+        return cancelButton;
+    }
 }

@@ -14,7 +14,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
@@ -328,91 +327,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @return The entered column name.
      */
     public String displayEditColumnDetails() {
-        Stage dialogStage = createDialogStage();
-        VBox vbox = createDialogContent(dialogStage);
+        Stage dialogStage = new PresenterUtility().createDialogStage();
+        VBox vbox = new PresenterUtility().createDialogContent(dialogStage, this);
         Scene scene = new Scene(vbox, 300, 150);
         dialogStage.setScene(scene);
         dialogStage.showAndWait();
         return columnName;
-    }
-
-    /**
-     * Creates the dialog stage.
-     *
-     * @return The created Stage object.
-     */
-    private Stage createDialogStage() {
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Enter Column Name");
-        return dialogStage;
-    }
-
-    /**
-     * Creates the content of the dialog.
-     *
-     * @param dialogStage The dialog stage.
-     * @return A VBox containing the dialog content.
-     */
-    private VBox createDialogContent(Stage dialogStage) {
-        Label label = new Label("Enter the name of the column:");
-        TextField textField = new TextField();
-        Button okButton = createOkButton(textField, dialogStage);
-        Button cancelButton = createCancelButton(dialogStage);
-
-        VBox vbox = new VBox(label, textField, new Separator(), new HBox(okButton, cancelButton));
-        vbox.setSpacing(10);
-        return vbox;
-    }
-
-    /**
-     * Creates the OK button with an action handler.
-     *
-     * @param textField   The text field containing the input text.
-     * @param dialogStage The dialog stage.
-     * @return The created OK button.
-     */
-    private Button createOkButton(TextField textField, Stage dialogStage) {
-        Button okButton = new Button("OK");
-        okButton.setOnAction(e -> handleOkButtonClicked(textField, dialogStage));
-        return okButton;
-    }
-
-    /**
-     * Handles the OK button click event.
-     *
-     * @param textField   The text field containing the input text.
-     * @param dialogStage The dialog stage.
-     */
-    private void handleOkButtonClicked(TextField textField, Stage dialogStage) {
-        String inputText = textField.getText().trim();
-        if (!inputText.isEmpty()) {
-            columnName = inputText;
-            dialogStage.close();
-        } else {
-            showAlert("Error", "Column name cannot be empty or whitespace-only.");
-        }
-    }
-
-    /**
-     * Creates the Cancel button with an action handler.
-     *
-     * @param dialogStage The dialog stage.
-     * @return The created Cancel button.
-     */
-    private Button createCancelButton(Stage dialogStage) {
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> handleCancelButtonClicked(dialogStage));
-        return cancelButton;
-    }
-
-
-    /**
-     * Handles the Cancel button click event.
-     *
-     * @param dialogStage The dialog stage.
-     */
-    private void handleCancelButtonClicked(Stage dialogStage) {
-        dialogStage.close();
     }
 
     /**
@@ -438,42 +358,31 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     public void displayTaskDetails(TaskModel taskModel) {
         Stage popupStage = new PresenterUtility().createPopupStage("Task Details");
-        VBox vbox = createDetailsLayout(taskModel);
+        VBox vbox = createDetailsLayout(taskModel, new PresenterUtility());
         Scene scene = new Scene(vbox);
         popupStage.setScene(scene);
         popupStage.showAndWait();
     }
 
     /**
-     * Creates a new stage for the pop-up window.
-     *
-     * @return The created Stage object.
-     */
-    private static Stage createPopupStage2() {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Task Details");
-        return popupStage;
-    }
-
-    /**
      * Creates the layout for displaying task details in the pop-up.
      *
-     * @param taskModel The TaskModel object containing the details of the task.
+     * @param taskModel        The TaskModel object containing the details of the task.
+     * @param presenterUtility
      * @return A VBox containing the layout with task details.
      */
-    private static VBox createDetailsLayout(TaskModel taskModel) {
+    private static VBox createDetailsLayout(TaskModel taskModel, PresenterUtility presenterUtility) {
         VBox vbox = new VBox(10); // 10 pixels spacing between labels
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(20));
 
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
 
-        addDetailLabel(vbox, "Name:", taskModel.getName());
-        addDetailLabel(vbox, "ID:", taskModel.getID().toString());
-        addDetailLabel(vbox, "Description:", taskModel.getDescription());
-        addDetailLabel(vbox, "Is Completed:", taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed");
-        addDetailLabel(vbox, "Due Date:", taskModel.getDueDateTime().format(dateFormatter));
+        addDetailLabel(vbox, "Name:", taskModel.getName(), new PresenterUtility());
+        addDetailLabel(vbox, "ID:", taskModel.getID().toString(), new PresenterUtility());
+        addDetailLabel(vbox, "Description:", taskModel.getDescription(), new PresenterUtility());
+        addDetailLabel(vbox, "Is Completed:", taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed", new PresenterUtility());
+        addDetailLabel(vbox, "Due Date:", taskModel.getDueDateTime().format(dateFormatter), new PresenterUtility());
 
         return vbox;
     }
@@ -481,11 +390,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     /**
      * Adds a detail label and its corresponding value to the layout.
      *
-     * @param vbox      The VBox layout to which the labels are added.
-     * @param labelText The label text.
-     * @param valueText The value text.
+     * @param vbox             The VBox layout to which the labels are added.
+     * @param labelText        The label text.
+     * @param valueText        The value text.
+     * @param presenterUtility
      */
-    private static void addDetailLabel(VBox vbox, String labelText, String valueText) {
+    private static void addDetailLabel(VBox vbox, String labelText, String valueText, PresenterUtility presenterUtility) {
         Label label = createLabel(labelText);
         Label valueLabel = createValueLabel(valueText);
         vbox.getChildren().addAll(label, valueLabel);
