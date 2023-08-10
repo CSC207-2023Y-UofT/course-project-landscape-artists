@@ -15,8 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.*;
 import javafx.scene.text.Text;
@@ -47,7 +45,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private static Stage stage;
 
     // The controller responsible for handling project-related actions
-    private static ProjectViewingAndModificationController controller;
+    static ProjectViewingAndModificationController controller;
 
     // A container for storing VBox elements representing columns
     private static final List<VBox> VBoxContainer = new ArrayList<VBox>();
@@ -56,7 +54,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private static VBox dragDestination;
 
     // The locator for UI components within the scene
-    private static UIComponentLocator uiComponentLocator;
+    static UIComponentLocator uiComponentLocator;
 
     // Text field for entering task names
     TextField nameTextField;
@@ -270,87 +268,32 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param column The ColumnModel representing the new column to be displayed.
      */
     public void displayNewColumn(ColumnModel column) {
-        ScrollPane scrollPane = createScrollPane();
-        VBox columnBox = createColumnBox(column);
-        HBox columnNameAndOptions = createColumnNameAndOptions();
-        Label columnLabel = createColumnLabel(column.getName());
-        MenuButton columnOptions = createColumnOptions();
-        addMenuItems(columnOptions, column);
-        Button addTaskButton = createAddTaskButton();
+        ScrollPane scrollPane = new PresenterUtility().createScrollPane();
+        VBox columnBox = new PresenterUtility().createColumnBox(column);
+        HBox columnNameAndOptions = new PresenterUtility().createColumnNameAndOptions();
+        Label columnLabel = new PresenterUtility().createColumnLabel(column.getName());
+        MenuButton columnOptions = new PresenterUtility().createColumnOptions();
+        new PresenterUtility().addMenuItems(columnOptions, column);
+        Button addTaskButton = new PresenterUtility().createAddTaskButton();
         addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox));
         HBox TaskBtnVBox = new HBox(addTaskButton);
 
         scrollPane.setId(column.getID().toString());
 
-        configureSizeConstraints(columnNameAndOptions, columnOptions, TaskBtnVBox);
+        new PresenterUtility().configureSizeConstraints(columnNameAndOptions, columnOptions, TaskBtnVBox);
 
         columnNameAndOptions.getChildren().addAll(columnLabel, columnOptions, TaskBtnVBox);
 
         columnBox.getChildren().add(columnNameAndOptions);
         populateTasksForEachColumn(columnBox, column.getTaskModels());
 
-        configureColumnBox(columnBox, scrollPane);
-        addToColumnsContainer(scrollPane);
+        new PresenterUtility().configureColumnBox(columnBox, scrollPane);
+        new PresenterUtility().addToColumnsContainer(scrollPane);
         this.VBoxContainer.add(columnBox); // Add columnBox to VBoxContainer
 
         configureDragAndDropHandling(columnBox);
     }
 
-    /**
-     * Creates and returns a Label for the column name.
-     *
-     * @param columnName The name of the column.
-     * @return The created Label.
-     */
-    private Label createColumnLabel(String columnName) {
-        Label columnLabel = new Label(columnName);
-        columnLabel.setId("columnTitle");
-        columnLabel.setFont(Font.font("Arial", FontWeight.BOLD, 15));
-        return columnLabel;
-    }
-
-
-    /**
-     * Creates and returns a ScrollPane for the column.
-     *
-     * @return The created ScrollPane.
-     */
-    private ScrollPane createScrollPane() {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(200, 400);
-        return scrollPane;
-    }
-
-    /**
-     * Creates and returns a VBox for the column.
-     *
-     * @param column The ColumnModel representing the column.
-     * @return The created VBox.
-     */
-    private VBox createColumnBox(ColumnModel column) {
-        VBox columnBox = new VBox();
-        columnBox.setPrefSize(180, 380);
-        columnBox.setStyle("-fx-background-color: #F6F8FA");
-        columnBox.setId(column.getID().toString());
-        return columnBox;
-    }
-
-    /**
-     * Creates and returns an HBox for the column name and options.
-     *
-     * @return The created HBox holding column name and options.
-     */
-    private HBox createColumnNameAndOptions() {
-        HBox columnNameAndOptions = new HBox();
-        HBox.setHgrow(columnNameAndOptions, Priority.ALWAYS);
-        columnNameAndOptions.setSpacing(40);
-        columnNameAndOptions.setAlignment(Pos.BASELINE_RIGHT);
-        VBox.setMargin(columnNameAndOptions, new Insets(10));
-        VBox.setVgrow(columnNameAndOptions, Priority.ALWAYS);
-        columnNameAndOptions.setSpacing(5);
-        columnNameAndOptions.setId("columnHeader");
-        return columnNameAndOptions;
-    }
 
     /**
      * Configures drag-and-drop handling for the given column box.
@@ -364,81 +307,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         });
     }
 
-    /**
-     * Creates and returns a MenuButton for column options.
-     *
-     * @return The created MenuButton.
-     */
-    private MenuButton createColumnOptions() {
-        MenuButton columnOptions = new MenuButton("");
-        columnOptions.getStyleClass().add("menu-button-custom");
-        return columnOptions;
-    }
-
-
-    /**
-     * Adds menu items (options) to the column options menu button.
-     *
-     * @param columnOptions The MenuButton for column options.
-     * @param column The ColumnModel representing the column.
-     */
-    private void addMenuItems(MenuButton columnOptions, ColumnModel column) {
-        MenuItem renameColumnButton = new MenuItem("Rename Column");
-        MenuItem deleteColumnButton = new MenuItem("Delete Column");
-
-        renameColumnButton.setOnAction(event -> {
-            controller.handleEditColumnDetails(column.getID());
-        });
-        deleteColumnButton.setOnAction(event -> {
-            controller.deleteColumn(column.getID());
-        });
-
-        columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
-    }
-
-    /**
-     * Creates and returns a button for adding a task.
-     *
-     * @return The created Button.
-     */
-    private Button createAddTaskButton() {
-        Button addTaskButton = new Button("Add Task");
-        return addTaskButton;
-    }
-
-    /**
-     * Configures size constraints for Column UI elements.
-     *
-     * @param columnNameAndOptions The HBox containing column name and options.
-     * @param columnOptions The MenuButton for column options.
-     * @param TaskBtnVBox The HBox containing the add task button.
-     */
-    private void configureSizeConstraints(HBox columnNameAndOptions, MenuButton columnOptions, HBox TaskBtnVBox) {
-        HBox.setHgrow(columnOptions, Priority.NEVER);
-        HBox.setHgrow(TaskBtnVBox, Priority.NEVER);
-        VBox.setVgrow(columnNameAndOptions, Priority.NEVER);
-    }
-
-    /**
-     * Configures the column box and its associated scroll pane.
-     *
-     * @param columnBox The VBox representing the column.
-     * @param scrollPane The ScrollPane containing the column.
-     */
-    private void configureColumnBox(VBox columnBox, ScrollPane scrollPane) {
-        columnBox.setSpacing(10);
-        scrollPane.setContent(columnBox);
-    }
-
-    /**
-     * Adds the scroll pane to the columns container.
-     *
-     * @param scrollPane The ScrollPane containing the column.
-     */
-    private void addToColumnsContainer(ScrollPane scrollPane) {
-        HBox columnsContainer = uiComponentLocator.findColumnsContainer();
-        columnsContainer.getChildren().add(scrollPane);
-    }
 
     /**
      * Populates the specified column box with task cards based on the provided task models. *
