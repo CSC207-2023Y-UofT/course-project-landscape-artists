@@ -7,8 +7,6 @@ import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,8 +16,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Label;
 
 import java.io.IOException;
-
-import java.time.format.DateTimeFormatter;
 
 import java.util.*;
 
@@ -358,70 +354,10 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     public void displayTaskDetails(TaskModel taskModel) {
         Stage popupStage = new PresenterUtility().createPopupStage("Task Details");
-        VBox vbox = createDetailsLayout(taskModel, new PresenterUtility());
+        VBox vbox = PresenterUtility.createDetailsLayout(taskModel, new PresenterUtility());
         Scene scene = new Scene(vbox);
         popupStage.setScene(scene);
         popupStage.showAndWait();
-    }
-
-    /**
-     * Creates the layout for displaying task details in the pop-up.
-     *
-     * @param taskModel        The TaskModel object containing the details of the task.
-     * @param presenterUtility
-     * @return A VBox containing the layout with task details.
-     */
-    private static VBox createDetailsLayout(TaskModel taskModel, PresenterUtility presenterUtility) {
-        VBox vbox = new VBox(10); // 10 pixels spacing between labels
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(20));
-
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
-
-        addDetailLabel(vbox, "Name:", taskModel.getName(), new PresenterUtility());
-        addDetailLabel(vbox, "ID:", taskModel.getID().toString(), new PresenterUtility());
-        addDetailLabel(vbox, "Description:", taskModel.getDescription(), new PresenterUtility());
-        addDetailLabel(vbox, "Is Completed:", taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed", new PresenterUtility());
-        addDetailLabel(vbox, "Due Date:", taskModel.getDueDateTime().format(dateFormatter), new PresenterUtility());
-
-        return vbox;
-    }
-
-    /**
-     * Adds a detail label and its corresponding value to the layout.
-     *
-     * @param vbox             The VBox layout to which the labels are added.
-     * @param labelText        The label text.
-     * @param valueText        The value text.
-     * @param presenterUtility
-     */
-    private static void addDetailLabel(VBox vbox, String labelText, String valueText, PresenterUtility presenterUtility) {
-        Label label = createLabel(labelText);
-        Label valueLabel = createValueLabel(valueText);
-        vbox.getChildren().addAll(label, valueLabel);
-    }
-
-    /**
-     * Creates a label with specific styling for task detail labels.
-     *
-     * @param labelText The text to be displayed on the label.
-     * @return A Label with the specified text and styling.
-     */
-    private static Label createLabel(String labelText) {
-        Label label = new Label(labelText);
-        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
-        return label;
-    }
-
-    /**
-     * Creates a value label with the provided value text.
-     *
-     * @param valueText The text to be displayed on the value label.
-     * @return A Label with the specified value text.
-     */
-    private static Label createValueLabel(String valueText) {
-        Label valueLabel = new Label(valueText);
-        return valueLabel;
     }
 
 }

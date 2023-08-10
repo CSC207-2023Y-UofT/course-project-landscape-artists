@@ -14,6 +14,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 /**
@@ -27,6 +28,68 @@ import java.util.UUID;
  */
 public class PresenterUtility {
 
+
+    /**
+     * Creates the layout for displaying task details in the pop-up.
+     *
+     * @param taskModel        The TaskModel object containing the details of the task.
+     * @param presenterUtility
+     * @return A VBox containing the layout with task details.
+     */
+    static VBox createDetailsLayout(TaskModel taskModel, PresenterUtility presenterUtility) {
+        VBox vbox = new VBox(10); // 10 pixels spacing between labels
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(20));
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MMMM d, yyyy");
+
+        addDetailLabel(vbox, "Name:", taskModel.getName(), new PresenterUtility());
+        addDetailLabel(vbox, "ID:", taskModel.getID().toString(), new PresenterUtility());
+        addDetailLabel(vbox, "Description:", taskModel.getDescription(), new PresenterUtility());
+        addDetailLabel(vbox, "Is Completed:", taskModel.getCompletionStatus() ? "✅ Task is done" : "❌ Task is not completed", new PresenterUtility());
+        addDetailLabel(vbox, "Due Date:", taskModel.getDueDateTime().format(dateFormatter), new PresenterUtility());
+
+        return vbox;
+    }
+
+    /**
+     * Adds a detail label and its corresponding value to the layout.
+     *
+     * @param vbox             The VBox layout to which the labels are added.
+     * @param labelText        The label text.
+     * @param valueText        The value text.
+     * @param presenterUtility
+     */
+    static void addDetailLabel(VBox vbox, String labelText, String valueText, PresenterUtility presenterUtility) {
+        Label label = createLabel(labelText, new PresenterUtility());
+        Label valueLabel = createValueLabel(valueText, new PresenterUtility());
+        vbox.getChildren().addAll(label, valueLabel);
+    }
+
+    /**
+     * Creates a label with specific styling for task detail labels.
+     *
+     * @param labelText        The text to be displayed on the label.
+     * @param presenterUtility
+     * @return A Label with the specified text and styling.
+     */
+    static Label createLabel(String labelText, PresenterUtility presenterUtility) {
+        Label label = new Label(labelText);
+        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #333333; -fx-font-weight: bold;");
+        return label;
+    }
+
+    /**
+     * Creates a value label with the provided value text.
+     *
+     * @param valueText        The text to be displayed on the value label.
+     * @param presenterUtility
+     * @return A Label with the specified value text.
+     */
+    static Label createValueLabel(String valueText, PresenterUtility presenterUtility) {
+        Label valueLabel = new Label(valueText);
+        return valueLabel;
+    }
 
     /**
      * Creates and returns a Label for the column name.
