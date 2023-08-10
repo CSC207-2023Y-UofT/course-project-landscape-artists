@@ -251,7 +251,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
 
     /**
-     * Populates the UI with the list of columns associated with the current project. For each
+     * Populates the UI with the list of columns associated with the current project. For each *
      * column, it creates a VBox that contains tasks and an "Add Task" button. Each column is
      * displayed within a ScrollPane to enable scrolling if the content exceeds the display area.
      *
@@ -407,7 +407,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     }
 
     /**
-     * Configures size constraints for UI elements.
+     * Configures size constraints for Column UI elements.
      *
      * @param columnNameAndOptions The HBox containing column name and options.
      * @param columnOptions The MenuButton for column options.
