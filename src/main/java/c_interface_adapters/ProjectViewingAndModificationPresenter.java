@@ -6,7 +6,6 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
-import javafx.animation.TranslateTransition;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -15,15 +14,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.image.WritableImage;
-import javafx.scene.input.*;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -42,16 +36,16 @@ import java.util.*;
  */
 public class ProjectViewingAndModificationPresenter implements ProjectViewingAndModificationOutputBoundary {
     // Reference to the primary stage for the UI
-    private static Stage stage;
+    static Stage stage;
 
     // The controller responsible for handling project-related actions
     static ProjectViewingAndModificationController controller;
 
     // A container for storing VBox elements representing columns
-    private static final List<VBox> VBoxContainer = new ArrayList<VBox>();
+    static final List<VBox> VBoxContainer = new ArrayList<VBox>();
 
     // The VBox element representing the destination during drag-and-drop operations
-    private static VBox dragDestination;
+    static VBox dragDestination;
 
     // The locator for UI components within the scene
     static UIComponentLocator uiComponentLocator;
@@ -66,7 +60,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     DatePicker dueDatePicker;
 
     // A variable to store the entered column name
-    private String columnName;
+    String columnName;
 
     /**
      * Creates a presenter instance with a provided controller.
@@ -291,20 +285,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         new PresenterUtility().addToColumnsContainer(scrollPane);
         this.VBoxContainer.add(columnBox); // Add columnBox to VBoxContainer
 
-        configureDragAndDropHandling(columnBox);
-    }
-
-
-    /**
-     * Configures drag-and-drop handling for the given column box.
-     *
-     * @param columnBox The VBox representing the column.
-     */
-    private void configureDragAndDropHandling(VBox columnBox) {
-        columnBox.setOnDragOver(event -> {
-            this.dragDestination = columnBox;
-            event.consume();
-        });
+        new DragAndDropImplementation().configureDragAndDropHandling(columnBox, this);
     }
 
 
@@ -318,7 +299,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         Set<String> addedHBoxIds = new HashSet<>();
 
         for (TaskModel task : tasks) {
-            HBox hbox = createTaskCard(task);
+            HBox hbox = new PresenterUtility().createTaskCard(task);
             setTaskOptions( hbox, task, columnBox.getId());
 
             if (!addedHBoxIds.contains(hbox.getId())) {
@@ -326,33 +307,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
                 addedHBoxIds.add(hbox.getId());
             }
         }
-    }
-
-    /**
-     * Creates a task card (HBox) for the given task.
-     *
-     * @param task The TaskModel object representing the task.
-     * @return The created HBox representing the task card.
-     */
-    private HBox createTaskCard(TaskModel task) {
-        Rectangle cardBackground = new Rectangle(0, 0, Color.LIGHTBLUE);
-        Text textContent = new Text(task.getName());
-        textContent.setId("taskName");
-        cardBackground.setArcHeight(10.0d);
-        cardBackground.setArcWidth(10.0d);
-        StackPane cardContent = new StackPane(cardBackground, textContent);
-
-        HBox hbox = new HBox(cardContent);
-        hbox.setStyle("-fx-border-radius: 10.0d;" +
-                "-fx-border-color: black;" +
-                "-fx-border-width: 2px;");
-        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
-
-        hbox.setSpacing(5);
-        hbox.setPadding(new Insets(2));
-        hbox.setId(task.getID().toString());
-
-        return hbox;
     }
 
 
@@ -364,177 +318,13 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param columnBoxId The ID of the parent column box.
      */
     private void setTaskOptions( HBox hbox, TaskModel task, String columnBoxId) {
-        MenuButton taskOptionsButton = createTaskOptionsMenu(task, hbox, columnBoxId);
+        MenuButton taskOptionsButton = new PresenterUtility().createTaskOptionsMenu(task, hbox, columnBoxId, this);
         RadioButton completeTaskButton = new RadioButton();
 
         hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
-        configureHBoxFeatures(hbox);
+        new PresenterUtility().configureHBoxFeatures(hbox, this);
     }
 
-    /**
-     * Creates a menu button with task-specific options for the task card.
-     *
-     * @param task        The TaskModel object representing the task.
-     * @param hbox        The HBox representing the task card.
-     * @param columnBoxId The ID of the parent column box.
-     * @return The created MenuButton with task options.
-     */
-    private MenuButton createTaskOptionsMenu(TaskModel task, HBox hbox, String columnBoxId) {
-        MenuButton taskOptionsButton = new MenuButton("");
-        MenuItem changeTaskDetailsButton = new MenuItem("Change Task Details");
-        MenuItem deleteTaskButton = new MenuItem("Delete Task");
-        MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
-
-        changeTaskDetailsButton.setOnAction(event -> {
-            handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId));
-        });
-        deleteTaskButton.setOnAction(event -> {
-            controller.deleteTask(task, UUID.fromString(hbox.getId()), UUID.fromString(columnBoxId));
-        });
-        showTaskDetailsButton.setOnAction(event -> {
-            controller.showTaskDetails(task);
-        });
-
-        taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
-        taskOptionsButton.getStyleClass().add("menu-button-custom");
-        taskOptionsButton.setStyle("-fx-font-size: 8px;");
-
-        return taskOptionsButton;
-    }
-
-
-    /**
-     * Configures various features for an HBox, including drag-and-drop behavior and mouse actions. *
-     * Generates a unique identifier for the HBox and sets up its behavior.
-     *
-     * @param hbox The HBox to configure.
-     */
-    private void configureHBoxFeatures(HBox hbox) {
-//        hbox.setId(UUID.randomUUID().toString());
-        configureDragAndDropBehavior(hbox);
-        configureHBoxStyleOnMouseActions(hbox);
-    }
-
-    /**
-     * Configures drag-and-drop behavior for an HBox.
-     *
-     * @param hbox The HBox to configure drag-and-drop behavior for.
-     */
-    private void configureDragAndDropBehavior(HBox hbox) {
-        hbox.setOnDragDetected(event -> {
-            Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putString(hbox.getId());
-            dragboard.setContent(content);
-            WritableImage snapshot = hbox.snapshot(null, null);
-            dragboard.setDragView(snapshot);
-            event.consume();
-        });
-
-        hbox.setOnDragOver(event -> {
-            if (event.getGestureSource() == hbox && event.getDragboard().hasString()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        hbox.setOnDragDone(event -> {
-            handleDragDone(hbox, event);
-            event.consume();
-        });
-    }
-
-    /**
-     * Handles the completion of a drag-and-drop operation.
-     *
-     * @param hbox  The source HBox being dragged.
-     * @param event The DragEvent associated with the operation.
-     */
-    private void handleDragDone(HBox hbox, DragEvent event) {
-        Dragboard dragboard = event.getDragboard();
-        boolean success = false;
-        if (dragboard.hasString()) {
-            HBox sourceHBox = findHBoxById(dragboard.getString());
-            if (sourceHBox != null && this.dragDestination != null) {
-                moveHBoxToDestination(sourceHBox, hbox);
-                success = true;
-            }
-        }
-        event.setDropCompleted(success);
-        // ... Perform additional tasks after drag-and-drop
-    }
-
-    /**
-     * Configures the visual style of an HBox based on mouse actions.
-     *
-     * @param hbox The HBox to configure the style for.
-     */
-    private void configureHBoxStyleOnMouseActions(HBox hbox) {
-        hbox.setOnMouseEntered(e -> {
-            applyHBoxHoverStyle(hbox);
-        });
-
-        hbox.setOnMouseExited(e -> {
-            resetHBoxStyle(hbox);
-        });
-    }
-
-    /**
-     * Applies a hover style to the given HBox on mouse enter.
-     *
-     * @param hbox The HBox to apply the hover style to.
-     */
-    private void applyHBoxHoverStyle(HBox hbox) {
-        hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
-        hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
-    }
-
-    /**
-     * Resets the style of the given HBox on mouse exit.
-     *
-     * @param hbox The HBox to reset the style for.
-     */
-    private void resetHBoxStyle(HBox hbox) {
-        hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
-        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
-    }
-
-    /**
-     * Moves an HBox to a specified destination HBox within a VBox.
-     *
-     * @param sourceHBox      The source HBox being moved.
-     * @param destinationHBox The destination HBox where the source HBox should be placed.
-     */
-    private void moveHBoxToDestination(HBox sourceHBox, HBox destinationHBox) {
-        VBox sourceColumnBox = (VBox) sourceHBox.getParent();
-        sourceColumnBox.getChildren().remove(sourceHBox);
-
-        TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
-        transition.setToX(this.dragDestination.getLayoutX() - destinationHBox.getLayoutX());
-        transition.play();
-
-        transition.setOnFinished(event -> {
-            this.dragDestination.getChildren().add(sourceHBox);
-        });
-    }
-
-    /**
-     * Finds an HBox by its unique identifier within the set of VBox containers.
-     *
-     * @param id The unique identifier of the HBox to find.
-     * @return The found HBox, or null if not found.
-     */
-    private HBox findHBoxById(String id) {
-        System.out.println("this.VBoxContainer " + this.VBoxContainer);
-        for (VBox vBox : this.VBoxContainer) {
-            for (Node node2 : vBox.getChildren() ) {
-                if (node2 instanceof HBox && node2.getId().equals(id)) {
-                    return (HBox) node2;
-                }
-            }
-        }
-        return null;
-    }
 
     /**
      * Displays a popup window to add a new task to the selected column. *
@@ -644,7 +434,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param columnID The ID of the column containing the task.
      */
     public void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID columnID) {
-        Stage popupStage = createPopupStage();
+        Stage popupStage = createPopupStage("Change Task Details");
         GridPane gridPane = createGridPane();
         addComponentsToGridPane(gridPane);
         Button changeTaskButton = createChangeTaskButton(task, hbox, columnID, popupStage);
@@ -662,10 +452,10 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      *
      * @return The created Stage object for the pop-up.
      */
-    private Stage createPopupStage() {
+    private Stage createPopupStage(String stageTitle) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Change Task Details");
+        popupStage.setTitle(stageTitle);
         return popupStage;
     }
 
@@ -750,7 +540,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @return A Pair containing the flag indicating the button clicked and the entered column name (trimmed).
      */
     public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked) {
-        Stage popupStage = createPopupStage1();
+        Stage popupStage = createPopupStage("Add New Column");
         VBox layout = createPopupLayout(addButtonClicked, popupStage);
         Scene popupScene = new Scene(layout);
 
@@ -975,8 +765,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      *
      * @param taskModel The TaskModel object containing the details of the task to be displayed.
      */
-    public static void displayTaskDetails(TaskModel taskModel) {
-        Stage popupStage = createPopupStage2();
+    public void displayTaskDetails(TaskModel taskModel) {
+        Stage popupStage = createPopupStage("Task Details");
         VBox vbox = createDetailsLayout(taskModel);
         Scene scene = new Scene(vbox);
         popupStage.setScene(scene);

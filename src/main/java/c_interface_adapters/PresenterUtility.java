@@ -1,15 +1,18 @@
 package c_interface_adapters;
 
 import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
+import java.util.UUID;
 
 /**
  * The PresenterUtility class serves as a utility class designed to assist presenter classes with creating and
@@ -151,5 +154,112 @@ public class PresenterUtility {
     void addToColumnsContainer(ScrollPane scrollPane) {
         HBox columnsContainer = ProjectViewingAndModificationPresenter.uiComponentLocator.findColumnsContainer();
         columnsContainer.getChildren().add(scrollPane);
+    }
+
+    /**
+     * Creates a task card (HBox) for the given task.
+     *
+     * @param task The TaskModel object representing the task.
+     * @return The created HBox representing the task card.
+     */
+    HBox createTaskCard(TaskModel task) {
+        Rectangle cardBackground = new Rectangle(0, 0, Color.LIGHTBLUE);
+        Text textContent = new Text(task.getName());
+        textContent.setId("taskName");
+        cardBackground.setArcHeight(10.0d);
+        cardBackground.setArcWidth(10.0d);
+        StackPane cardContent = new StackPane(cardBackground, textContent);
+
+        HBox hbox = new HBox(cardContent);
+        hbox.setStyle("-fx-border-radius: 10.0d;" +
+                "-fx-border-color: black;" +
+                "-fx-border-width: 2px;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+
+        hbox.setSpacing(5);
+        hbox.setPadding(new Insets(2));
+        hbox.setId(task.getID().toString());
+
+        return hbox;
+    }
+
+    /**
+     * Creates a menu button with task-specific options for the task card.
+     *
+     * @param task                                   The TaskModel object representing the task.
+     * @param hbox                                   The HBox representing the task card.
+     * @param columnBoxId                            The ID of the parent column box.
+     * @param projectViewingAndModificationPresenter
+     * @return The created MenuButton with task options.
+     */
+    MenuButton createTaskOptionsMenu(TaskModel task, HBox hbox, String columnBoxId, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        MenuButton taskOptionsButton = new MenuButton("");
+        MenuItem changeTaskDetailsButton = new MenuItem("Change Task Details");
+        MenuItem deleteTaskButton = new MenuItem("Delete Task");
+        MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
+
+        changeTaskDetailsButton.setOnAction(event -> {
+            projectViewingAndModificationPresenter.handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId));
+        });
+        deleteTaskButton.setOnAction(event -> {
+            ProjectViewingAndModificationPresenter.controller.deleteTask(task, UUID.fromString(hbox.getId()), UUID.fromString(columnBoxId));
+        });
+        showTaskDetailsButton.setOnAction(event -> {
+            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task);
+        });
+
+        taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
+        taskOptionsButton.getStyleClass().add("menu-button-custom");
+        taskOptionsButton.setStyle("-fx-font-size: 8px;");
+
+        return taskOptionsButton;
+    }
+
+    /**
+     * Configures various features for an HBox, including drag-and-drop behavior and mouse actions. *
+     * Generates a unique identifier for the HBox and sets up its behavior.
+     *
+     * @param hbox                                   The HBox to configure.
+     * @param projectViewingAndModificationPresenter
+     */
+    void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        new DragAndDropImplementation().configureDragAndDropBehavior(hbox, projectViewingAndModificationPresenter);
+        new PresenterUtility().configureHBoxStyleOnMouseActions(hbox, projectViewingAndModificationPresenter);
+    }
+
+    /**
+     * Configures the visual style of an HBox based on mouse actions.
+     *
+     * @param hbox                                   The HBox to configure the style for.
+     * @param projectViewingAndModificationPresenter
+     */
+    void configureHBoxStyleOnMouseActions(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        hbox.setOnMouseEntered(e -> {
+            new PresenterUtility().applyHBoxHoverStyle(hbox);
+        });
+
+        hbox.setOnMouseExited(e -> {
+            new PresenterUtility().resetHBoxStyle(hbox);
+        });
+    }
+
+    /**
+     * Applies a hover style to the given HBox on mouse enter.
+     *
+     * @param hbox The HBox to apply the hover style to.
+     */
+    void applyHBoxHoverStyle(HBox hbox) {
+        hbox.setStyle("-fx-border-color: rgba(69,89,164,.5); -fx-border-width: 3px; -fx-border-radius: 10.0d;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.rgb(64, 65, 79, 1), new CornerRadii(10.0d), Insets.EMPTY)));
+    }
+
+    /**
+     * Resets the style of the given HBox on mouse exit.
+     *
+     * @param hbox The HBox to reset the style for.
+     */
+    void resetHBoxStyle(HBox hbox) {
+        hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
+        hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
     }
 }
