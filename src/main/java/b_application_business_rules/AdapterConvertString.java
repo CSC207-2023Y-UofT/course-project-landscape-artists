@@ -12,8 +12,8 @@ public class AdapterConvertString {
      * @return
      */
     public static List<String> toStringIDsList(String inputString){
-        // Split the inputString using delimiter ", "
-        String[] stringArray = inputString.split(", ");
+        // Split the inputString using delimiter ","
+        String[] stringArray = inputString.split(",");
 
         // Convert array to a list using
         List<String> stringList = Arrays.asList(stringArray);
@@ -27,7 +27,7 @@ public class AdapterConvertString {
      */
     public static List<UUID> toIDsList(String inputString){
         // Split the inputString using delimiter ", "
-        String[] stringArray = inputString.split(", ");
+        String[] stringArray = inputString.split(",");
         List<UUID> idList = new ArrayList<>();
         for (String s : stringArray){
             idList.add(UUID.fromString(s));
