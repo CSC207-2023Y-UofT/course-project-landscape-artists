@@ -18,15 +18,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class AddTaskTest {
     private Project p;
     private Column c;
-    private TaskModel t1;
-    private Task t2;
+    private TaskModel t;
 
     @BeforeEach
     public void setUp() {
         UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
-        t1 = new TaskModel("t1", id3, "", false, LocalDateTime.now());
+        t = new TaskModel("t1", id3, "", false, LocalDateTime.now());
         c = new Column("c1", new ArrayList<Task>(), id2);
         ArrayList<Column> listOfColumns = new ArrayList<Column>();
         listOfColumns.add(c);
@@ -35,10 +34,10 @@ public class AddTaskTest {
 
     @Test
     public void testAddTask() {
-        AddTask addTaskUseCase = new AddTask(c.getID(), t1);
 
-        UUID idOfColumn = UUID.randomUUID();
-        addTaskUseCase.addTask(idOfColumn);
+        AddTask addTaskUseCase = new AddTask(p);
+
+        addTaskUseCase.addTask(c.getID(), t);
 
         assertTrue(c.getTasks().get(0).getName().equals("t1"));
     }

@@ -14,23 +14,17 @@ import java.util.UUID;
  * A use case class for creating new tasks in a column
  */
 public class AddTask {
-    private TaskModel taskModel;
-    private UUID idOfColumn;
-    // I'm not sure if this 'currentProject' will refer to the same project as other
-    // usecases would
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
-            .getProjectEntity();
+    private Project currentProject;
 
-    public AddTask(UUID idOfColumn, TaskModel model) {
-        this.taskModel = model;
-        this.idOfColumn = idOfColumn;
+    public AddTask(Project currentProject) {
+        this.currentProject = currentProject;
     }
 
     /**
      * This method creates the task and calls the method that will add the task to
      * the database
      */
-    public void addTask(UUID idOfColumn) {
+    public void addTask(UUID idOfColumn, TaskModel taskModel) {
         // Create task entity
         Task task = createTaskEntity(taskModel);
 
