@@ -130,7 +130,7 @@ public class DBSearcher implements AutoCloseable {
         List<CSVRecord> output = new ArrayList<>();
         // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
         try (FileReader fileReader = new FileReader(csvFile);
-             CSVMapper csvMapper = new CSVMapper(csvFile.getPath());
+             DBMapper csvMapper = new DBMapper(csvFile.getPath());
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
             // first, generate map of from column with search keys to records
             Map<String,CSVRecord> strRecordMap = csvMapper.getStringToRecordMap(field);
