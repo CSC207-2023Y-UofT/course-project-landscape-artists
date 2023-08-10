@@ -2,6 +2,7 @@ package c_interface_adapters;
 
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
+import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +20,8 @@ import javafx.util.Pair;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
+
+import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
 
 /**
  * The PresenterUtility class serves as a utility class designed to assist presenter classes with creating and
@@ -666,5 +669,141 @@ public class PresenterUtility {
         projectsGrid.getChildren().remove(targetHBox);
 
         new PresenterUtility().rearrangeGridPaneLayout(projectsGrid, numColumns);
+    }
+
+    /**
+     * Creates a "Create Project" button with appropriate styling and action handling.
+     *
+     * @param projectSelectionPresenter
+     * @return The created "Create Project" button.
+     */
+    Button createCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
+        Button createProjectButton = new Button("+");
+        createProjectButton.setOnAction(projectSelectionPresenter::handleCreateProjectPopup);
+        createProjectButton.getStyleClass().add("create-project-button-style");
+        return createProjectButton;
+    }
+
+    /**
+     * Adds a "Create Project" button to the projects grid.
+     *
+     * @param projectSelectionPresenter
+     */
+    void addCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
+        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
+        Button createProjectButton = new PresenterUtility().createCreateProjectButton(projectSelectionPresenter);
+        projectsGrid.add(createProjectButton, projectSelectionPresenter.getCurrentColumn(), projectSelectionPresenter.getCurrentRow());
+    }
+
+    /**
+     * Creates a container for the current project button and menu button.
+     *
+     * @param currentProjectButton The current project button.
+     * @param menuButton           The menu button.
+     * @param project              The project associated with the buttons.
+     * @return The created HBox container.
+     */
+    HBox createButtonContainer(Button currentProjectButton, MenuButton menuButton, ProjectViewModel project) {
+        HBox buttonContainer = new HBox(currentProjectButton, menuButton);
+        buttonContainer.setId(project.getID().toString());
+        return buttonContainer;
+    }
+
+    /**
+     * Creates a menu button for the given project with rename and delete options.
+     *
+     * @param project                   The project for which to create the menu button.
+     * @param projectSelectionPresenter
+     * @return The created menu button.
+     */
+    MenuButton createMenuButton(ProjectViewModel project, ProjectSelectionPresenter projectSelectionPresenter) {
+        MenuButton menuButton = new MenuButton();
+        MenuItem renameProjectMenuItem = new MenuItem("Rename Project");
+        MenuItem deleteProjectMenuItem = new MenuItem("Delete Project");
+        menuButton.getStyleClass().add("menu-button-custom");
+        renameProjectMenuItem.setOnAction(event -> projectSelectionPresenter.controller.handleRenameProject(project.getID()));
+        deleteProjectMenuItem.setOnAction(event -> projectSelectionPresenter.controller.handleDeleteProject(project.getID()));
+        menuButton.getItems().addAll(renameProjectMenuItem, deleteProjectMenuItem);
+        return menuButton;
+    }
+
+    /**
+     * Configures the appearance of the current project button.
+     *
+     * @param currentProjectButton        The current project button to configure.
+     * @param nameAndDescriptionContainer The VBox container with project name and description labels.
+     * @param project                     The project associated with the button.
+     */
+    void configureCurrentProjectButton(Button currentProjectButton, VBox nameAndDescriptionContainer, ProjectViewModel project) {
+        currentProjectButton.setGraphic(nameAndDescriptionContainer);
+        currentProjectButton.getStyleClass().add("current-project-button");
+        currentProjectButton.setWrapText(true);
+        currentProjectButton.setMinWidth(USE_PREF_SIZE);
+        currentProjectButton.setMaxWidth(Double.MAX_VALUE);
+    }
+
+    /**
+     * Creates a VBox container for the project's name and description labels.
+     *
+     * @param project The project for which to create the container.
+     * @return The created VBox container.
+     */
+    VBox createNameAndDescriptionContainer(ProjectViewModel project) {
+        Label projectName = new Label(project.getName());
+        Label projectDescription = new Label(project.getDescription());
+        projectName.setId("projectName");
+        projectDescription.setId("projectDescription");
+        projectName.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        projectName.setMaxWidth(150);
+        projectDescription.setMaxWidth(150);
+        projectName.setWrapText(true);
+        projectDescription.setWrapText(true);
+        projectName.setAlignment(Pos.CENTER);
+        projectDescription.setAlignment(Pos.CENTER);
+        return new VBox(projectName, projectDescription);
+    }
+
+    /**
+     * Creates a button for the given project.
+     *
+     * @param project                   The project for which to create the button.
+     * @param projectSelectionPresenter
+     * @return The created button.
+     */
+    Button createCurrentProjectButton(ProjectViewModel project, ProjectSelectionPresenter projectSelectionPresenter) {
+        Button currentProjectButton = new Button();
+        VBox nameAndDescriptionContainer = new PresenterUtility().createNameAndDescriptionContainer(project);
+        new PresenterUtility().configureCurrentProjectButton(currentProjectButton, nameAndDescriptionContainer, project);
+        currentProjectButton.setUserData(project.getID());
+        currentProjectButton.setOnAction(event -> projectSelectionPresenter.controller.handleChosenProjectButton(event));
+        return currentProjectButton;
+    }
+
+    /**
+     * Sets column and row constraints for the provided GridPane.
+     *
+     * @param projectsGrid The GridPane to set constraints for.
+     */
+    void setColumnAndRowConstraints(GridPane projectsGrid) {
+        for (int col = 0; col < 2; col++) {
+            ColumnConstraints columnConstraints = new ColumnConstraints();
+            columnConstraints.setHgrow(Priority.ALWAYS);
+            columnConstraints.setFillWidth(true);
+        }
+
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.ALWAYS);
+        rowConstraints.setFillHeight(true);
+        projectsGrid.getRowConstraints().add(rowConstraints);
+    }
+
+    /**
+     * Configures the projects grid by setting horizontal and vertical gaps and applying column and row constraints.
+     */
+    void configureProjectsGrid() {
+        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
+        projectsGrid.setHgap(20);
+        projectsGrid.setVgap(100);
+        new PresenterUtility().setColumnAndRowConstraints(projectsGrid);
     }
 }
