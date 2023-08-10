@@ -9,7 +9,6 @@ import c_interface_adapters.view_models.TaskViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -18,11 +17,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
-import javafx.util.Pair;
 
 import java.io.IOException;
-
-import java.time.LocalDate;
 
 import java.time.format.DateTimeFormatter;
 
@@ -269,7 +265,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         MenuButton columnOptions = new PresenterUtility().createColumnOptions();
         new PresenterUtility().addMenuItems(columnOptions, column);
         Button addTaskButton = new PresenterUtility().createAddTaskButton();
-        addTaskButton.setOnAction(event -> controller.presenter.handleAddTaskPopup(columnBox));
+        addTaskButton.setOnAction(event -> new PopupUI().handleAddTaskPopup(columnBox, controller.presenter));
         HBox TaskBtnVBox = new HBox(addTaskButton);
 
         scrollPane.setId(column.getID().toString());
@@ -325,331 +321,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         new PresenterUtility().configureHBoxFeatures(hbox, this);
     }
 
-
-    /**
-     * Displays a popup window to add a new task to the selected column. *
-     *
-     * @param columnBox The VBox representing the Column UI where the task will be added.
-     */
-    public void handleAddTaskPopup(VBox columnBox) {
-        Stage popupStage = createPopupStage6();
-        GridPane gridPane = createGridPane6();
-        addComponentsToGridPane6(gridPane);
-        Button addTaskToColumnButton = createAddTaskButton(popupStage, columnBox);
-
-        gridPane.add(addTaskToColumnButton, 0, 3, 2, 1);
-
-        Scene popupScene = new Scene(gridPane, 800, 200);
-        popupStage.setScene(popupScene);
-
-        popupStage.showAndWait();
-    }
-
-    /**
-     * Creates the popup stage for adding a new task.
-     *
-     * @return The created Stage object for the popup.
-     */
-    private Stage createPopupStage6() {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Add Task");
-        return popupStage;
-    }
-
-    /**
-     * Creates a GridPane layout for organizing components.
-     *
-     * @return The created GridPane.
-     */
-    private GridPane createGridPane6() {
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        return gridPane;
-    }
-
-    /**
-     * Adds components (labels, text fields, date picker) to the GridPane.
-     *
-     * @param gridPane The GridPane to which components are added.
-     */
-    private void addComponentsToGridPane6(GridPane gridPane) {
-        Label nameLabel = new Label("Task Name:");
-        nameTextField = new TextField();
-
-        Label detailsLabel = new Label("Task Details:");
-        detailsTextArea = new TextArea();
-        detailsTextArea.setPrefRowCount(3);
-
-        Label dueDateLabel = new Label("Task Due Date:");
-        dueDatePicker = new DatePicker();
-
-        gridPane.add(nameLabel, 0, 0);
-        gridPane.add(nameTextField, 1, 0);
-        gridPane.add(detailsLabel, 0, 1);
-        gridPane.add(detailsTextArea, 1, 1);
-        gridPane.add(dueDateLabel, 0, 2);
-        gridPane.add(dueDatePicker, 1, 2);
-    }
-
-
-    /**
-     * Creates the "Submit" button for adding the task.
-     *
-     * @param popupStage The popup stage to be closed.
-     * @param columnBox  The VBox representing the Column UI.
-     * @return The created "Submit" button.
-     */
-    private Button createAddTaskButton(Stage popupStage, VBox columnBox) {
-        Button addTaskToColumnButton = new Button("Submit");
-        addTaskToColumnButton.setOnAction(event -> handleAddTaskButtonClicked(popupStage, columnBox));
-        return addTaskToColumnButton;
-    }
-
-    /**
-     * Handles the "Submit" button click event for adding the task.
-     *
-     * @param popupStage The popup stage to be closed.
-     * @param columnBox  The VBox representing the Column UI.
-     */
-    private void handleAddTaskButtonClicked(Stage popupStage, VBox columnBox) {
-        String taskName = nameTextField.getText().trim();
-        String taskDetails = detailsTextArea.getText().trim();
-        LocalDate dueDate = dueDatePicker.getValue();
-
-        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
-            showAlert("Error", "All fields are required. Please fill in all the details.");
-        } else {
-            popupStage.close();
-            controller.handleAddTaskToColumn(columnBox.getId(), taskName, taskDetails, dueDate.atStartOfDay());
-        }
-    }
-
-    /**
-     * Displays a pop-up window to change task details. *
-     *
-     * @param task     The task to be edited.
-     * @param hbox     The HBox containing the task.
-     * @param columnID The ID of the column containing the task.
-     */
-    public void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID columnID) {
-        Stage popupStage = createPopupStage("Change Task Details");
-        GridPane gridPane = createGridPane();
-        addComponentsToGridPane(gridPane);
-        Button changeTaskButton = createChangeTaskButton(task, hbox, columnID, popupStage);
-
-        gridPane.add(changeTaskButton, 0, 3, 2, 1);
-
-        Scene popupScene = new Scene(gridPane, 800, 200);
-        popupStage.setScene(popupScene);
-
-        popupStage.showAndWait();
-    }
-
-    /**
-     * Creates the pop-up stage.
-     *
-     * @return The created Stage object for the pop-up.
-     */
-    private Stage createPopupStage(String stageTitle) {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle(stageTitle);
-        return popupStage;
-    }
-
-    /**
-     * Creates a GridPane for organizing components.
-     *
-     * @return The created GridPane.
-     */
-    private GridPane createGridPane() {
-        GridPane gridPane = new GridPane();
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
-        return gridPane;
-    }
-
-    /**
-     * Adds components to the GridPane.
-     *
-     * @param gridPane The GridPane to which components are added.
-     */
-    private void addComponentsToGridPane(GridPane gridPane) {
-        Label nameLabel = new Label("Task Name:");
-        nameTextField = new TextField();
-
-        Label detailsLabel = new Label("Task Details:");
-        detailsTextArea = new TextArea();
-        detailsTextArea.setPrefRowCount(3);
-
-        Label dueDateLabel = new Label("Task Due Date:");
-        dueDatePicker = new DatePicker();
-
-        gridPane.add(nameLabel, 0, 0);
-        gridPane.add(nameTextField, 1, 0);
-        gridPane.add(detailsLabel, 0, 1);
-        gridPane.add(detailsTextArea, 1, 1);
-        gridPane.add(dueDateLabel, 0, 2);
-        gridPane.add(dueDatePicker, 1, 2);
-    }
-
-    /**
-     * Creates the "Submit" button with an action handler.
-     *
-     * @param task       The task to be edited.
-     * @param hbox       The HBox containing the task.
-     * @param uuid       The ID of the column containing the task.
-     * @param popupStage The pop-up stage.
-     * @return The created "Submit" button.
-     */
-    private Button createChangeTaskButton(TaskModel task, HBox hbox, UUID uuid, Stage popupStage) {
-        Button changeTaskButton = new Button("Submit");
-        changeTaskButton.setOnAction(event -> handleTaskSubmit(task, hbox, popupStage, uuid));
-        return changeTaskButton;
-    }
-
-    /**
-     * Handles the "Submit" button click event.
-     *
-     * @param task       The task to be edited.
-     * @param hbox       The HBox containing the task.
-     * @param popupStage The pop-up stage to be closed.
-     * @param uuid       The ID of the column containing the task.
-     */
-    private void handleTaskSubmit(TaskModel task, HBox hbox, Stage popupStage, UUID uuid) {
-        String taskName = nameTextField.getText().trim();
-        String taskDetails = detailsTextArea.getText().trim();
-        LocalDate dueDate = dueDatePicker.getValue();
-
-        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
-            showAlert("Error", "All fields are required. Please fill in all the details.");
-        } else {
-            popupStage.close();
-            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
-            controller.changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
-                uuid);
-        }
-    }
-
-    /**
-     * Displays a pop-up window to add a new column. *
-     *
-     * @param addButtonClicked A boolean array to store the result of the pop-up.
-     * @return A Pair containing the flag indicating the button clicked and the entered column name (trimmed).
-     */
-    public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked) {
-        Stage popupStage = createPopupStage("Add New Column");
-        VBox layout = createPopupLayout(addButtonClicked, popupStage);
-        Scene popupScene = new Scene(layout);
-
-        popupStage.setScene(popupScene);
-        popupStage.showAndWait();
-
-        return new Pair<>(addButtonClicked[0], getColumnInput(layout));
-    }
-
-    /**
-     * Creates the pop-up stage.
-     *
-     * @return The created Stage object for the pop-up.
-     */
-    private Stage createPopupStage1() {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Add New Column");
-        return popupStage;
-    }
-
-    /**
-     * Creates the layout for the pop-up.
-     *
-     * @param addButtonClicked The array to store the result of the pop-up.
-     * @param popupStage       The pop-up stage.
-     * @return A VBox containing the layout components.
-     */
-    private VBox createPopupLayout(boolean[] addButtonClicked, Stage popupStage) {
-        Label nameLabel = new Label("Column Name:");
-        TextField nameTextField = new TextField();
-        Button addButton = createAddButton(addButtonClicked, popupStage, nameTextField);
-        Button cancelButton = createCancelButton(popupStage, nameTextField);
-
-        VBox layout = new VBox(10);
-        layout.setPadding(new Insets(10));
-        layout.getChildren().addAll(nameLabel, nameTextField, addButton, cancelButton);
-        return layout;
-    }
-
-    /**
-     * Creates the "Add" button with an action handler.
-     *
-     * @param addButtonClicked The array to store the result of the pop-up.
-     * @param popupStage       The pop-up stage.
-     * @param nameTextField    The text field for column name input.
-     * @return The created "Add" button.
-     */
-    private Button createAddButton(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField) {
-        Button addButton = new Button("Add");
-        addButton.setOnAction(e -> {
-            handleAddButtonClicked(addButtonClicked, popupStage, nameTextField);
-        });
-        return addButton;
-    }
-
-    /**
-     * Handles the "Add" button click event.
-     *
-     * @param addButtonClicked The array to store the result of the pop-up.
-     * @param popupStage       The pop-up stage to be closed.
-     * @param nameTextField    The text field for column name input.
-     */
-    private void handleAddButtonClicked(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField) {
-        String columnName = nameTextField.getText().trim();
-        if (columnName.isEmpty()) {
-            showAlert("Error", "Column name cannot be empty.");
-        } else {
-            addButtonClicked[0] = true;
-            popupStage.close();
-        }
-    }
-
-    /**
-     * Creates the "Cancel" button with an action handler.
-     *
-     * @param popupStage    The pop-up stage to be closed.
-     * @param nameTextField The text field for column name input.
-     * @return The created "Cancel" button.
-     */
-    private Button createCancelButton(Stage popupStage, TextField nameTextField) {
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> {
-            handleCancelButtonClicked(popupStage, nameTextField);
-        });
-        return cancelButton;
-    }
-
-    /**
-     * Handles the "Cancel" button click event.
-     *
-     * @param popupStage    The pop-up stage to be closed.
-     * @param nameTextField The text field for column name input.
-     */
-    private void handleCancelButtonClicked(Stage popupStage, TextField nameTextField) {
-        nameTextField.clear();
-        popupStage.close();
-    }
-
-    /**
-     * Gets the entered column name from the layout.
-     *
-     * @param layout The layout containing the text field.
-     * @return The entered column name.
-     */
-    private String getColumnInput(VBox layout) {
-        TextField nameTextField = (TextField) layout.getChildren().get(1);
-        return nameTextField.getText().trim();
-    }
 
     /**
      * Displays a dialog for editing column details. *
@@ -751,7 +422,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param title   The title of the alert dialog.
      * @param message The content message to be displayed in the alert dialog.
      */
-    private void showAlert(String title, String message) {
+    void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -766,7 +437,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param taskModel The TaskModel object containing the details of the task to be displayed.
      */
     public void displayTaskDetails(TaskModel taskModel) {
-        Stage popupStage = createPopupStage("Task Details");
+        Stage popupStage = new PresenterUtility().createPopupStage("Task Details");
         VBox vbox = createDetailsLayout(taskModel);
         Scene scene = new Scene(vbox);
         popupStage.setScene(scene);

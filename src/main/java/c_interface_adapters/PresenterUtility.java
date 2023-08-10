@@ -11,6 +11,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 import java.util.UUID;
 
@@ -199,7 +201,7 @@ public class PresenterUtility {
         MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
 
         changeTaskDetailsButton.setOnAction(event -> {
-            projectViewingAndModificationPresenter.handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId));
+            new PopupUI().handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId), projectViewingAndModificationPresenter);
         });
         deleteTaskButton.setOnAction(event -> {
             ProjectViewingAndModificationPresenter.controller.deleteTask(task, UUID.fromString(hbox.getId()), UUID.fromString(columnBoxId));
@@ -261,5 +263,129 @@ public class PresenterUtility {
     void resetHBoxStyle(HBox hbox) {
         hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
         hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+    }
+
+    /**
+     * Creates the "Submit" button for adding the task.
+     *
+     * @param popupStage                             The popup stage to be closed.
+     * @param columnBox                              The VBox representing the Column UI.
+     * @param projectViewingAndModificationPresenter
+     * @return The created "Submit" button.
+     */
+    Button createAddTaskButton(Stage popupStage, VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Button addTaskToColumnButton = new Button("Submit");
+        addTaskToColumnButton.setOnAction(event -> projectViewingAndModificationPresenter.controller.handleAddTaskButtonClicked(popupStage, columnBox, projectViewingAndModificationPresenter));
+        return addTaskToColumnButton;
+    }
+
+    /**
+     * Creates the pop-up stage.
+     *
+     * @param stageTitle
+     * @return The created Stage object for the pop-up.
+     */
+    Stage createPopupStage(String stageTitle) {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle(stageTitle);
+        return popupStage;
+    }
+
+    /**
+     * Creates a GridPane for organizing components.
+     *
+     * @return The created GridPane.
+     */
+    GridPane createGridPane() {
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        return gridPane;
+    }
+
+    /**
+     * Adds components to the GridPane.
+     *
+     * @param gridPane                               The GridPane to which components are added.
+     * @param projectViewingAndModificationPresenter
+     */
+    void addComponentsToGridPane(GridPane gridPane, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Label nameLabel = new Label("Task Name:");
+        projectViewingAndModificationPresenter.nameTextField = new TextField();
+
+        Label detailsLabel = new Label("Task Details:");
+        projectViewingAndModificationPresenter.detailsTextArea = new TextArea();
+        projectViewingAndModificationPresenter.detailsTextArea.setPrefRowCount(3);
+
+        Label dueDateLabel = new Label("Task Due Date:");
+        projectViewingAndModificationPresenter.dueDatePicker = new DatePicker();
+
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(projectViewingAndModificationPresenter.nameTextField, 1, 0);
+        gridPane.add(detailsLabel, 0, 1);
+        gridPane.add(projectViewingAndModificationPresenter.detailsTextArea, 1, 1);
+        gridPane.add(dueDateLabel, 0, 2);
+        gridPane.add(projectViewingAndModificationPresenter.dueDatePicker, 1, 2);
+    }
+
+    /**
+     * Creates the "Submit" button with an action handler.
+     *
+     * @param task                                   The task to be edited.
+     * @param hbox                                   The HBox containing the task.
+     * @param uuid                                   The ID of the column containing the task.
+     * @param popupStage                             The pop-up stage.
+     * @param projectViewingAndModificationPresenter
+     * @return The created "Submit" button.
+     */
+    Button createChangeTaskButton(TaskModel task, HBox hbox, UUID uuid, Stage popupStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Button changeTaskButton = new Button("Submit");
+        changeTaskButton.setOnAction(event -> projectViewingAndModificationPresenter.controller.handleTaskSubmit(task, hbox, popupStage, uuid, projectViewingAndModificationPresenter));
+        return changeTaskButton;
+    }
+
+    /**
+     * Creates the "Add" button with an action handler.
+     *
+     * @param addButtonClicked                       The array to store the result of the pop-up.
+     * @param popupStage                             The pop-up stage.
+     * @param nameTextField                          The text field for column name input.
+     * @param projectViewingAndModificationPresenter
+     * @return The created "Add" button.
+     */
+    Button createAddButton(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Button addButton = new Button("Add");
+        addButton.setOnAction(e -> {
+            projectViewingAndModificationPresenter.controller.handleAddButtonClicked(addButtonClicked, popupStage, nameTextField, projectViewingAndModificationPresenter);
+        });
+        return addButton;
+    }
+
+    /**
+     * Creates the "Cancel" button with an action handler.
+     *
+     * @param popupStage                             The pop-up stage to be closed.
+     * @param nameTextField                          The text field for column name input.
+     * @param projectViewingAndModificationPresenter
+     * @return The created "Cancel" button.
+     */
+    Button createCancelButton(Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        Button cancelButton = new Button("Cancel");
+        cancelButton.setOnAction(e -> {
+            projectViewingAndModificationPresenter.controller.handleCancelButtonClicked(popupStage, nameTextField);
+        });
+        return cancelButton;
+    }
+
+    /**
+     * Gets the entered column name from the layout.
+     *
+     * @param layout The layout containing the text field.
+     * @return The entered column name.
+     */
+    String getColumnInput(VBox layout) {
+        TextField nameTextField = (TextField) layout.getChildren().get(1);
+        return nameTextField.getText().trim();
     }
 }

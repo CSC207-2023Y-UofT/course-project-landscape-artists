@@ -1,25 +1,20 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
-import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
 import c_interface_adapters.view_models.TaskViewModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -171,14 +166,15 @@ public class ProjectViewingAndModificationController {
 
 
     @FXML
-/**
- * Handles the event when the "Add Column" button is clicked.
- * Displays a pop-up window to allow the user to enter a new column name.
- *
- */
+    /**
+     * Handles the event when the "Add Column" button is clicked.
+     * Displays a pop-up window to allow the user to enter a new column name.
+     *
+     */
     private void handleAddColumnClick() {
+        PopupUI popupUI = new PopupUI();
         boolean[] addButtonClicked = new boolean[1];
-        Pair<Boolean, String> result = presenter.displayAddColumnPopup(addButtonClicked);
+        Pair<Boolean, String> result = popupUI.displayAddColumnPopup(addButtonClicked, presenter);
         if (result.getKey()) {
             String columnName = result.getValue();
             interactor.addColumn(columnName);
@@ -195,5 +191,78 @@ public class ProjectViewingAndModificationController {
      */
     public void showTaskDetails(TaskModel task) {
         presenter.displayTaskDetails(task);
+    }
+
+    /**
+     * Handles the "Submit" button click event for adding the task.
+     *
+     * @param popupStage                             The popup stage to be closed.
+     * @param columnBox                              The VBox representing the Column UI.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleAddTaskButtonClicked(Stage popupStage, VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
+        String taskDetails = projectViewingAndModificationPresenter.detailsTextArea.getText().trim();
+        LocalDate dueDate = projectViewingAndModificationPresenter.dueDatePicker.getValue();
+
+        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+            projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
+        } else {
+            popupStage.close();
+            handleAddTaskToColumn(columnBox.getId(), taskName, taskDetails, dueDate.atStartOfDay());
+        }
+    }
+
+    /**
+     * Handles the "Submit" button click event.
+     *
+     * @param task                                   The task to be edited.
+     * @param hbox                                   The HBox containing the task.
+     * @param popupStage                             The pop-up stage to be closed.
+     * @param uuid                                   The ID of the column containing the task.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleTaskSubmit(TaskModel task, HBox hbox, Stage popupStage, UUID uuid, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
+        String taskDetails = projectViewingAndModificationPresenter.detailsTextArea.getText().trim();
+        LocalDate dueDate = projectViewingAndModificationPresenter.dueDatePicker.getValue();
+
+        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+            projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
+        } else {
+            popupStage.close();
+            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
+            changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
+                uuid);
+        }
+    }
+
+    /**
+     * Handles the "Add" button click event.
+     *
+     * @param addButtonClicked                       The array to store the result of the pop-up.
+     * @param popupStage                             The pop-up stage to be closed.
+     * @param nameTextField                          The text field for column name input.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleAddButtonClicked(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String columnName = nameTextField.getText().trim();
+        if (columnName.isEmpty()) {
+            projectViewingAndModificationPresenter.showAlert("Error", "Column name cannot be empty.");
+        } else {
+            addButtonClicked[0] = true;
+            popupStage.close();
+        }
+    }
+
+    /**
+     * Handles the "Cancel" button click event.
+     *
+     * @param popupStage    The pop-up stage to be closed.
+     * @param nameTextField The text field for column name input.
+     */
+    void handleCancelButtonClicked(Stage popupStage, TextField nameTextField) {
+        nameTextField.clear();
+        popupStage.close();
     }
 }
