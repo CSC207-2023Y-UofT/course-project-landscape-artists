@@ -157,50 +157,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
 
     @Override
-    public void displayRenamedTask(UUID taskID, TaskViewModel task) {
-
-    }
-
-    @Override
     public void displayRemovedTask(UUID taskID, TaskViewModel task) {
         System.out.println("hello");
     }
 
     @Override
     public void displayRenamedColumn(ColumnModel column) {
-//        String columnUUID = column.getID().toString();
-//        String columnName = column.getName();
-//
-//        Scene scene = stage.getScene();
-//        if (scene != null) {
-//            // Find the HBox that corresponds to the provided projectUUID
-//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-//                if (node.getId().equals("scrollPaneContainer")) {
-//
-//                    if (node instanceof ScrollPane scrollPane){
-//                        HBox columnsContainer = (HBox) scrollPane.getContent();
-//
-//                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
-//                        while (iterator.hasNext()) {
-//                            Node containerChild = iterator.next();
-//                            if (containerChild.getId().equals(columnUUID)) {
-//                                VBox columnUI = (VBox) (((ScrollPane) containerChild).getContent());
-//                                for (Node item: columnUI.getChildren()) {
-//
-//                                    if (item.getId().equals("columnHeader")) {
-//                                        Label columnNameUI = (Label) (((HBox) item).getChildren().get(0));
-//                                        columnNameUI.setText(columnName);
-//                                    }
-//                                    break;
-//
-//                                }
-//                            }
-//                        }
-//                        break;
-//                    }
-//                }
-//            }
-//        }
         String columnUUID = column.getID().toString();
         String columnName = column.getName();
 
@@ -218,31 +180,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
     @Override
     public void displayDeletedColumn(ColumnModel columnModel) {
-//        String columnUUID = columnModel.getID().toString();
-//
-//        Scene scene = stage.getScene();
-//        System.out.println("SCENE "+scene);
-//        if (scene != null) {
-//            // Find the HBox that corresponds to the provided projectUUID
-//            for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-//                if (node.getId().equals("scrollPaneContainer")) {
-//
-//                    if (node instanceof ScrollPane scrollPane){
-//                        HBox columnsContainer = (HBox) scrollPane.getContent();
-//
-//                        Iterator<Node> iterator = columnsContainer.getChildren().iterator();
-//                        while (iterator.hasNext()) {
-//                            Node containerChild = iterator.next();
-//                            if (containerChild.getId().equals(columnUUID)) {
-//                                columnsContainer.getChildren().remove(containerChild);
-//                                break;
-//                            }
-//                        }
-//                        break;
-//                    }
-//                }
-//            }
-//        }
         String columnUUID = columnModel.getID().toString();
 
         uiComponentLocator.removeColumnUI(columnUUID);
@@ -270,17 +207,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         }
     }
 
-    // TODO: REMOVE THIS.
-    @Override
-    public void dislayChangedTaskDate(UUID taskID, TaskViewModel task) {
-
-    }
-
-    // TODO: REMOVE THIS.
-    @Override
-    public void displayRenamedProject(ProjectViewModel project, UUID projectId) {
-
-    }
 
     // TODO: IMPLEMENT THIS.
     @Override
