@@ -28,7 +28,7 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     void displayDeletedColumn(ColumnModel columnModel);
 
-    void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox, UUID columnID);
+    void displayChangedTaskDetails(UUID taskID, TaskViewModel task, UUID columnID);
 
     void displayDeleteProject(ProjectViewModel project, UUID projectId);
 

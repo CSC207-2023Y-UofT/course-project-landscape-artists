@@ -2,8 +2,10 @@ package c_interface_adapters;
 
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -151,6 +153,52 @@ public class UIComponentLocator {
                 if (node.getId().equals("projectName")) {
                     return (Label) node;
                 }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * This method finds the GridPane (JavaFX) projectsGrid from the current scene. It is used to populate the Grid
+     * Pane with
+     * Project UI.
+     *
+     * @return The GridPane object which will hold the Project UI.
+     */
+    public GridPane findGridPane() {
+        Scene currentScene = ProjectSelectionPresenter.stage.getScene();
+        if (currentScene != null) {
+            for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof GridPane) {
+                    if (node.getId().equals("projectsGrid")) {
+                        return ((GridPane) node);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds the HBox in the provided GridPane that has the specified UUID as its ID.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param projectUUID  The UUID of the project to be found.
+     * @return The HBox representing the project with the specified UUID, or null if not found.
+     */
+    HBox findHBoxWithId(GridPane projectsGrid, String projectUUID) {
+        for (Node node : projectsGrid.getChildren()) {
+            if (node instanceof HBox && projectUUID.equals(node.getId())) {
+                return (HBox) node;
+            }
+        }
+        return null;
+    }
+
+    Button findButtonInChildren(HBox hbox) {
+        for (Node hboxChild : hbox.getChildren()) {
+            if (hboxChild instanceof Button) {
+                return (Button) hboxChild;
             }
         }
         return null;

@@ -209,16 +209,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      *
      * @param taskID
      * @param task
-     * @param hbox
      */
     @Override
-    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, HBox hbox, UUID columnID) {
+    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, UUID columnID) {
         String taskName = task.getName();
-        System.out.println("IN PRESENTER DISPLAY CHANGED TASK DETAILS");
 
         Text taskNameUI = uiComponentLocator.findTaskName(taskID, columnID);
         if (taskNameUI != null) {
-            taskNameUI.setText(task.getName());
+            taskNameUI.setText(taskName);
         } else {
             System.out.println("TASK IS NOT IN THE COLUMN");
         }

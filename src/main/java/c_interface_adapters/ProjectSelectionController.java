@@ -19,6 +19,15 @@ public class ProjectSelectionController implements Initializable {
     // The presenter associated with the controller in Project Selection UI.
     ProjectSelectionPresenter presenter;
 
+    /**
+     * Initializes the controller upon loading the associated FXML file. This method creates instances
+     * of the presenter and interactor, setting up the communication and logic for project selection.
+     *
+     * @param url            The location used to resolve relative paths for the root object, or null if
+     *                       the location is not known.
+     * @param resourceBundle The resource bundle to be used by this controller, or null if the
+     *                       controller doesn't require it.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         presenter =
@@ -35,8 +44,6 @@ public class ProjectSelectionController implements Initializable {
      * @param projectUUID The UUID of the project to be renamed.
      */
     void handleRenameProject(UUID projectUUID) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         String[] newNameAndNewDescription = presenter.displayRenameProjectPopup();
         if (newNameAndNewDescription != null) {
             String newName = newNameAndNewDescription[0];
@@ -52,8 +59,6 @@ public class ProjectSelectionController implements Initializable {
      * @param projectUUID The UUID of the project to be deleted.
      */
     void handleDeleteProject(UUID projectUUID) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null
         interactor.deleteProject(projectUUID);
     }
 
@@ -66,8 +71,6 @@ public class ProjectSelectionController implements Initializable {
      * @param description Description of project.
      */
     void createProject(String name, String description) {
-        // invoking setPresenterAndInteractor ensures that the Controller's Presenter and Interactor is updated.
-        // Otherwise, if this is the first action by the user, then interactor and presenter is null;
         interactor.createProject(name, description);
     }
 

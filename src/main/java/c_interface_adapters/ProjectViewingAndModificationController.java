@@ -25,19 +25,41 @@ import java.util.UUID;
  */
 public class ProjectViewingAndModificationController {
 
-    // JavaFX components annotated with @FXML for UI interaction
+     // The JavaFX Label component responsible for displaying the name of the project.
     @FXML
     Label projectName;
+
+
+     // The JavaFX HBox container that holds the UI components representing project columns.
+
     @FXML
     HBox columnsContainer;
+
+
+     // The JavaFX Label component responsible for displaying the description of the project.
+
     @FXML
     Label projectDescription;
+
+     // The JavaFX Button component that triggers navigation to the previous scene.
     @FXML
     Button backButton;
+
+
+     // The JavaFX Button component that triggers the addition of a new column to the project.
+
     @FXML
     Button addColumnButton;
+
+
+     // The interactor responsible for managing input and output interactions in the project viewing and modification
+     // module.
     static ProjectViewingAndModificationInputBoundary interactor;
+
+
+     // The presenter responsible for handling presentation logic related to project viewing and modification.
     static ProjectViewingAndModificationPresenter presenter;
+
 
 
 
@@ -59,16 +81,6 @@ public class ProjectViewingAndModificationController {
         setButtonStyles();
     }
 
-//    /**
-//     * Populates the project details on the UI, including the project name and description.
-//     *
-//     * @param project The Project instance representing the current project.
-//     */
-//    private void populateProjectDetails(ProjectModel project) {
-//
-//        projectName.setText(project.getName());
-//        projectDescription.setText(project.getDescription());
-//    }
 
     /**
      * Sets the styles for the buttons in the view.
@@ -134,7 +146,7 @@ public class ProjectViewingAndModificationController {
                 taskStatus, newDueDate);
 
         //Calling a handler to display the final task changes
-        presenter.displayChangedTaskDetails(taskID, newTask, hbox, columnID);
+        presenter.displayChangedTaskDetails(taskID, newTask, columnID);
 
     }
 

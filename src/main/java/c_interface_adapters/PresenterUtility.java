@@ -4,6 +4,7 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -13,8 +14,10 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -505,5 +508,163 @@ public class PresenterUtility {
         Button cancelButton = new Button("Cancel");
         cancelButton.setOnAction(e -> ProjectViewingAndModificationPresenter.controller.handleCancelButtonClicked(dialogStage));
         return cancelButton;
+    }
+
+    /**
+     * Validates whether the provided project name and description are not empty.
+     *
+     * @param newProjectName        The new project name to be validated.
+     * @param newProjectDescription The new project description to be validated.
+     * @return True if both the project name and description are not empty, false otherwise.
+     */
+    boolean isInputValid(String newProjectName, String newProjectDescription) {
+        return !newProjectName.isEmpty() && !newProjectDescription.isEmpty();
+    }
+
+    /**
+     * Displays a dialog to rename a project and captures the user's input.
+     *
+     * @param projectSelectionPresenter
+     * @return An optional string array containing the new project name and description if the user provided valid input,
+     * or an empty optional if the user canceled the dialog or provided invalid input.
+     */
+    public Optional<String[]> showRenameProject(ProjectSelectionPresenter projectSelectionPresenter) {
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Rename Project");
+        dialog.setHeaderText("Enter the new name and description for the project:");
+
+        TextField nameField = new TextField();
+        nameField.setPromptText("New Project Name");
+        TextField descriptionField = new TextField();
+        descriptionField.setPromptText("New Project Description");
+
+        dialog.getDialogPane().setContent(new VBox(nameField, descriptionField));
+
+        Optional<String> result = dialog.showAndWait();
+
+        if (result.isPresent()) {
+            String newProjectName = nameField.getText().trim();
+            String newProjectDescription = descriptionField.getText().trim();
+
+            if (new PresenterUtility().isInputValid(newProjectName, newProjectDescription)) {
+                return Optional.of(new String[]{newProjectName, newProjectDescription});
+            } else {
+                projectSelectionPresenter.showErrorAlert("Invalid Project Name or Description",
+                        "Project name and description cannot be empty.\nPlease enter the new name and description.");
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
+     * Shows the dialog and waits for user input. Converts the result of the dialog button press
+     * to a Pair of project name and description.
+     *
+     * @param dialog                    The dialog instance to show.
+     * @param projectSelectionPresenter
+     * @return An optional Pair containing the project name and description if the user confirms,
+     * otherwise an empty optional.
+     */
+    Optional<Pair<String, String>> showDialogAndWait(Dialog<Pair<String, String>> dialog, ProjectSelectionPresenter projectSelectionPresenter) {
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == ButtonType.OK) {
+                String projectName = projectSelectionPresenter.getNameTextField().getText();
+                String projectDescription = projectSelectionPresenter.getDescTextField().getText();
+                return new Pair<>(projectName, projectDescription);
+            }
+            return null; // Return null for other button types or cancellation
+        });
+
+        return dialog.showAndWait();
+    }
+
+    /**
+     * Sets the content of the dialog to include input fields for project name and description.
+     *
+     * @param dialog                    The dialog instance to set the content for.
+     * @param projectSelectionPresenter
+     */
+    void setDialogContent(Dialog<Pair<String, String>> dialog, ProjectSelectionPresenter projectSelectionPresenter) {
+        Label nameLabel = new Label("Project Name:");
+        Label descLabel = new Label("Description:");
+        projectSelectionPresenter.nameTextField = new TextField();
+        projectSelectionPresenter.descTextField = new TextField();
+
+        GridPane gridPane = new GridPane();
+        gridPane.add(nameLabel, 0, 0);
+        gridPane.add(projectSelectionPresenter.nameTextField, 1, 0);
+        gridPane.add(descLabel, 0, 1);
+        gridPane.add(projectSelectionPresenter.descTextField, 1, 1);
+
+        dialog.getDialogPane().setContent(gridPane);
+    }
+
+    /**
+     * Creates a new dialog instance for collecting project information.
+     *
+     * @return The created dialog instance.
+     */
+    Dialog<Pair<String, String>> createDialog() {
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("Create Project");
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        return dialog;
+    }
+
+    /**
+     * Fills the empty spaces in the GridPane with placeholder HBoxes.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param row          The row index where placeholders should be added.
+     * @param numColumns   The number of columns in the GridPane.
+     */
+    void fillEmptySpacesWithPlaceholders(GridPane projectsGrid, int row, int numColumns) {
+        while (row < projectsGrid.getRowCount()) {
+            HBox placeholderHBox = new HBox();
+            GridPane.setColumnIndex(placeholderHBox, 0);
+            GridPane.setRowIndex(placeholderHBox, row);
+            projectsGrid.getChildren().add(placeholderHBox);
+
+            row++;
+        }
+    }
+
+    /**
+     * Rearranges the layout of the GridPane after removing an HBox.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param numColumns   The number of columns in the GridPane.
+     */
+    void rearrangeGridPaneLayout(GridPane projectsGrid, int numColumns) {
+        int col = 0;
+        int row = 0;
+
+        for (Node child : projectsGrid.getChildren()) {
+            GridPane.setColumnIndex(child, col);
+            GridPane.setRowIndex(child, row);
+
+            col++;
+            if (col >= numColumns) {
+                col = 0;
+                row++;
+            }
+        }
+
+        new PresenterUtility().fillEmptySpacesWithPlaceholders(projectsGrid, row, numColumns);
+    }
+
+    /**
+     * Removes the specified HBox from the projectsGrid and updates the layout of the GridPane.
+     *
+     * @param projectsGrid The GridPane containing the HBoxes representing projects.
+     * @param targetHBox   The HBox to be removed.
+     */
+    void removeHBoxAndUpdateLayout(GridPane projectsGrid, HBox targetHBox) {
+        int numColumns = 2; // Specify the number of columns
+
+        projectsGrid.getChildren().remove(targetHBox);
+
+        new PresenterUtility().rearrangeGridPaneLayout(projectsGrid, numColumns);
     }
 }
