@@ -9,8 +9,10 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import c_interface_adapters.view_models.TaskViewModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,6 +31,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
     CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+    ProjectModel currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -62,12 +65,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         UUID taskID = UUID.randomUUID();
         // Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
-
-        Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
-                .getProjectEntity();
-
         // initialize use case class
-        AddTask useCase = new AddTask(currentProject);
+        AddTask useCase = new AddTask(currentProject.getProjectEntity());
         // call use case class to create a new task and save it to the database
         useCase.addTask(idOfColumn, newTaskModel);
         // Initialize TaskViewModel
@@ -131,15 +130,20 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     @Override
-    public void deleteTask(TaskModel task, UUID taskID, UUID ColumnID) {
+    public void deleteTask(TaskModel taskModel, UUID taskID, UUID ColumnID) {
         // Initialize Use Case Class
-        DeleteTask useCase = new DeleteTask(task, taskID, ColumnID);
+        DeleteTask useCase = new DeleteTask(currentProject.getProjectEntity());
         // Delete Task
-        useCase.deleteTask();
+        useCase.deleteTask(taskModel, taskID, ColumnID);
 
-        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
-                task.getCompletionStatus(), task.getDueDateTime());
+        TaskViewModel newTask = new TaskViewModel(taskModel.getName(), taskID, taskModel.getDescription(),
+                taskModel.getCompletionStatus(), taskModel.getDueDateTime());
         presenter.displayRemovedTask(taskID, newTask);
+
+        // initialize controller
+        IDBRemove removeTask = new DBManagerRemoveController();
+        // remove task from database
+        removeTask.DBRemove(taskModel, taskID);
 
     }
 
