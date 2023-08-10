@@ -67,9 +67,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
                 .getProjectEntity();
 
         // initialize use case class
-        AddTask useCase = new AddTask(idOfColumn, newTaskModel, currentProject);
+        AddTask useCase = new AddTask(currentProject);
         // call use case class to create a new task and save it to the database
-        useCase.addTask();
+        useCase.addTask(idOfColumn, newTaskModel);
         // Initialize TaskViewModel
         TaskViewModel newTask = new TaskViewModel(newTaskModel);
         // calls presenter to display message

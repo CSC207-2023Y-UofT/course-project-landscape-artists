@@ -12,20 +12,17 @@ import java.util.UUID;
  * A use case class for creating new tasks in a column
  */
 public class AddTask {
-    private TaskModel taskModel;
-    private UUID idOfColumn;
+
     private Project currentProject;
 
-    public AddTask(UUID idOfColumn, TaskModel model, Project currentProject) {
-        this.taskModel = model;
-        this.idOfColumn = idOfColumn;
+    public AddTask(Project currentProject) {
         this.currentProject = currentProject;
     }
 
     /**
      * This method creates the task and adds it to the column
      */
-    public void addTask() {
+    public void addTask(UUID idOfColumn, TaskModel taskModel) {
         Task task = createTaskEntity(taskModel);
 
         List<Column> listOfColumns = currentProject.getColumns();

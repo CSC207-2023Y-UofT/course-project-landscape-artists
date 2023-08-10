@@ -40,9 +40,9 @@ public class AddTaskTest {
     @Test
     public void testAddTask() {
 
-        AddTask addTaskUseCase = new AddTask(c.getID(), t, p);
+        AddTask addTaskUseCase = new AddTask(p);
 
-        addTaskUseCase.addTask();
+        addTaskUseCase.addTask(c.getID(), t);
 
         assertEquals("t", c.getTasks().get(0).getName());
     }
