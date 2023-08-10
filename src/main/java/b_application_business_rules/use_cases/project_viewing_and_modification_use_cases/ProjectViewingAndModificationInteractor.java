@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
@@ -26,6 +27,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
     CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+
+    private final ProjectModel currentProjectModel = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -60,9 +63,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
         // initialize use case class
-        AddTask useCase = new AddTask(idOfColumn, newTaskModel);
+        AddTask useCase = new AddTask(currentProjectModel.getProjectEntity());
         // call use case class to create a new task and save it to the database
-        useCase.addTask(idOfColumn);
+        useCase.addTask(idOfColumn, newTaskModel);
         // Initialize TaskViewModel
         TaskViewModel newTask = new TaskViewModel(newTaskModel);
         // calls presenter to display message
