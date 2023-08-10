@@ -34,6 +34,7 @@ import java.io.IOException;
 
 import java.time.LocalDate;
 
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import java.util.*;
@@ -53,6 +54,10 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private static VBox dragDestination;
 
     private static UIComponentLocator uiComponentLocator;
+
+    TextField nameTextField;
+    TextArea detailsTextArea;
+    DatePicker dueDatePicker;
 
     /**
      * Sets up the next scene for displaying the details of a selected project.
@@ -1169,82 +1174,151 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         popupStage.showAndWait();
     }
 
-    /**
-     * Creates a popup screen once the changeTaskDetail button is pressed. Takes in user input
-     * on the task name, task description and due date and then calls the
-     * ProjectViewingAndModificationController
-     *
-     * @param task
-     * @param hbox
-     * @param uuid
-     */
-    void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
+//    /**
+//     * Creates a popup screen once the changeTaskDetail button is pressed. Takes in user input
+//     * on the task name, task description and due date and then calls the
+//     * ProjectViewingAndModificationController
+//     *
+//     * @param task
+//     * @param hbox
+//     * @param uuid
+//     */
+//    void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
+//
+//        // Create a new stage for the popup
+//        Stage popupStage = new Stage();
+//
+//        // Stops all other stages from functioning until popupStage is closed.
+//        popupStage.initModality(Modality.APPLICATION_MODAL);
+//
+//        popupStage.setTitle("Change Task Details");
+//
+//        // Create the GridPane layout for the popup
+//        GridPane gridPane = new GridPane();
+//        gridPane.setHgap(10);
+//        gridPane.setVgap(10);
+//
+//        // Create labels and input fields for Task Details, Task Due Date, and Task Name
+//        Label nameLabel = new Label("Task Name:");
+//        TextField nameTextField = new TextField();
+//
+//        Label detailsLabel = new Label("Task Details:");
+//        TextArea detailsTextArea = new TextArea();
+//        detailsTextArea.setPrefRowCount(3);
+//
+//        Label dueDateLabel = new Label("Task Due Date:");
+//        DatePicker dueDatePicker = new DatePicker();
+//
+//        // Add the components to the GridPane. The number provided implies
+//        // which position in the gridPane (i.e. column 0, row 0 is top left).
+//        gridPane.add(nameLabel, 0, 0);
+//        gridPane.add(nameTextField, 1, 0);
+//        gridPane.add(detailsLabel, 0, 1);
+//        gridPane.add(detailsTextArea, 1, 1);
+//        gridPane.add(dueDateLabel, 0, 2);
+//        gridPane.add(dueDatePicker, 1, 2);
+//
+//        // Create the "Change Task" button for submitting the task
+//        Button changeTaskButton = new Button("Submit");
+//
+//        // Handles the action of putting a new task in the correct Column UI.
+//        changeTaskButton.setOnAction(event -> {
+//            String taskName = nameTextField.getText().trim();
+//            String taskDetails = detailsTextArea.getText().trim();
+//            LocalDate dueDate = dueDatePicker.getValue();
+//
+//
+//            if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+//                // Show an alert if any of the fields are empty
+//                showAlert("Error", "All fields are required. Please fill in all the details.");
+//            } else {
+//                // Close the popup when "Submit" button is pressed
+//                popupStage.close();
+//
+//                // Call the method to handle changing the task details
+//                controller.changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(), uuid);
+//            }
+//
+//        });
+//
+//        // Add the "Change Task" button to the GridPane
+//        gridPane.add(changeTaskButton, 0, 3, 2, 1);
+//
+//        // Create the scene and set it on the stage
+//        Scene popupScene = new Scene(gridPane, 800, 200);
+//        popupStage.setScene(popupScene);
+//
+//        // Show the popup
+//        popupStage.showAndWait();
+//    }
+    public void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID uuid) {
+        Stage popupStage = createPopupStage();
+        GridPane gridPane = createGridPane();
+        addComponentsToGridPane(gridPane);
+        Button changeTaskButton = createChangeTaskButton(task, hbox, uuid, popupStage);
 
-        // Create a new stage for the popup
+        gridPane.add(changeTaskButton, 0, 3, 2, 1);
+
+        Scene popupScene = new Scene(gridPane, 800, 200);
+        popupStage.setScene(popupScene);
+
+        popupStage.showAndWait();
+    }
+
+    private Stage createPopupStage() {
         Stage popupStage = new Stage();
-
-        // Stops all other stages from functioning until popupStage is closed.
         popupStage.initModality(Modality.APPLICATION_MODAL);
-
         popupStage.setTitle("Change Task Details");
+        return popupStage;
+    }
 
-        // Create the GridPane layout for the popup
+    private GridPane createGridPane() {
         GridPane gridPane = new GridPane();
         gridPane.setHgap(10);
         gridPane.setVgap(10);
+        return gridPane;
+    }
 
-        // Create labels and input fields for Task Details, Task Due Date, and Task Name
+
+
+    private void addComponentsToGridPane(GridPane gridPane) {
         Label nameLabel = new Label("Task Name:");
-        TextField nameTextField = new TextField();
+        nameTextField = new TextField();
 
         Label detailsLabel = new Label("Task Details:");
-        TextArea detailsTextArea = new TextArea();
+        detailsTextArea = new TextArea();
         detailsTextArea.setPrefRowCount(3);
 
         Label dueDateLabel = new Label("Task Due Date:");
-        DatePicker dueDatePicker = new DatePicker();
+        dueDatePicker = new DatePicker();
 
-        // Add the components to the GridPane. The number provided implies
-        // which position in the gridPane (i.e. column 0, row 0 is top left).
         gridPane.add(nameLabel, 0, 0);
         gridPane.add(nameTextField, 1, 0);
         gridPane.add(detailsLabel, 0, 1);
         gridPane.add(detailsTextArea, 1, 1);
         gridPane.add(dueDateLabel, 0, 2);
         gridPane.add(dueDatePicker, 1, 2);
+    }
 
-        // Create the "Change Task" button for submitting the task
+    private Button createChangeTaskButton(TaskModel task, HBox hbox, UUID uuid, Stage popupStage) {
         Button changeTaskButton = new Button("Submit");
+        changeTaskButton.setOnAction(event -> handleTaskSubmit(task, hbox, popupStage, uuid));
+        return changeTaskButton;
+    }
 
-        // Handles the action of putting a new task in the correct Column UI.
-        changeTaskButton.setOnAction(event -> {
-            String taskName = nameTextField.getText().trim();
-            String taskDetails = detailsTextArea.getText().trim();
-            LocalDate dueDate = dueDatePicker.getValue();
+    private void handleTaskSubmit(TaskModel task, HBox hbox, Stage popupStage, UUID uuid) {
+        String taskName = nameTextField.getText().trim();
+        String taskDetails = detailsTextArea.getText().trim();
+        LocalDate dueDate = dueDatePicker.getValue();
 
-
-            if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
-                // Show an alert if any of the fields are empty
-                showAlert("Error", "All fields are required. Please fill in all the details.");
-            } else {
-                // Close the popup when "Submit" button is pressed
-                popupStage.close();
-
-                // Call the method to handle changing the task details
-                controller.changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(), uuid);
-            }
-
-        });
-
-        // Add the "Change Task" button to the GridPane
-        gridPane.add(changeTaskButton, 0, 3, 2, 1);
-
-        // Create the scene and set it on the stage
-        Scene popupScene = new Scene(gridPane, 800, 200);
-        popupStage.setScene(popupScene);
-
-        // Show the popup
-        popupStage.showAndWait();
+        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+            showAlert("Error", "All fields are required. Please fill in all the details.");
+        } else {
+            popupStage.close();
+            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
+            controller.changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
+                uuid);
+        }
     }
 
 
