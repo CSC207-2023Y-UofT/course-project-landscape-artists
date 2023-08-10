@@ -122,24 +122,24 @@ public class ProjectViewingAndModificationController {
      * @param newTaskName
      * @param newTaskDescription
      * @param newDueDate
-     * @param uuid
+     * @param columnID
      */
     void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
-                           String newTaskDescription, LocalDateTime newDueDate, UUID uuid) {
+                           String newTaskDescription, LocalDateTime newDueDate, UUID columnID) {
         UUID taskID = task.getID();
         boolean taskStatus = task.getCompletionStatus();
 
         //Creating a new TaskModel based on the user input
         TaskModel changedTask = TaskModelFactory.create(newTaskName, taskID, newTaskDescription, taskStatus,
                 newDueDate);
-        interactor.changeTaskDetails(changedTask, taskID, uuid);
+        interactor.changeTaskDetails(changedTask, taskID, columnID);
 
         //Creating a TaskViewModel for display purposes
         TaskViewModel newTask = new TaskViewModel(newTaskName, taskID, newTaskName,
                 taskStatus, newDueDate);
 
         //Calling a handler to display the final task changes
-        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
+        presenter.displayChangedTaskDetails(taskID, newTask, hbox, columnID);
 
     }
 
