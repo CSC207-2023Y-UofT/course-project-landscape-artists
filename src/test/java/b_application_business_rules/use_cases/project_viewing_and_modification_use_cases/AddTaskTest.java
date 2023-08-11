@@ -13,33 +13,34 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddTaskTest {
     private Project p;
     private Column c;
-    private TaskModel t;
 
     @BeforeEach
     public void setUp() {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
-        t = new TaskModel("t1", id3, "", false, LocalDateTime.now());
-        c = new Column("c1", new ArrayList<Task>(), id2);
+        UUID projectID = UUID.randomUUID();
+        UUID columnID  = UUID.randomUUID();
+        c = new Column("c1", new ArrayList<Task>(), columnID ); // Initialize new column
         ArrayList<Column> listOfColumns = new ArrayList<Column>();
-        listOfColumns.add(c);
-        p = new Project("p1", id1, "", listOfColumns);
+        listOfColumns.add(c); // Add column to list of columns
+        p = new Project("p1", projectID, "", listOfColumns); //Initialize new project
     }
 
     @Test
     public void testAddTask() {
+        UUID taskID  = UUID.randomUUID();
+
+        TaskModel t = new TaskModel("t1", taskID, "", false, LocalDateTime.now()); // Initialize TaskModel
 
         AddTask addTaskUseCase = new AddTask(p);
 
         addTaskUseCase.addTask(c.getID(), t);
 
-        assertTrue(c.getTasks().get(0).getName().equals("t1"));
+        assertEquals("t1", c.getTasks().get(0).getName());
     }
 
 }

@@ -273,7 +273,7 @@ public class PresenterUtility {
             new PopupUI().handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId), projectViewingAndModificationPresenter);
         });
         deleteTaskButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.deleteTask(task, UUID.fromString(hbox.getId()), UUID.fromString(columnBoxId));
+            ProjectViewingAndModificationPresenter.controller.deleteTask(UUID.fromString(columnBoxId), task);
         });
         showTaskDetailsButton.setOnAction(event -> {
             ProjectViewingAndModificationPresenter.controller.showTaskDetails(task);

@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
@@ -8,10 +9,15 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -28,7 +34,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // CurrentProjectRepository instance.
     CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
 
-    private final ProjectModel currentProjectModel = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
+    // currentProject attribute to be replaced by actual project access (to access a project entity)
+    private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -58,18 +65,43 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     @Override
     public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
-        // Generate random UUID for task
+        // Generate random UUID for TaskModel and initialize TaskModel
         UUID taskID = UUID.randomUUID();
-        // Create TaskModel with given info
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
+
         // initialize use case class
-        AddTask useCase = new AddTask(currentProjectModel.getProjectEntity());
+        AddTask useCase = new AddTask(currentProject);
         // call use case class to create a new task and save it to the database
         useCase.addTask(idOfColumn, newTaskModel);
         // Initialize TaskViewModel
-        TaskViewModel newTask = new TaskViewModel(newTaskModel);
+
         // calls presenter to display message
-        presenter.displayNewTask(idOfColumn, newTask);
+        presenter.displayNewTask(idOfColumn, newTaskModel);
+
+        // Initializing the required controllers and calls method that adds task to the database
+        IDBInsert insertTask = new DBManagerInsertController();
+        insertTask.DBInsert(newTaskModel);
+    }
+
+    /**
+     * Calls DeleteTask to delete the task entity with task ID from the current project, calls database accessor to
+     * remove the task from the database, and calls the presenter to change the user display.
+     *
+     * @param columnID The ID of the column the to-be-deleted task was in.
+     * @param taskModel The entity model of the task-to-be-deleted
+     */
+    @Override
+    public void deleteTask(UUID columnID, TaskModel taskModel) {
+        // Initialize Use Case Class and call deleteTask method
+        DeleteTask useCase = new DeleteTask(currentProject);
+        useCase.deleteTask(columnID, taskModel);
+
+        // calls presenter to display message
+        presenter.displayRemovedTask(taskModel);
+
+        // initialize controller and remove task from database
+        IDBRemove removeTask = new DBManagerRemoveController();
+        removeTask.DBRemove(taskModel, taskModel.getID());
     }
 
     /**
@@ -121,18 +153,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayRenamedColumn(updatedColumnModel);
     }
 
-    @Override
-    public void deleteTask(TaskModel task, UUID taskID, UUID ColumnID) {
-        // Initialize Use Case Class
-        DeleteTask useCase = new DeleteTask(task, taskID, ColumnID);
-        // Delete Task
-        useCase.deleteTask();
-
-        TaskViewModel newTask = new TaskViewModel(task.getName(), taskID, task.getDescription(),
-                task.getCompletionStatus(), task.getDueDateTime());
-        presenter.displayRemovedTask(taskID, newTask);
-
-    }
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to
@@ -154,35 +174,4 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void renameTask(TaskModel task, UUID TaskUIid) {
-
-    }
-
-    @Override
-    public void removeTask(TaskModel task, UUID columnId) {
-
-    }
-
-    @Override
-    public void addTask(TaskModel task, UUID targetColumnId) {
-
-    }
-
-    @Override
-    public void changeTaskDate(TaskModel task, UUID targetColumnId) {
-
-    }
-
-    @Override
-    public void renameProject(ProjectModel project, UUID projectId) {
-
-    }
-
-    @Override
-    public void deleteProject(ProjectModel project, UUID projectId) {
-
-    }
-
 }

@@ -4,6 +4,7 @@ package b_application_business_rules.boundaries;//this boundary will be the outp
 //this boundary will be responsable for telling the outer classes what to do and what to show
 
 import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 
@@ -20,9 +21,9 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     void displayAllProjects();
 
-    void displayNewTask(UUID columnBoxID, TaskViewModel newTask);
+    void displayNewTask(UUID columnBoxID, TaskModel newTask);
 
-    void displayRemovedTask(UUID taskID, TaskViewModel task);
+    void displayRemovedTask(TaskModel task);
 
     void displayRenamedColumn(ColumnModel columnModel);
 

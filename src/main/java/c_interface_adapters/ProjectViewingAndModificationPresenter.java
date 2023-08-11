@@ -153,18 +153,17 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param newTask     The ViewModel representing the new task.
      */
     @Override
-    public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
+    public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
         System.out.println("hi");
     }
 
     /**
      * Displays the removal of a task.
      *
-     * @param taskID The UUID of the task being removed.
-     * @param task   The ViewModel representing the removed task.
+     * @param task   The TaskModel representing the removed task.
      */
     @Override
-    public void displayRemovedTask(UUID taskID, TaskViewModel task) {
+    public void displayRemovedTask(TaskModel task) {
         System.out.println("hello");
     }
 
