@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 
 import b_application_business_rules.entity_models.ProjectModel;
@@ -88,8 +89,12 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// of the application.
 		// For example, the interactor might interact with a ProjectRepository to store
 		// the project in a database.
+
 		ProjectModel projectModel = new ProjectModel(
 				projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
+		CreateProject useCase = new CreateProject();
+		useCase.newProject(projectName, projectModel.getID(), projectDescription, new ArrayList<>());
+
 		setCurrentProject(projectModel);
 		presenter.displayCurrentProject(projectModel);
 	}
@@ -134,12 +139,21 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
-		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
-		EditProjectDetails useCase = new EditProjectDetails(editedProjectModel);
+		//
+		//First change -- have a way to do the existing models
+		List<ColumnModel> existingColumnModels =  currentProjectRepository.getCurrentProject().getColumnModels();
+		ProjectModel originalProjectModel = currentProjectRepository.getCurrentProject();
+		//CHANGE: GETTING RID OF EDITED PROJECT ALTOGETHER - ONLY USE OG PROJECTMODEL!!!!!
+		//
+		//EditProjectDetails useCase = new EditProjectDetails(originalProjectModel, editedProjectModel);
+		EditProjectDetails useCase = new EditProjectDetails(originalProjectModel);
+		//Added a new parameter -- original project model (for aiding testing)
 
 		useCase.setName(newName);
 		useCase.setDescription(newDescription);
 
+		//Edited model for the presenter
+		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, existingColumnModels);
 		presenter.displayRenamedProject(editedProjectModel);
 	}
 
