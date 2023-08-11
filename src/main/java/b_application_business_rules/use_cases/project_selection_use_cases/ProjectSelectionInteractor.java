@@ -10,7 +10,9 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,10 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	// CurrentProjectRepository instance.
 	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
 			.getCurrentprojectrepository();
+
+	// COPIED FROM ProjectViewingAndModificationInteractor
+	//currentProject attribute to be replaced by actual project access (to access a project entity)
+	private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
 
 	// The presenter holds the reference to the ProjectSelectionOutputBoundary
 	// instance,
@@ -90,10 +96,13 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// For example, the interactor might interact with a ProjectRepository to store
 		// the project in a database.
 
-		ProjectModel projectModel = new ProjectModel(
-				projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
 		CreateProject useCase = new CreateProject();
-		useCase.newProject(projectName, projectModel.getID(), projectDescription, new ArrayList<>());
+		Project newProject = useCase.newProject(projectName, UUID.randomUUID(),
+				projectDescription, new ArrayList<>());
+
+		IDBInsert databaseInserter = new DBManagerInsertController();
+		ProjectModel projectModel = new ProjectModel(newProject);
+		databaseInserter.DBInsert(projectModel);
 
 		setCurrentProject(projectModel);
 		presenter.displayCurrentProject(projectModel);

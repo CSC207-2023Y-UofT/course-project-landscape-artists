@@ -37,12 +37,9 @@ public class CreateProject {
      * @param description The project's description.
      * @param columns     The project's columns.
      */
-    public void newProject(String name, UUID ID, String description, List<Column> columns) {
+    public Project newProject(String name, UUID ID, String description, List<Column> columns) {
 
-        IDBInsert databaseInserter = new DBManagerInsertController();
-        Project project = new Project(name, ID, description, columns);
+       return new Project(name, ID, description, columns);
 
-        ProjectModel projectModel = new ProjectModel(project);
-        databaseInserter.DBInsert(projectModel);
     }
 }
