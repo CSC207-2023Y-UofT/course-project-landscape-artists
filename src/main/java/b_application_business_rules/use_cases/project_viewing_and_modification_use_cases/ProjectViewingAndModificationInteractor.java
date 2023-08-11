@@ -122,8 +122,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void addColumn(String columnName) {
         // Generate random UUID for column and create ColumnModel to send data to presenter and to use case class.
-        UUID idOfColumn = UUID.randomUUID();
-        ColumnModel columnModel = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
+        UUID columnID = UUID.randomUUID();
+        ColumnModel columnModel = new ColumnModel(columnName, new ArrayList<>(), columnID);
 
         // initializing use case to add column and initiate adding to the column
         AddColumn addColumnUseCase = new AddColumn(currentProject);
@@ -144,7 +144,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
-     * The method to add a column to the project.
+     * The method to delete a column from the project.
      *
      * @param columnBoxId the UUID of the column to be deleted.
      */
