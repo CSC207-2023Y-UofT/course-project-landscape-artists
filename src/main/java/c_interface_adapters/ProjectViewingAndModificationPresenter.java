@@ -5,7 +5,6 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -153,18 +152,17 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param newTask     The ViewModel representing the new task.
      */
     @Override
-    public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
+    public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
         System.out.println("hi");
     }
 
     /**
      * Displays the removal of a task.
      *
-     * @param taskID The UUID of the task being removed.
-     * @param task   The ViewModel representing the removed task.
+     * @param task   The TaskModel representing the removed task.
      */
     @Override
-    public void displayRemovedTask(UUID taskID, TaskViewModel task) {
+    public void displayRemovedTask(TaskModel task) {
         System.out.println("hello");
     }
 
@@ -207,14 +205,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * This method renames the existing task and changes the task description and shows the final
      * changes on the screen
      *
-     * @param taskID
-     * @param task
+     * @param task updated task's entity model.
+     * @param columnID column ID of column that held task.
      */
     @Override
-    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, UUID columnID) {
+    public void displayChangedTaskDetails(TaskModel task, UUID columnID) {
         String taskName = task.getName();
 
-        Text taskNameUI = uiComponentLocator.findTaskName(taskID, columnID);
+        Text taskNameUI = uiComponentLocator.findTaskName(task.getID(), columnID);
         if (taskNameUI != null) {
             taskNameUI.setText(taskName);
         } else {

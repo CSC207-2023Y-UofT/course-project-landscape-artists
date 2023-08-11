@@ -18,50 +18,29 @@ import java.util.UUID;
  */
 public class DeleteColumn {
 
-    /**
-     * The Column object representing the column to be deleted.
-     */
-    private final Column column;
-
-    /**
-     * The ID of the column to be deleted.
-     */
-    private final UUID idOfColumn;
 
     /**
      * The current project being worked on. Received from Singleton data class.
      */
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
-            .getProjectEntity();
+    private final Project currentProject;
 
     /**
-     * Constructs a DeleteColumn object with the specified ID of the column to be
-     * deleted.
+     * Constructs a DeleteColumn object with the current project entity
      *
-     * @param idOfColumn The ID of the column to be deleted.
+     * @param currentProject The ID of the column to be deleted.
      */
-    public DeleteColumn(UUID idOfColumn) {
-        this.idOfColumn = idOfColumn;
-        this.column = new Column("", new ArrayList<>(), idOfColumn);
+    public DeleteColumn(Project currentProject) {
+        this.currentProject = currentProject;
     }
 
     /**
-     * Deletes the column from the currently opened project in both the project
-     * entity and the database.
-     * This method removes the specified column from the project and updates the
-     * database accordingly.
-     * It delegates the removal of the column from the project entity to the
-     * currentProject object,
-     * and it also calls the necessary database access to update the database and
-     * remove the column.
+     * Deletes the column from the currently opened project in the project entity.
      */
-    public void deleteColumn() {
-        // Remove the Column with idOfColumn from the currently opened project
-        // currentProject.
-        currentProject.removeColumn(idOfColumn);
+    public void deleteColumn(UUID columnID) {
 
-        // Update the database to remove the column.
-        IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(new ColumnModel(column), idOfColumn);
+        // Remove column from the current project
+        currentProject.removeColumn(columnID);
+
+
     }
 }

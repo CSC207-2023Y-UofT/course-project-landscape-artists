@@ -5,7 +5,6 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
-import c_interface_adapters.view_models.TaskViewModel;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -115,8 +114,8 @@ public class ProjectViewingAndModificationController {
     }
 
 
-    void deleteTask(TaskModel task, UUID hBoxID, UUID columnBoxID) {
-        interactor.deleteTask(task, hBoxID, columnBoxID);
+    void deleteTask(UUID columnBoxID, TaskModel task) {
+        interactor.deleteTask(columnBoxID, task);
     }
 
     /**
@@ -141,12 +140,6 @@ public class ProjectViewingAndModificationController {
                 newDueDate);
         interactor.changeTaskDetails(changedTask, taskID, columnID);
 
-        //Creating a TaskViewModel for display purposes
-        TaskViewModel newTask = new TaskViewModel(newTaskName, taskID, newTaskName,
-                taskStatus, newDueDate);
-
-        //Calling a handler to display the final task changes
-        presenter.displayChangedTaskDetails(taskID, newTask, columnID);
 
     }
 
