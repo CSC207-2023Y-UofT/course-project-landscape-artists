@@ -11,10 +11,11 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A use case class for creating new tasks in a column
+ * The AddTask class is responsible for adding a new task to the respective column in the currently
+ * opened project entity.
  */
 public class AddTask {
-    private Project currentProject;
+    private final Project currentProject;
 
     public AddTask(Project currentProject) {
         this.currentProject = currentProject;
@@ -22,9 +23,6 @@ public class AddTask {
 
     /**
      * Creates the task entity and adds it to the respective column entity's list of tasks
-     *
-     * @param columnID The ID of the column the task will be added to
-     * @param taskModel The entity model of the task to be added
      */
     public void addTask(UUID columnID, TaskModel taskModel) {
         // Create task entity
@@ -36,7 +34,7 @@ public class AddTask {
         // Then, retrieve the column entity
         Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
         // Then, add the task to the columns list of tasks
-        currentColumn.getTasks().add(task);
+        currentColumn.addTask(task);
     }
 
     /**

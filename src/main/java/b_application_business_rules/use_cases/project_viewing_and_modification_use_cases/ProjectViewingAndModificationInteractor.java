@@ -11,9 +11,12 @@ import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
 import c_interface_adapters.view_models.TaskViewModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -78,11 +81,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         UUID taskID = UUID.randomUUID();
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
 
-        // initialize use case class
+        // initialize use case class and call use case class to create a new task and save it to the database
         AddTask useCase = new AddTask(currentProject);
-        // call use case class to create a new task and save it to the database
         useCase.addTask(columnID, newTaskModel);
-        // Initialize TaskViewModel
 
         // calls presenter to display message
         presenter.displayNewTask(columnID, newTaskModel);
@@ -120,15 +121,26 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      */
     @Override
     public void addColumn(String columnName) {
-        // Generate random UUID for column
+        // Generate random UUID for column and create ColumnModel to send data to presenter and to use case class.
         UUID idOfColumn = UUID.randomUUID();
-        // Create ColumnModel to send data to presenter and to use case class.
         ColumnModel columnModel = new ColumnModel(columnName, new ArrayList<>(), idOfColumn);
+
         // initializing use case to add column and initiate adding to the column
-        AddColumn addColumnUseCase = new AddColumn(columnModel);
-        addColumnUseCase.addColumn();
+        AddColumn addColumnUseCase = new AddColumn(currentProject);
+        addColumnUseCase.addColumn(columnModel);
+
         // Send data to presenter.
         presenter.displayNewColumn(columnModel);
+
+        // Update database to add the column.
+        IDbIdToModel iDbIdToModel = new DbIDToModel();
+        IDBInsert dbInsertManager = new DBManagerInsertController();
+        dbInsertManager.DBInsert(columnModel);
+        ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+        updatedProject.getColumnModels().add(columnModel);
+        DeleteProject deleteProject = new DeleteProject();
+        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
+        dbInsertManager.DBInsert(updatedProject);
     }
 
     /**
