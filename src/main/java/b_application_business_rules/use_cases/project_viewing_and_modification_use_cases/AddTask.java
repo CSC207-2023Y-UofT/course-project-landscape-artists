@@ -11,42 +11,30 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A use case class for creating new tasks in a column
+ * The AddTask class is responsible for adding a new task to the respective column in the currently
+ * opened project entity.
  */
 public class AddTask {
-    private TaskModel taskModel;
-    private UUID idOfColumn;
-    // I'm not sure if this 'currentProject' will refer to the same project as other
-    // usecases would
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
-            .getProjectEntity();
+    private final Project currentProject;
 
-    public AddTask(UUID idOfColumn, TaskModel model) {
-        this.taskModel = model;
-        this.idOfColumn = idOfColumn;
+    public AddTask(Project currentProject) {
+        this.currentProject = currentProject;
     }
 
     /**
-     * This method creates the task and calls the method that will add the task to
-     * the database
+     * Creates the task entity and adds it to the respective column entity's list of tasks
      */
-    public void addTask(UUID idOfColumn) {
+    public void addTask(UUID columnID, TaskModel taskModel) {
         // Create task entity
         Task task = createTaskEntity(taskModel);
 
-        // Add task to Column Entity
-        // First get the list of columns in the current project
+        // Add task to Column Entity:
+        // First, get the list of columns in the current project
         List<Column> listOfColumns = currentProject.getColumns();
-        // Then search for the column entity
-        System.out.println(idOfColumn.toString());
-        Column currentColumn = Column.IDToColumn(idOfColumn, listOfColumns);
-        // Then add the task to the columns list of tasks
-        currentColumn.getTasks().add(task);
-
-        // Initializing the required controllers and calls method that adds task to the
-        // database
-        IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(taskModel);
+        // Then, retrieve the column entity
+        Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
+        // Then, add the task to the columns list of tasks
+        currentColumn.addTask(task);
     }
 
     /**

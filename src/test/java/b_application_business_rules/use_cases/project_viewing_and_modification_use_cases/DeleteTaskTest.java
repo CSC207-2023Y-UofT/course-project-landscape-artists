@@ -12,33 +12,32 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class AddTaskTest {
+class DeleteTaskTest {
     private Project p;
     private Column c;
+    private Task t;
 
     @BeforeEach
     public void setUp() {
         UUID projectID = UUID.randomUUID();
         UUID columnID  = UUID.randomUUID();
+        UUID taskID  = UUID.randomUUID();
+        t = new Task("t1", taskID, "", false, LocalDateTime.now()); // Initialize new task
         c = new Column("c1", new ArrayList<Task>(), columnID ); // Initialize new column
-        ArrayList<Column> listOfColumns = new ArrayList<Column>();
-        listOfColumns.add(c); // Add column to list of columns
-        p = new Project("p1", projectID, "", listOfColumns); //Initialize new project
+        c.getTasks().add(t); // Add task to column
+        p = new Project("p1", projectID, "", new ArrayList<Column>()); // Initialize new project
+        p.getColumns().add(c); // Add column to project
     }
 
     @Test
-    public void testAddTask() {
-        UUID taskID  = UUID.randomUUID();
+    public void testDeleteTask() {
+        TaskModel taskModel = new TaskModel(t);
 
-        TaskModel t = new TaskModel("t1", taskID, "", false, LocalDateTime.now()); // Initialize TaskModel
+        DeleteTask deleteTaskUseCase = new DeleteTask(p);
 
-        AddTask addTaskUseCase = new AddTask(p);
+        deleteTaskUseCase.deleteTask(p.getColumns().get(0).getID(), taskModel);
 
-        addTaskUseCase.addTask(c.getID(), t);
-
-        assertEquals("t1", c.getTasks().get(0).getName());
+        assertEquals(0, p.getColumns().get(0).getTasks().size());
     }
 
 }

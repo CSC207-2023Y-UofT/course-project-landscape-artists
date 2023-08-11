@@ -16,24 +16,13 @@ public interface ProjectViewingAndModificationInputBoundary {
 
     void addNewTask(UUID idOfColumn, String taskName, String taskDescription,
                     LocalDateTime dueDate);
-
-
     void deleteColumn(UUID columnBoxId);
 
     void editColumnDetails(UUID columnBoxId, String newColumnName);
 
-    void deleteTask(TaskModel task, UUID TaskUIid, UUID ColumnID);
+    void deleteTask(UUID ColumnID, TaskModel taskModel);
 
     void changeTaskDetails(TaskModel task, UUID TaskUIid, UUID ParentColumn);
-
-    void renameTask(TaskModel task, UUID TaskUIid);
-
-    void removeTask(TaskModel task, UUID columnId);
-
-    void addTask(TaskModel task, UUID targetColumnId);
-    void changeTaskDate(TaskModel task, UUID targetColumnId);
-    void renameProject(ProjectModel project, UUID projectId);
-    void deleteProject(ProjectModel project, UUID projectId);
 
     void addColumn(String columnName);
 }
