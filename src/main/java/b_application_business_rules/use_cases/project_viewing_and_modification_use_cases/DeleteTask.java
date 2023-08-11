@@ -23,12 +23,12 @@ public class DeleteTask implements DataAccessInterface {
     // Review whether entities should have arraylists or lists.ArrayLists more
     // flexible
     // Review whether models should be updated like entities
-    public void deleteTask(UUID ColumnID, TaskModel taskModel) {
+    public void deleteTask(UUID columnID, TaskModel taskModel) {
         // Delete Task from Column entity's list of tasks'
         // First get the list of columns in the current project
         List<Column> listOfColumns = currentProject.getColumns();
         // Then search for the column entity
-        Column currentColumn = Column.IDToColumn(ColumnID, listOfColumns);
+        Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
         // Then search for the Task entity
         List<Task> listOfTasks = currentColumn.getTasks();
         Task task = Task.IDToTask(taskModel.getID(), (ArrayList<Task>) listOfTasks);
