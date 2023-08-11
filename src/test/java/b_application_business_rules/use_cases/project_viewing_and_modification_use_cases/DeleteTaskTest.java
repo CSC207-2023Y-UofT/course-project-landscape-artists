@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 class DeleteTaskTest {
     private Project p;
     private Column c;

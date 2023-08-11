@@ -5,9 +5,6 @@ import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.DataAccessInterface;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
