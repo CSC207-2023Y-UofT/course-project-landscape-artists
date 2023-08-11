@@ -11,16 +11,17 @@ import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
-import c_interface_adapters.view_models.TaskViewModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -186,22 +187,42 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
     /**
      * Changes the task details given the new TaskModel task. Calls the use case to
-     * make
-     * changes to the entities and database then calls the presenter to display the
+     * make changes to the entities and database then calls the presenter to display the
      * updated changes
-     * 
-     * @param task     Task Model
-     * @param TaskUIid ID of task entity
+     *
      */
     @Override
-    public void changeTaskDetails(TaskModel task, UUID TaskUIid, UUID ParentColumn) {
-        EditTaskDetails useCase = new EditTaskDetails(task, TaskUIid);
-        try {
-            useCase.editTask(ParentColumn);
-            //Call to presenter here was moved to the controller (changeTaskDetails)
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+    public void changeTaskDetails(TaskModel updatedTask, UUID taskID, UUID columnID) {
+        // Initializes and call use case
+        EditTask editTask = new EditTask(currentProject);
+        editTask.editTask(columnID, updatedTask);
+
+        // calls presenter to display message
+        presenter.displayChangedTaskDetails(updatedTask, columnID);
+
+        // Initializing the controllers
+        IDBRemove removeTask = new DBManagerRemoveController();
+        IDBInsert insertTask = new DBManagerInsertController();
+        IDBSearch findOldTask = new DBManagerSearchController();
+
+        // Removing the existing task requires a TaskModel, which we don't have any
+        // So we need to make one: by finding all the information about the old task
+        // Then using the TaskFactory to create a TaskModel
+
+        ArrayList<String> oldTaskInfo = findOldTask.DBTaskSearch(taskID.toString());
+        String oldTaskName = oldTaskInfo.get(1);
+        String oldTaskDescription = oldTaskInfo.get(2);
+        boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
+//        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
+        TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
+                oldTaskDescription, oldTaskStatus, oldTaskDate);
+
+        // Removing the old task
+        removeTask.DBRemove(oldTask, taskID);
+
+        // Inserting the new task
+        insertTask.DBInsert(updatedTask);
     }
 }

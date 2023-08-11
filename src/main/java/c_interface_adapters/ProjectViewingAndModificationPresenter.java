@@ -5,7 +5,6 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
-import c_interface_adapters.view_models.TaskViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -206,14 +205,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * This method renames the existing task and changes the task description and shows the final
      * changes on the screen
      *
-     * @param taskID
-     * @param task
+     * @param task updated task's entity model.
+     * @param columnID column ID of column that held task.
      */
     @Override
-    public void displayChangedTaskDetails(UUID taskID, TaskViewModel task, UUID columnID) {
+    public void displayChangedTaskDetails(TaskModel task, UUID columnID) {
         String taskName = task.getName();
 
-        Text taskNameUI = uiComponentLocator.findTaskName(taskID, columnID);
+        Text taskNameUI = uiComponentLocator.findTaskName(task.getID(), columnID);
         if (taskNameUI != null) {
             taskNameUI.setText(taskName);
         } else {
