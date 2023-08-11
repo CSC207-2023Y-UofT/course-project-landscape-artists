@@ -20,13 +20,11 @@ class AddColumnTest {
     @BeforeEach
     public void setUp() {
         UUID projectID = UUID.randomUUID();
-        ArrayList<Column> listOfColumns = new ArrayList<Column>();
-        p = new Project("p1", projectID, "", listOfColumns); //Initialize new project
+        p = new Project("p1", projectID, "", new ArrayList<>()); //Initialize new project
     }
 
     @Test
     public void testAddColumn() {
-        UUID taskID  = UUID.randomUUID();
 
         UUID columnID  = UUID.randomUUID();
         ColumnModel c = new ColumnModel("c1", new ArrayList<>(), columnID ); // Initialize new column
