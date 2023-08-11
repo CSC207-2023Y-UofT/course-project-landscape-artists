@@ -25,6 +25,7 @@ public class AddColumn {
      */
     private final Project currentProject;
 
+
     public AddColumn(Project currentProject) {
         this.currentProject = currentProject;
     }

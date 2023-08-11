@@ -146,15 +146,24 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     /**
      * The method to delete a column from the project.
      *
-     * @param columnBoxId the UUID of the column to be deleted.
+     * @param columnID the UUID of the column to be deleted.
      */
     @Override
-    public void deleteColumn(UUID columnBoxId) {
-        DeleteColumn deleteColumnUseCase = new DeleteColumn(columnBoxId);
-        deleteColumnUseCase.deleteColumn();
+    public void deleteColumn(UUID columnID) {
+        // Get column entity and initialize column with it
+        Column column = Column.IDToColumn(columnID, currentProject.getColumns());
+        ColumnModel columnModel = new ColumnModel(column);
 
-        ColumnModel c = new ColumnModel("Deleted column", new ArrayList<>(), columnBoxId);
-        presenter.displayDeletedColumn(c);
+        // Initializes and call use case
+        DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
+        deleteColumnUseCase.deleteColumn(columnID);
+
+        // calls presenter to display message
+        presenter.displayDeletedColumn(columnModel);
+
+        // Update the database to remove the column.
+        IDBRemove dbRemoveManager = new DBManagerRemoveController();
+        dbRemoveManager.DBRemove(columnModel, columnID);
     }
 
     /**
