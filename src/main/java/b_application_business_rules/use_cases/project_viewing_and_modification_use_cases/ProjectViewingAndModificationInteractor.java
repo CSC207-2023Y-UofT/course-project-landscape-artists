@@ -168,20 +168,26 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
-     * Edits the details of a column identified by the specified columnBoxId.
-     *
-     * @param columnBoxId    The unique identifier (UUID) of the column box containing the column to be edited.
-     * @param newColumnName  The new name for the column.
+     * Edits the details of a column identified by the specified columnID.
      */
     @Override
-    public void editColumnDetails(UUID columnBoxId, String newColumnName) {
-        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, new ArrayList<>(), columnBoxId);
-        EditColumnDetails useCase = new EditColumnDetails(updatedColumnModel);
-        useCase.setColumnName(newColumnName);
+    public void editColumnDetails(UUID columnID, String newColumnName) {
+        // Initialize updated column model
+        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, new ArrayList<>(), columnID);
 
+        // Initialize and call use case
+        EditColumn useCase = new EditColumn(currentProject);
+        useCase.setColumnName(updatedColumnModel);
 
-        ColumnModel c = new ColumnModel(newColumnName, new ArrayList<>(), columnBoxId);
+        // calls presenter to display message
         presenter.displayRenamedColumn(updatedColumnModel);
+
+        // Update database to add the column.
+        IDBRemove dbRemoveManager = new DBManagerRemoveController();
+        dbRemoveManager.DBRemove(updatedColumnModel, columnID);
+
+        IDBInsert dbInsertManager = new DBManagerInsertController();
+        dbInsertManager.DBInsert(updatedColumnModel);
     }
 
 
