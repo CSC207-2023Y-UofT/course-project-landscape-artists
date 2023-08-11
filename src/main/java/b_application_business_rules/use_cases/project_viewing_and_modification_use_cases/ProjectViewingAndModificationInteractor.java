@@ -63,8 +63,17 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         currentProjectRepository.removeCurrentProject();
     }
 
+    /**
+     * Initializes new task model, calls AddTask, calls database accessor to
+     * add task to the database, and calls the presenter to change the user display.
+     *
+     * @param columnID The ID of the column the task is to be added in.
+     * @param taskName The name of the task to be added.
+     * @param taskDescription The description of the task to be added.
+     * @param dueDate The due date of the task to be added.
+     */
     @Override
-    public void addNewTask(UUID idOfColumn, String taskName, String taskDescription, LocalDateTime dueDate) {
+    public void addNewTask(UUID columnID, String taskName, String taskDescription, LocalDateTime dueDate) {
         // Generate random UUID for TaskModel and initialize TaskModel
         UUID taskID = UUID.randomUUID();
         TaskModel newTaskModel = TaskModelFactory.create(taskName, taskID, taskDescription, false, dueDate);
@@ -72,11 +81,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // initialize use case class
         AddTask useCase = new AddTask(currentProject);
         // call use case class to create a new task and save it to the database
-        useCase.addTask(idOfColumn, newTaskModel);
+        useCase.addTask(columnID, newTaskModel);
         // Initialize TaskViewModel
 
         // calls presenter to display message
-        presenter.displayNewTask(idOfColumn, newTaskModel);
+        presenter.displayNewTask(columnID, newTaskModel);
 
         // Initializing the required controllers and calls method that adds task to the database
         IDBInsert insertTask = new DBManagerInsertController();
@@ -88,7 +97,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      * remove the task from the database, and calls the presenter to change the user display.
      *
      * @param columnID The ID of the column the to-be-deleted task was in.
-     * @param taskModel The entity model of the task-to-be-deleted
+     * @param taskModel The entity model of the task-to-be-deleted.
      */
     @Override
     public void deleteTask(UUID columnID, TaskModel taskModel) {
