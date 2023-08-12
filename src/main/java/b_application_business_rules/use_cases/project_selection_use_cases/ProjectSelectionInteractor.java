@@ -31,6 +31,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	private final ProjectRepository projectRepository = ProjectRepository
 			.getProjectRepository();
 
+	// allProjects holds all project entities in the system.
+	private final List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
+
 	// COPIED FROM ProjectViewingAndModificationInteractor
 	//currentProject attribute to be replaced by actual project access (to access a project entity)
 	private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
@@ -110,7 +113,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// For example, the interactor might interact with a ProjectRepository to store
 		// the project in a database.
 
-		CreateProject useCase = new CreateProject();
+		CreateProject useCase = new CreateProject(allProjects);
 		Project newProject = useCase.newProject(projectName, UUID.randomUUID(),
 				projectDescription, new ArrayList<>());
 
@@ -118,13 +121,14 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		ProjectModel projectModel = new ProjectModel(newProject);
 		databaseInserter.DBInsert(projectModel);
 
+		// Sets the project in the projectRepository
 		setCurrentProject(projectModel);
 		presenter.displayCurrentProject(projectModel);
 	}
 
 	@Override
 	public void createProject() {
-		new CreateProject();
+		new CreateProject(allProjects);
 	}
 
 	@Override
