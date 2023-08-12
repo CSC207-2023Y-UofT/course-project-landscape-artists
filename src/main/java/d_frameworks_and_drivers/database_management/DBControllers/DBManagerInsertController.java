@@ -1,10 +1,8 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import b_application_business_rules.AdapterConvertEntity;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 
 import com.opencsv.CSVReader;

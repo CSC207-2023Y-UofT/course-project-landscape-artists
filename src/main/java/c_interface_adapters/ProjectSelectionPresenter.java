@@ -155,6 +155,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
 
         }
 
+        controller.interactor.setAllProjects(AllProjectsList);
         projectSelectionViewModel = new ProjectSelectionViewModel(projectsInSystem);
     }
 

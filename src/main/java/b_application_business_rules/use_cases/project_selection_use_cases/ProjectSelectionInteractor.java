@@ -4,22 +4,15 @@ import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 
 import b_application_business_rules.entity_models.ProjectModel;
-import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.TaskModel;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
-import c_interface_adapters.DBAdapterInterface;
 import d_frameworks_and_drivers.database_management.DBControllers.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -35,8 +28,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	// The currentProjectRepository holds the reference to the
 	// CurrentProjectRepository instance.
-	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
-			.getCurrentprojectrepository();
+	private final ProjectRepository projectRepository = ProjectRepository
+			.getProjectRepository();
 
 	// COPIED FROM ProjectViewingAndModificationInteractor
 	//currentProject attribute to be replaced by actual project access (to access a project entity)
@@ -79,7 +72,26 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 * @param project The project selected by the user.
 	 */
 	public void setCurrentProject(ProjectModel project) {
-		currentProjectRepository.setCurrentProject(project.getProjectEntity());
+		projectRepository.setCurrentProject(project.getProjectEntity());
+	}
+
+	/**
+	 * Sets the attribute holding all projects in the ProjectRepository.
+	 *
+	 * This method is called upon startup.
+	 *
+	 * @param allProjectsList The projects from the database.
+	 */
+	@Override
+	public void setAllProjects(List<ProjectModel> allProjectsList) {
+		List<Project> allProjects = new ArrayList<>();
+
+		// Convert all Project models from the outer layers to a Project.
+		for (ProjectModel projectModel: allProjectsList) {
+			allProjects.add(projectModel.getProjectEntity());
+		}
+
+		projectRepository.setAllProjects(allProjects);
 	}
 
 	/**
@@ -166,6 +178,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 //		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, existingColumnModels);
 //		presenter.displayRenamedProject(editedProjectModel);
 	}
+
 
 	/**
 	 * @param projectUUID

@@ -1,7 +1,6 @@
 package b_application_business_rules.use_cases;
 
 import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.entity_models.ProjectModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +8,9 @@ import java.util.List;
 /**
  * Repository class for managing the current project and a list of projects.
  */
-public class CurrentProjectRepository {
+public class ProjectRepository {
     /** The single instance of this singleton class */
-    private static final CurrentProjectRepository currentProjectRepository = new CurrentProjectRepository(null);
+    private static final ProjectRepository PROJECT_REPOSITORY = new ProjectRepository(null);
 
     /** The current project that this repository is holding */
     private Project currentProject;
@@ -24,7 +23,7 @@ public class CurrentProjectRepository {
      *
      * @param currentProject The initial current project.
      */
-    public CurrentProjectRepository(Project currentProject) {
+    public ProjectRepository(Project currentProject) {
         this.currentProject = currentProject;
         this.allProjects = new ArrayList<>();
     }
@@ -34,8 +33,8 @@ public class CurrentProjectRepository {
      *
      * @return The singleton instance.
      */
-    public static CurrentProjectRepository getCurrentprojectrepository() {
-        return currentProjectRepository;
+    public static ProjectRepository getProjectRepository() {
+        return PROJECT_REPOSITORY;
     }
 
     /**
@@ -74,6 +73,7 @@ public class CurrentProjectRepository {
      */
     public void setAllProjects(List<Project> projects) {
         allProjects = projects;
+        System.out.println("projects " + projects);
     }
 
     /**

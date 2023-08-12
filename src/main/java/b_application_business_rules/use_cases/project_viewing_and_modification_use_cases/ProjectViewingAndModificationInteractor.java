@@ -8,7 +8,7 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
@@ -36,10 +36,10 @@ import java.util.UUID;
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
-    CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+    ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 
     // currentProject attribute to be replaced by actual project access (to access a project entity)
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
+    private final Project currentProject = ProjectRepository.getProjectRepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -64,7 +64,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      */
     @Override
     public void removeCurrentProject() {
-        currentProjectRepository.removeCurrentProject();
+        projectRepository.removeCurrentProject();
     }
 
     /**

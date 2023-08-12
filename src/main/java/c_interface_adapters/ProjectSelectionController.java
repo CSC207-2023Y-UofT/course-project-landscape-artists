@@ -15,7 +15,7 @@ import java.util.*;
  */
 public class ProjectSelectionController implements Initializable {
     // The interactor for project selection and creation. It implements ProjectSelectionInputBoundary.
-    private static ProjectSelectionInputBoundary interactor;
+    static ProjectSelectionInputBoundary interactor;
 
     // The presenter associated with the controller in Project Selection UI.
     ProjectSelectionPresenter presenter;
