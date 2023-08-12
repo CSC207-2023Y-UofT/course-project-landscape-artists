@@ -93,8 +93,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayNewTask(columnID, newTaskModel);
 
         // Initializing the required controllers and calls method that adds task to the database
-        IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(newTaskModel);
+//        IDBInsert insertTask = new DBManagerInsertController();
+//        insertTask.DBInsert(newTaskModel, columnID);
     }
 
     /**
@@ -115,7 +115,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // initialize controller and remove task from database
         IDBRemove removeTask = new DBManagerRemoveController();
-        removeTask.DBRemove(taskModel, taskModel.getID());
+        removeTask.DBRemoveTask(taskModel.getID());
     }
 
     /**
@@ -167,7 +167,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Update the database to remove the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(columnModel, columnID);
+        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
@@ -187,7 +187,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Update database to add the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(updatedColumnModel, columnID);
+        dbRemoveManager.DBRemoveColumn(columnID);
 
         IDBInsert dbInsertManager = new DBManagerInsertController();
         dbInsertManager.DBInsert(updatedColumnModel);
@@ -229,9 +229,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 
         // Removing the old task
-        removeTask.DBRemove(oldTask, taskID);
+        removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask);
+        insertTask.DBInsert(updatedTask,columnID);
     }
 }

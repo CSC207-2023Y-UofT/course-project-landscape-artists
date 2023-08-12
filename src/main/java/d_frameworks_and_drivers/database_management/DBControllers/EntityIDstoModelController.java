@@ -70,7 +70,7 @@ public class EntityIDstoModelController implements DBAdapterInterface {
                     String[] tempTaskID = columnInfo.get(2).split(",");
 
                     System.out.println("Task ID ARRAY");
-                    System.out.println(tempTaskID);
+                    System.out.println(Arrays.toString(tempTaskID));
 
                     List<TaskModel> taskModelList = new ArrayList<>();
                     if (!(Arrays.stream(tempTaskID).toList().get(0) == null || Arrays.stream(tempTaskID).toList().get(0).trim().isEmpty())) {

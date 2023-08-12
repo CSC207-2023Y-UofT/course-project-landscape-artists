@@ -82,21 +82,27 @@ public class IDListsToModelList implements IDbIdToModelList {
         if(IDlist.get(0)==null || IDlist.get(0).isEmpty() || IDlist.get(0).equals("")){
             return resultTaskModels;
         }
-        System.out.println("temptemptemptemptemp");
+        System.out.println("ID List Printed Here:");
         System.out.println(IDlist);
 
         for (String task : IDlist) {
-            List<String> temp = dbManagerSearchController.DBTaskSearch(task);
-            System.out.println("temptemptemptemptemp");
-            System.out.println(temp);
-            System.out.println(task);
-            TaskModel TaskModelTemp = new TaskModel(
-                    temp.get(1),
-                    UUID.fromString(temp.get(0)),
-                    temp.get(2),
-                    !temp.get(3).isEmpty(),
-                    LocalDateTime.parse(temp.get(4), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-            resultTaskModels.add(TaskModelTemp);
+            for (String s : task.split(",")) {
+                List<String> temp = dbManagerSearchController.DBTaskSearch(s);
+                System.out.println("temptemptemptemptemp");
+                System.out.println(temp);
+                System.out.println(task);
+                if(temp.size()>1){
+                    TaskModel TaskModelTemp = new TaskModel(
+                            temp.get(1),
+                            UUID.fromString(temp.get(0)),
+                            temp.get(2),
+                            !temp.get(3).isEmpty(),
+                            LocalDateTime.parse(temp.get(4), DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+                    resultTaskModels.add(TaskModelTemp);
+                }
+            }
+
+
         }
         return resultTaskModels;
     }

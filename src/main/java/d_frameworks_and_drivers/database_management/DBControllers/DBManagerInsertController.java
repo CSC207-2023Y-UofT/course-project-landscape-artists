@@ -110,7 +110,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @param taskModel Task model to be inserted in the database.
      */
 
-    public void DBInsert(TaskModel taskModel) {
+    public void DBInsert(TaskModel taskModel, UUID parentColumn) {
         File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
         List<String[]> content = new ArrayList<>();
 
@@ -128,6 +128,7 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(taskModel.getDescription());
         data.add(String.valueOf(taskModel.getCompletionStatus()));
         data.add(taskModel.getDueDateTime().toString());
+        data.add(parentColumn.toString());
 
         content.add(data.toArray(new String[0]));
 
@@ -135,28 +136,24 @@ public class DBManagerInsertController implements IDBInsert {
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
             writer.writeAll(content);
 
-            List<String> columnRoot = dbManagerSearchController.DBColumnSearch(parentColumn.toString());
-            List<TaskModel> taskModelList = idListsToModelList.IdToTaskModelList(List.of(columnRoot.get(2)));
-            taskModelList.add(taskModel);
-            StringBuilder temp = new StringBuilder(columnRoot.get(2));
-
-            if(!(columnRoot.get(2).isEmpty() || columnRoot.get(2).equals("") || columnRoot.get(2)==null)){
-                temp.append(",");
-            }
-            temp.append(taskModel.getID().toString());
-            System.out.println("COLUMN UPDATING");
-            System.out.println(temp);
-
-            dbManagerRemoveController.DBRemoveColumn(parentColumn);
-            columnRoot.set(2, temp.toString());
-            System.out.println("COLUMN UPDATING");
-            System.out.println(List.of(columnRoot.get(2)));
-            DBInsert(new ColumnModel(
-                    columnRoot.get(1),
-                    taskModelList,
-                    UUID.fromString(columnRoot.get(0))
-                    )
-            );
+//            List<String> columnRoot = dbManagerSearchController.DBColumnSearch(parentColumn.toString());
+//            List<TaskModel> taskModelList = idListsToModelList.IdToTaskModelList(List.of(columnRoot.get(2)));
+//            System.out.println(taskModelList);
+//            taskModelList.add(taskModel);
+//
+//            System.out.println("COLUMN UPDATING");
+//            System.out.println(taskModelList);
+//
+//            dbManagerRemoveController.DBRemoveColumn(parentColumn);
+//
+//            System.out.println("COLUMN UPDATING");
+//            System.out.println(taskModelList);
+//            DBInsert(new ColumnModel(
+//                    columnRoot.get(1),
+//                    taskModelList,
+//                    UUID.fromString(columnRoot.get(0))
+//                    )
+//            );
 
 
         } catch (Exception e) {

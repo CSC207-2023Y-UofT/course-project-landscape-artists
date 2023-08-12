@@ -26,7 +26,7 @@ public class ColumnModel {
     /**
      * The <code>List</code> of task models that the column model holds/contains.
      */
-    private List<TaskModel> taskModels;
+    private List<TaskModel> taskModels = new ArrayList<>();
 
     /**
      * Creates a new column model, based in the inputted values.
