@@ -168,8 +168,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
 		EditProjectDetails useCase = new EditProjectDetails(allProjects, projectUUID);
 
-		useCase.setName(newName);
-		useCase.setDescription(newDescription);
+		useCase.setNameAndDescription(newName, newDescription);
 
 		// For UI purposes, we do not need the list of columns in the project model since it would not get displayed
 		// anyways.
@@ -200,34 +199,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	public void deleteProject(UUID projectUUID) {
 		DeleteProject useCase = new DeleteProject(allProjects);
 
-
 		//This line calls the use case and updates the database
 		useCase.deleteProject(projectUUID);
-
-
-//		//IDBSearch projectSearcher = new DBManagerSearchController();
-//		//DBAdapterInterface projectModels = new EntityIDstoModelController();
-//
-//		IDbIdToModel iDbIdToModel = new DbIDToModel();
-//		ProjectModel deletedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
-//
-//		// ArrayList<String> projectAttributes = projectSearcher.DBProjectSearch(String.valueOf(projectUUID));
-//		// ProjectModel deletedProjectModel = projectModels.IDsToProjectModel(projectUUID);
-//		// Accessing the static method in the deletedProject
-//
-//		//This is unused ==> not sure how to integrate entities into deleteProject (given that currentProject cannot be changed)
-//		Project deletedProject = EditProjectDetails.createProjectEntity(deletedProjectModel);
-//		DeleteProject useCase = new DeleteProject();
-//
-//
-//		//This line calls the use case and updates the database
-//		useCase.deleteProject(deletedProjectModel, projectUUID);
-//
-//
-//
-//		//ProjectModel projectModel = new ProjectModel(
-//				//"Revised project P1", projectUUID, "", new ArrayList<>());
-//		presenter.displayDeletedProject(deletedProjectModel);
 	}
 
 	/**

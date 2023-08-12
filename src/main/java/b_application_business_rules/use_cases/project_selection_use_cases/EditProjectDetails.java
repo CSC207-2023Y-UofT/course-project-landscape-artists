@@ -52,10 +52,11 @@ public class EditProjectDetails {
 
     /**
      * Sets a new name for the project in the database.
-     * 
-     * @param newName The new name to give to the project
+     *
+     * @param newName        The new name to give to the project
+     * @param newDescription
      */
-    public void setName(String newName) {
+    public void setNameAndDescription(String newName, String newDescription) {
         // TODO -- once the database implements some sort of way to actually edit data,
         // this should change to that
         // until that, this will be removing an entire project, and then reinserting it
@@ -80,47 +81,49 @@ public class EditProjectDetails {
         databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
 
         projectToBeEdited.setName(newName);
-        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
+        projectToBeEdited.setDescription(newName);
+//        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
 
         IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(updatedProjectModel);
+
+        databaseInserter.DBInsert(new ProjectModel(projectToBeEdited));
     }
 
-    /**
-     * Sets a new description for the project in the database.
-     * 
-     * @param newDescription The new description to give to the project
-     */
-    public void setDescription(String newDescription) {
-        // TODO -- once the database implements some sort of way to actually edit data,
-        // this should change to that
-        // until that, this will be removing an entire project, and then reinserting it
-        // lmao.
-
-        // Also, shouldn't I be having a getter and setter when accessing the
-        // currentProject model...?
-
-        ///currentProjectRepository.getCurrentProject().getProjectEntity().setDescription(newDescription);
-
-
-        IDbIdToModel iDbIdToModel = new DbIDToModel();
-        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
-
-        // Instead of commented out code to delete project, have this instead.
-//        DeleteProject deleteProject = new DeleteProject();
-//        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
-        IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
-
-        //This is added in so that it "updates" currentProject
-        projectToBeEdited.setDescription(newDescription);
-        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
-
-
-        IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(updatedProjectModel);
-    }
+//    /**
+//     * Sets a new description for the project in the database.
+//     *
+//     * @param newDescription The new description to give to the project
+//     */
+//    public void setDescription(String newDescription) {
+//        // TODO -- once the database implements some sort of way to actually edit data,
+//        // this should change to that
+//        // until that, this will be removing an entire project, and then reinserting it
+//        // lmao.
+//
+//        // Also, shouldn't I be having a getter and setter when accessing the
+//        // currentProject model...?
+//
+//        ///currentProjectRepository.getCurrentProject().getProjectEntity().setDescription(newDescription);
+//
+//
+//        IDbIdToModel iDbIdToModel = new DbIDToModel();
+//        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
+//
+//        // Instead of commented out code to delete project, have this instead.
+////        DeleteProject deleteProject = new DeleteProject();
+////        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
+//        IDBRemove databaseRemover = new DBManagerRemoveController();
+//        databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
+//
+//        //This is added in so that it "updates" currentProject
+//        projectToBeEdited.setDescription(newDescription);
+////        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
+//
+//
+//        IDBInsert databaseInserter = new DBManagerInsertController();
+//        databaseInserter.DBInsert(new ProjectModel(projectToBeEdited));
+//    }
     /** Purpose of this method is to convert a projectModel into a Project entity*/
     public static Project createProjectEntity(ProjectModel projectModel) {
         List<ColumnModel> columnModels = projectModel.getColumnModels();

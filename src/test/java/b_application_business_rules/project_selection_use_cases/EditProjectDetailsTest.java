@@ -44,18 +44,8 @@ public class EditProjectDetailsTest {
         List<Project> allProjects = new ArrayList<>();
         allProjects.add(p);
         EditProjectDetails useCase = new EditProjectDetails(allProjects, idOfP);
-        useCase.setName("p2");
+        useCase.setNameAndDescription("p2", "Hello");
         assertTrue(p.getName().equals("p2"));
-
-    }
-    @Test
-    public void testSetDescription() {
-        //uP.setName("p2");
-        UUID idOfP = p.getID();
-        List<Project> allProjects = new ArrayList<>();
-        allProjects.add(p);
-        EditProjectDetails useCase = new EditProjectDetails(allProjects, idOfP);
-        useCase.setDescription("Hello");
         assertTrue(p.getDescription().equals("Hello"));
 
     }
