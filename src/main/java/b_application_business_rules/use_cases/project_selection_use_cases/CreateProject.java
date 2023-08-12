@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class CreateProject {
+    // The list of allProjects in the system
     private List<Project> allProjects;
 
     /**

@@ -22,6 +22,9 @@ public class EditProjectDetails {
     //ProjectModel originalProjectModel;
     private Project projectToBeEdited;
 
+    // The list of allProjects in the system
+    private List<Project> allProjects;
+
 
     //private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
             //.getCurrentprojectrepository();
