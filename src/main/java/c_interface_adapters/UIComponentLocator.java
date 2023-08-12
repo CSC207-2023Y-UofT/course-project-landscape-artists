@@ -181,6 +181,25 @@ public class UIComponentLocator {
         return null;
     }
 
+    public HBox findTaskUI(UUID taskID, VBox columnUI) {
+        for (Node nodeInColumnUI : columnUI.getChildren()) {
+            HBox taskUI = findTaskUIInNode(nodeInColumnUI, taskID.toString());
+            if (taskUI != null) {
+                return taskUI;
+            }
+        }
+        return null;
+    }
+
+    private HBox findTaskUIInNode(Node node, String taskID) {
+        if (node.getId() != null && node.getId().equals(taskID)) {
+            if (node instanceof HBox) {
+                return (HBox) node;
+            }
+        }
+        return null;
+    }
+
     /**
      * Finds the Text element representing a task name within the specified column.
      *

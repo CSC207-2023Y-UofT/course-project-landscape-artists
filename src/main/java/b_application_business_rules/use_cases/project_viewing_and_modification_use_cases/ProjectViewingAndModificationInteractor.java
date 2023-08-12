@@ -111,7 +111,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         useCase.deleteTask(columnID, taskModel);
 
         // calls presenter to display message
-        presenter.displayRemovedTask(taskModel);
+        presenter.displayRemovedTask(taskModel, columnID);
 
         // initialize controller and remove task from database
         IDBRemove removeTask = new DBManagerRemoveController();
