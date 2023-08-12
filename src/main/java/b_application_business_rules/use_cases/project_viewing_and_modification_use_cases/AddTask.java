@@ -3,9 +3,6 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 import a_enterprise_business_rules.entities.*;
 
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
 import java.util.List;
 import java.util.UUID;
