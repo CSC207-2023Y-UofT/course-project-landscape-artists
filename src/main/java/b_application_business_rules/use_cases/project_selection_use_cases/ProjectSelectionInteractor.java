@@ -79,7 +79,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 * @param project The project selected by the user.
 	 */
 	public void setCurrentProject(ProjectModel project) {
-		currentProjectRepository.setCurrentProject(project);
+		currentProjectRepository.setCurrentProject(project.getProjectEntity());
 	}
 
 	/**

@@ -9,7 +9,6 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBInse
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.sun.glass.ui.Clipboard;
 
 
 import java.io.*;
@@ -88,7 +87,7 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(columnModel.getID().toString());
         data.add(columnModel.getName());
         data.add(entityIDsToListController.EntityIDsToList(columnModel));
-        data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
+//        data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
 
         content.add(data.toArray(new String[0]));
 
