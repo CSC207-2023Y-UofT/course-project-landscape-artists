@@ -1,11 +1,21 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.factories.ProjectModelFactory;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
+import java.util.*;
 /**
  * A use case to edit the project details, during the mode of the application
  * where we are selecting projects.
@@ -13,15 +23,21 @@ import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemov
 public class EditProjectDetails {
 
     /** The current project we are editing */
-    ProjectModel currentProjectModel;
+    //ProjectModel originalProjectModel;
+    private final Project currentProject;
+
+
+    //private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
+            //.getCurrentprojectrepository();
 
     /**
      * Constructs an instance of the use case, given the inputted Project Model.
      * 
-     * @param currentProjectModel The project model to be editing.
+     * @param originalProject The project to be editing.
      */
-    public EditProjectDetails(ProjectModel currentProjectModel) {
-        this.currentProjectModel = currentProjectModel;
+    public EditProjectDetails(Project originalProject) {
+        //this.updatedProjectModel = updatedProjectModel;
+        this.currentProject = originalProject;
     }
 
     /**
@@ -38,13 +54,26 @@ public class EditProjectDetails {
         // Also, shouldn't I be having a getter and setter when accessing the
         // currentProject model...?
 
-        IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.currentProjectModel, this.currentProjectModel.getID());
+        //This is added in so that it "updates" the currentProject. This is still very problematic
 
-        this.currentProjectModel.setName(newName);
+
+
+        //updatedProjectModel = ProjectModelFactory.create(newName, originalProjectModel.getID(),
+                //originalProjectModel.getDescription(), originalProjectModel.getColumnModels());
+        IDbIdToModel iDbIdToModel = new DbIDToModel();
+        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+
+        DeleteProject deleteProject = new DeleteProject();
+        deleteProject.deleteProject(originalProjectModel, currentProject.getID());
+
+
+
+        currentProject.setName(newName);
+        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+
 
         IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(this.currentProjectModel);
+        databaseInserter.DBInsert(updatedProjectModel);
     }
 
     /**
@@ -61,13 +90,39 @@ public class EditProjectDetails {
         // Also, shouldn't I be having a getter and setter when accessing the
         // currentProject model...?
 
-        IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.currentProjectModel, this.currentProjectModel.getID());
+        ///currentProjectRepository.getCurrentProject().getProjectEntity().setDescription(newDescription);
 
-        this.currentProjectModel.setDescription(newDescription);
+
+        IDbIdToModel iDbIdToModel = new DbIDToModel();
+        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+
+        DeleteProject deleteProject = new DeleteProject();
+        deleteProject.deleteProject(originalProjectModel, currentProject.getID());
+
+
+        //This is added in so that it "updates" currentProject
+        currentProject.setDescription(newDescription);
+        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+
 
         IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(this.currentProjectModel);
+        databaseInserter.DBInsert(updatedProjectModel);
+    }
+    /** Purpose of this method is to convert a projectModel into a Project entity*/
+    public static Project createProjectEntity(ProjectModel projectModel) {
+        List<ColumnModel> columnModels = projectModel.getColumnModels();
+        List<Column> columns = new ArrayList<>();
+        for (ColumnModel columnModel : columnModels) {
+            List<TaskModel> taskModels = columnModel.getTaskModels();
+            List<Task> tasks = new ArrayList<>();
+            for (TaskModel taskModel : taskModels) {
+                tasks.add(new Task(taskModel.getName(), taskModel.getID(),taskModel.getDescription(),
+                        taskModel.getCompletionStatus(), taskModel.getDueDateTime()));
+            }
+            columns.add(new Column(columnModel.getName(), tasks, columnModel.getID()));
+        }
+        return new Project(projectModel.getName(), projectModel.getID(), projectModel.getDescription(),
+                columns);
     }
 
 }

@@ -23,11 +23,11 @@ public class CreateProject {
      * 
      * @param project The project to insert into the database.
      */
-    public void createProject(Project project) {
-        IDBInsert databaseInserter = new DBManagerInsertController();
-        ProjectModel projectModel = new ProjectModel(project);
-        databaseInserter.DBInsert(projectModel);
-    }
+   // public void createProject(Project project) {
+       // IDBInsert databaseInserter = new DBManagerInsertController();
+       // ProjectModel projectModel = new ProjectModel(project);
+        //databaseInserter.DBInsert(projectModel);
+    //}
 
     /**
      * Creates a project in the database based on the inputted project's attributes.
@@ -37,10 +37,9 @@ public class CreateProject {
      * @param description The project's description.
      * @param columns     The project's columns.
      */
-    public void createProject(String name, UUID ID, String description, List<Column> columns) {
-        IDBInsert databaseInserter = new DBManagerInsertController();
-        Project project = new Project(name, ID, description, columns);
-        ProjectModel projectModel = new ProjectModel(project);
-        databaseInserter.DBInsert(projectModel);
+    public Project newProject(String name, UUID ID, String description, List<Column> columns) {
+
+       return new Project(name, ID, description, columns);
+
     }
 }

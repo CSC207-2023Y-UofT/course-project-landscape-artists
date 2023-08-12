@@ -1,6 +1,7 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
 import b_application_business_rules.use_cases.project_selection_use_cases.ProjectSelectionInteractor;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -59,6 +60,7 @@ public class ProjectSelectionController implements Initializable {
      * @param projectUUID The UUID of the project to be deleted.
      */
     void handleDeleteProject(UUID projectUUID) {
+
         interactor.deleteProject(projectUUID);
     }
 
