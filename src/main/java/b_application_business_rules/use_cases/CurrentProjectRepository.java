@@ -3,17 +3,16 @@ package b_application_business_rules.use_cases;
 import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.entity_models.ProjectModel;
 
-import java.util.UUID;
 
 public class CurrentProjectRepository {
     /** The single instance of this singleton class */
     private static final CurrentProjectRepository currentProjectRepository = new CurrentProjectRepository(null);
 
     /** The current project that this repository is holding */
-    private ProjectModel currentProject;
+    private Project currentProject;
 
     /** Constructor for the singleton class */
-    public CurrentProjectRepository(ProjectModel currentProject) {
+    public CurrentProjectRepository(Project currentProject) {
         this.currentProject = currentProject;
     }
 
@@ -23,12 +22,12 @@ public class CurrentProjectRepository {
     }
 
     /** Gets the project that the repository holds */
-    public ProjectModel getCurrentProject() {
+    public Project getCurrentProject() {
         return currentProject;
     }
 
     /** Sets the project that the repository holds */
-    public void setCurrentProject(ProjectModel project) {
+    public void setCurrentProject(Project project) {
         currentProject = project;
     }
 
@@ -37,9 +36,4 @@ public class CurrentProjectRepository {
         this.setCurrentProject(null);
     }
 
-    public void deleteProject(UUID projectID) {}
-
-    public Project getProjectByID(UUID projectID) {
-        return null;
-    }
 }

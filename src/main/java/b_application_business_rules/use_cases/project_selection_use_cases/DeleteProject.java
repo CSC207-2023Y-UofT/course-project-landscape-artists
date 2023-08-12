@@ -27,7 +27,7 @@ public class DeleteProject {
 
         // List<String> projectUUIDs = databaseSearcher.DBColumnSearch(ID.toString());
         ProjectModel tempProjectModel = new ProjectModel("tempname", ID, "", null);
-        databaseRemover.DBRemove(tempProjectModel, ID);
+        databaseRemover.DBRemoveProject(ID);
 
         // TOOD -- So, like, the DBRemove needs a ProjectModel, in addition to the UUID,
         // but like, it never actually uses it :|

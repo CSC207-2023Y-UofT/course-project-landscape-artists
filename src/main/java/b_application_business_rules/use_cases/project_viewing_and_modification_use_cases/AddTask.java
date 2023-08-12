@@ -2,10 +2,15 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.*;
 
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.util.List;
 import java.util.UUID;
@@ -35,6 +40,15 @@ public class AddTask {
         Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
         // Then, add the task to the columns list of tasks
         currentColumn.addTask(task);
+
+        // Initializing the required controllers and calls method that adds task to the database
+        IDBInsert insertTask = new DBManagerInsertController();
+        IDBRemove remove = new DBManagerRemoveController();
+        insertTask.DBInsert(taskModel, columnID);
+        ColumnModel updatedColumn = new ColumnModel(currentColumn);
+        updatedColumn.getTaskModels().add(taskModel);
+        remove.DBRemoveColumn(columnID);
+        insertTask.DBInsert(updatedColumn);
     }
 
     /**

@@ -153,7 +153,19 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     @Override
     public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
-        System.out.println("hi");
+        System.out.println("DISPLAY NEW TASK WAS RUN");
+
+        // Get the UI for the column
+        VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
+
+        // Create a temp list that holds the new task
+        ArrayList<TaskModel> tempTaskList = new ArrayList<>();
+        tempTaskList.add(newTask);
+
+        // Append to the Column UI with the new task.
+        populateTasksForEachColumn(columnUI, tempTaskList);
+
+
     }
 
     /**
@@ -162,8 +174,17 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      * @param task   The TaskModel representing the removed task.
      */
     @Override
-    public void displayRemovedTask(TaskModel task) {
-        System.out.println("hello");
+    public void displayRemovedTask(TaskModel task, UUID columnBoxID) {
+        System.out.println("REMOVE TASK WAS RUN");
+
+        // Get the UI for the column
+        VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
+
+        // Get the UI for the task
+        HBox taskUI = uiComponentLocator.findTaskUI(task.getID(), columnUI);
+
+        // Remove the taskUI from the columnUI
+        columnUI.getChildren().remove(taskUI);
     }
 
     /**

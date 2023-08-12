@@ -8,6 +8,7 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
+import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
@@ -37,9 +38,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
     CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+    CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
     // currentProject attribute to be replaced by actual project access (to access a project entity)
-    private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
+    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -65,6 +67,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void removeCurrentProject() {
         currentProjectRepository.removeCurrentProject();
+        currentProjectID.removeCurrentProjectID();
     }
 
     /**
@@ -90,8 +93,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         presenter.displayNewTask(columnID, newTaskModel);
 
         // Initializing the required controllers and calls method that adds task to the database
-        IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(newTaskModel);
+//        IDBInsert insertTask = new DBManagerInsertController();
+//        insertTask.DBInsert(newTaskModel, columnID);
     }
 
     /**
@@ -108,11 +111,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         useCase.deleteTask(columnID, taskModel);
 
         // calls presenter to display message
-        presenter.displayRemovedTask(taskModel);
+        presenter.displayRemovedTask(taskModel, columnID);
 
         // initialize controller and remove task from database
         IDBRemove removeTask = new DBManagerRemoveController();
-        removeTask.DBRemove(taskModel, taskModel.getID());
+        removeTask.DBRemoveTask(taskModel.getID());
     }
 
     /**
@@ -164,7 +167,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Update the database to remove the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(columnModel, columnID);
+        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
@@ -184,7 +187,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Update database to add the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(updatedColumnModel, columnID);
+        dbRemoveManager.DBRemoveColumn(columnID);
 
         IDBInsert dbInsertManager = new DBManagerInsertController();
         dbInsertManager.DBInsert(updatedColumnModel);
@@ -226,9 +229,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 
         // Removing the old task
-        removeTask.DBRemove(oldTask, taskID);
+        removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask);
+        insertTask.DBInsert(updatedTask,columnID);
     }
 }

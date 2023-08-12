@@ -8,6 +8,7 @@ import b_application_business_rules.entity_models.TaskModel;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
@@ -32,6 +33,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	// CurrentProjectRepository instance.
 	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
 			.getCurrentprojectrepository();
+
+	private final CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
 	// The presenter holds the reference to the ProjectSelectionOutputBoundary
 	// instance,
@@ -70,7 +73,10 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 * @param project The project selected by the user.
 	 */
 	public void setCurrentProject(ProjectModel project) {
-		currentProjectRepository.setCurrentProject(project);
+		currentProjectRepository.setCurrentProject(project.getProjectEntity());
+	}
+	public void setCurrentProjectID(UUID uuid) {
+		currentProjectID.setSelectedProjectID(uuid);
 	}
 
 	/**
@@ -107,21 +113,22 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	@Override
 	public void openProject(UUID currentProjectID) {
 		IDbIdToModel iDbIdToModel = new DbIDToModel();
-//		// TODO: Pass the ProjectModel of the Project with the given UUID to the
-//		// presenter.
-//		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
-//
-//		 // Temporary implementation for testing purposes.
-//		 List<TaskModel> TaskList = Arrays.asList(
-//		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
-//		 LocalDateTime.now()),
-//		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
-//		 LocalDateTime.now()));
-//		 List<ColumnModel> ColumnsList = Arrays.asList(
-//		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
-//		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
-//		 ProjectModel projectModel = new ProjectModel(
-//		 "Project P1", UUID.randomUUID(), "", ColumnsList);
+		// TODO: Pass the ProjectModel of the Project with the given UUID to the
+		// presenter.
+		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
+
+		 // Temporary implementation for testing purposes.
+		 List<TaskModel> TaskList = Arrays.asList(
+		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
+		 LocalDateTime.now()),
+		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
+		 LocalDateTime.now()));
+		 List<ColumnModel> ColumnsList = Arrays.asList(
+		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
+		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
+		 ProjectModel projectModel = new ProjectModel(
+		 "Project P1", UUID.randomUUID(), "", ColumnsList);
+		 setCurrentProjectID(currentProjectID);
 		 ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
 		 setCurrentProject(ProjectFromDB);
 		 presenter.displayCurrentProject(ProjectFromDB);

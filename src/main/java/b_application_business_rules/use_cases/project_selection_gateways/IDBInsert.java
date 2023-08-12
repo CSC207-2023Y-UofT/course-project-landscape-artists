@@ -13,5 +13,5 @@ public interface IDBInsert {
 
     void DBInsert(UUID uuid);
 
-    void DBInsert(TaskModel taskModel);
+    void DBInsert(TaskModel taskModel, UUID parent);
 }

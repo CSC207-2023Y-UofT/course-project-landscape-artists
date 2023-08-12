@@ -39,7 +39,7 @@ public class EditProjectDetails {
         // currentProject model...?
 
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.currentProjectModel, this.currentProjectModel.getID());
+        databaseRemover.DBRemoveProject(this.currentProjectModel.getID());
 
         this.currentProjectModel.setName(newName);
 
@@ -62,7 +62,7 @@ public class EditProjectDetails {
         // currentProject model...?
 
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.currentProjectModel, this.currentProjectModel.getID());
+        databaseRemover.DBRemoveProject(this.currentProjectModel.getID());
 
         this.currentProjectModel.setDescription(newDescription);
 

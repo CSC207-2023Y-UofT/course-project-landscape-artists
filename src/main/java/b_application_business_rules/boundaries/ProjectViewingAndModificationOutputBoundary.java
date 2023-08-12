@@ -23,7 +23,7 @@ public interface ProjectViewingAndModificationOutputBoundary {
 
     void displayNewTask(UUID columnBoxID, TaskModel newTask);
 
-    void displayRemovedTask(TaskModel task);
+    void displayRemovedTask(TaskModel task, UUID columnBoxID);
 
     void displayRenamedColumn(ColumnModel columnModel);
 
