@@ -7,8 +7,10 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.util.*;
@@ -40,9 +42,12 @@ public class EditProjectDetails {
         for (Project project : allProjects) {
             if (project.getID().equals(projectUUID)) {
                 projectToBeEdited = project;
+                break;
             }
         }
-        System.err.println("Project not found");
+        if (projectToBeEdited == null) {
+            System.err.println("Project not found");
+        }
     }
 
     /**
@@ -68,10 +73,11 @@ public class EditProjectDetails {
         IDbIdToModel iDbIdToModel = new DbIDToModel();
         ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
-        DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
-
-
+        // Instead of commented out code, have this.
+//        DeleteProject deleteProject = new DeleteProject();
+//        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
+        IDBRemove databaseRemover = new DBManagerRemoveController();
+        databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
 
         projectToBeEdited.setName(newName);
         ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
@@ -101,9 +107,11 @@ public class EditProjectDetails {
         IDbIdToModel iDbIdToModel = new DbIDToModel();
         ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
-        DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
-
+        // Instead of commented out code to delete project, have this instead.
+//        DeleteProject deleteProject = new DeleteProject();
+//        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
+        IDBRemove databaseRemover = new DBManagerRemoveController();
+        databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
 
         //This is added in so that it "updates" currentProject
         projectToBeEdited.setDescription(newDescription);

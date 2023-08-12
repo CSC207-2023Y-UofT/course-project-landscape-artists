@@ -198,29 +198,36 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
-		//IDBSearch projectSearcher = new DBManagerSearchController();
-		//DBAdapterInterface projectModels = new EntityIDstoModelController();
-
-		IDbIdToModel iDbIdToModel = new DbIDToModel();
-		ProjectModel deletedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
-
-		// ArrayList<String> projectAttributes = projectSearcher.DBProjectSearch(String.valueOf(projectUUID));
-		// ProjectModel deletedProjectModel = projectModels.IDsToProjectModel(projectUUID);
-		// Accessing the static method in the deletedProject
-
-		//This is unused ==> not sure how to integrate entities into deleteProject (given that currentProject cannot be changed)
-		Project deletedProject = EditProjectDetails.createProjectEntity(deletedProjectModel);
-		DeleteProject useCase = new DeleteProject();
+		DeleteProject useCase = new DeleteProject(allProjects);
 
 
 		//This line calls the use case and updates the database
-		useCase.deleteProject(deletedProjectModel, projectUUID);
+		useCase.deleteProject(projectUUID);
 
 
-
-		//ProjectModel projectModel = new ProjectModel(
-				//"Revised project P1", projectUUID, "", new ArrayList<>());
-		presenter.displayDeletedProject(deletedProjectModel);
+//		//IDBSearch projectSearcher = new DBManagerSearchController();
+//		//DBAdapterInterface projectModels = new EntityIDstoModelController();
+//
+//		IDbIdToModel iDbIdToModel = new DbIDToModel();
+//		ProjectModel deletedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+//
+//		// ArrayList<String> projectAttributes = projectSearcher.DBProjectSearch(String.valueOf(projectUUID));
+//		// ProjectModel deletedProjectModel = projectModels.IDsToProjectModel(projectUUID);
+//		// Accessing the static method in the deletedProject
+//
+//		//This is unused ==> not sure how to integrate entities into deleteProject (given that currentProject cannot be changed)
+//		Project deletedProject = EditProjectDetails.createProjectEntity(deletedProjectModel);
+//		DeleteProject useCase = new DeleteProject();
+//
+//
+//		//This line calls the use case and updates the database
+//		useCase.deleteProject(deletedProjectModel, projectUUID);
+//
+//
+//
+//		//ProjectModel projectModel = new ProjectModel(
+//				//"Revised project P1", projectUUID, "", new ArrayList<>());
+//		presenter.displayDeletedProject(deletedProjectModel);
 	}
 
 	/**

@@ -22,6 +22,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -140,10 +141,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
         updatedProject.getColumnModels().add(columnModel);
 
+        List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
 
-        DeleteProject deleteProject = new DeleteProject();
+        DeleteProject deleteProject = new DeleteProject(allProjects);
         //A change is made here: deleteProject now requires both a projectModel and UUID
-        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()), currentProject.getID());
+        deleteProject.deleteProjectInDatabase(currentProject.getID());
 
         dbInsertManager.DBInsert(updatedProject);
     }
