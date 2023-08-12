@@ -1,8 +1,6 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
-import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
@@ -40,7 +38,7 @@ public class EditColumnDetails {
         this.columnModel.setName(newName);
 
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(this.columnModel, this.columnModel.getID());
+        dbRemoveManager.DBRemoveColumn(this.columnModel.getID());
 
         // Update database to add the column.
         IDBInsert dbInsertManager = new DBManagerInsertController();

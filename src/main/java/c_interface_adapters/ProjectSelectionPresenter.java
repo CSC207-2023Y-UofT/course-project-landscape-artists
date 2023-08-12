@@ -4,11 +4,14 @@ import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProjectUseCase;
 import c_interface_adapters.view_models.ColumnViewModel;
 import c_interface_adapters.view_models.ProjectSelectionViewModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoModelController;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -45,6 +48,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     private ProjectSelectionViewModel projectSelectionViewModel;
     private ProjectSelectionController controller;
     List<ProjectModel> AllProjectsList = new ArrayList<>();
+    EntityIDstoModelController entityIDstoModelController = new EntityIDstoModelController();
 
 
 
@@ -506,6 +510,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      * Handles the "Create Project" Popup for the user to input the necessary information.
      */
     private void handleCreateProjectPopup(ActionEvent actionEvent) {
+        IDBInsert idbInsert = new DBManagerInsertController();
         // Create a new Dialog
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Create Project");
@@ -534,6 +539,12 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             if (dialogButton == ButtonType.OK) {
                 String projectName = nameTextField.getText();
                 String projectDescription = descTextField.getText();
+                idbInsert.DBInsert(new ProjectModel(
+                        projectName,
+                        UUID.randomUUID(),
+                        projectDescription,
+                        new ArrayList<>()
+                ));
                 return new Pair<>(projectName, projectDescription);
             }
             return null;

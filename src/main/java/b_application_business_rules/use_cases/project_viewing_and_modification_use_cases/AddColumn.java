@@ -7,8 +7,10 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
@@ -54,11 +56,15 @@ public class AddColumn {
 
         // Update database to add the column.
         IDBInsert dbInsertManager = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+
         dbInsertManager.DBInsert(columnModel);
         ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
         updatedProject.getColumnModels().add(columnModel);
-        DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
+        idbRemove.DBRemoveProject(currentProject.getID());
+
+        //DeleteProject deleteProject = new DeleteProject();
+        //deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
         dbInsertManager.DBInsert(updatedProject);
     }
 

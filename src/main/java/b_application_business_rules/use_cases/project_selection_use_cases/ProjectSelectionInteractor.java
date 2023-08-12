@@ -8,6 +8,7 @@ import b_application_business_rules.entity_models.TaskModel;
 
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
+import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
@@ -32,6 +33,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	// CurrentProjectRepository instance.
 	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
 			.getCurrentprojectrepository();
+
+	private final CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
 	// The presenter holds the reference to the ProjectSelectionOutputBoundary
 	// instance,
@@ -71,6 +74,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	public void setCurrentProject(ProjectModel project) {
 		currentProjectRepository.setCurrentProject(project);
+	}
+	public void setCurrentProjectID(UUID uuid) {
+		currentProjectID.setSelectedProjectID(uuid);
 	}
 
 	/**
@@ -122,6 +128,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
 		 ProjectModel projectModel = new ProjectModel(
 		 "Project P1", UUID.randomUUID(), "", ColumnsList);
+		 setCurrentProjectID(currentProjectID);
 		 ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
 		 setCurrentProject(ProjectFromDB);
 		 presenter.displayCurrentProject(ProjectFromDB);

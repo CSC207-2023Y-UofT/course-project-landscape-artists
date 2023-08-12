@@ -7,6 +7,7 @@ import a_enterprise_business_rules.entities.Task;
 import c_interface_adapters.view_models.ProjectViewModel;
 import c_interface_adapters.view_models.TaskViewModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
+import d_frameworks_and_drivers.database_management.DBControllers.IDListsToModelList;
 import javafx.animation.TranslateTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -116,7 +117,27 @@ public class ProjectViewingAndModificationPresenter extends Application implemen
 
     @Override
     public void displayNewTask(UUID columnBoxID, TaskViewModel newTask) {
+        VBox columnNeeded = new VBox();
+        for (VBox vbox : VBoxContainer) {
+            System.out.println("DISPLAY NEW TASKKKKKK");
+            System.out.println(vbox.getId());
+            System.out.println(columnBoxID.toString());
+            if(vbox.getId().equals(columnBoxID.toString())){
+                columnNeeded = vbox;
+            }
+        }
+        IDListsToModelList idListsToModelList = new IDListsToModelList();
+        DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+        populateTasksForEachColumn(
+                columnNeeded,
+                idListsToModelList
+                .IdToTaskModelList(List.of(dbManagerSearchController
+                        .DBColumnSearch(columnBoxID
+                                .toString()).get(2).split(","))),
+                controller
+                );
         System.out.println("hi");
+        System.out.println(columnNeeded);
     }
 
 //    public void dispayProjectDescription(ProjectModel project) {

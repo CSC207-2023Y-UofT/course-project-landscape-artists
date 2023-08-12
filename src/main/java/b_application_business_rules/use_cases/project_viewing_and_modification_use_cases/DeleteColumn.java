@@ -62,6 +62,6 @@ public class DeleteColumn {
 
         // Update the database to remove the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(new ColumnModel(column), idOfColumn);
+        dbRemoveManager.DBRemoveColumn(idOfColumn);
     }
 }

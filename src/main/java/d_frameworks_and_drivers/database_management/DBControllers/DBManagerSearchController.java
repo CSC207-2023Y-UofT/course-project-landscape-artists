@@ -24,6 +24,7 @@ public class DBManagerSearchController implements IDBSearch {
      * @return columnInfo
      */
     public ArrayList<String> DBColumnSearch(String id) {
+        System.out.println("Search id");
         System.out.println(id);
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         ArrayList<String> columnInfo = new ArrayList<>();
@@ -36,16 +37,16 @@ public class DBManagerSearchController implements IDBSearch {
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
-                ArrayList result = new ArrayList<>(List.of(csvRecord.values()));
+                ArrayList result = new ArrayList<>(csvRecord.toList());
                 String firstHeaderValue = result.get(0).toString();
                 System.out.println("-----------");
                 System.out.println(result);
-                System.out.println(id);
-                System.out.println(firstHeaderValue.equals(id));
+                System.out.println(id.trim());
+                System.out.println(firstHeaderValue.equals(id.trim()));
                 System.out.println("-----------");
 
                 // Once matching ID is found, column attributes are saved and exit loop
-                if (firstHeaderValue.equals(id)) {
+                if (firstHeaderValue.equals(id.trim())) {
                     System.out.println("INSIDE IF FOR COLUMN SEARCH");
 
                     columnInfo.add(result.get(0).toString());
@@ -105,16 +106,21 @@ public class DBManagerSearchController implements IDBSearch {
     public ArrayList<String> DBTaskSearch(String id) {
         ArrayList<String> taskInfo = new ArrayList<>();
         String csvFilePath = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv";
+        System.out.println("DBTaskSearch");
+        System.out.println(id);
 
         // Opening and reading through the Column.csv file
         try (FileReader fileReader = new FileReader(csvFilePath);
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
 
+            System.out.println("INSIDE TRY FOR DBTASK SEARCH");
             // Iterate through each CSV record until the matching ID is found
             for (CSVRecord csvRecord : csvParser) {
 
                 ArrayList result = new ArrayList<>(List.of(csvRecord.values()));
                 String firstHeaderValue = result.get(0).toString();
+                System.out.println("resultresultresultresultresult");
+                System.out.println(result);
                 // Once matching ID is found, column attributes are saved and exit loop
                 if (firstHeaderValue.equals(id)) {
                     taskInfo.add(csvRecord.get(0));
@@ -128,7 +134,7 @@ public class DBManagerSearchController implements IDBSearch {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        System.out.println(taskInfo);
         return taskInfo;
     }
 

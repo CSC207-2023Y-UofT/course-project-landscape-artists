@@ -6,6 +6,7 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
+import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import c_interface_adapters.view_models.TaskViewModel;
 
@@ -26,6 +27,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
     CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+    CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -51,6 +53,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     @Override
     public void removeCurrentProject() {
         currentProjectRepository.removeCurrentProject();
+        currentProjectID.removeCurrentProjectID();
     }
 
     @Override

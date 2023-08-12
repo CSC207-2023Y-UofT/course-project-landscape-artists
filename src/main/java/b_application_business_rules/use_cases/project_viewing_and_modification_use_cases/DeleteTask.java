@@ -47,6 +47,6 @@ public class DeleteTask implements DataAccessInterface {
         // initialize controller
         IDBRemove removeTask = new DBManagerRemoveController();
         // remove task from database
-        removeTask.DBRemove(taskModel, taskID);
+        removeTask.DBRemoveTask(taskID);
     }
 }

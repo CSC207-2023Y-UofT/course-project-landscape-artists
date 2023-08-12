@@ -4,6 +4,7 @@ import b_application_business_rules.AdapterConvertEntity;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 
@@ -19,8 +20,9 @@ import java.util.UUID;
 
 
 public class DBManagerInsertController implements IDBInsert {
-
-
+    IDListsToModelList idListsToModelList = new IDListsToModelList();
+    DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+    DBManagerRemoveController dbManagerRemoveController = new DBManagerRemoveController();
     /**
      * Adds a project record with ProjectID, Name, Description and list of column IDs
      * into the Database
@@ -30,11 +32,11 @@ public class DBManagerInsertController implements IDBInsert {
     public void DBInsert(ProjectModel projectModel) {
 
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
-        File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
+        File projectFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
         List<String[]> content = new ArrayList<>();
-
+        System.out.println(projectFile.exists());
         // Read the existing content of the CSV file into memory
-        try (CSVReader reader = new CSVReader(new FileReader(file))) {
+        try (CSVReader reader = new CSVReader(new FileReader(projectFile))) {
             content.addAll(reader.readAll());
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,7 +55,7 @@ public class DBManagerInsertController implements IDBInsert {
         content.add(data.toArray(new String[0]));
 
         // Write the updated content back to the CSV file
-        try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+        try (CSVWriter writer = new CSVWriter(new FileWriter(projectFile))) {
             writer.writeAll(content);
         } catch (Exception e) {
 
@@ -88,7 +90,7 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(columnModel.getID().toString());
         data.add(columnModel.getName());
         data.add(entityIDsToListController.EntityIDsToList(columnModel));
-        data.add(CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject().getID().toString());
+        data.add(CurrentProjectID.getCurrentProjectID().getSelectedProjectID().toString());
 
         content.add(data.toArray(new String[0]));
 
@@ -133,6 +135,31 @@ public class DBManagerInsertController implements IDBInsert {
         // Write the updated content back to the CSV file
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
             writer.writeAll(content);
+
+            List<String> columnRoot = dbManagerSearchController.DBColumnSearch(parentColumn.toString());
+            List<TaskModel> taskModelList = idListsToModelList.IdToTaskModelList(List.of(columnRoot.get(2)));
+            taskModelList.add(taskModel);
+            StringBuilder temp = new StringBuilder(columnRoot.get(2));
+
+            if(!(columnRoot.get(2).isEmpty() || columnRoot.get(2).equals("") || columnRoot.get(2)==null)){
+                temp.append(",");
+            }
+            temp.append(taskModel.getID().toString());
+            System.out.println("COLUMN UPDATING");
+            System.out.println(temp);
+
+            dbManagerRemoveController.DBRemoveColumn(parentColumn);
+            columnRoot.set(2, temp.toString());
+            System.out.println("COLUMN UPDATING");
+            System.out.println(List.of(columnRoot.get(2)));
+            DBInsert(new ColumnModel(
+                    columnRoot.get(1),
+                    taskModelList,
+                    UUID.fromString(columnRoot.get(0))
+                    )
+            );
+
+
         } catch (Exception e) {
 
             e.printStackTrace();

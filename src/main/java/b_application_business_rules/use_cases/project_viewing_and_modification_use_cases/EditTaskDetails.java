@@ -2,7 +2,6 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import b_application_business_rules.DataAccessInterface;
 
-import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
@@ -69,7 +68,7 @@ public class EditTaskDetails implements DataAccessInterface {
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 
         // Removing the old task
-        removeTask.DBRemove(oldTask, taskID);
+        removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
         insertTask.DBInsert(updatedTask, parentColumn);
