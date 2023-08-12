@@ -150,15 +150,14 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
-		//
-		//First change -- have a way to do the existing models
+
 		List<ColumnModel> existingColumnModels =  currentProjectRepository.getCurrentProject().getColumnModels();
-		ProjectModel originalProjectModel = currentProjectRepository.getCurrentProject();
-		//CHANGE: GETTING RID OF EDITED PROJECT ALTOGETHER - ONLY USE OG PROJECTMODEL!!!!!
-		//
-		//EditProjectDetails useCase = new EditProjectDetails(originalProjectModel, editedProjectModel);
-		EditProjectDetails useCase = new EditProjectDetails(originalProjectModel);
-		//Added a new parameter -- original project model (for aiding testing)
+		//ProjectModel originalProjectModel = currentProjectRepository.getCurrentProject();
+
+
+
+		EditProjectDetails useCase = new EditProjectDetails(currentProject);
+
 
 		useCase.setName(newName);
 		useCase.setDescription(newDescription);

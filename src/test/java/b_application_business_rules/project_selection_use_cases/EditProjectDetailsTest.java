@@ -16,9 +16,9 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 public class EditProjectDetailsTest {
-    private ProjectModel p;
-    private ColumnModel c;
-    private TaskModel t1;
+    private Project p;
+    private Column c;
+    private Task t1;
 
     //private ProjectModel uP;
 
@@ -28,14 +28,14 @@ public class EditProjectDetailsTest {
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
         //UUID id4 = UUID.randomUUID();
-        t1 = new TaskModel("t1", id3, "", false, LocalDateTime.now());
-        ArrayList<TaskModel> listOfTasks = new ArrayList<>();
+        t1 = new Task("t1", id3, "", false, LocalDateTime.now());
+        ArrayList<Task> listOfTasks = new ArrayList<>();
         listOfTasks.add(t1);
-        c = new ColumnModel("c1", listOfTasks, id2);
-        ArrayList<ColumnModel> listOfColumns = new ArrayList<>();
+        c = new Column("c1", listOfTasks, id2);
+        ArrayList<Column> listOfColumns = new ArrayList<>();
         listOfColumns.add(c);
         //p = new Project("p1", id1, "", listOfColumns);
-        p = ProjectModelFactory.create("p1", id1, "", listOfColumns);
+        p = new Project("p1", id1, "", listOfColumns);
         //uP = ProjectModelFactory.create("p1", id1, "", listOfColumns);
 
     }
