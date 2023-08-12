@@ -110,7 +110,7 @@ public class DBManagerInsertController implements IDBInsert {
      * @param taskModel Task model to be inserted in the database.
      */
 
-    public void DBInsert(TaskModel taskModel, UUID parentColumn) {
+    public void DBInsert(TaskModel taskModel) {
         File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
         List<String[]> content = new ArrayList<>();
 
@@ -128,7 +128,6 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(taskModel.getDescription());
         data.add(String.valueOf(taskModel.getCompletionStatus()));
         data.add(taskModel.getDueDateTime().toString());
-        data.add(parentColumn.toString());
 
         content.add(data.toArray(new String[0]));
 

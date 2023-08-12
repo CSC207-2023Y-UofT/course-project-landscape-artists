@@ -406,4 +406,68 @@ class ColumnTest {
             Assertions.assertEquals(c1, c3);
         }
     }
+
+
+    @Test
+    /**
+     * Tests IDToColumn
+     */
+    void TestIDToColumn() {
+        UUID u1 = UUID.randomUUID();
+        UUID u2 = UUID.randomUUID();
+        UUID u3 = UUID.randomUUID();
+
+        UUID cu1 = UUID.randomUUID();
+        UUID cu2 = UUID.randomUUID();
+        UUID cu3 = UUID.randomUUID();
+
+
+        Task t1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task t3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        ArrayList<Task> tasks1 = new ArrayList<Task>();
+        tasks1.add(t1);
+        tasks1.add(t2);
+        tasks1.add(t3);
+
+        Task tt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task tt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks2 = new ArrayList<Task>();
+        tasks2.add(tt1);
+        tasks2.add(tt2);
+        tasks2.add(tt3);
+
+        Task ttt1 = new Task("test task name", u1, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt2 = new Task("test task name", u2, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+        Task ttt3 = new Task("test task name", u3, "test task description", false,
+                LocalDateTime.of(2024, 03, 28, 14, 33, 48, 0));
+
+        ArrayList<Task> tasks3 = new ArrayList<Task>();
+        tasks3.add(ttt1);
+        tasks3.add(ttt2);
+        tasks3.add(ttt3);
+
+        Column c1 = new Column("test column", tasks1, cu1);
+        Column c2 = new Column("test column", tasks2, cu2);
+        Column c3 = new Column("test column", tasks3, cu3);
+
+        ArrayList<Column> col = new ArrayList<>();
+        col.add(c1);
+        col.add(c2);
+        col.add(c3);
+
+        Column output = Column.IDToColumn(cu2, col);
+        Assertions.assertEquals(c2, output);
+
+    }
 }

@@ -1,7 +1,5 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
-/**
- * This TEST NEEDS TO SORT OUR THE CURRENT PROJECT DECLARATION IN THE ADDTASK USECASE
- */
+
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
@@ -13,34 +11,34 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AddTaskTest {
     private Project p;
     private Column c;
-    private TaskModel t1;
-    private Task t2;
 
     @BeforeEach
     public void setUp() {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
-        t1 = new TaskModel("t1", id3, "", false, LocalDateTime.now());
-        c = new Column("c1", new ArrayList<Task>(), id2);
+        UUID projectID = UUID.randomUUID();
+        UUID columnID  = UUID.randomUUID();
+        c = new Column("c1", new ArrayList<Task>(), columnID ); // Initialize new column
         ArrayList<Column> listOfColumns = new ArrayList<Column>();
-        listOfColumns.add(c);
-        p = new Project("p1", id1, "", listOfColumns);
+        listOfColumns.add(c); // Add column to list of columns
+        p = new Project("p1", projectID, "", listOfColumns); //Initialize new project
     }
 
     @Test
     public void testAddTask() {
-        AddTask addTaskUseCase = new AddTask(c.getID(), t1);
+        UUID taskID  = UUID.randomUUID();
 
-        UUID idOfColumn = UUID.randomUUID();
-        addTaskUseCase.addTask(idOfColumn);
+        TaskModel t = new TaskModel("t1", taskID, "", false, LocalDateTime.now()); // Initialize TaskModel
 
-        assertTrue(c.getTasks().get(0).getName().equals("t1"));
+        AddTask addTaskUseCase = new AddTask(p);
+
+        addTaskUseCase.addTask(c.getID(), t);
+
+        assertEquals("t1", c.getTasks().get(0).getName());
     }
 
 }

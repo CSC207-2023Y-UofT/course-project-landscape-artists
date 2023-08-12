@@ -1,25 +1,19 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
-import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
-import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
-import c_interface_adapters.view_models.TaskViewModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -30,30 +24,43 @@ import java.util.UUID;
  */
 public class ProjectViewingAndModificationController {
 
-    // JavaFX components annotated with @FXML for UI interaction
+     // The JavaFX Label component responsible for displaying the name of the project.
     @FXML
     Label projectName;
+
+
+     // The JavaFX HBox container that holds the UI components representing project columns.
+
     @FXML
     HBox columnsContainer;
+
+
+     // The JavaFX Label component responsible for displaying the description of the project.
+
     @FXML
     Label projectDescription;
+
+     // The JavaFX Button component that triggers navigation to the previous scene.
     @FXML
     Button backButton;
+
+
+     // The JavaFX Button component that triggers the addition of a new column to the project.
+
     @FXML
     Button addColumnButton;
-    ProjectViewingAndModificationInputBoundary interactor;
-    ProjectViewingAndModificationPresenter presenter;
 
-    /**
-     * Constructor for the ProjectViewingAndModificationController class. Initializes the
-     * interactor with a presenter and sets it as the interactor for the controller.
-     */
-    public ProjectViewingAndModificationController() {
-        ProjectViewingAndModificationOutputBoundary presenter =
-                new ProjectViewingAndModificationPresenter(this);
-        this.presenter = (ProjectViewingAndModificationPresenter) presenter;
-        interactor = new ProjectViewingAndModificationInteractor(presenter);
-    }
+
+     // The interactor responsible for managing input and output interactions in the project viewing and modification
+     // module.
+    static ProjectViewingAndModificationInputBoundary interactor;
+
+
+     // The presenter responsible for handling presentation logic related to project viewing and modification.
+    static ProjectViewingAndModificationPresenter presenter;
+
+
+
 
     /**
      * Sets up the project details view with the provided ProjectModel.
@@ -64,13 +71,15 @@ public class ProjectViewingAndModificationController {
      *                     It should include the project's name, description, ID, and a list of ColumnModels.
      */
     public void setup(ProjectModel projectModel) {
+        // MAKE THIS INITIALIZE AND STATIC PRESENTERS AND INTERACTOR
+        presenter =
+                new ProjectViewingAndModificationPresenter(this);
+        interactor =
+                new ProjectViewingAndModificationInteractor(presenter);
+
         setButtonStyles();
-
-        populateProjectDetails(projectModel);
-        List<ColumnModel> columnsInProject = projectModel.getColumnModels();
-        presenter.populateColumns(columnsInProject, this);
-
     }
+
 
     /**
      * Sets the styles for the buttons in the view.
@@ -89,7 +98,6 @@ public class ProjectViewingAndModificationController {
      * @param id The UUID of the column to be deleted.
      */
     void deleteColumn(UUID id) {
-        setPresenter();
         interactor.deleteColumn(id);
     }
 
@@ -101,14 +109,13 @@ public class ProjectViewingAndModificationController {
      * @param id The UUID of the column whose details are to be edited.
      */
     void handleEditColumnDetails(UUID id) {
-        setPresenter();
         String newColumnName = presenter.displayEditColumnDetails();
         interactor.editColumnDetails(id, newColumnName);
     }
 
 
-    void deleteTask(TaskModel task, UUID hBoxID, UUID columnBoxID) {
-        interactor.deleteTask(task, hBoxID, columnBoxID);
+    void deleteTask(UUID columnBoxID, TaskModel task) {
+        interactor.deleteTask(columnBoxID, task);
     }
 
     /**
@@ -121,39 +128,21 @@ public class ProjectViewingAndModificationController {
      * @param newTaskName
      * @param newTaskDescription
      * @param newDueDate
-     * @param uuid
+     * @param columnID
      */
     void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
-                           String newTaskDescription, LocalDateTime newDueDate, UUID uuid) {
+                           String newTaskDescription, LocalDateTime newDueDate, UUID columnID) {
         UUID taskID = task.getID();
         boolean taskStatus = task.getCompletionStatus();
 
         //Creating a new TaskModel based on the user input
         TaskModel changedTask = TaskModelFactory.create(newTaskName, taskID, newTaskDescription, taskStatus,
                 newDueDate);
-        interactor.changeTaskDetails(changedTask, taskID, uuid);
+        interactor.changeTaskDetails(changedTask, taskID, columnID);
 
-        //Creating a TaskViewModel for display purposes
-        TaskViewModel newTask = new TaskViewModel(newTaskName, taskID, newTaskName,
-                taskStatus, newDueDate);
-
-        //Calling a handler to display the final task changes
-        presenter.displayChangedTaskDetails(taskID, newTask, hbox);
 
     }
 
-//    void renameTask(TaskModel task, HBox hbox) {
-////        interactor.renameTask(task, hbox);
-//    }
-
-    /**
-     * Handles displaying options when the options button of a task is clicked.
-     *
-     * @param actionEvent An ActionEvent representing the options button click.
-     */
-    void handleTaskOptions(ActionEvent actionEvent, TaskModel task, VBox columnBox) {
-        // This has access to VBox for presentation purposes.
-    }
 
     /**
      * Updates the Presenter so an array of Task instances belonging to columnBox is added to the
@@ -169,24 +158,6 @@ public class ProjectViewingAndModificationController {
         interactor.addNewTask(UUID.fromString(columnBoxID), taskName, taskDescription, dueDate);
     }
 
-    //void handleChangeTaskDetails(VBox columnBox, String taskName, String taskDescription,
-                                 //LocalDateTime dueDate) {
-
-        //interactor.changeTaskDetails();
-
-    //}
-
-    /**
-     * Populates the project details on the UI, including the project name.
-     *
-     * @param project The Project instance representing the current project.
-     */
-
-    private void populateProjectDetails(ProjectModel project) {
-
-        projectName.setText(project.getName());
-        projectDescription.setText(project.getDescription());
-    }
 
     /**
      * Handles the event when the "Back" button is clicked. Removes the current project and displays
@@ -195,40 +166,20 @@ public class ProjectViewingAndModificationController {
     @FXML
     private void clickBackButton() {
         interactor.removeCurrentProject();
-        Stage stage = (Stage) columnsContainer.getScene().getWindow();
-        presenter.setStage(stage);
         presenter.displayAllProjects();
-    }
-
-    /**
-     * Sets the presenter for the controller and retrieves the current scene and stage. It then sets
-     * the retrieved stage as the stage for the presenter.
-     */
-    void setPresenter() {
-        try {
-            Scene scene = projectName.getScene();
-            ProjectViewingAndModificationOutputBoundary presenter =
-                    new ProjectViewingAndModificationPresenter(this);
-            Stage stage = (Stage) projectName.getScene().getWindow();
-
-            ((ProjectViewingAndModificationPresenter) presenter).setStage(stage);
-
-            interactor = new ProjectViewingAndModificationInteractor(presenter);
-        } catch (Error e) {
-            System.out.println(e);
-        }
     }
 
 
     @FXML
-/**
- * Handles the event when the "Add Column" button is clicked.
- * Displays a pop-up window to allow the user to enter a new column name.
- *
- */
+    /**
+     * Handles the event when the "Add Column" button is clicked.
+     * Displays a pop-up window to allow the user to enter a new column name.
+     *
+     */
     private void handleAddColumnClick() {
+        PopupUI popupUI = new PopupUI();
         boolean[] addButtonClicked = new boolean[1];
-        Pair<Boolean, String> result = presenter.displayAddColumnPopup(addButtonClicked);
+        Pair<Boolean, String> result = popupUI.displayAddColumnPopup(addButtonClicked, presenter);
         if (result.getKey()) {
             String columnName = result.getValue();
             interactor.addColumn(columnName);
@@ -246,37 +197,103 @@ public class ProjectViewingAndModificationController {
     public void showTaskDetails(TaskModel task) {
         presenter.displayTaskDetails(task);
     }
-//    public void moveTask(TaskModel task, VBox targetColumn) {
-//        // Get the current column containing the task
-//        VBox sourceColumn = findColumnContainingTask(task);
-//
-//        // If the task is already in the target column, do nothing
-//        if (sourceColumn == targetColumn) {
-//            return;
-//        }
-//
-//        // Remove the task from the source column
-//        sourceColumn.getChildren().removeIf(node -> node instanceof HBox && ((HBox) node).getUserData() == task);
-//
-//        // Add the task to the target column
-//        targetColumn.getChildren().add(createCard(task));
-//
-//        // Perform any other necessary actions based on your requirements
-//    }
-//
-//    private Node createCard(TaskModel task) {
-//
-//    }
-//
-//    private VBox findColumnContainingTask(TaskModel task) {
-//        List<Node> columns = columnsContainer.getChildren();
-//        for (VBox column : columns) {
-//            for (Node node : column.getChildren()) {
-//                if (node instanceof HBox && ((HBox) node).getUserData() == task) {
-//                    return column;
-//                }
-//            }
-//        }
-//        return null; // Task not found in any column
-//    }
+
+    /**
+     * Handles the "Submit" button click event for adding the task.
+     *
+     * @param popupStage                             The popup stage to be closed.
+     * @param columnBox                              The VBox representing the Column UI.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleAddTaskButtonClicked(Stage popupStage, VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
+        String taskDetails = projectViewingAndModificationPresenter.detailsTextArea.getText().trim();
+        LocalDate dueDate = projectViewingAndModificationPresenter.dueDatePicker.getValue();
+
+        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+            projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
+        } else {
+            popupStage.close();
+            handleAddTaskToColumn(columnBox.getId(), taskName, taskDetails, dueDate.atStartOfDay());
+        }
+    }
+
+    /**
+     * Handles the "Submit" button click event.
+     *
+     * @param task                                   The task to be edited.
+     * @param hbox                                   The HBox containing the task.
+     * @param popupStage                             The pop-up stage to be closed.
+     * @param uuid                                   The ID of the column containing the task.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleTaskSubmit(TaskModel task, HBox hbox, Stage popupStage, UUID uuid, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
+        String taskDetails = projectViewingAndModificationPresenter.detailsTextArea.getText().trim();
+        LocalDate dueDate = projectViewingAndModificationPresenter.dueDatePicker.getValue();
+
+        if (taskName.isEmpty() || taskDetails.isEmpty() || dueDate == null) {
+            projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
+        } else {
+            popupStage.close();
+            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
+            changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
+                uuid);
+        }
+    }
+
+    /**
+     * Handles the "Add" button click event.
+     *
+     * @param addButtonClicked                       The array to store the result of the pop-up.
+     * @param popupStage                             The pop-up stage to be closed.
+     * @param nameTextField                          The text field for column name input.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleAddButtonClicked(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String columnName = nameTextField.getText().trim();
+        if (columnName.isEmpty()) {
+            projectViewingAndModificationPresenter.showAlert("Error", "Column name cannot be empty.");
+        } else {
+            addButtonClicked[0] = true;
+            popupStage.close();
+        }
+    }
+
+    /**
+     * Handles the "Cancel" button click event.
+     *
+     * @param popupStage    The pop-up stage to be closed.
+     * @param nameTextField The text field for column name input.
+     */
+    void handleCancelButtonClicked(Stage popupStage, TextField nameTextField) {
+        nameTextField.clear();
+        popupStage.close();
+    }
+
+    /**
+     * Handles the OK button click event.
+     *
+     * @param textField                              The text field containing the input text.
+     * @param dialogStage                            The dialog stage.
+     * @param projectViewingAndModificationPresenter
+     */
+    void handleOkButtonClicked(TextField textField, Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+        String inputText = textField.getText().trim();
+        if (!inputText.isEmpty()) {
+            projectViewingAndModificationPresenter.columnName = inputText;
+            dialogStage.close();
+        } else {
+            projectViewingAndModificationPresenter.showAlert("Error", "Column name cannot be empty or whitespace-only.");
+        }
+    }
+
+    /**
+     * Handles the Cancel button click event.
+     *
+     * @param dialogStage The dialog stage.
+     */
+    void handleCancelButtonClicked(Stage dialogStage) {
+        dialogStage.close();
+    }
 }

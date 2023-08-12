@@ -7,10 +7,8 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 
@@ -18,54 +16,29 @@ import java.util.ArrayList;
 
 /**
  * The AddColumn class is responsible for adding a new column to the currently
- * opened project in the database and the project entity.
+ * opened project in the project entity.
  */
 public class AddColumn {
 
     /**
-     * The Column object representing the new column to be added.
-     */
-    private final ColumnModel columnModel;
-
-    /**
      * The current project being worked on. Received from Singleton data class.
      */
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject()
-            .getProjectEntity();
+    private final Project currentProject;
 
-    /**
-     * Constructs an AddColumn object with the specified column name and column ID.
-     *
-     * @param columnModel
-     */
-    public AddColumn(ColumnModel columnModel) {
-        this.columnModel = columnModel;
+
+    public AddColumn(Project currentProject) {
+        this.currentProject = currentProject;
     }
 
     /**
-     * Adds the new column to the database and the currently opened project entity.
-     * This method performs necessary database access and updates the project entity
-     * with the new column.
+     * Adds the new column to the current project, project entity.
      */
-    public void addColumn() {
+    public void addColumn(ColumnModel columnModel) {
         IDbIdToModel iDbIdToModel = new DbIDToModel();
         // Create the column entity
         Column column = createColumnEntity(columnModel);
         // Add the column to the currently opened Project entity.
         currentProject.addColumn(column);
-
-        // Update database to add the column.
-        IDBInsert dbInsertManager = new DBManagerInsertController();
-        IDBRemove idbRemove = new DBManagerRemoveController();
-
-        dbInsertManager.DBInsert(columnModel);
-        ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
-        updatedProject.getColumnModels().add(columnModel);
-        idbRemove.DBRemoveProject(currentProject.getID());
-
-        //DeleteProject deleteProject = new DeleteProject();
-        //deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
-        dbInsertManager.DBInsert(updatedProject);
     }
 
     /**
