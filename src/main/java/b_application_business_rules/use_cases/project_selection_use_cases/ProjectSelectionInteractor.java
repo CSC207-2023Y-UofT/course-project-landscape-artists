@@ -166,19 +166,28 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
-
-//		List<ColumnModel> existingColumnModels =  currentProjectRepository.getCurrentProject().getColumnModels();
-		//ProjectModel originalProjectModel = currentProjectRepository.getCurrentProject();
-
-
-
-		EditProjectDetails useCase = new EditProjectDetails(currentProject);
-
+		EditProjectDetails useCase = new EditProjectDetails(allProjects, projectUUID);
 
 		useCase.setName(newName);
 		useCase.setDescription(newDescription);
 
-		//Edited model for the presenter
+		// For UI purposes, we do not need the list of columns in the project model since it would not get displayed
+		// anyways.
+		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
+		presenter.displayRenamedProject(editedProjectModel);
+
+//		List<ColumnModel> existingColumnModels =  currentProjectRepository.getCurrentProject().getColumnModels();
+//		//ProjectModel originalProjectModel = currentProjectRepository.getCurrentProject();
+//
+//
+//
+//		EditProjectDetails useCase = new EditProjectDetails(currentProject);
+//
+//
+//		useCase.setName(newName);
+//		useCase.setDescription(newDescription);
+//
+//		//Edited model for the presenter
 //		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, existingColumnModels);
 //		presenter.displayRenamedProject(editedProjectModel);
 	}

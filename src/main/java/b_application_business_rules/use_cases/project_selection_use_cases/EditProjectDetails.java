@@ -18,9 +18,9 @@ import java.util.*;
  */
 public class EditProjectDetails {
 
-    /** The current project we are editing */
+    /** Project to be edited */
     //ProjectModel originalProjectModel;
-    private final Project currentProject;
+    private Project projectToBeEdited;
 
 
     //private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
@@ -28,12 +28,18 @@ public class EditProjectDetails {
 
     /**
      * Constructs an instance of the use case, given the inputted Project Model.
-     * 
-     * @param originalProject The project to be editing.
+     *
+     * @param allProjects All projects in the system.
+     * @param projectUUID
      */
-    public EditProjectDetails(Project originalProject) {
-        //this.updatedProjectModel = updatedProjectModel;
-        this.currentProject = originalProject;
+    public EditProjectDetails(List<Project> allProjects, UUID projectUUID) {
+        // iterate over the list of all projects, find the project to be edited.
+        for (Project project : allProjects) {
+            if (project.getID().equals(projectUUID)) {
+                projectToBeEdited = project;
+            }
+        }
+        System.err.println("Project not found");
     }
 
     /**
@@ -57,15 +63,15 @@ public class EditProjectDetails {
         //updatedProjectModel = ProjectModelFactory.create(newName, originalProjectModel.getID(),
                 //originalProjectModel.getDescription(), originalProjectModel.getColumnModels());
         IDbIdToModel iDbIdToModel = new DbIDToModel();
-        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
         DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(originalProjectModel, currentProject.getID());
+        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
 
 
 
-        currentProject.setName(newName);
-        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+        projectToBeEdited.setName(newName);
+        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
 
         IDBInsert databaseInserter = new DBManagerInsertController();
@@ -90,15 +96,15 @@ public class EditProjectDetails {
 
 
         IDbIdToModel iDbIdToModel = new DbIDToModel();
-        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+        ProjectModel originalProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
         DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(originalProjectModel, currentProject.getID());
+        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
 
 
         //This is added in so that it "updates" currentProject
-        currentProject.setDescription(newDescription);
-        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+        projectToBeEdited.setDescription(newDescription);
+        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
 
         IDBInsert databaseInserter = new DBManagerInsertController();
