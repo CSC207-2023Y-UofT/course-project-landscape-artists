@@ -41,7 +41,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
     // currentProject attribute to be replaced by actual project access (to access a project entity)
-    private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
+    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
