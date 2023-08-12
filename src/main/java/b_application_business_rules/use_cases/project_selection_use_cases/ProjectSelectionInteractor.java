@@ -11,9 +11,11 @@ import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
+import c_interface_adapters.DBAdapterInterface;
+import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -171,9 +173,29 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
-		ProjectModel projectModel = new ProjectModel(
-				"Revised project P1", projectUUID, "", new ArrayList<>());
-		presenter.displayDeletedProject(projectModel);
+		//IDBSearch projectSearcher = new DBManagerSearchController();
+		//DBAdapterInterface projectModels = new EntityIDstoModelController();
+
+		IDbIdToModel iDbIdToModel = new DbIDToModel();
+		ProjectModel deletedProjectModel = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
+
+		// ArrayList<String> projectAttributes = projectSearcher.DBProjectSearch(String.valueOf(projectUUID));
+		// ProjectModel deletedProjectModel = projectModels.IDsToProjectModel(projectUUID);
+		// Accessing the static method in the deletedProject
+
+		//This is unused ==> not sure how to integrate entities into deleteProject (given that currentProject cannot be changed)
+		Project deletedProject = EditProjectDetails.createProjectEntity(deletedProjectModel);
+		DeleteProject useCase = new DeleteProject();
+
+
+		//This line calls the use case and updates the database
+		useCase.deleteProject(deletedProjectModel, projectUUID);
+
+
+
+		//ProjectModel projectModel = new ProjectModel(
+				//"Revised project P1", projectUUID, "", new ArrayList<>());
+		presenter.displayDeletedProject(deletedProjectModel);
 	}
 
 	/**

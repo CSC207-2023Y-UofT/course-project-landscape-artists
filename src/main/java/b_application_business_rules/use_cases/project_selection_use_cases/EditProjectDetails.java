@@ -21,6 +21,7 @@ public class EditProjectDetails {
 
     /** The current project we are editing */
     ProjectModel originalProjectModel;
+    private final Project currentProject;
 
     //This is just added here so that it helps when working with entities
     private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
