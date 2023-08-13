@@ -144,16 +144,31 @@ public class ColumnModel {
      *                                remove is not in the column model.
      */
     public void removeTaskModel(TaskModel taskModelToRemove) throws NoSuchElementException {
-        if (!this.taskModels.remove(taskModelToRemove)) {
-            // the java.util.List.remove method returns a bool,
-            // indicating whether the object was removed or not.
-            // If it wasn't removed, we want to throw an exception,
-            // saying that the task model isn't in the column model, thus, it can't be
-            // removed.
-            // If it was removed, we don't have to do anything extra.
-            throw new NoSuchElementException(
-                    "The task model " + taskModelToRemove.toString() + " is not in this column model");
+        for (TaskModel task: taskModels) {
+            System.out.println("TASKMODEL IN THE COLUMN " + task);
         }
+
+        System.out.println("taskModelToRemove " + taskModelToRemove);
+
+        for (TaskModel taskInColumn: taskModels) {
+            if (taskInColumn.getID().equals(taskModelToRemove.getID())) {
+                taskModels.remove(taskInColumn);
+                System.out.println("SUCCESS DELETE FROM TASKMODELS");
+                return;
+            }
+        }
+        throw new NoSuchElementException(
+                "The task model " + taskModelToRemove.toString() + " is not in this column model");
+//        if (!this.taskModels.remove(taskModelToRemove)) {
+//
+//            // the java.util.List.remove method returns a bool,
+//            // indicating whether the object was removed or not.
+//            // If it wasn't removed, we want to throw an exception,
+//            // saying that the task model isn't in the column model, thus, it can't be
+//            // removed.
+//            // If it was removed, we don't have to do anything extra.
+
+
     }
 
     /**

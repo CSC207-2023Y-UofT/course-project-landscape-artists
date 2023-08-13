@@ -10,15 +10,10 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.ProjectRepository;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_gateways.*;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
+import d_frameworks_and_drivers.database_management.DBAdapters.DBSearcher;
+import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -172,14 +167,42 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         MoveTask useCase = new MoveTask(sourceColumnID, targetColumnID, currentProject);
         useCase.moveTask(task.getTaskEntity());
 
+        IDBSearch dbSearch = new DBManagerSearchController();
+
+        // raw data from database.
+        ArrayList<String> sourceColumnData = dbSearch.DBColumnSearch(sourceColumnID.toString());
+        ArrayList<String> targetColumnData = dbSearch.DBColumnSearch(targetColumnID.toString());
+
+        System.out.println("sourceColumnData " + sourceColumnData);
+        System.out.println("targetColumnData " + targetColumnData);
+
+        // Using DIP to get access to upper layer methods
+        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
+        // getting ColumnModels via their IDs
+        ColumnModel sourceColumnModel = new ColumnModel(
+                sourceColumnData.get(1),
+                iDbIdToModelList.IdToTaskModelList(List.of(sourceColumnData.get(2).split(","))),
+                UUID.fromString(sourceColumnData.get(0)));
+        ColumnModel targetColumnModel = new ColumnModel(
+                targetColumnData.get(1),
+                iDbIdToModelList.IdToTaskModelList(List.of(targetColumnData.get(2).split(","))),
+                UUID.fromString(targetColumnData.get(0)));
+
+        // Changing columnModels TaskModels lists to reflect Drag'n'Drop action
+        sourceColumnModel.removeTaskModel(task);
+        targetColumnModel.addTaskModel(task);
+
+        // Modifying entries in the TaskDB
+        IDBInsert idbInsert = new DBManagerInsertController();
         IDBRemove databaseRemover = new DBManagerRemoveController();
         System.out.println("task ID " + task.getID());
         System.out.println("sourceColumnID " + sourceColumnID);
         System.out.println("targetColumnID " + targetColumnID);
-        databaseRemover.DBRemoveTask(task.getID());
 
-        IDBInsert databaseInserter = new DBManagerInsertController();
-        databaseInserter.DBInsert(task, targetColumnID);
+
+//        IDBInsert databaseInserter = new DBManagerInsertController();
+//        databaseInserter.DBInsert(task, targetColumnID);
     }
 
     /**
