@@ -34,7 +34,7 @@ public class ProjectModel {
     /**
      * The column models in the kanban board for this project model.
      */
-    private List<ColumnModel> columnModels;
+    private List<ColumnModel> columnModels = new ArrayList<>();
 
     /**
      * Creates a new project model, based in the inputted values.

@@ -172,23 +172,25 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Initializes and call use case
         DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
+        System.out.println("Interactor, about to enter use case");
         deleteColumnUseCase.deleteColumn(columnID);
+        deleteColumnUseCase.deleteColumnFromDB(columnID);
 
         // calls presenter to display message
         presenter.displayDeletedColumn(columnModel);
 
         // Update the database to remove the column.
-        IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemoveColumn(columnID);
+//        IDBRemove dbRemoveManager = new DBManagerRemoveController();
+//        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
      * Edits the details of a column identified by the specified columnID.
      */
     @Override
-    public void editColumnDetails(UUID columnID, String newColumnName) {
+    public void editColumnDetails(UUID columnID, String newColumnName, ColumnModel columnModel) {
         // Initialize updated column model
-        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, new ArrayList<>(), columnID);
+        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, columnModel.getTaskModels(), columnID);
 
         // Initialize and call use case
         EditColumn useCase = new EditColumn(currentProject);

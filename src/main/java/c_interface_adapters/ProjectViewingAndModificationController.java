@@ -1,6 +1,7 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
@@ -108,9 +109,9 @@ public class ProjectViewingAndModificationController {
      *
      * @param id The UUID of the column whose details are to be edited.
      */
-    void handleEditColumnDetails(UUID id) {
+    void handleEditColumnDetails(UUID id, ColumnModel columnModel) {
         String newColumnName = presenter.displayEditColumnDetails();
-        interactor.editColumnDetails(id, newColumnName);
+        interactor.editColumnDetails(id, newColumnName, columnModel);
     }
 
 

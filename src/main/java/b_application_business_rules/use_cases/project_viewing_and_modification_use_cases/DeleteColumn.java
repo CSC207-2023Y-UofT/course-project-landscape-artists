@@ -1,6 +1,13 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
 import java.util.UUID;
 
@@ -11,7 +18,8 @@ import java.util.UUID;
  * updates the database accordingly.
  */
 public class DeleteColumn {
-
+    IDBRemove databaseRemover = new DBManagerRemoveController();
+    IDBInsert idbInsert = new DBManagerInsertController();
 
     /**
      * The current project being worked on. Received from Singleton data class.
@@ -34,7 +42,35 @@ public class DeleteColumn {
 
         // Remove column from the current project
         currentProject.removeColumn(columnID);
+    }
 
+    public void deleteColumnFromDB(UUID columnID) {
 
+        // Remove column from the DB
+        for (Column col : currentProject.getColumns()) {
+            if(col.getID().equals(columnID)){
+                deleteTaskFromDB(col);
+            }
+        }
+        databaseRemover.DBRemoveColumn(columnID);
+        updateProject(currentProject, columnID);
+    }
+
+    private void updateProject(Project projectToBeUpdated, UUID colID) {
+        for (Column col : projectToBeUpdated.getColumns()) {
+            if(col.getID().equals(colID)){
+                projectToBeUpdated.getColumns().remove(col);
+                break;
+            }
+        }
+        databaseRemover.DBRemoveProject(projectToBeUpdated.getID());
+        idbInsert.DBInsert(new ProjectModel(projectToBeUpdated));
+    }
+
+    private void deleteTaskFromDB(Column column) {
+        for (Task task : column.getTasks()) {
+            System.out.println("TASK ID IN COLUMN " + task.getID());
+            databaseRemover.DBRemoveTask(task.getID());
+        }
     }
 }
