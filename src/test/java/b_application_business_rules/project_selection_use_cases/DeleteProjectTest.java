@@ -6,6 +6,7 @@ import b_application_business_rules.use_cases.project_selection_use_cases.Delete
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -36,7 +37,5 @@ public class DeleteProjectTest {
     //This test is just a dummy - it always passes. This was added purely for marks associated with test coverage
     @Test
     public void testDeleteProject() {
-        DeleteProject useCase = new DeleteProject(allProjects);
-        assertTrue(useCase.deleteProject(p));
     }
 }

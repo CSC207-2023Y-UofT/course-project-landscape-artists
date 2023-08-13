@@ -21,25 +21,6 @@ public class DeleteProject {
         this.allProjects = allProjects;
     }
 
-    /**
-     * Deletes a project from the database, given its ID.
-     * 
-     * @param ID The ID of the project to delete.
-     */
-    //public void deleteProject(UUID ID) {
-        // IDBSearch databaseSearcher = new DBManagerSearchController();
-
-
-        // List<String> projectUUIDs = databaseSearcher.DBColumnSearch(ID.toString());
-        //ProjectModel tempProjectModel = new ProjectModel("tempname", ID, "", null);
-
-
-        // TOOD -- So, like, the DBRemove needs a ProjectModel, in addition to the UUID,
-        // but like, it never actually uses it :|
-        // so, I'm just creating a temporary project model (rather than a null
-        // reference)
-        // so no "errors" are seen... idkdkdkkdkd
-    //}
 
     /**
      * Deletes a project from the database, given a Project entity.
@@ -63,7 +44,13 @@ public class DeleteProject {
         // iterate over the list of all projects, find the project to be edited.
         for (Project projectToBeRemoved : allProjects) {
             if (projectToBeRemoved.getID().equals(projectUUID)) {
+                for (Column column: projectToBeRemoved.getColumns() ) {
+                    for (Task task : column.getTasks()) {
+                        databaseRemover.DBRemove();
+                    }
+                }
                 allProjects.remove(projectToBeRemoved);
+
             }
         }
 

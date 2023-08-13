@@ -201,6 +201,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 		//This line calls the use case and updates the database
 		useCase.deleteProject(projectUUID);
+		presenter.displayDeletedProject(new ProjectModel(
+				"", projectUUID, "", new ArrayList<>()
+		));
 	}
 
 	/**
