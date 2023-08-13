@@ -78,7 +78,7 @@ public class EditProjectDetails {
 //        DeleteProject deleteProject = new DeleteProject();
 //        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(originalProjectModel, projectToBeEdited.getID());
+        databaseRemover.DBRemoveProject(projectToBeEdited.getID());
 
         projectToBeEdited.setName(newName);
         projectToBeEdited.setDescription(newName);

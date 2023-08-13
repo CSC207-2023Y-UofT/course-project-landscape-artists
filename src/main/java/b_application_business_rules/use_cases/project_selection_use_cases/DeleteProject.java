@@ -38,7 +38,7 @@ public class DeleteProject {
 
     /**
      * Deletes a project from the database, given a ProjectModel.
-     * 
+     *
      * @param projectUUID The project id to delete from the database.
      */
     public void deleteProject(UUID projectUUID) {

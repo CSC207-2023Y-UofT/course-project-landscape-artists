@@ -1,5 +1,6 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
+import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 
 import b_application_business_rules.entity_models.ProjectModel;
@@ -10,6 +11,7 @@ import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.ProjectRepository;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import d_frameworks_and_drivers.database_management.DBControllers.*;
 
@@ -134,15 +136,6 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		presenter.displayCurrentProject(projectModel);
 	}
 
-	@Override
-	public void createProject() {
-		new CreateProject();
-	}
-
-	@Override
-	public void createProject(ProjectModel projectModel) {
-
-	}
 
 	@Override
 	public void openProject(UUID currentProjectID) {

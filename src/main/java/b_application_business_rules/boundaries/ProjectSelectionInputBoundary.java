@@ -15,10 +15,6 @@ public interface ProjectSelectionInputBoundary {
 
     void createProject(String name, String description);
 
-    void createProject();
-
-    void createProject(ProjectModel projectModel);
-
     void deleteProject(UUID projectID);
 
     void projectDeletionFailed(String message);
