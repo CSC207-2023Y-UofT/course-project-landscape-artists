@@ -79,9 +79,10 @@ public class ColumnTest {
                 LocalDateTime.of(2023, 02, 18, 11, 10, 5, 2)));
         sampleTasks1.add(new Task("t3 name", UUID.randomUUID(), "t3 desc", false,
                 LocalDateTime.of(1985, 10, 1, 19, 13, 9, 6)));
-        Column c = new Column("testing column name", sampleTasks1, UUID.randomUUID());
 
         UUID currID = UUID.randomUUID();
+
+        Column c = new Column("testing column name", sampleTasks1, currID); // Set the UUID of the Column
 
         Assertions.assertEquals(c.getID(), currID);
     }
