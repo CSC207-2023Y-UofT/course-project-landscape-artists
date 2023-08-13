@@ -9,9 +9,9 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.boundaries.ProjectSelectionInputBoundary;
 import b_application_business_rules.boundaries.ProjectSelectionOutputBoundary;
 import b_application_business_rules.use_cases.CurrentProjectID;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
+import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -31,8 +31,15 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	// The currentProjectRepository holds the reference to the
 	// CurrentProjectRepository instance.
-	private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
-			.getCurrentprojectrepository();
+	private final ProjectRepository projectRepository = ProjectRepository
+			.getProjectRepository();
+
+	// allProjects holds all project entities in the system.
+	private final List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
+
+	// COPIED FROM ProjectViewingAndModificationInteractor
+	//currentProject attribute to be replaced by actual project access (to access a project entity)
+	private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
 
 	private final CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
@@ -73,7 +80,26 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 * @param project The project selected by the user.
 	 */
 	public void setCurrentProject(ProjectModel project) {
-		currentProjectRepository.setCurrentProject(project.getProjectEntity());
+		projectRepository.setCurrentProject(project.getProjectEntity());
+	}
+
+	/**
+	 * Sets the attribute holding all projects in the ProjectRepository.
+	 *
+	 * This method is called upon startup.
+	 *
+	 * @param allProjectsList The projects from the database.
+	 */
+	@Override
+	public void setAllProjects(List<ProjectModel> allProjectsList) {
+		List<Project> allProjects = new ArrayList<>();
+
+		// Convert all Project models from the outer layers to a Project.
+		for (ProjectModel projectModel: allProjectsList) {
+			allProjects.add(projectModel.getProjectEntity());
+		}
+
+		projectRepository.setAllProjects(allProjects);
 	}
 	public void setCurrentProjectID(UUID uuid) {
 		currentProjectID.setSelectedProjectID(uuid);
@@ -94,8 +120,16 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// of the application.
 		// For example, the interactor might interact with a ProjectRepository to store
 		// the project in a database.
-		ProjectModel projectModel = new ProjectModel(
-				projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
+
+		CreateProject useCase = new CreateProject(allProjects);
+		Project newProject = useCase.newProject(projectName, UUID.randomUUID(),
+				projectDescription, new ArrayList<>());
+
+		IDBInsert databaseInserter = new DBManagerInsertController();
+		ProjectModel projectModel = new ProjectModel(newProject);
+		databaseInserter.DBInsert(projectModel);
+
+		// Sets the project in the projectRepository
 		setCurrentProject(projectModel);
 		presenter.displayCurrentProject(projectModel);
 	}
@@ -141,12 +175,13 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
+		EditProjectDetails useCase = new EditProjectDetails(allProjects, projectUUID);
+
+		useCase.setNameAndDescription(newName, newDescription);
+
+		// For UI purposes, we do not need the list of columns in the project model since it would not get displayed
+		// anyways.
 		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
-		EditProjectDetails useCase = new EditProjectDetails(editedProjectModel);
-
-		useCase.setName(newName);
-		useCase.setDescription(newDescription);
-
 		presenter.displayRenamedProject(editedProjectModel);
 	}
 
@@ -155,9 +190,13 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
-		ProjectModel projectModel = new ProjectModel(
-				"Revised project P1", projectUUID, "", new ArrayList<>());
-		presenter.displayDeletedProject(projectModel);
+		DeleteProject useCase = new DeleteProject(allProjects);
+
+		//This line calls the use case and updates the database
+		useCase.deleteProject(projectUUID);
+		presenter.displayDeletedProject(new ProjectModel(
+				"", projectUUID, "", new ArrayList<>()
+		));
 	}
 
 	/**

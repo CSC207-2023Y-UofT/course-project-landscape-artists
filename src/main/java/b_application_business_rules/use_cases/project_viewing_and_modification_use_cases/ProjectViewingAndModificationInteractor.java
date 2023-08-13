@@ -9,7 +9,7 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectID;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
@@ -23,6 +23,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -37,11 +38,11 @@ import java.util.UUID;
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
-    CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
     CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
+    ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 
     // currentProject attribute to be replaced by actual project access (to access a project entity)
-    private final Project currentProject = CurrentProjectRepository.getCurrentprojectrepository().getCurrentProject();
+    private final Project currentProject = ProjectRepository.getProjectRepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -66,7 +67,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      */
     @Override
     public void removeCurrentProject() {
-        currentProjectRepository.removeCurrentProject();
+        projectRepository.removeCurrentProject();
         currentProjectID.removeCurrentProjectID();
     }
 
@@ -148,8 +149,13 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(columnModel);
         ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
         updatedProject.getColumnModels().add(columnModel);
-        DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
+
+        List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
+
+        DeleteProject deleteProject = new DeleteProject(allProjects);
+        //A change is made here: deleteProject now requires both a projectModel and UUID
+        deleteProject.deleteProjectInDatabase(currentProject.getID());
+
         dbInsertManager.DBInsert(updatedProject);
     }
 
