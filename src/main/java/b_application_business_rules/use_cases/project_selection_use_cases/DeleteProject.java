@@ -1,6 +1,7 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
 import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
@@ -8,10 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.*;
 
 public class DeleteProject {
 
+    private IDBRemove databaseRemover = new DBManagerRemoveController();
     // The list of allProjects in the system
     private List<Project> allProjects;
     /**
@@ -64,6 +66,7 @@ public class DeleteProject {
                 "", projectUUID, "",
                 new ArrayList<>()
         );
+
 
         // Update the database.
         IDBRemove databaseRemover = new DBManagerRemoveController();
