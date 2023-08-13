@@ -159,6 +159,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(updatedProject);
     }
 
+    @Override
+    public void moveTask(UUID uuid, UUID uuid1, TaskModel task) {
+
+    }
+
     /**
      * The method to delete a column from the project.
      *

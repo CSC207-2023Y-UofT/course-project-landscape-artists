@@ -63,6 +63,22 @@ public class DragAndDropImplementation {
             event.consume();
         });
 
+        hbox.setOnDragDropped(event -> {
+            Dragboard dragboard = event.getDragboard();
+            boolean success = false;
+            if (dragboard.hasString()) {
+                HBox sourceHBox = new DragAndDropImplementation().findHBoxById(dragboard.getString(), projectViewingAndModificationPresenter);
+                if (sourceHBox != null && projectViewingAndModificationPresenter.dragDestination != null) {
+                    new DragAndDropImplementation().moveHBoxToDestination(sourceHBox, hbox,
+                            projectViewingAndModificationPresenter,
+                            task);
+                    success = true;
+                }
+            }
+            event.setDropCompleted(success);
+            event.consume();
+        });
+
         hbox.setOnDragDone(event -> {
             new DragAndDropImplementation().handleDragDone(hbox, event, projectViewingAndModificationPresenter, task);
             event.consume();
@@ -90,7 +106,8 @@ public class DragAndDropImplementation {
                 success = true;
             }
         }
-        event.setDropCompleted(success);
+//        event.setDropCompleted(success);
+
         // ... Perform additional tasks after drag-and-drop
     }
 

@@ -297,10 +297,17 @@ public class ProjectViewingAndModificationController {
         dialogStage.close();
     }
 
+    /**
+     * Handles the event after a valid drag-and-drop of a task.
+     *
+     * @param sourceColumnID The id of the source column.
+     * @param targetColumnID The id of the target column.
+     * @param task The taskModel to be moved.
+     *
+     */
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
-        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
-        System.out.println("TARGET COLUMN ID " + targetColumnID );
-        System.out.println("TASK: " + task);
+
+        interactor.moveTask(UUID.fromString(sourceColumnID), UUID.fromString(targetColumnID), task);
     }
 
 }
