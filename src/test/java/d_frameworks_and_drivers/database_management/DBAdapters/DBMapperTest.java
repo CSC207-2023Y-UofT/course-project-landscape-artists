@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DBMapperTest {
+public class DBMapperTest {
 
     /**
      * Setting up test data fixtures in preparation for the execution of a test method.

@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DbIDToModelTest {
+public class DbIDToModelTest {
     /**
      * Setting up test data fixtures in preparation for the execution of a test method.
      */

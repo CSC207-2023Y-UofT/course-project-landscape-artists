@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the TaskViewModels entity.
  */
-class TaskViewModelTest {
+public class TaskViewModelTest {
 
     @Test
     /**

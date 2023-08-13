@@ -16,7 +16,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the ColumnViewModel entity.
  */
-class ColumnViewModelTest {
+public class ColumnViewModelTest {
 
     @Test
     /**

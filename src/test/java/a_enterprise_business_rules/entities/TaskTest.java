@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the Tasks entity.
  */
-class TaskTest {
+public class TaskTest {
 
     @Test
     /**

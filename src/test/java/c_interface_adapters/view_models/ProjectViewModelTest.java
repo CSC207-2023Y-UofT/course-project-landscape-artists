@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the ProjectViewModel entity.
  */
-class ProjectViewModelTest {
+public class ProjectViewModelTest {
 
 
     @Test

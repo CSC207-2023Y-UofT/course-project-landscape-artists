@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class DBManagerInsertControllerTest {
+public class DBManagerInsertControllerTest {
 
     @Test
     void DBInsert() {

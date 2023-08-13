@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests if UniqueIDsInitializer initializes UniqueIDs.csv file with correct format.
  */
-class UniqueIDsInitializerTest {
+public class UniqueIDsInitializerTest {
     /**
      * Setting up test data fixtures in preparation for the execution of a test method.
      */

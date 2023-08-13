@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  *  NOT USED. NO TEST.
  */
-class UniqueIDsReaderTest {
+public class UniqueIDsReaderTest {
 
 //    @Test
 //    void getMap() {

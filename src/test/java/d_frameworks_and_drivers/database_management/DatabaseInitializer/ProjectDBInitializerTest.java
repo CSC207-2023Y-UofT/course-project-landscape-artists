@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 /**
  * Tests if ProjectDBInitializer initializes Projects.csv file with correct format.
  */
-class ProjectDBInitializerTest {
+public class ProjectDBInitializerTest {
     private static final String CSV_FILE_PATH = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv";
 
 

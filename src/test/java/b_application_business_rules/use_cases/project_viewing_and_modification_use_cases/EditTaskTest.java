@@ -13,7 +13,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class EditTaskTest {
+public class EditTaskTest {
     private Project p;
     private Column c;
     @BeforeEach

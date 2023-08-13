@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the Project entity.
  */
-class ProjectTest {
+public class ProjectTest {
 
 
     @Test

@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 /**
  * A class to test the Column entity.
  */
-class ColumnTest {
+public class ColumnTest {
 
     @Test
     /**
