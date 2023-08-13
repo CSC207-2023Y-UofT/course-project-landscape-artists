@@ -293,8 +293,10 @@ public class PresenterUtility {
      * @param hbox                                   The HBox to configure.
      * @param projectViewingAndModificationPresenter
      */
-    void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
-        new DragAndDropImplementation().configureDragAndDropBehavior(hbox, projectViewingAndModificationPresenter);
+    void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter
+            projectViewingAndModificationPresenter, TaskModel task) {
+        new DragAndDropImplementation().configureDragAndDropBehavior(hbox,
+                projectViewingAndModificationPresenter, task);
         new PresenterUtility().configureHBoxStyleOnMouseActions(hbox, projectViewingAndModificationPresenter);
     }
 

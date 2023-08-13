@@ -296,4 +296,11 @@ public class ProjectViewingAndModificationController {
     void handleCancelButtonClicked(Stage dialogStage) {
         dialogStage.close();
     }
+
+    public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
+        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
+        System.out.println("TARGET COLUMN ID " + targetColumnID );
+        System.out.println("TASK: " + task);
+    }
+
 }

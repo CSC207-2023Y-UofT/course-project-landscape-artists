@@ -31,7 +31,8 @@ public class DBManagerRemoveController implements IDBRemove {
         File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
                 "database_management/DatabaseFiles/Projects/Projects.csv");
 
-        File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/ProjectsBin.csv");
+        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Projects/ProjectsBin.csv");
         CsvRemovalUpdate(uuid, binFile, newFile);
         binFile.renameTo(newFile);
     }
