@@ -159,9 +159,27 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(updatedProject);
     }
 
+    /**
+     * Handles the event after a valid drag-and-drop of a task.
+     *
+     * @param sourceColumnID The id of the source column.
+     * @param targetColumnID The id of the target column.
+     * @param task The taskModel to be moved.
+     *
+     */
     @Override
-    public void moveTask(UUID uuid, UUID uuid1, TaskModel task) {
+    public void moveTask(UUID sourceColumnID, UUID targetColumnID, TaskModel task) {
+        MoveTask useCase = new MoveTask(sourceColumnID, targetColumnID, currentProject);
+        useCase.moveTask(task.getTaskEntity());
 
+        IDBRemove databaseRemover = new DBManagerRemoveController();
+        System.out.println("task ID " + task.getID());
+        System.out.println("sourceColumnID " + sourceColumnID);
+        System.out.println("targetColumnID " + targetColumnID);
+        databaseRemover.DBRemoveTask(task.getID());
+
+        IDBInsert databaseInserter = new DBManagerInsertController();
+        databaseInserter.DBInsert(task, targetColumnID);
     }
 
     /**

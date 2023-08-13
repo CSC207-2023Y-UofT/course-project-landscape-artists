@@ -306,7 +306,6 @@ public class ProjectViewingAndModificationController {
      *
      */
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
-
         interactor.moveTask(UUID.fromString(sourceColumnID), UUID.fromString(targetColumnID), task);
     }
 
