@@ -9,6 +9,7 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBRemo
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -46,10 +47,15 @@ public class DeleteColumn {
 
     public void deleteColumnFromDB(UUID columnID) {
 
+        System.out.println("Current Project Column List "+currentProject.getColumns());
         // Remove column from the DB
         for (Column col : currentProject.getColumns()) {
-            if(col.getID().equals(columnID)){
-                deleteTaskFromDB(col);
+            System.out.println("\nInside delete column from db: " + Objects.equals(col.getID().toString(), columnID.toString()));
+            System.out.println("Inside delete column from db: " + col.getID().toString() +"\t"+ columnID);
+            if(col.getID().toString().equals(columnID.toString())){
+                for (Task task : col.getTasks()) {
+                    databaseRemover.DBRemoveTask(task.getID());
+                }
             }
         }
         databaseRemover.DBRemoveColumn(columnID);

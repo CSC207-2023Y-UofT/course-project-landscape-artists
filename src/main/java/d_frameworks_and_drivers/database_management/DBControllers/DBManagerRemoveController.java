@@ -59,6 +59,7 @@ public class DBManagerRemoveController implements IDBRemove {
      *
      */
     public void DBRemoveTask(UUID uuid) {
+        System.out.println("INSIDE DB REMOVE Task");
         File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
                 "database_management/DatabaseFiles/Tasks/Tasks.csv");
         tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
@@ -71,6 +72,7 @@ public class DBManagerRemoveController implements IDBRemove {
                 "database_management/DatabaseFiles/Tasks/TasksBin.csv");
         CsvRemovalUpdate(uuid, binFile, newFile);
         binFile.renameTo(newFile);
+        System.out.println("FINISHED DB REMOVE Task");
     }
 
     /**

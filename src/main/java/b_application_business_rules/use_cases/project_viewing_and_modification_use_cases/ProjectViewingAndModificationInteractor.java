@@ -173,8 +173,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // Initializes and call use case
         DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
         System.out.println("Interactor, about to enter use case");
-        deleteColumnUseCase.deleteColumn(columnID);
         deleteColumnUseCase.deleteColumnFromDB(columnID);
+        //deleteColumnUseCase.deleteColumn(columnID);
 
         // calls presenter to display message
         presenter.displayDeletedColumn(columnModel);
