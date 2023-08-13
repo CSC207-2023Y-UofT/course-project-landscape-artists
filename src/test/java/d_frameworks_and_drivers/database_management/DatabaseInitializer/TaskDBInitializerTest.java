@@ -2,6 +2,7 @@ package d_frameworks_and_drivers.database_management.DatabaseInitializer;
 
 
 import com.opencsv.CSVReader;
+import com.opencsv.exceptions.CsvValidationException;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileReader;
@@ -32,6 +33,8 @@ public class TaskDBInitializerTest {
             // Add more assertions if necessary
         } catch (IOException e) {
             fail("Exception occurred: " + e.getMessage());
+        } catch (CsvValidationException e) {
+            throw new RuntimeException(e);
         }
     }
 }

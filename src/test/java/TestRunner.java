@@ -1,7 +1,9 @@
 
 import a_enterprise_business_rules.entities.*;
 import b_application_business_rules.entity_models.*;
-import b_application_business_rules.project_selection_use_cases.*;
+import b_application_business_rules.use_cases.project_selection_use_cases.CreateProjectTest;
+import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProjectTest;
+import b_application_business_rules.use_cases.project_selection_use_cases.EditProjectDetailsTest;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.*;
 import c_interface_adapters.view_models.*;
 import d_frameworks_and_drivers.database_management.DatabaseInitializer.*;
@@ -10,13 +12,14 @@ import d_frameworks_and_drivers.database_management.*;
 import d_frameworks_and_drivers.database_management.DBAdapters.*;
 
 
+
 import org.junit.platform.launcher.Launcher;
 import org.junit.platform.launcher.LauncherDiscoveryRequest;
-import org.junit.platform.launcher.TestExecutionListener;
-import org.junit.platform.launcher.TestIdentifier;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
+
+import org.junit.platform.launcher.listeners.TestExecutionSummary.Failure;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
 
@@ -71,20 +74,21 @@ public class TestRunner {
                         ).build();
 
         Launcher launcher = LauncherFactory.create();
-        TestExecutionListener listener = new SummaryGeneratingListener();
+        SummaryGeneratingListener listener = new SummaryGeneratingListener();
 
         launcher.registerTestExecutionListeners(listener);
         launcher.execute(request);
 
-        // show test summary
-        if (listener instanceof SummaryGeneratingListener) {
-            SummaryGeneratingListener summaryListener = (SummaryGeneratingListener) listener;
-            String summaryText = summaryListener.getSummary().toString();
-            System.out.println(summaryText);
-        } else {
-            System.out.println("Listener is not an instance of SummaryGeneratingListener.");
+        // Print test results
+        for (Failure failure : listener.getSummary().getFailures()) {
+            System.out.println("FAILED: " + failure.getTestIdentifier().getDisplayName());
+            System.out.println("Reason: " + failure.getException().getMessage());
+            System.out.println();
         }
+
+        System.out.println("Test execution finished.");
     }
+
 }
 
 
