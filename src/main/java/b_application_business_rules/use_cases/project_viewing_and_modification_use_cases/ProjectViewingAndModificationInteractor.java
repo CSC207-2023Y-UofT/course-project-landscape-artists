@@ -89,6 +89,12 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         AddTask useCase = new AddTask(currentProject);
         useCase.addTask(columnID, newTaskModel);
 
+        System.out.println("CURRENT PROJECT SET IN SINGLETON " + currentProject);
+        System.out.println("SIZE OF COLUMNS " + currentProject.getColumns().size());
+        for (Column column: currentProject.getColumns()) {
+            System.out.println("COLUMN IN CURRENTPROJECTREPOSITORY " + column );
+        }
+
         // calls presenter to display message
         presenter.displayNewTask(columnID, newTaskModel);
 

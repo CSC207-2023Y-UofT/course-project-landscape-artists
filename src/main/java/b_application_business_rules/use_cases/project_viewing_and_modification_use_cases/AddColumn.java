@@ -36,18 +36,8 @@ public class AddColumn {
     public void addColumn(ColumnModel columnModel) {
         IDbIdToModel iDbIdToModel = new DbIDToModel();
         // Create the column entity
-        Column column = createColumnEntity(columnModel);
+        Column column = columnModel.getColumnEntity();
         // Add the column to the currently opened Project entity.
         currentProject.addColumn(column);
-    }
-
-    /**
-     * Creates and returns Column Entity with given Column Model
-     *
-     * @param columnModel
-     */
-
-    public static Column createColumnEntity(ColumnModel columnModel) {
-        return new Column(columnModel.getName(), new ArrayList<Task>(), columnModel.getID());
     }
 }
