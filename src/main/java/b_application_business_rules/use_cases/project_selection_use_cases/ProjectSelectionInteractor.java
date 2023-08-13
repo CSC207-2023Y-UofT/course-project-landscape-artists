@@ -13,13 +13,11 @@ import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModelList;
 import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * The ProjectSelectionInteractor class is responsible for handling interactions
@@ -123,13 +121,22 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		// of the application.
 		// For example, the interactor might interact with a ProjectRepository to store
 		// the project in a database.
-
+		IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
 		CreateProject useCase = new CreateProject(allProjects);
 		Project newProject = useCase.newProject(projectName, UUID.randomUUID(),
 				projectDescription, new ArrayList<>());
 
+		CurrentProjectID.getCurrentProjectID().setSelectedProjectID(newProject.getID());
+
+		List<ColumnModel> defaultColumn = new ArrayList<>();
+		defaultColumn.add(new  ColumnModel(
+				"Default Column",
+				new ArrayList<>(),
+				UUID.randomUUID()
+		));
 		IDBInsert databaseInserter = new DBManagerInsertController();
 		ProjectModel projectModel = new ProjectModel(newProject);
+		projectModel.setColumnModels(defaultColumn);
 		databaseInserter.DBInsert(projectModel);
 
 		// Sets the project in the projectRepository

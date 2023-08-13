@@ -24,6 +24,7 @@ import javafx.util.Duration;
  * focus on higher-level application logic and user experience.
  */
 public class DragAndDropImplementation {
+    private boolean success;
     /**
      * Configures drag-and-drop handling for the given column box.
      *
@@ -67,6 +68,9 @@ public class DragAndDropImplementation {
             new DragAndDropImplementation().handleDragDone(hbox, event, projectViewingAndModificationPresenter, task);
             event.consume();
         });
+        hbox.setOnDragDropped(event -> {
+            event.setDropCompleted(success);
+        });
     }
 
     /**
@@ -80,17 +84,16 @@ public class DragAndDropImplementation {
                         ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,
                         TaskModel task) {
         Dragboard dragboard = event.getDragboard();
-        boolean success = false;
+         this.success = false;
         if (dragboard.hasString()) {
             HBox sourceHBox = new DragAndDropImplementation().findHBoxById(dragboard.getString(), projectViewingAndModificationPresenter);
             if (sourceHBox != null && projectViewingAndModificationPresenter.dragDestination != null) {
                 new DragAndDropImplementation().moveHBoxToDestination(sourceHBox, hbox,
                         projectViewingAndModificationPresenter,
                         task);
-                success = true;
+                this.success = true;
             }
         }
-        event.setDropCompleted(success);
         // ... Perform additional tasks after drag-and-drop
     }
 
