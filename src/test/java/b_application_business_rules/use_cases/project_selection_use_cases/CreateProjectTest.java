@@ -1,8 +1,8 @@
-package b_application_business_rules.project_selection_use_cases;
+package b_application_business_rules.use_cases.project_selection_use_cases;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
-import b_application_business_rules.use_cases.project_selection_use_cases.CreateProject;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
