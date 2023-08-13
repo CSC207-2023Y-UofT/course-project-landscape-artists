@@ -36,12 +36,9 @@ javafx {
 
 dependencies {
 
-    implementation 'org.junit.platform:junit-platform-launcher:1.10.0'
-    implementation 'org.junit.platform:junit-platform-launcher:1.10.0'
-    implementation 'org.junit.platform:junit-platform-launcher:1.10.0'
-    implementation 'org.junit.platform:junit-platform-engine:1.10.0'
-    implementation 'org.junit.platform:junit-platform-engine:1.10.0'
+
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.10.0-M1'
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
