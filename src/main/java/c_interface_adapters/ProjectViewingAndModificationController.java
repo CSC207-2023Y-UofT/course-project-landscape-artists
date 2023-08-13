@@ -1,10 +1,19 @@
 package c_interface_adapters;
 
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
+import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModelList;
 import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.ProjectViewingAndModificationInteractor;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
+import d_frameworks_and_drivers.database_management.DBControllers.IDListsToModelList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -14,6 +23,7 @@ import javafx.util.Pair;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -108,9 +118,9 @@ public class ProjectViewingAndModificationController {
      *
      * @param id The UUID of the column whose details are to be edited.
      */
-    void handleEditColumnDetails(UUID id) {
+    void handleEditColumnDetails(UUID id, ColumnModel columnModel) {
         String newColumnName = presenter.displayEditColumnDetails();
-        interactor.editColumnDetails(id, newColumnName);
+        interactor.editColumnDetails(id, newColumnName, columnModel);
     }
 
 
@@ -296,4 +306,56 @@ public class ProjectViewingAndModificationController {
     void handleCancelButtonClicked(Stage dialogStage) {
         dialogStage.close();
     }
+
+    public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
+        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
+        System.out.println("TARGET COLUMN ID " + targetColumnID );
+        System.out.println("TASK: " + task);
+
+        // Use DIP to retrieve all  necessary instances
+        IDBInsert  idbInsert = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+        IDBSearch idbSearch = new DBManagerSearchController();
+        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
+        // get the data from the database
+        List<String> sourceColumndata = idbSearch.DBColumnSearch(sourceColumnID);
+        List<String> targetColumndata = idbSearch.DBColumnSearch(targetColumnID);
+
+        // get original and updated TaskModel List
+        List<TaskModel> sourceTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(sourceColumndata.get(2).split(",")));
+        List<TaskModel> targetTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
+
+        // Delete the task model from the old list and add it to the new one
+        sourceTaskList.remove(task);
+        targetTaskList.add(task);
+
+        // build their respective ColumnModels
+        ColumnModel sourceColumnModel = new ColumnModel(
+                sourceColumndata.get(1),
+                sourceTaskList,
+                UUID.fromString(sourceColumndata.get(0))
+        );
+        ColumnModel targetColumnModel = new ColumnModel(
+                targetColumndata.get(1),
+                targetTaskList,
+                UUID.fromString(targetColumndata.get(0))
+        );
+
+
+        //remove old entries from DB
+        idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
+        idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));
+        idbRemove.DBRemoveTask(task.getID());
+
+        //add new entries to colunm DB
+        idbInsert.DBInsert(sourceColumnModel);
+        idbInsert.DBInsert(targetColumnModel);
+        idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
+
+        System.out.println("\nSUCCESSFUL MOVE!!!!!");
+    }
+
 }

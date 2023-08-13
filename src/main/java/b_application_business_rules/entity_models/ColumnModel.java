@@ -26,7 +26,7 @@ public class ColumnModel {
     /**
      * The <code>List</code> of task models that the column model holds/contains.
      */
-    private List<TaskModel> taskModels;
+    private List<TaskModel> taskModels = new ArrayList<>();
 
     /**
      * Creates a new column model, based in the inputted values.
@@ -55,6 +55,8 @@ public class ColumnModel {
         for (int i = 0; i < tasks.size(); i++) {
             this.addTaskModel(new TaskModel(tasks.get(i)));
         }
+
+        System.out.println("TASKS IN COLUMN MODEL " + this.taskModels.toString());
 
         this.ID = column.getID();
     }

@@ -43,7 +43,7 @@ public class MoveTask {
         this.column2.addTaskModel(task);
 
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemove(this.project, this.project.getID());
+        databaseRemover.DBRemoveProject(this.project.getID());
 
         IDBInsert databaseInserter = new DBManagerInsertController();
         databaseInserter.DBInsert(this.project);

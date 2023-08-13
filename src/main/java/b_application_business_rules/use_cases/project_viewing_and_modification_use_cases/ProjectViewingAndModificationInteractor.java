@@ -8,7 +8,8 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
-import b_application_business_rules.use_cases.CurrentProjectRepository;
+import b_application_business_rules.use_cases.CurrentProjectID;
+import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
@@ -22,6 +23,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -36,10 +38,11 @@ import java.util.UUID;
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
     // The currentProjectRepository holds the reference to the
     // CurrentProjectRepository instance.
-    CurrentProjectRepository currentProjectRepository = CurrentProjectRepository.getCurrentprojectrepository();
+    CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
+    ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 
     // currentProject attribute to be replaced by actual project access (to access a project entity)
-    private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
+    private final Project currentProject = ProjectRepository.getProjectRepository().getCurrentProject();
 
     // The presenter holds the reference to the
     // ProjectViewingAndModificationOutputBoundary instance,
@@ -64,7 +67,8 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      */
     @Override
     public void removeCurrentProject() {
-        currentProjectRepository.removeCurrentProject();
+        projectRepository.removeCurrentProject();
+        currentProjectID.removeCurrentProjectID();
     }
 
     /**
@@ -86,12 +90,18 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         AddTask useCase = new AddTask(currentProject);
         useCase.addTask(columnID, newTaskModel);
 
+        System.out.println("CURRENT PROJECT SET IN SINGLETON " + currentProject);
+        System.out.println("SIZE OF COLUMNS " + currentProject.getColumns().size());
+        for (Column column: currentProject.getColumns()) {
+            System.out.println("COLUMN IN CURRENTPROJECTREPOSITORY " + column );
+        }
+
         // calls presenter to display message
         presenter.displayNewTask(columnID, newTaskModel);
 
         // Initializing the required controllers and calls method that adds task to the database
-        IDBInsert insertTask = new DBManagerInsertController();
-        insertTask.DBInsert(newTaskModel);
+//        IDBInsert insertTask = new DBManagerInsertController();
+//        insertTask.DBInsert(newTaskModel, columnID);
     }
 
     /**
@@ -108,11 +118,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         useCase.deleteTask(columnID, taskModel);
 
         // calls presenter to display message
-        presenter.displayRemovedTask(taskModel);
+        presenter.displayRemovedTask(taskModel, columnID);
 
         // initialize controller and remove task from database
         IDBRemove removeTask = new DBManagerRemoveController();
-        removeTask.DBRemove(taskModel, taskModel.getID());
+        removeTask.DBRemoveTask(taskModel.getID());
     }
 
     /**
@@ -140,10 +150,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
         updatedProject.getColumnModels().add(columnModel);
 
+        List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
 
-        DeleteProject deleteProject = new DeleteProject();
+        DeleteProject deleteProject = new DeleteProject(allProjects);
         //A change is made here: deleteProject now requires both a projectModel and UUID
-        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()), currentProject.getID());
+        deleteProject.deleteProjectInDatabase(currentProject.getID());
 
         dbInsertManager.DBInsert(updatedProject);
     }
@@ -161,23 +172,25 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Initializes and call use case
         DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
-        deleteColumnUseCase.deleteColumn(columnID);
+        System.out.println("Interactor, about to enter use case");
+        deleteColumnUseCase.deleteColumnFromDB(columnID);
+        //deleteColumnUseCase.deleteColumn(columnID);
 
         // calls presenter to display message
         presenter.displayDeletedColumn(columnModel);
 
         // Update the database to remove the column.
-        IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(columnModel, columnID);
+//        IDBRemove dbRemoveManager = new DBManagerRemoveController();
+//        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
      * Edits the details of a column identified by the specified columnID.
      */
     @Override
-    public void editColumnDetails(UUID columnID, String newColumnName) {
+    public void editColumnDetails(UUID columnID, String newColumnName, ColumnModel columnModel) {
         // Initialize updated column model
-        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, new ArrayList<>(), columnID);
+        ColumnModel updatedColumnModel = new ColumnModel(newColumnName, columnModel.getTaskModels(), columnID);
 
         // Initialize and call use case
         EditColumn useCase = new EditColumn(currentProject);
@@ -188,7 +201,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Update database to add the column.
         IDBRemove dbRemoveManager = new DBManagerRemoveController();
-        dbRemoveManager.DBRemove(updatedColumnModel, columnID);
+        dbRemoveManager.DBRemoveColumn(columnID);
 
         IDBInsert dbInsertManager = new DBManagerInsertController();
         dbInsertManager.DBInsert(updatedColumnModel);
@@ -230,9 +243,9 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 
         // Removing the old task
-        removeTask.DBRemove(oldTask, taskID);
+        removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask);
+        insertTask.DBInsert(updatedTask,columnID);
     }
 }
