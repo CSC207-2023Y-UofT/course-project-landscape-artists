@@ -23,10 +23,13 @@ public class DBManagerRemoveController implements IDBRemove {
      *
      */
     public void DBRemoveProject(UUID uuid) {
-        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
-        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/ProjectsBin.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Projects/Projects.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Projects/ProjectsBin.csv"));
         ProjectDBInitializer projectDBInitializer = new ProjectDBInitializer();
-        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Projects/Projects.csv");
 
         File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/ProjectsBin.csv");
         CsvRemovalUpdate(uuid, binFile, newFile);
@@ -37,12 +40,16 @@ public class DBManagerRemoveController implements IDBRemove {
      *
      */
     public void DBRemoveColumn(UUID uuid) {
-        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
-        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/ColumnsBin.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Columns/Columns.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Columns/ColumnsBin.csv"));
         ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
-        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Columns/Columns.csv");
 
-        File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/ColumnsBin.csv");
+        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Columns/ColumnsBin.csv");
         CsvRemovalUpdate(uuid, binFile, newFile);
         binFile.renameTo(newFile);
     }
@@ -51,12 +58,16 @@ public class DBManagerRemoveController implements IDBRemove {
      *
      */
     public void DBRemoveTask(UUID uuid) {
-        File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
-        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksBin.csv"));
+        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Tasks/Tasks.csv");
+        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Tasks/TasksBin.csv"));
         TaskDBInitializer taskDBInitializer = new TaskDBInitializer();
-        File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
+        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Tasks/Tasks.csv");
 
-        File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksBin.csv");
+        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
+                "database_management/DatabaseFiles/Tasks/TasksBin.csv");
         CsvRemovalUpdate(uuid, binFile, newFile);
         binFile.renameTo(newFile);
     }
