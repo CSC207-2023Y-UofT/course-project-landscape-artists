@@ -39,7 +39,7 @@ public class DBManagerRemoveController implements IDBRemove {
     public void DBRemoveColumn(UUID uuid) {
         File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
         tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/ColumnsBin.csv"));
-        TaskDBInitializer taskDBInitializer = new TaskDBInitializer();
+        ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
         File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/Columns.csv");
 
         File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Columns/ColumnsBin.csv");
@@ -53,7 +53,7 @@ public class DBManagerRemoveController implements IDBRemove {
     public void DBRemoveTask(UUID uuid) {
         File tempFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
         tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksBin.csv"));
-        ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
+        TaskDBInitializer taskDBInitializer = new TaskDBInitializer();
         File newFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksBin.csv");
 
         File binFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/TasksBin.csv");

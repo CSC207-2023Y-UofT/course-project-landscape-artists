@@ -113,10 +113,10 @@ public class DBManagerInsertController implements IDBInsert {
     public void DBInsert(TaskModel taskModel, UUID parentColumn) {
         File file = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Tasks/Tasks.csv");
         List<String[]> content = new ArrayList<>();
-
-        // Read the existing content of the CSV file into memory
         try (CSVReader reader = new CSVReader(new FileReader(file))) {
             content.addAll(reader.readAll());
+            System.out.println("Content At The Reader Instance " + content);
+            reader.close(); // Close the CSVReader after reading
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -130,37 +130,21 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(taskModel.getDueDateTime().toString());
         data.add(parentColumn.toString());
 
+        System.out.println("Data " + data);
+
+
         content.add(data.toArray(new String[0]));
 
-        // Write the updated content back to the CSV file
+        // Write the updated content back to the CSV file (append mode)
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
+            System.out.println("Content After Adding Data " + content);
             writer.writeAll(content);
-
-//            List<String> columnRoot = dbManagerSearchController.DBColumnSearch(parentColumn.toString());
-//            List<TaskModel> taskModelList = idListsToModelList.IdToTaskModelList(List.of(columnRoot.get(2)));
-//            System.out.println(taskModelList);
-//            taskModelList.add(taskModel);
-//
-//            System.out.println("COLUMN UPDATING");
-//            System.out.println(taskModelList);
-//
-//            dbManagerRemoveController.DBRemoveColumn(parentColumn);
-//
-//            System.out.println("COLUMN UPDATING");
-//            System.out.println(taskModelList);
-//            DBInsert(new ColumnModel(
-//                    columnRoot.get(1),
-//                    taskModelList,
-//                    UUID.fromString(columnRoot.get(0))
-//                    )
-//            );
-
-
+            writer.close(); // Close the CSVWriter after writing
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }
+
 
     /**
      * Adds a record of unique ID into the Database
