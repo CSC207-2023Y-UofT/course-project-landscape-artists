@@ -6,21 +6,24 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * NOT TESTED: Issues with Apache CSVPrinter library. OpenCSV is adopted instead.
+ */
 class DBWriterTest {
 
-    @BeforeEach
-    void setUp() {
-    }
-
-    @AfterEach
-    void tearDown() {
-    }
-
-    @Test
-    void insert() {
-    }
-
-    @Test
-    void testInsert() {
-    }
+//    @BeforeEach
+//    void setUp() {
+//    }
+//
+//    @AfterEach
+//    void tearDown() {
+//    }
+//
+//    @Test
+//    void insert() {
+//    }
+//
+//    @Test
+//    void testInsert() {
+//    }
 }

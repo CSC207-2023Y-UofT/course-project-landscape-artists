@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
  */
 class UniqueIDsReaderTest {
 
-    @Test
-    void getMap() {
-    }
+//    @Test
+//    void getMap() {
+//    }
 }
