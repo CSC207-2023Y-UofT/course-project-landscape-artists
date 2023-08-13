@@ -142,8 +142,12 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(columnModel);
         ProjectModel updatedProject = iDbIdToModel.IdToProjectModel(currentProject.getID().toString());
         updatedProject.getColumnModels().add(columnModel);
+
+
         DeleteProject deleteProject = new DeleteProject();
-        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()));
+        //A change is made here: deleteProject now requires both a projectModel and UUID
+        deleteProject.deleteProject(iDbIdToModel.IdToProjectModel(currentProject.getID().toString()), currentProject.getID());
+
         dbInsertManager.DBInsert(updatedProject);
     }
 
