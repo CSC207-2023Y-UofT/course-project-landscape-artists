@@ -60,7 +60,8 @@ public class ProjectSelectionController implements Initializable {
      * @param projectUUID The UUID of the project to be deleted.
      */
     void handleDeleteProject(UUID projectUUID) {
-
+        System.out.println("HANDLE DELETE PROJECT IS CALLED");
+        System.out.println("HERE IS THE ID " + projectUUID);
         interactor.deleteProject(projectUUID);
     }
 

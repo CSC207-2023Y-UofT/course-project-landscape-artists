@@ -81,7 +81,7 @@ public class EditProjectDetails {
         databaseRemover.DBRemoveProject(projectToBeEdited.getID());
 
         projectToBeEdited.setName(newName);
-        projectToBeEdited.setDescription(newName);
+        projectToBeEdited.setDescription(newDescription);
 //        ProjectModel updatedProjectModel = iDbIdToModel.IdToProjectModel(projectToBeEdited.getID().toString());
 
 

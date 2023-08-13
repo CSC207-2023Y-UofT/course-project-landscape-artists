@@ -98,6 +98,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 		// Convert all Project models from the outer layers to a Project.
 		for (ProjectModel projectModel: allProjectsList) {
+			System.out.println("PROJECT MODEL DIRECTLY FROM DB " + projectModel);
 			allProjects.add(projectModel.getProjectEntity());
 		}
 
@@ -183,6 +184,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
+		System.out.println("WE GOT TO THE INTERACTOR DELETE PROJECT");
 		DeleteProject useCase = new DeleteProject(allProjects);
 
 		//This line calls the use case and updates the database

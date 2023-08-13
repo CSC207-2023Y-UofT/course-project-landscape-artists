@@ -72,8 +72,12 @@ public class ProjectRepository {
      * @return The list of all projects.
      */
     public void setAllProjects(List<Project> projects) {
-        allProjects = projects;
-        System.out.println("projects " + projects);
+//        allProjects = projects;
+//        System.out.println("projects " + projects);
+        for (Project project: projects) {
+            System.out.println("IN PROJECT REPOSITORY, ADDING TO ALLPROJECTS " + project);
+            allProjects.add(project);
+        }
     }
 
     /**
