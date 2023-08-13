@@ -330,7 +330,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         RadioButton completeTaskButton = new RadioButton();
 
         hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
-        new PresenterUtility().configureHBoxFeatures(hbox, this);
+        new PresenterUtility().configureHBoxFeatures(hbox, this, task);
     }
 
 

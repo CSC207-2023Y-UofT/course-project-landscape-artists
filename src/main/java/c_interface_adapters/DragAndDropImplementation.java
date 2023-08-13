@@ -1,5 +1,6 @@
 package c_interface_adapters;
 
+import b_application_business_rules.entity_models.TaskModel;
 import javafx.animation.TranslateTransition;
 import javafx.scene.Node;
 import javafx.scene.image.WritableImage;
@@ -23,6 +24,7 @@ import javafx.util.Duration;
  * focus on higher-level application logic and user experience.
  */
 public class DragAndDropImplementation {
+    private boolean success;
     /**
      * Configures drag-and-drop handling for the given column box.
      *
@@ -42,7 +44,9 @@ public class DragAndDropImplementation {
      * @param hbox                                   The HBox to configure drag-and-drop behavior for.
      * @param projectViewingAndModificationPresenter
      */
-    void configureDragAndDropBehavior(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+    void configureDragAndDropBehavior(HBox hbox,
+                                      ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,
+                                      TaskModel task) {
         hbox.setOnDragDetected(event -> {
             Dragboard dragboard = hbox.startDragAndDrop(TransferMode.MOVE);
             ClipboardContent content = new ClipboardContent();
@@ -61,8 +65,11 @@ public class DragAndDropImplementation {
         });
 
         hbox.setOnDragDone(event -> {
-            new DragAndDropImplementation().handleDragDone(hbox, event, projectViewingAndModificationPresenter);
+            new DragAndDropImplementation().handleDragDone(hbox, event, projectViewingAndModificationPresenter, task);
             event.consume();
+        });
+        hbox.setOnDragDropped(event -> {
+            event.setDropCompleted(success);
         });
     }
 
@@ -73,17 +80,20 @@ public class DragAndDropImplementation {
      * @param event                                  The DragEvent associated with the operation.
      * @param projectViewingAndModificationPresenter
      */
-    void handleDragDone(HBox hbox, DragEvent event, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+    void handleDragDone(HBox hbox, DragEvent event,
+                        ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,
+                        TaskModel task) {
         Dragboard dragboard = event.getDragboard();
-        boolean success = false;
+         this.success = false;
         if (dragboard.hasString()) {
             HBox sourceHBox = new DragAndDropImplementation().findHBoxById(dragboard.getString(), projectViewingAndModificationPresenter);
             if (sourceHBox != null && projectViewingAndModificationPresenter.dragDestination != null) {
-                new DragAndDropImplementation().moveHBoxToDestination(sourceHBox, hbox, projectViewingAndModificationPresenter);
-                success = true;
+                new DragAndDropImplementation().moveHBoxToDestination(sourceHBox, hbox,
+                        projectViewingAndModificationPresenter,
+                        task);
+                this.success = true;
             }
         }
-        event.setDropCompleted(success);
         // ... Perform additional tasks after drag-and-drop
     }
 
@@ -94,7 +104,9 @@ public class DragAndDropImplementation {
      * @param destinationHBox                        The destination HBox where the source HBox should be placed.
      * @param projectViewingAndModificationPresenter
      */
-    void moveHBoxToDestination(HBox sourceHBox, HBox destinationHBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+    void moveHBoxToDestination(HBox sourceHBox, HBox destinationHBox,
+                               ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,
+                               TaskModel task) {
         VBox sourceColumnBox = (VBox) sourceHBox.getParent();
         sourceColumnBox.getChildren().remove(sourceHBox);
 
@@ -105,6 +117,12 @@ public class DragAndDropImplementation {
         transition.setOnFinished(event -> {
             projectViewingAndModificationPresenter.dragDestination.getChildren().add(sourceHBox);
         });
+
+        // Call controller class to initiate move task.
+        projectViewingAndModificationPresenter.controller.handleMoveTask(
+                sourceColumnBox.getId(),
+                projectViewingAndModificationPresenter.dragDestination.getId(),
+                task);
     }
 
     /**

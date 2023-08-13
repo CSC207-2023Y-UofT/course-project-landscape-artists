@@ -174,7 +174,7 @@ public class PresenterUtility {
         MenuItem deleteColumnButton = new MenuItem("Delete Column");
 
         renameColumnButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.handleEditColumnDetails(column.getID());
+            ProjectViewingAndModificationPresenter.controller.handleEditColumnDetails(column.getID(), column);
         });
         deleteColumnButton.setOnAction(event -> {
             ProjectViewingAndModificationPresenter.controller.deleteColumn(column.getID());
@@ -218,7 +218,7 @@ public class PresenterUtility {
     }
 
     /**
-     * Adds the scroll pane to the columns container.
+     * Adds the scroll pane to the column's container.
      *
      * @param scrollPane The ScrollPane containing the column.
      */
@@ -293,8 +293,10 @@ public class PresenterUtility {
      * @param hbox                                   The HBox to configure.
      * @param projectViewingAndModificationPresenter
      */
-    void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
-        new DragAndDropImplementation().configureDragAndDropBehavior(hbox, projectViewingAndModificationPresenter);
+    void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter
+            projectViewingAndModificationPresenter, TaskModel task) {
+        new DragAndDropImplementation().configureDragAndDropBehavior(hbox,
+                projectViewingAndModificationPresenter, task);
         new PresenterUtility().configureHBoxStyleOnMouseActions(hbox, projectViewingAndModificationPresenter);
     }
 

@@ -34,7 +34,7 @@ public class ProjectModel {
     /**
      * The column models in the kanban board for this project model.
      */
-    private List<ColumnModel> columnModels;
+    private List<ColumnModel> columnModels = new ArrayList<>();
 
     /**
      * Creates a new project model, based in the inputted values.
@@ -265,7 +265,8 @@ public class ProjectModel {
     public Project getProjectEntity() {
         ArrayList<Column> columnEntities = new ArrayList<>();
         for (ColumnModel columnModel: columnModels) {
-            columnEntities.add(AddColumn.createColumnEntity(columnModel));
+            System.out.println("columnModel " + columnModel);
+            columnEntities.add(columnModel.getColumnEntity());
         }
 
         return new Project(name, ID, description, columnEntities);

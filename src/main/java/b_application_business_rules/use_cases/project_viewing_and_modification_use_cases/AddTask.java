@@ -39,16 +39,17 @@ public class AddTask {
         // Then, retrieve the column entity
         Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
         // Then, add the task to the columns list of tasks
+        System.out.println( "\n\nCurrent Columns Tasks "+ currentColumn.getTasks());
         currentColumn.addTask(task);
 
         // Initializing the required controllers and calls method that adds task to the database
-        IDBInsert insertTask = new DBManagerInsertController();
+        IDBInsert idbInsert = new DBManagerInsertController();
         IDBRemove remove = new DBManagerRemoveController();
-        insertTask.DBInsert(taskModel, columnID);
+        idbInsert.DBInsert(taskModel, columnID);
         ColumnModel updatedColumn = new ColumnModel(currentColumn);
-        updatedColumn.getTaskModels().add(taskModel);
+        //updatedColumn.getTaskModels().add(taskModel);
         remove.DBRemoveColumn(columnID);
-        insertTask.DBInsert(updatedColumn);
+        idbInsert.DBInsert(updatedColumn);
     }
 
     /**
