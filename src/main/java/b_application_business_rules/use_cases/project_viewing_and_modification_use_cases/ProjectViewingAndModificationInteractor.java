@@ -120,9 +120,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // calls presenter to display message
         presenter.displayRemovedTask(taskModel, columnID);
 
-        // initialize controller and remove task from database
-        IDBRemove removeTask = new DBManagerRemoveController();
-        removeTask.DBRemoveTask(taskModel.getID());
+
     }
 
     /**

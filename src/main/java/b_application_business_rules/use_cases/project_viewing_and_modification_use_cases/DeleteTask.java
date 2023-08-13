@@ -4,7 +4,13 @@ import a_enterprise_business_rules.entities.Task;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.DataAccessInterface;
+import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
+import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -34,5 +40,14 @@ public class DeleteTask implements DataAccessInterface {
         Task task = Task.IDToTask(taskModel.getID(), (ArrayList<Task>) listOfTasks);
         // remove the task
         currentColumn.removeTask(task);
+
+        // initialize controller and remove task from database
+        IDBRemove idbRemove = new DBManagerRemoveController();
+        idbRemove.DBRemoveTask(taskModel.getID());
+
+        IDBInsert idbInsert = new DBManagerInsertController();
+
+        idbRemove.DBRemoveColumn(columnID);
+        idbInsert.DBInsert(new ColumnModel(currentColumn));
     }
 }
