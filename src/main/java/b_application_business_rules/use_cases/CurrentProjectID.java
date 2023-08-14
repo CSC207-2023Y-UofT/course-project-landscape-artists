@@ -6,7 +6,7 @@ public class CurrentProjectID {
 
     private static final CurrentProjectID currentProjectID = new CurrentProjectID(null);
 
-    private UUID[] selectedProjectID = new UUID[1];
+    private final UUID[] selectedProjectID = new UUID[1];
     public CurrentProjectID(UUID uuid){
         this.selectedProjectID[0] = uuid;
     }

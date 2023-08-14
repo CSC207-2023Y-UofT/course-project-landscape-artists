@@ -6,11 +6,8 @@ import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
-import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
 import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
 import java.util.List;
 import java.util.UUID;
@@ -55,7 +52,7 @@ public class AddTask {
     /**
      * Creates and returns Task Entity with given Task Model
      * 
-     * @param taskModel
+     * @param taskModel TaskModel you want to convert to an entity
      */
 
     public static Task createTaskEntity(TaskModel taskModel) {

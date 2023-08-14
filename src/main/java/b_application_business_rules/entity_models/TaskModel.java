@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A task model within in the productivity application.
- * 
+ * A task model within in the productivity application.*
  * Each task model will have a name, a unique identifier, a description, an
  * attribute
  * to indicate whether the task model has been completed or not, and a due date.
@@ -148,8 +147,7 @@ public class TaskModel {
     }
 
     /**
-     * Negates the status of completion for this task model.
-     * 
+     * Negates the status of completion for this task model.*
      * Iff the task model is completed, the task model will be marked as incomplete.
      * Iff the task model is incomplete, the task model will be marked as complete.
      * 
@@ -181,8 +179,7 @@ public class TaskModel {
     }
 
     /**
-     * Returns a String representation of the TaskModel.
-     * 
+     * Returns a String representation of the TaskModel.*
      * {@inheritDoc}
      * 
      * @return a String representation of the TaskModel.
@@ -198,15 +195,14 @@ public class TaskModel {
         }
 
         // Concatenates some strings together, for example:
-        // "[TaskModel Name: Eat Cookied, TaskModel Completed: false]"
+        // "[TaskModel Name: Eat Cookies, TaskModel Completed: false]"
         return "[" + "TaskModel Name: " + this.getName() + ", " + "TaskModel Completed: " + completionStatusString
                 + ", "
                 + "Due Date: " + this.dueDateTime.toString() + "]";
     }
 
     /**
-     * Returns a Task Entity from Task Model.
-     *
+     * Returns a Task Entity from Task Model.*
      * {@inheritDoc}
      *
      * @return a Task Entity.
@@ -217,13 +213,12 @@ public class TaskModel {
         return task;
     }
 
-    public static List<TaskModel> removeFromTaskModelList(List<TaskModel> taskModelList ,TaskModel taskModel ){
+    public static void removeFromTaskModelList(List<TaskModel> taskModelList , TaskModel taskModel ){
         for (TaskModel task : taskModelList) {
             if(task.getID().equals(taskModel.getID())){
                 taskModelList.remove(task);
                 break;
             }
         }
-        return taskModelList;
     }
 }

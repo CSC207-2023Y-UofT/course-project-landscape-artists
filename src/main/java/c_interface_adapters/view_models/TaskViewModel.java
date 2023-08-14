@@ -6,8 +6,7 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 /**
- * A task view model within in the productivity application.
- * 
+ * A task view model within in the productivity application.*
  * Each task view model will have a name, a unique identifier, a description, an
  * attribute
  * to indicate whether the task view model has been completed or not, and a due
@@ -125,9 +124,9 @@ public class TaskViewModel {
     }
 
     /**
-     * Gets whether or not the task view model is completed.
+     * Gets whether the task view model is completed.
      * 
-     * @return a boolean, telling whether or not the task view model has been
+     * @return a boolean, telling whether the task view model has been
      *         completed.
      */
     public boolean getCompletionStatus() {
@@ -148,20 +147,19 @@ public class TaskViewModel {
         this.isCompleted = false;
     }
 
-    /**
-     * Negates the status of completion for this task view model.
-     * 
-     * Iff the task view model is completed, the task view model will be marked as
-     * incomplete.
-     * Iff the task view model is incomplete, the task view model will be marked as
-     * complete.
-     * 
-     * @return The final status of completion for the task view model.
-     */
-    public boolean negateCompletionStatus() {
-        this.isCompleted = !this.isCompleted; // negates the completion status
-        return this.isCompleted; // returns current completion status
-    }
+//    /**
+//     * Negates the status of completion for this task view model.*
+//     * Iff the task view model is completed, the task view model will be marked as
+//     * incomplete.
+//     * Iff the task view model is incomplete, the task view model will be marked as
+//     * complete.
+//     *
+//     * @return The final status of completion for the task view model.
+//     */
+//    public boolean negateCompletionStatus() {
+//        this.isCompleted = !this.isCompleted; // negates the completion status
+//        return this.isCompleted; // returns current completion status
+//    }
 
     /**
      * Gets the due date time for the task view model. This will be a null reference
@@ -185,8 +183,7 @@ public class TaskViewModel {
     }
 
     /**
-     * Returns a String representation of the TaskViewModel.
-     * 
+     * Returns a String representation of the TaskViewModel.*
      * {@inheritDoc}
      * 
      * @return a String representation of the TaskViewModel.
@@ -202,7 +199,7 @@ public class TaskViewModel {
         }
 
         // Concatenates some strings together, for example:
-        // "[TaskViewModel Name: Eat Cookied, TaskViewModel Completed: false]"
+        // "[TaskViewModel Name: Eat Cookies, TaskViewModel Completed: false]"
         return "[" + "TaskViewModel Name: " + this.getName() + ", " + "TaskViewModel Completed: "
                 + completionStatusString
                 + ", "

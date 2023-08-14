@@ -2,12 +2,8 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
 
-import java.util.ArrayList;
 
 /**
  * The AddColumn class is responsible for adding a new column to the currently
@@ -29,7 +25,7 @@ public class AddColumn {
      * Adds the new column to the current project, project entity.
      */
     public void addColumn(ColumnModel columnModel) {
-        IDbIdToModel iDbIdToModel = new DbIDToModel();
+        //IDbIdToModel iDbIdToModel = new DbIDToModel();
         // Create the column entity
         Column column = columnModel.getColumnEntity();
         // Add the column to the currently opened Project entity.

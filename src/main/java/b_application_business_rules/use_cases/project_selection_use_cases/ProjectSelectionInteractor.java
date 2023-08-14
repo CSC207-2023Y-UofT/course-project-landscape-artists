@@ -1,6 +1,5 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
 
-import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 
 import b_application_business_rules.entity_models.ProjectModel;
@@ -39,7 +38,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	// COPIED FROM ProjectViewingAndModificationInteractor
 	//currentProject attribute to be replaced by actual project access (to access a project entity)
-	private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
+	//private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
 
 	private final CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
 
@@ -47,8 +46,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	// instance,
 	// which is responsible for displaying the results of the use cases.
 	private final ProjectSelectionOutputBoundary presenter;
-	private ProjectModel projectModel;
-	private String message;
+	//private ProjectModel projectModel;
+	//private String message;
 
 	/**
 	 * Initializes the ProjectSelectionInteractor with the provided presenter.
@@ -84,8 +83,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	}
 
 	/**
-	 * Sets the attribute holding all projects in the ProjectRepository.
-	 *
+	 * Sets the attribute holding all projects in the ProjectRepository.*
 	 * This method is called upon startup.
 	 *
 	 * @param allProjectsList The projects from the database.
@@ -151,7 +149,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		IDbIdToModel iDbIdToModel = new DbIDToModel();
 		// TODO: Pass the ProjectModel of the Project with the given UUID to the
 		// presenter.
-		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
+		// TODO: i.e. presenter.displayCurrentProject(projectModel);
 
 		 // Temporary implementation for testing purposes.
 		 List<TaskModel> TaskList = Arrays.asList(
@@ -171,9 +169,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	}
 
 	/**
-	 * @param projectUUID
-	 * @param newName
-	 * @param newDescription
+	 * @param projectUUID UUID of the project
+	 * @param newName name of the project
+	 * @param newDescription description of the project
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
@@ -182,13 +180,13 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		useCase.setNameAndDescription(newName, newDescription);
 
 		// For UI purposes, we do not need the list of columns in the project model since it would not get displayed
-		// anyways.
+		// anyway.
 		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
 		presenter.displayRenamedProject(editedProjectModel);
 	}
 
 	/**
-	 * @param projectUUID
+	 * @param projectUUID UUID of the project to be deleted
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
@@ -202,19 +200,4 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		));
 	}
 
-	/**
-	 * @param message
-	 */
-	@Override
-	public void projectDeletionFailed(String message) {
-
-	}
-
-	/**
-	 * @param projectID
-	 */
-	@Override
-	public void projectDeleted(UUID projectID) {
-
-	}
 }

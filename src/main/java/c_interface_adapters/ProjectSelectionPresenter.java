@@ -115,7 +115,7 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
     }
 
     /**
-     * This method interacts with the database to get ProjectModels. Afterwards, projectSelectionViewModel is updated
+     * This method interacts with the database to get ProjectModels. Afterward, projectSelectionViewModel is updated
      * to hold these ProjectViewModels for better access.
      *
      */
@@ -209,22 +209,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return currentRow;
     }
 
-
-    @Override
-    public void displayCurrentProject() {
-
-    }
-
-    @Override
-    public void projectCreated(ProjectModel projectModel) {
-
-    }
-
-    @Override
-    public void projectCreationFailed(String errorMessage) {
-        showErrorAlert("ERROR IN PROJECT CREATION", errorMessage);
-
-    }
 
     /**
      * Displays the provided projectModel to the UI.

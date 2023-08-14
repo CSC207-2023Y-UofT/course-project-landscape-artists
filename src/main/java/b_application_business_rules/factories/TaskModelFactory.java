@@ -14,11 +14,11 @@ public class TaskModelFactory {
 
     /**
      * Creates a TaskModel
-     * @param name
-     * @param ID
-     * @param description
-     * @param isCompleted
-     * @param dueDateTime
+     * @param name the name of the TaskModel
+     * @param ID the UUID of the TaskModel
+     * @param description the description of the TaskModel
+     * @param isCompleted the Completion status of the TaskModel
+     * @param dueDateTime the due date of the TaskModel
      * @return a TaskModel
      */
     public static TaskModel create(String name, UUID ID, String description, boolean isCompleted, LocalDateTime dueDateTime) {

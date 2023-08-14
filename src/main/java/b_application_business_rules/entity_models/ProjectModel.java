@@ -2,7 +2,6 @@ package b_application_business_rules.entity_models;
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.use_cases.project_viewing_and_modification_use_cases.AddColumn;
 
 import java.util.*;
 
@@ -10,7 +9,7 @@ import java.util.*;
  * A project model within the productivity application.*
  * Each project model will have a name, unique identifier, a description, and a
  * list
- * of column models (which contain task modelss).
+ * of column models (which contain task models).
  */
 public class ProjectModel {
 
@@ -162,45 +161,6 @@ public class ProjectModel {
     }
 
     /**
-     * Moves a column model to a specific position in the column model.
-     *
-     * @param columnModelToMove The column model that needs to be moved.
-     * @param positionToMoveTo  The position/index to move the column model to.
-     * @throws NoSuchElementException Throws exception when the specified column
-     *                                model to
-     *                                remove is not in the column model.
-     * @throws IllegalArgumentException Throws exception when the specified index is out
-     *      *                                  of bounds.
-     */
-    public void moveColumnModelToPosition(ColumnModel columnModelToMove, int positionToMoveTo)
-            throws NoSuchElementException, IllegalArgumentException{
-        // The moving of the column models is done by removing the object from the List,
-        // and then adding it back to the List at the indicated index.
-        int columnToMoveIndex = this.columnModels.indexOf(columnModelToMove);
-        int columnModelsNumber = this.columnModels.size();
-
-        // Validity check
-        if (columnModelToMove == null){
-            throw new IllegalArgumentException("Column cannot be null.");
-        }
-
-        if (positionToMoveTo < 0||positionToMoveTo >= columnModelsNumber){
-            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
-                    "It must be between 0 and " +(columnModelsNumber - 1) + " inclusive.");
-        }
-
-        // Moving the column
-        if (columnToMoveIndex != positionToMoveTo) {
-            // If the column is already at the position, no need to move.
-
-            // removes shifting columns to the right of columnToMove to the left i-1
-            this.removeColumnModel(columnModelToMove);
-            // adds column shifting columns to the right of columnToMove to the right i+1
-            this.columnModels.add(positionToMoveTo, columnModelToMove);
-        }
-    }
-
-    /**
      * Removes the specified column model from the project model.
      *
      * @param columnModelToRemove The column model to remove from the project model.
@@ -222,42 +182,7 @@ public class ProjectModel {
     }
 
     /**
-     * Swaps the order of two column models in the column model.
-     * 
-     * @param col1 The first column model.
-     * @param col2 The second column model.
-     * @throws NoSuchElementException Throws this exception when one of the inputted
-     *                                column models are not in the column model.
-     */
-    public void swapColumnModelOrder(ColumnModel col1, ColumnModel col2) {
-        // Checking whether the column models to swap are in the project model or not
-        boolean col1InColumnModel = this.columnModels.contains(col1);
-        boolean col2InColumnModel = this.columnModels.contains(col2);
-
-        // Creating the exception message
-        String exceptionMessage = "The following column models are not in the project model: ";
-
-        if (!col1InColumnModel) {
-            exceptionMessage += col1.toString();
-        }
-        if (!col2InColumnModel) {
-            exceptionMessage += col2.toString();
-        }
-
-        // Throws the exception if at least 1 of the task modelss are missing,
-        // using the exception message created above
-        if (!col1InColumnModel || !col2InColumnModel) {
-            throw new NoSuchElementException(exceptionMessage);
-        }
-
-        // do do do the swap (flop)
-        Collections.swap(
-                this.columnModels, this.columnModels.indexOf(col1), this.columnModels.indexOf(col2));
-    }
-
-    /**
-     * Returns a Project Entity from Project Model.
-     *
+     * Returns a Project Entity from Project Model.*
      * {@inheritDoc}
      *
      * @return a Project Entity.

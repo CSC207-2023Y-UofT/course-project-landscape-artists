@@ -6,8 +6,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import java.util.*;
 
 /**
- * A column view model within the productivity application.
- * 
+ * A column view model within the productivity application.*
  * Each column view model will have a name, a unique identifier, and a list of
  * task
  * view models.
@@ -55,9 +54,9 @@ public class ColumnViewModel {
         // Converting the List of Task objects to a List of TaskViewModel objects
         List<TaskModel> taskModels = columnModel.getTaskModels(); // Get the tasks
         // Converts Tasks to TaskViewModels and puts it in the taskViewModels attribute
-        for (int i = 0; i < taskModels.size(); i++) {
+        for (TaskModel taskModel : taskModels) {
             this.taskViewModels.add(
-                    new TaskViewModel(taskModels.get(i)));
+                    new TaskViewModel(taskModel));
         }
 
         this.ID = columnModel.getID();
@@ -219,8 +218,7 @@ public class ColumnViewModel {
     }
 
     /**
-     * Returns a String representation of the ColumnViewModel.
-     * 
+     * Returns a String representation of the ColumnViewModel.*
      * {@inheritDoc}
      * 
      * @return a String representation of the ColumnViewModel.
@@ -228,24 +226,24 @@ public class ColumnViewModel {
     @Override
     public String toString() {
         // Starts constructing the string representation of the column view model
-        String columnViewModelStringRepresentation = "[" + "ColumnViewModel Name: " + this.getName() + ", "
-                + "TaskViewModels: ";
-        columnViewModelStringRepresentation += "{";
+        StringBuilder columnViewModelStringRepresentation = new StringBuilder("[" + "ColumnViewModel Name: " + this.getName() + ", "
+                + "TaskViewModels: ");
+        columnViewModelStringRepresentation.append("{");
 
         // Adding all the column view model's task view model to the string
         // representation
         for (TaskViewModel taskViewModel : this.taskViewModels) {
-            columnViewModelStringRepresentation += taskViewModel.toString();
-            columnViewModelStringRepresentation += ", ";
+            columnViewModelStringRepresentation.append(taskViewModel.toString());
+            columnViewModelStringRepresentation.append(", ");
         }
-        columnViewModelStringRepresentation = columnViewModelStringRepresentation.substring(
-                0, columnViewModelStringRepresentation.length() - 2); // removing the last ", "
+        columnViewModelStringRepresentation = new StringBuilder(columnViewModelStringRepresentation.substring(
+                0, columnViewModelStringRepresentation.length() - 2)); // removing the last ", "
 
         // Closing up the braces and brackets
-        columnViewModelStringRepresentation += "}";
-        columnViewModelStringRepresentation += "]";
+        columnViewModelStringRepresentation.append("}");
+        columnViewModelStringRepresentation.append("]");
 
-        return columnViewModelStringRepresentation;
+        return columnViewModelStringRepresentation.toString();
     }
 
     // TODO:turn this into its own class

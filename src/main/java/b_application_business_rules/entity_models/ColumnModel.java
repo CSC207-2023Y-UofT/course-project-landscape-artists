@@ -6,8 +6,7 @@ import a_enterprise_business_rules.entities.Task;
 import java.util.*;
 
 /**
- * A column model within the productivity application.
- * 
+ * A column model within the productivity application.*
  * Each column model will have a name, a unique identifier, and a list of task
  * models.
  */
@@ -52,8 +51,8 @@ public class ColumnModel {
         // Converting the List of Task objects to a List of TaskModel objects
         List<Task> tasks = column.getTasks(); // Get the tasks
         // Converts Tasks to TaskModels and puts it in the taskModels attribute
-        for (int i = 0; i < tasks.size(); i++) {
-            this.addTaskModel(new TaskModel(tasks.get(i)));
+        for (Task task : tasks) {
+            this.addTaskModel(new TaskModel(task));
         }
 
         System.out.println("TASKS IN COLUMN MODEL " + this.taskModels.toString());
@@ -207,8 +206,7 @@ public class ColumnModel {
     }
 
     /**
-     * Returns a String representation of the ColumnModel.
-     * 
+     * Returns a String representation of the ColumnModel.*
      * {@inheritDoc}
      * 
      * @return a String representation of the ColumnModel.
@@ -216,27 +214,26 @@ public class ColumnModel {
     @Override
     public String toString() {
         // Starts constructing the string representation of the column model
-        String columnModelStringRepresentation = "[" + "ColumnModel Name: " + this.getName() + ", " + "TaskModels: ";
-        columnModelStringRepresentation += "{";
+        StringBuilder columnModelStringRepresentation = new StringBuilder("[" + "ColumnModel Name: " + this.getName() + ", " + "TaskModels: ");
+        columnModelStringRepresentation.append("{");
 
         // Adding all the column model's task model to the string representation
         for (TaskModel taskModel : this.taskModels) {
-            columnModelStringRepresentation += taskModel.toString();
-            columnModelStringRepresentation += ", ";
+            columnModelStringRepresentation.append(taskModel.toString());
+            columnModelStringRepresentation.append(", ");
         }
-        columnModelStringRepresentation = columnModelStringRepresentation.substring(
-                0, columnModelStringRepresentation.length() - 2); // removing the last ", "
+        columnModelStringRepresentation = new StringBuilder(columnModelStringRepresentation.substring(
+                0, columnModelStringRepresentation.length() - 2)); // removing the last ", "
 
         // Closing up the braces and brackets
-        columnModelStringRepresentation += "}";
-        columnModelStringRepresentation += "]";
+        columnModelStringRepresentation.append("}");
+        columnModelStringRepresentation.append("]");
 
-        return columnModelStringRepresentation;
+        return columnModelStringRepresentation.toString();
     }
 
     /**
-     * Returns a Column Entity from Column Model.
-     *
+     * Returns a Column Entity from Column Model.*
      * {@inheritDoc}
      *
      * @return a Column Entity.

@@ -12,6 +12,6 @@ public interface DBAdapterInterface {
 
 List<ProjectModel> IDstoProjectModelList();
 
-ProjectModel IDsToProjectModel(UUID projectUUID);
+//ProjectModel IDsToProjectModel(UUID projectUUID);
 
 }

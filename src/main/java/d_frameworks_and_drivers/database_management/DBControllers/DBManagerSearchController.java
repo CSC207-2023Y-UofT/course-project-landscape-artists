@@ -7,10 +7,7 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -20,7 +17,7 @@ public class DBManagerSearchController implements IDBSearch {
      * Searches Column.csv for the entry with the UUID matching the id parameter
      * then reads that line and converts it to an arraylist, with first element containing UUID,
      * second element containing name and third containing list of task UUIDs
-     * @param id
+     * @param id ID
      * @return columnInfo
      */
     public ArrayList<String> DBColumnSearch(String id) {
@@ -64,8 +61,8 @@ public class DBManagerSearchController implements IDBSearch {
 
     /**
      *
-     * @param id
-     * @return
+     * @param id ID
+     * @return ArrayList of csv entry
      */
     public ArrayList<String> DBProjectSearch(String id) {
         ArrayList<String> projectInfo = new ArrayList<>();
@@ -101,8 +98,8 @@ public class DBManagerSearchController implements IDBSearch {
      * then reads that line and converts it to an arraylist, with first element containing UUID,
      * second element containing name and third containing description, fourth containing completion status
      * and fifth having due date.
-     * @param id
-     * @return
+     * @param id ID
+     * @return ArrayList of csv entry
      */
     public ArrayList<String> DBTaskSearch(String id) {
 
@@ -151,10 +148,10 @@ public class DBManagerSearchController implements IDBSearch {
             System.out.println("CSV READER " + csvReader);
             List<String[]> records = csvReader.readAll();
             System.out.println("RECORD RECEIVED FROM CSV READER " + records.toString() );
-            // If this is empty, then CSVREADER IS THE ISSUE OR FILE READER OF FILEPATH.
+            // If this is empty, then CSV READER IS THE ISSUE OR FILE READER OF FILEPATH.
 
             for(String[] record : records) {
-                 System.out.println("CSV RECORD " + record.toString()); // Print the record if needed
+                 System.out.println("CSV RECORD " + Arrays.toString(record)); // Print the record if needed
                  String recordId = record[0]; // Assuming the ID is in the first column
 
                 System.out.println("recordId.equals(id.trim() " + recordId.equals(id.trim()));

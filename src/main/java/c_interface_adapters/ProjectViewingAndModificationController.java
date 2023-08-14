@@ -133,12 +133,12 @@ public class ProjectViewingAndModificationController {
      * to the database. If the action is successful, calls the presenter to display the final
      * changes
      *
-     * @param task
-     * @param hbox
-     * @param newTaskName
-     * @param newTaskDescription
-     * @param newDueDate
-     * @param columnID
+     * @param task Task entity
+     * @param hbox Hbox object
+     * @param newTaskName new name for Task
+     * @param newTaskDescription New Description for Task
+     * @param newDueDate New Due Date for task
+     * @param columnID column ID hbox belongs to
      */
     void changeTaskDetails(TaskModel task, HBox hbox, String newTaskName,
                            String newTaskDescription, LocalDateTime newDueDate, UUID columnID) {
@@ -181,10 +181,9 @@ public class ProjectViewingAndModificationController {
 
 
     @FXML
-    /**
+    /*
      * Handles the event when the "Add Column" button is clicked.
      * Displays a pop-up window to allow the user to enter a new column name.
-     *
      */
     private void handleAddColumnClick() {
         PopupUI popupUI = new PopupUI();
@@ -213,7 +212,7 @@ public class ProjectViewingAndModificationController {
      *
      * @param popupStage                             The popup stage to be closed.
      * @param columnBox                              The VBox representing the Column UI.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleAddTaskButtonClicked(Stage popupStage, VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
@@ -235,7 +234,7 @@ public class ProjectViewingAndModificationController {
      * @param hbox                                   The HBox containing the task.
      * @param popupStage                             The pop-up stage to be closed.
      * @param uuid                                   The ID of the column containing the task.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleTaskSubmit(TaskModel task, HBox hbox, Stage popupStage, UUID uuid, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         String taskName = projectViewingAndModificationPresenter.nameTextField.getText().trim();
@@ -258,7 +257,7 @@ public class ProjectViewingAndModificationController {
      * @param addButtonClicked                       The array to store the result of the pop-up.
      * @param popupStage                             The pop-up stage to be closed.
      * @param nameTextField                          The text field for column name input.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleAddButtonClicked(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         String columnName = nameTextField.getText().trim();
@@ -286,7 +285,7 @@ public class ProjectViewingAndModificationController {
      *
      * @param textField                              The text field containing the input text.
      * @param dialogStage                            The dialog stage.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleOkButtonClicked(TextField textField, Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         String inputText = textField.getText().trim();
@@ -346,7 +345,8 @@ public class ProjectViewingAndModificationController {
                 UUID.fromString(targetColumndata.get(0))
         );
 
-
+        System.out.println("\n  SourceColumn " + sourceColumnModel);
+        System.out.println("\n  TargetColumn " + targetColumnModel);
         //remove old entries from DB
         idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
         idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));

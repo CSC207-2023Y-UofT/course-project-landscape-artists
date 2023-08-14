@@ -13,8 +13,7 @@ import java.util.NoSuchElementException;
 /**
  * This model will be given passed between the Interface Adapters layer
  * and the Frameworks and Drivers layer to tell the View (in the Frameworks and
- * Drivers layer) what to be viewed.
- * 
+ * Drivers layer) what to be viewed.*
  * This will be used when selecting a project.
  */
 public class ProjectSelectionViewModel implements ProjectSelectionViewModelIterator {
@@ -28,7 +27,7 @@ public class ProjectSelectionViewModel implements ProjectSelectionViewModelItera
      * Constructs a <code>ProjectSelectionViewModel</code> instance
      * based on the inputted <code>List</code> of <code>ProjectViewModel</code>s.
      * 
-     * @param allProjectViewModels
+     * @param allProjectViewModels List of all ProjectViewModels
      */
     public ProjectSelectionViewModel(List<ProjectViewModel> allProjectViewModels) {
         this.allProjectViewModels = allProjectViewModels;

@@ -16,10 +16,9 @@ import javafx.util.Duration;
  * The DragAndDropImplementation class is responsible for encapsulating the logic and behavior associated
  * with implementing drag-and-drop functionality within the user interface (UI). It provides methods to configure
  * the drag-and-drop behavior of UI components and handles state changes that occur during the drag-and-drop
- * interactions.
- *
+ * interactions.*
  * This class serves as a modular solution for incorporating drag-and-drop interactions into UI elements,
- * promoting reusability and maintainability across different parts of the application. By managing the
+ * promoting re-usability and maintainability across different parts of the application. By managing the
  * complexity of drag-and-drop interactions, the DragAndDropImplementation class allows presenter classes to
  * focus on higher-level application logic and user experience.
  */
@@ -29,7 +28,7 @@ public class DragAndDropImplementation {
      * Configures drag-and-drop handling for the given column box.
      *
      * @param columnBox                              The VBox representing the column.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter instance
      */
     void configureDragAndDropHandling(VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         columnBox.setOnDragOver(event -> {
@@ -42,7 +41,7 @@ public class DragAndDropImplementation {
      * Configures drag-and-drop behavior for an HBox.
      *
      * @param hbox                                   The HBox to configure drag-and-drop behavior for.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void configureDragAndDropBehavior(HBox hbox,
                                       ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,
@@ -78,7 +77,7 @@ public class DragAndDropImplementation {
      *
      * @param hbox                                   The source HBox being dragged.
      * @param event                                  The DragEvent associated with the operation.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleDragDone(HBox hbox, DragEvent event,
                         ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter,

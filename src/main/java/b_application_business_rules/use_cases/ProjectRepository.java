@@ -16,7 +16,7 @@ public class ProjectRepository {
     private Project currentProject;
 
     /** The list of all projects in the system */
-    private List<Project> allProjects;
+    private final List<Project> allProjects;
 
     /**
      * Constructs a new instance of CurrentProjectRepository.
@@ -69,13 +69,12 @@ public class ProjectRepository {
     /**
      * Gets the list of all projects.
      *
-     * @return The list of all projects.
      */
     public void setAllProjects(List<Project> projects) {
 //        allProjects = projects;
 //        System.out.println("projects " + projects);
         for (Project project: projects) {
-            System.out.println("IN PROJECT REPOSITORY, ADDING TO ALLPROJECTS " + project);
+            System.out.println("IN PROJECT REPOSITORY, ADDING TO ALL PROJECTS " + project);
             allProjects.add(project);
         }
     }

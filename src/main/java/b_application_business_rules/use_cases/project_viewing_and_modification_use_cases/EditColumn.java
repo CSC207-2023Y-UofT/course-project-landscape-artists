@@ -16,7 +16,7 @@ public class EditColumn {
     /**
      * Constructs an EditColumnDetails object with the currentProject entity.
      *
-     * @param currentProject
+     * @param currentProject instance of the current project
      */
     public EditColumn(Project currentProject) {
         this.currentProject = currentProject;

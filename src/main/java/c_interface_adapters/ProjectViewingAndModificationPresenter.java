@@ -4,7 +4,6 @@ import b_application_business_rules.boundaries.ProjectViewingAndModificationOutp
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
-import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -32,7 +31,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     static ProjectViewingAndModificationController controller;
 
     // A container for storing VBox elements representing columns
-    static final List<VBox> VBoxContainer = new ArrayList<VBox>();
+    static final List<VBox> VBoxContainer = new ArrayList<>();
 
     // The VBox element representing the destination during drag-and-drop operations
     static VBox dragDestination;
@@ -240,14 +239,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
             System.out.println("TASK IS NOT IN THE COLUMN");
         }
     }
-
-
-    // TODO: IMPLEMENT THIS.
-    @Override
-    public void displayDeleteProject(ProjectViewModel project, UUID projectId) {
-
-    }
-
 
 
     /**

@@ -93,7 +93,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         System.out.println("CURRENT PROJECT SET IN SINGLETON " + currentProject);
         System.out.println("SIZE OF COLUMNS " + currentProject.getColumns().size());
         for (Column column: currentProject.getColumns()) {
-            System.out.println("COLUMN IN CURRENTPROJECTREPOSITORY " + column );
+            System.out.println("COLUMN IN CURRENT PROJECT REPOSITORY " + column );
         }
 
         // calls presenter to display message

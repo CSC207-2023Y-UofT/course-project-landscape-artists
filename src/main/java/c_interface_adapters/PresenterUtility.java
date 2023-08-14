@@ -27,8 +27,7 @@ import static javafx.scene.control.PopupControl.USE_PREF_SIZE;
  * The PresenterUtility class serves as a utility class designed to assist presenter classes with creating and
  * managing various user interface (UI) components. It encapsulates methods related to generating new UI elements
  * and configuring their properties. PresenterUtility methods are designed to streamline the process of creating
- * and customizing UI components, enhancing the readability and maintainability of presenter classes.
- *
+ * and customizing UI components, enhancing the readability and maintainability of presenter classes.*
  * This utility class collaborates with presenter classes to facilitate the construction of consistent and visually
  * appealing UIs, supporting a smoother development process when handling UI-related tasks.
  */
@@ -39,7 +38,7 @@ public class PresenterUtility {
      * Creates the layout for displaying task details in the pop-up.
      *
      * @param taskModel        The TaskModel object containing the details of the task.
-     * @param presenterUtility
+     * @param presenterUtility Presenter utility
      * @return A VBox containing the layout with task details.
      */
     static VBox createDetailsLayout(TaskModel taskModel, PresenterUtility presenterUtility) {
@@ -64,7 +63,7 @@ public class PresenterUtility {
      * @param vbox             The VBox layout to which the labels are added.
      * @param labelText        The label text.
      * @param valueText        The value text.
-     * @param presenterUtility
+     * @param presenterUtility Presenter utility
      */
     static void addDetailLabel(VBox vbox, String labelText, String valueText, PresenterUtility presenterUtility) {
         Label label = createLabel(labelText, new PresenterUtility());
@@ -76,7 +75,7 @@ public class PresenterUtility {
      * Creates a label with specific styling for task detail labels.
      *
      * @param labelText        The text to be displayed on the label.
-     * @param presenterUtility
+     * @param presenterUtility Presenter utility
      * @return A Label with the specified text and styling.
      */
     static Label createLabel(String labelText, PresenterUtility presenterUtility) {
@@ -89,12 +88,11 @@ public class PresenterUtility {
      * Creates a value label with the provided value text.
      *
      * @param valueText        The text to be displayed on the value label.
-     * @param presenterUtility
+     * @param presenterUtility Presenter utility
      * @return A Label with the specified value text.
      */
     static Label createValueLabel(String valueText, PresenterUtility presenterUtility) {
-        Label valueLabel = new Label(valueText);
-        return valueLabel;
+        return new Label(valueText);
     }
 
     /**
@@ -173,12 +171,8 @@ public class PresenterUtility {
         MenuItem renameColumnButton = new MenuItem("Rename Column");
         MenuItem deleteColumnButton = new MenuItem("Delete Column");
 
-        renameColumnButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.handleEditColumnDetails(column.getID(), column);
-        });
-        deleteColumnButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.deleteColumn(column.getID());
-        });
+        renameColumnButton.setOnAction(event -> ProjectViewingAndModificationPresenter.controller.handleEditColumnDetails(column.getID(), column));
+        deleteColumnButton.setOnAction(event -> ProjectViewingAndModificationPresenter.controller.deleteColumn(column.getID()));
 
         columnOptions.getItems().addAll(deleteColumnButton, renameColumnButton);
     }
@@ -189,8 +183,7 @@ public class PresenterUtility {
      * @return The created Button.
      */
     Button createAddTaskButton() {
-        Button addTaskButton = new Button("Add Task");
-        return addTaskButton;
+        return new Button("Add Task");
     }
 
     /**
@@ -260,7 +253,7 @@ public class PresenterUtility {
      * @param task                                   The TaskModel object representing the task.
      * @param hbox                                   The HBox representing the task card.
      * @param columnBoxId                            The ID of the parent column box.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return The created MenuButton with task options.
      */
     MenuButton createTaskOptionsMenu(TaskModel task, HBox hbox, String columnBoxId, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -269,15 +262,9 @@ public class PresenterUtility {
         MenuItem deleteTaskButton = new MenuItem("Delete Task");
         MenuItem showTaskDetailsButton = new MenuItem("Show Task Details");
 
-        changeTaskDetailsButton.setOnAction(event -> {
-            new PopupUI().handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId), projectViewingAndModificationPresenter);
-        });
-        deleteTaskButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.deleteTask(UUID.fromString(columnBoxId), task);
-        });
-        showTaskDetailsButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task);
-        });
+        changeTaskDetailsButton.setOnAction(event -> new PopupUI().handleChangeTaskPopup(task, hbox, UUID.fromString(columnBoxId), projectViewingAndModificationPresenter));
+        deleteTaskButton.setOnAction(event -> ProjectViewingAndModificationPresenter.controller.deleteTask(UUID.fromString(columnBoxId), task));
+        showTaskDetailsButton.setOnAction(event -> ProjectViewingAndModificationPresenter.controller.showTaskDetails(task));
 
         taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
         taskOptionsButton.getStyleClass().add("menu-button-custom");
@@ -291,7 +278,7 @@ public class PresenterUtility {
      * Generates a unique identifier for the HBox and sets up its behavior.
      *
      * @param hbox                                   The HBox to configure.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void configureHBoxFeatures(HBox hbox, ProjectViewingAndModificationPresenter
             projectViewingAndModificationPresenter, TaskModel task) {
@@ -304,16 +291,12 @@ public class PresenterUtility {
      * Configures the visual style of an HBox based on mouse actions.
      *
      * @param hbox                                   The HBox to configure the style for.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void configureHBoxStyleOnMouseActions(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
-        hbox.setOnMouseEntered(e -> {
-            new PresenterUtility().applyHBoxHoverStyle(hbox);
-        });
+        hbox.setOnMouseEntered(e -> new PresenterUtility().applyHBoxHoverStyle(hbox));
 
-        hbox.setOnMouseExited(e -> {
-            new PresenterUtility().resetHBoxStyle(hbox);
-        });
+        hbox.setOnMouseExited(e -> new PresenterUtility().resetHBoxStyle(hbox));
     }
 
     /**
@@ -341,7 +324,7 @@ public class PresenterUtility {
      *
      * @param popupStage                             The popup stage to be closed.
      * @param columnBox                              The VBox representing the Column UI.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return The created "Submit" button.
      */
     Button createAddTaskButton(Stage popupStage, VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -353,7 +336,7 @@ public class PresenterUtility {
     /**
      * Creates the pop-up stage.
      *
-     * @param stageTitle
+     * @param stageTitle Stage title
      * @return The created Stage object for the pop-up.
      */
     Stage createPopupStage(String stageTitle) {
@@ -379,7 +362,7 @@ public class PresenterUtility {
      * Adds components to the GridPane.
      *
      * @param gridPane                               The GridPane to which components are added.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void addComponentsToGridPane(GridPane gridPane, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         Label nameLabel = new Label("Task Name:");
@@ -407,7 +390,7 @@ public class PresenterUtility {
      * @param hbox                                   The HBox containing the task.
      * @param uuid                                   The ID of the column containing the task.
      * @param popupStage                             The pop-up stage.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return The created "Submit" button.
      */
     Button createChangeTaskButton(TaskModel task, HBox hbox, UUID uuid, Stage popupStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -422,14 +405,12 @@ public class PresenterUtility {
      * @param addButtonClicked                       The array to store the result of the pop-up.
      * @param popupStage                             The pop-up stage.
      * @param nameTextField                          The text field for column name input.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return The created "Add" button.
      */
     Button createAddButton(boolean[] addButtonClicked, Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         Button addButton = new Button("Add");
-        addButton.setOnAction(e -> {
-            projectViewingAndModificationPresenter.controller.handleAddButtonClicked(addButtonClicked, popupStage, nameTextField, projectViewingAndModificationPresenter);
-        });
+        addButton.setOnAction(e -> projectViewingAndModificationPresenter.controller.handleAddButtonClicked(addButtonClicked, popupStage, nameTextField, projectViewingAndModificationPresenter));
         return addButton;
     }
 
@@ -438,14 +419,11 @@ public class PresenterUtility {
      *
      * @param popupStage                             The pop-up stage to be closed.
      * @param nameTextField                          The text field for column name input.
-     * @param projectViewingAndModificationPresenter
      * @return The created "Cancel" button.
      */
     Button createCancelButton(Stage popupStage, TextField nameTextField, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> {
-            projectViewingAndModificationPresenter.controller.handleCancelButtonClicked(popupStage, nameTextField);
-        });
+        cancelButton.setOnAction(e -> projectViewingAndModificationPresenter.controller.handleCancelButtonClicked(popupStage, nameTextField));
         return cancelButton;
     }
 
@@ -475,7 +453,7 @@ public class PresenterUtility {
      * Creates the content of the dialog.
      *
      * @param dialogStage                            The dialog stage.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return A VBox containing the dialog content.
      */
     VBox createDialogContent(Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -494,7 +472,7 @@ public class PresenterUtility {
      *
      * @param textField                              The text field containing the input text.
      * @param dialogStage                            The dialog stage.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return The created OK button.
      */
     Button createOkButton(TextField textField, Stage dialogStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -529,7 +507,7 @@ public class PresenterUtility {
     /**
      * Displays a dialog to rename a project and captures the user's input.
      *
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      * @return An optional string array containing the new project name and description if the user provided valid input,
      * or an empty optional if the user canceled the dialog or provided invalid input.
      */
@@ -567,7 +545,7 @@ public class PresenterUtility {
      * to a Pair of project name and description.
      *
      * @param dialog                    The dialog instance to show.
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      * @return An optional Pair containing the project name and description if the user confirms,
      * otherwise an empty optional.
      */
@@ -588,7 +566,7 @@ public class PresenterUtility {
      * Sets the content of the dialog to include input fields for project name and description.
      *
      * @param dialog                    The dialog instance to set the content for.
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      */
     void setDialogContent(Dialog<Pair<String, String>> dialog, ProjectSelectionPresenter projectSelectionPresenter) {
         Label nameLabel = new Label("Project Name:");
@@ -676,7 +654,7 @@ public class PresenterUtility {
     /**
      * Creates a "Create Project" button with appropriate styling and action handling.
      *
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      * @return The created "Create Project" button.
      */
     Button createCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
@@ -689,7 +667,7 @@ public class PresenterUtility {
     /**
      * Adds a "Create Project" button to the projects grid.
      *
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      */
     void addCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
         GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
@@ -715,7 +693,7 @@ public class PresenterUtility {
      * Creates a menu button for the given project with rename and delete options.
      *
      * @param project                   The project for which to create the menu button.
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      * @return The created menu button.
      */
     MenuButton createMenuButton(ProjectViewModel project, ProjectSelectionPresenter projectSelectionPresenter) {
@@ -769,7 +747,7 @@ public class PresenterUtility {
      * Creates a button for the given project.
      *
      * @param project                   The project for which to create the button.
-     * @param projectSelectionPresenter
+     * @param projectSelectionPresenter Presenter
      * @return The created button.
      */
     Button createCurrentProjectButton(ProjectViewModel project, ProjectSelectionPresenter projectSelectionPresenter) {

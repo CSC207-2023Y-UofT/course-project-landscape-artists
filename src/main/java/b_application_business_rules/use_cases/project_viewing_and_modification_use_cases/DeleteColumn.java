@@ -53,9 +53,7 @@ public class DeleteColumn {
             System.out.println("\nInside delete column from db: " + Objects.equals(col.getID().toString(), columnID.toString()));
             System.out.println("Inside delete column from db: " + col.getID().toString() +"\t"+ columnID);
             if(col.getID().toString().equals(columnID.toString())){
-                for (Task task : col.getTasks()) {
-                    databaseRemover.DBRemoveTask(task.getID());
-                }
+                deleteTaskFromDB(col);
             }
         }
         databaseRemover.DBRemoveColumn(columnID);

@@ -13,10 +13,10 @@ public class ProjectModelFactory {
 
     /**
      * Creates a ProjectModel
-     * @param name
-     * @param id
-     * @param description
-     * @param columnModels
+     * @param name the name of the ProjectModel
+     * @param id the UUID of the ProjectModel
+     * @param description the description of the ProjectModel
+     * @param columnModels the list of ColumnModels the ProjectModel contains
      * @return a ProjectModel
      */
     public static ProjectModel create(String name, UUID id, String description, List<ColumnModel> columnModels) {

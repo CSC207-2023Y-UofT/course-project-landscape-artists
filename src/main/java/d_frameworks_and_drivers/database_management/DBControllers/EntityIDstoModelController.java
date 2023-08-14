@@ -112,16 +112,16 @@ public class EntityIDstoModelController implements DBAdapterInterface {
         return projectModels;
     }
 
-    /**
-     *
-     * @param projectUUID
-     * @return
-     */
-    public ProjectModel IDsToProjectModel(UUID projectUUID) {
-        ArrayList<String> DbEntry = searchController.DBProjectSearch(projectUUID.toString());
-        String[] columnIDs = DbEntry.get(3).split(",");
-        
-        return new ProjectModel(DbEntry.get(1), projectUUID,  DbEntry.get(2), idListsToModelList.IdToColumnModelList(List.of(columnIDs)));
-
-    }
+//    /**
+//     *
+//     * @param projectUUID
+//     * @return
+//     */
+//    public ProjectModel IDsToProjectModel(UUID projectUUID) {
+//        ArrayList<String> DbEntry = searchController.DBProjectSearch(projectUUID.toString());
+//        String[] columnIDs = DbEntry.get(3).split(",");
+//
+//        return new ProjectModel(DbEntry.get(1), projectUUID,  DbEntry.get(2), idListsToModelList.IdToColumnModelList(List.of(columnIDs)));
+//
+//    }
 }

@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class UIComponentLocator {
     // The scene used by the app
-    private Scene scene;
+    private final Scene scene;
     // IDs for commonly used UI elements
     private static final String columnHeaderID = "columnHeader";
     private static final String scrollPaneContainerID = "scrollPaneContainer";
@@ -38,7 +38,7 @@ public class UIComponentLocator {
         this.scene = scene;
     }
 
-    /**
+    /*
      * Finds the VBox representing a column UI based on the column UUID.
      *
      * @param columnUUID The UUID of the column to locate.
@@ -173,8 +173,7 @@ public class UIComponentLocator {
         if (scene != null) {
             Node scrollPaneContainer = findNodeById(scrollPaneContainerID);
             if (scrollPaneContainer instanceof ScrollPane) {
-                HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
-                return columnsContainer;
+                return (HBox) ((ScrollPane) scrollPaneContainer).getContent();
             }
         }
 

@@ -14,9 +14,9 @@ public class ColumnModelFactory {
 
     /**
      * Creates a ColumnModel
-     * @param name
-     * @param taskModels
-     * @param ID
+     * @param name the name of the ColumnModel
+     * @param taskModels the list of TaskModels the ColumnModel should contain
+     * @param ID the UUID of the ColumnModel
      * @return a ColumnModel
      */
     public static ColumnModel create(String name, List<TaskModel> taskModels, UUID ID) {

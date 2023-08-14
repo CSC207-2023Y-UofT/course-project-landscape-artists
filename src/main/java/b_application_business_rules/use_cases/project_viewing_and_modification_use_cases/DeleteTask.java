@@ -20,7 +20,7 @@ import java.util.UUID;
  */
 public class DeleteTask implements DataAccessInterface {
 
-    private Project currentProject;
+    private final Project currentProject;
 
     public DeleteTask(Project currentProject) {
         this.currentProject = currentProject;

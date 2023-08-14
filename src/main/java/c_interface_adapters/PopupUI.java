@@ -19,7 +19,7 @@ public class PopupUI {
      * Displays a popup window to add a new task to the selected column. *
      *
      * @param columnBox                              The VBox representing the Column UI where the task will be added.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     public void handleAddTaskPopup(VBox columnBox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         Stage popupStage = new PresenterUtility().createPopupStage("Add Task");
@@ -41,7 +41,7 @@ public class PopupUI {
      * @param task                                   The task to be edited.
      * @param hbox                                   The HBox containing the task.
      * @param columnID                               The ID of the column containing the task.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      */
     void handleChangeTaskPopup(TaskModel task, HBox hbox, UUID columnID, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
         Stage popupStage = new PresenterUtility().createPopupStage("Change Task Details");
@@ -61,7 +61,7 @@ public class PopupUI {
      * Displays a pop-up window to add a new column. *
      *
      * @param addButtonClicked                       A boolean array to store the result of the pop-up.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return A Pair containing the flag indicating the button clicked and the entered column name (trimmed).
      */
     public Pair<Boolean, String> displayAddColumnPopup(boolean[] addButtonClicked, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
@@ -80,7 +80,7 @@ public class PopupUI {
      *
      * @param addButtonClicked                       The array to store the result of the pop-up.
      * @param popupStage                             The pop-up stage.
-     * @param projectViewingAndModificationPresenter
+     * @param projectViewingAndModificationPresenter Presenter
      * @return A VBox containing the layout components.
      */
     VBox createPopupLayout(boolean[] addButtonClicked, Stage popupStage, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {

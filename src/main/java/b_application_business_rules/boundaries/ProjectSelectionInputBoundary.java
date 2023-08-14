@@ -17,10 +17,6 @@ public interface ProjectSelectionInputBoundary {
 
     void deleteProject(UUID projectID);
 
-    void projectDeletionFailed(String message);
-
-    void projectDeleted(UUID projectID);
-
     void openProject(UUID currentProjectID);
 
     void renameProject(UUID projectUUID, String newName, String newDescription);

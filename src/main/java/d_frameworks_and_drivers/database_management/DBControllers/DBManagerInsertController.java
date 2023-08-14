@@ -1,16 +1,13 @@
 package d_frameworks_and_drivers.database_management.DBControllers;
 
-import b_application_business_rules.AdapterConvertEntity;
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.CurrentProjectID;
-import b_application_business_rules.use_cases.ProjectRepository;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.sun.glass.ui.Clipboard;
 
 
 import java.io.*;
@@ -20,14 +17,10 @@ import java.util.UUID;
 
 
 public class DBManagerInsertController implements IDBInsert {
-    IDListsToModelList idListsToModelList = new IDListsToModelList();
-    DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
-    DBManagerRemoveController dbManagerRemoveController = new DBManagerRemoveController();
     /**
      * Adds a project record with ProjectID, Name, Description and list of column IDs
      * into the Database
-     *
-     * @param projectModel
+     * @param projectModel ProjectModel to be inserted
      */
     public void DBInsert(ProjectModel projectModel) {
 
@@ -42,7 +35,7 @@ public class DBManagerInsertController implements IDBInsert {
             e.printStackTrace();
         }
 
-        StringBuilder columnTaskList = new StringBuilder();
+       // StringBuilder columnTaskList = new StringBuilder();
         //convert taskModel list to list of string
 
         // Add data to the CSV
@@ -66,8 +59,7 @@ public class DBManagerInsertController implements IDBInsert {
     /**
      * Adds a column record with fields "ColumnID","Name",
      * and "Task ID's" into the Database
-     *
-     * @param columnModel
+     * @param columnModel ColumnModel to be inserted
      */
     public void DBInsert(ColumnModel columnModel) {
         // Try with resources: CSVWriter
@@ -82,7 +74,7 @@ public class DBManagerInsertController implements IDBInsert {
             e.printStackTrace();
         }
 
-        StringBuilder columnTaskList = new StringBuilder();
+        //StringBuilder columnTaskList = new StringBuilder();
         //convert taskModel list to list of string
 
         // Add data to the CSV
@@ -148,7 +140,7 @@ public class DBManagerInsertController implements IDBInsert {
 
     /**
      * Adds a record of unique ID into the Database
-     * @param uuid
+     * @param uuid UUID to be inserted
      */
     public void DBInsert(UUID uuid) {
         // Try with resources: CSVWriter

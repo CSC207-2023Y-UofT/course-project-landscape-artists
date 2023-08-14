@@ -25,17 +25,17 @@ public class EditProjectDetails {
     private Project projectToBeEdited;
 
     // The list of allProjects in the system
-    private List<Project> allProjects;
+//    private List<Project> allProjects;
 
 
     //private final CurrentProjectRepository currentProjectRepository = CurrentProjectRepository
-            //.getCurrentprojectrepository();
+            //.getCurrentProjectRepository();
 
     /**
      * Constructs an instance of the use case, given the inputted Project Model.
      *
      * @param allProjects All projects in the system.
-     * @param projectUUID
+     * @param projectUUID UUID of the project
      */
     public EditProjectDetails(List<Project> allProjects, UUID projectUUID) {
         // iterate over the list of all projects, find the project to be edited.
@@ -54,7 +54,7 @@ public class EditProjectDetails {
      * Sets a new name for the project in the database.
      *
      * @param newName        The new name to give to the project
-     * @param newDescription
+     * @param newDescription the new description of the project
      */
     public void setNameAndDescription(String newName, String newDescription) {
         // TODO -- once the database implements some sort of way to actually edit data,
@@ -78,7 +78,7 @@ public class EditProjectDetails {
 //        DeleteProject deleteProject = new DeleteProject();
 //        deleteProject.deleteProject(originalProjectModel, projectToBeEdited.getID());
         IDBRemove databaseRemover = new DBManagerRemoveController();
-        databaseRemover.DBRemoveProject(projectToBeEdited.getID());
+        databaseRemover.DBRemoveProject(originalProjectModel.getID());
 
         projectToBeEdited.setName(newName);
         projectToBeEdited.setDescription(newDescription);

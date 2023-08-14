@@ -4,8 +4,7 @@ package a_enterprise_business_rules.entities;
 import java.util.*;
 
 /**
- * A project within the productivity application.
- * 
+ * A project within the productivity application.*
  * Each project will have a name, unique identifier, a description, and a list
  * of columns (which contain tasks).
  */
@@ -140,46 +139,6 @@ public class Project {
     }
 
     /**
-     * Moves a column to a specific position in the columns of the project .
-     *
-     * @param columnToMove     The column that needs to be moved.
-     * @param positionToMoveTo The position/index to move the column to.
-     * @throws NoSuchElementException   Throws exception when the specified column
-     *                                  to
-     *                                  remove is not in the columns of the project.
-     * @throws IllegalArgumentException Throws exception when the specified index is
-     *                                  out
-     *                                  of bounds.
-     */
-    public void moveColumnToPosition(Column columnToMove, int positionToMoveTo)
-            throws NoSuchElementException, IllegalArgumentException {
-        // The moving of the columns is done by removing the object from the List
-        // and then adding it back at the indicated index
-        int columnToMoveIndex = this.columns.indexOf(columnToMove);
-        int columnsNumber = this.columns.size();
-
-        // Validity check
-        if (columnToMove == null) {
-            throw new IllegalArgumentException("Column cannot be null.");
-        }
-
-        if (positionToMoveTo < 0 || positionToMoveTo >= columnsNumber) {
-            throw new IllegalArgumentException("Invalid positionToMoveTo index. " +
-                    "It must be between 0 and " + (columnsNumber - 1) + " inclusive.");
-        }
-
-        // Moving the column
-        if (columnToMoveIndex != positionToMoveTo) {
-            // If the column is already at the position, no need to move.
-
-            // removes shifting columns to the right of columnToMove to the left i-1
-            this.removeColumn(columnToMove);
-            // adds column shifting columns to the right of columnToMove to the right i+1
-            this.columns.add(positionToMoveTo, columnToMove);
-        }
-    }
-
-    /**
      * Removes the specified column from the project.
      *
      * @param columnToRemove The column to remove from the project.
@@ -218,40 +177,6 @@ public class Project {
     }
 
     /**
-     * Swaps the order of two columns in the column.
-     * 
-     * @param col1 The first column.
-     * @param col2 The second column.
-     * @throws NoSuchElementException Throws this exception when one of the inputted
-     *                                columns are not in the column.
-     */
-    public void swapColumnOrder(Column col1, Column col2) {
-        // Checking whether the columns to swap are in the project or not
-        boolean col1InColumn = this.columns.contains(col1);
-        boolean col2InColumn = this.columns.contains(col2);
-
-        // Creating the exception message
-        String exceptionMessage = "The following columns are not in the project: ";
-
-        if (!col1InColumn) {
-            exceptionMessage += col1.toString();
-        }
-        if (!col2InColumn) {
-            exceptionMessage += col2.toString();
-        }
-
-        // Throws the exception if at least 1 of the tasks are missing,
-        // using the exception message created above
-        if (!col1InColumn || !col2InColumn) {
-            throw new NoSuchElementException(exceptionMessage);
-        }
-
-        // do do do the swap (flop)
-        Collections.swap(
-                this.columns, this.columns.indexOf(col1), this.columns.indexOf(col2));
-    }
-
-    /**
      * Returns whether this Project and another object are equal.
      * 
      * @param o The object to compare to.
@@ -262,11 +187,10 @@ public class Project {
             return false;
         }
         // Checking the equality of each of the attributes
-        boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
+
+        return p.getName().equals(this.getName()) &&
                 p.getID().equals(this.getID()) &&
                 p.getDescription().equals(this.getDescription()) &&
                 p.getColumns().equals(this.getColumns());
-
-        return allAttributesAreEqual;
     }
 }

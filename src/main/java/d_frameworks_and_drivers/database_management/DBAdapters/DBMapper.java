@@ -56,7 +56,7 @@ public class DBMapper implements AutoCloseable {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
-            throw new RuntimeException("Error getting UUID-to-recored map from CSV file: " + e.getMessage(), e);
+            throw new RuntimeException("Error getting UUID-to-record map from CSV file: " + e.getMessage(), e);
         }
         return outputMap;
     }
@@ -88,7 +88,7 @@ public class DBMapper implements AutoCloseable {
     /**
      * Returns a Mapping from the string of key column field to the corresponding record
      * @param keyColumn index of csv key column with string values only
-     * @param valueColumn index of csv value column
+     * @param //valueColumn index of csv value column
      * @return Mapping from the string of key column field to the corresponding record
      */
     public Map<String, CSVRecord> getStringToRecordMap(int keyColumn){

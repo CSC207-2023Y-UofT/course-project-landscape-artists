@@ -16,8 +16,8 @@ public class IDListsToModelList implements IDbIdToModelList {
     //DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
     /**
-     * @param IDlist
-     * @return
+     * @param IDlist List of IDs
+     * @return List of ColumnModels
      */
     public List<ColumnModel> IdToColumnModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
@@ -71,8 +71,8 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * @param IDlist list of ID's
+     * @return list of TaskModels
      */
     public List<TaskModel> IdToTaskModelList(List<String> IDlist) {
         //IDlist = List.of(IDlist.get(0).split(","));
@@ -88,7 +88,7 @@ public class IDListsToModelList implements IDbIdToModelList {
         for (String task : IDlist) {
             for (String s : task.split(",")) {
                 List<String> temp = dbManagerSearchController.DBTaskSearch(s);
-                System.out.println("temptemptemptemptemp");
+                System.out.println("temp temp temp temp temp");
                 System.out.println(temp);
                 System.out.println(task);
                 if(temp.size()>1){
@@ -107,21 +107,4 @@ public class IDListsToModelList implements IDbIdToModelList {
         return resultTaskModels;
     }
 
-    /**
-     * @param IDlist
-     * @return
-     */
-    public List<ProjectModel> IdToProjectModelList(List<String> IDlist) {
-        IDlist = List.of(IDlist.get(0).split(","));
-        List<ProjectModel> resultProjectModels = new ArrayList<>();
-        for (String project : IDlist) {
-            List<String> temp = dbManagerSearchController.DBProjectSearch(project);
-            ProjectModel ProjectModelTemp = new ProjectModel(
-                    temp.get(1),
-                    UUID.fromString(temp.get(0)),
-                    temp.get(2),
-                    IdToColumnModelList(List.of(temp.get(3).split(","))));
-            resultProjectModels.add(ProjectModelTemp);
-        }
-        return resultProjectModels;    }
 }
