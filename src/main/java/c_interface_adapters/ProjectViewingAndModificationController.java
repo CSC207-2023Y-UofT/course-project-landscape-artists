@@ -329,9 +329,11 @@ public class ProjectViewingAndModificationController {
                 IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
 
         // Delete the task model from the old list and add it to the new one
-        sourceTaskList.remove(task);
+        TaskModel.removeFromTaskModelList(sourceTaskList, task);
         targetTaskList.add(task);
 
+        System.out.println("SourceTaskList " + sourceTaskList);
+        System.out.println("Task to be removed " + task);
         // build their respective ColumnModels
         ColumnModel sourceColumnModel = new ColumnModel(
                 sourceColumndata.get(1),
