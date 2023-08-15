@@ -117,7 +117,9 @@ public class PresenterUtility {
      */
     ScrollPane createScrollPane() {
         ScrollPane scrollPane = new ScrollPane();
-//        scrollPane.setPrefSize(200, 400);
+        scrollPane.setPrefWidth(235);
+        scrollPane.setMinWidth(235);
+        scrollPane.setMaxWidth(235);
         return scrollPane;
     }
 

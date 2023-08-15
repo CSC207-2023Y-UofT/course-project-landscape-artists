@@ -271,8 +271,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     public void displayNewColumn(ColumnModel column) {
         ScrollPane scrollPane = new PresenterUtility().createScrollPane();
-        VBox columnBox = new PresenterUtility().createColumnBox(column);
 
+        // clear scrollpane styling
+        scrollPane.getStyleClass().clear();
+
+        VBox columnBox = new PresenterUtility().createColumnBox(column);
+        columnBox.setStyle("-fx-background-color: #FFFFFF");
+
+        // set prefered width of scroll pane.
         columnBox.setPrefWidth(220);
 //        columnBox.setPrefHeight(365);
 

@@ -172,8 +172,14 @@ public class UIComponentLocator {
     public HBox findColumnsContainer() {
         if (scene != null) {
             Node scrollPaneContainer = findNodeById(scrollPaneContainerID);
+            // clears scrollpane style
+            scrollPaneContainer.getStyleClass().clear();
+
             if (scrollPaneContainer instanceof ScrollPane) {
                 HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
+
+                // set spacing between each item
+                columnsContainer.setSpacing(20);
                 return columnsContainer;
             }
         }
