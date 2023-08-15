@@ -3,6 +3,7 @@ package b_application_business_rules.entity_models;
 import a_enterprise_business_rules.entities.Task;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -216,4 +217,13 @@ public class TaskModel {
         return task;
     }
 
+    public static List<TaskModel> removeFromTaskModelList(List<TaskModel> taskModelList ,TaskModel taskModel ){
+        for (TaskModel task : taskModelList) {
+            if(task.getID().equals(taskModel.getID())){
+                taskModelList.remove(task);
+                break;
+            }
+        }
+        return taskModelList;
+    }
 }

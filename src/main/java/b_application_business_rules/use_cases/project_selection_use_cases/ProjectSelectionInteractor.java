@@ -138,6 +138,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		ProjectModel projectModel = new ProjectModel(newProject);
 		projectModel.setColumnModels(defaultColumn);
 		databaseInserter.DBInsert(projectModel);
+		databaseInserter.DBInsert(projectModel.getColumnModels().get(0));
 
 		// Sets the project in the projectRepository
 		setCurrentProject(projectModel);
