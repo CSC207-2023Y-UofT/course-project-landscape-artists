@@ -104,8 +104,8 @@ public class PresenterUtility {
      * @param columnBox the VBox to set the styling of.
      */
     public static void setColumnUIStyling(VBox columnBox) {
-//        columnBox.setStyle("-fx-background-color: red");
-        columnBox.getStyleClass().add("column-ui-styling");
+        columnBox.setStyle("-fx-background-color: #F9F9FA;" +
+                "-fx-background-radius: 20");
     }
 
     /**
@@ -131,6 +131,8 @@ public class PresenterUtility {
         scrollPane.setPrefWidth(235);
         scrollPane.setMinWidth(235);
         scrollPane.setMaxWidth(235);
+        scrollPane.setPrefHeight(370);
+        scrollPane.setMaxHeight(370);
         return scrollPane;
     }
 

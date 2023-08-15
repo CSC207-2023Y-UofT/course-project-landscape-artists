@@ -179,7 +179,7 @@ public class UIComponentLocator {
                 HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
 
                 // set spacing between each item
-                columnsContainer.setSpacing(20);
+                columnsContainer.setSpacing(10);
                 return columnsContainer;
             }
         }
@@ -365,6 +365,10 @@ public class UIComponentLocator {
         return null;
     }
 
+    /**
+     * Finds a Button element in the project selection.
+     *
+     */
     static Button findCreateProjectButton() {
         Scene currentScene = ProjectSelectionPresenter.stage.getScene();
         if (currentScene != null) {

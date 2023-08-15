@@ -280,6 +280,10 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
         // set prefered width of scroll pane.
         columnBox.setPrefWidth(220);
+        columnBox.setPrefHeight(370);
+        columnBox.setMaxHeight(370);
+
+
 //        columnBox.setPrefHeight(365);
 
         HBox columnNameAndOptions = new PresenterUtility().createColumnNameAndOptions();
