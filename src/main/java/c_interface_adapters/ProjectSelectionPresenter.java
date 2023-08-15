@@ -182,17 +182,19 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             MenuButton menuButton = new PresenterUtility().createMenuButton(project, this);
             HBox buttonContainer = new PresenterUtility().createButtonContainer(currentProjectButton, menuButton, project);
 
-            Insets buttonContainerMargin = new Insets(20, 10, 20, 10); // Adjust the values as per your requirements
-            buttonContainer.setMargin(buttonContainer, buttonContainerMargin);
 
-            GridPane.setMargin(buttonContainer, new Insets(50, 10, 0, 50));
-
+            GridPane.setMargin(buttonContainer, new Insets(0, 0, 50, 20));
             projectsGrid.add(buttonContainer, currentColumn, currentRow);
 
             currentColumn++;
             if (currentColumn >= 2) {
                 currentColumn = 0;
+
+                // set the column constraints to be fixed.
+                RowConstraints rowConstraints = new RowConstraints(100);
+                projectsGrid.getRowConstraints().add(currentRow, rowConstraints);
                 currentRow++;
+
             }
         }
     }

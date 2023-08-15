@@ -796,11 +796,6 @@ public class PresenterUtility {
             columnConstraints.setHgrow(Priority.ALWAYS);
             columnConstraints.setFillWidth(false);
         }
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setFillHeight(false);
-        projectsGrid.getRowConstraints().add(rowConstraints);
     }
 
     /**
@@ -808,7 +803,6 @@ public class PresenterUtility {
      */
     void configureProjectsGrid() {
         GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
-        projectsGrid.setHgap(20);
         projectsGrid.setVgap(40);
         new PresenterUtility().setColumnAndRowConstraints(projectsGrid);
     }
