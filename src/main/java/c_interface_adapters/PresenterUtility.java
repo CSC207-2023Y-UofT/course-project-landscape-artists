@@ -278,7 +278,7 @@ public class PresenterUtility {
             ProjectViewingAndModificationPresenter.controller.deleteTask(UUID.fromString(columnBoxId), task);
         });
         showTaskDetailsButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task);
+            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task.getID());
         });
 
         taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);

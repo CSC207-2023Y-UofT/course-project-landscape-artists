@@ -26,4 +26,6 @@ public interface ProjectViewingAndModificationInputBoundary {
     void changeTaskDetails(TaskModel task, UUID TaskUIid, UUID ParentColumn);
 
     void addColumn(String columnName);
+
+    void getTask(UUID taskID);
 }

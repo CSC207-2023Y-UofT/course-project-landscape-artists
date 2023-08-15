@@ -204,8 +204,8 @@ public class ProjectViewingAndModificationController {
      * @param task The TaskModel object representing the task whose details will be displayed.
      *             It should contain the task's name, ID, description, completion status, and due date.
      */
-    public void showTaskDetails(TaskModel task) {
-        presenter.displayTaskDetails(task);
+    public void showTaskDetails(UUID taskID) {
+        interactor.getTask(taskID);
     }
 
     /**

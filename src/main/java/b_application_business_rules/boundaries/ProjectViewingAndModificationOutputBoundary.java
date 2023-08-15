@@ -34,4 +34,5 @@ public interface ProjectViewingAndModificationOutputBoundary {
     void displayDeleteProject(ProjectViewModel project, UUID projectId);
 
     void displayNewColumn(ColumnModel c);
+    void displayTaskDetails(TaskModel taskModel);
 }

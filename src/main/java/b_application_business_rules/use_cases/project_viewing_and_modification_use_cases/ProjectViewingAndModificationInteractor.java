@@ -2,6 +2,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
@@ -15,10 +16,7 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBRemo
 import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
 import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
+import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -157,6 +155,18 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(updatedProject);
     }
 
+    @Override
+    public void getTask(UUID taskID) {
+        for (Column column: currentProject.getColumns()) {
+            for (Task task: column.getTasks()) {
+                if (task.getID().equals(taskID)) {
+                    presenter.displayTaskDetails(new TaskModel(task.getName(), taskID, task.getDescription(),
+                            task.getCompletionStatus(), task.getDueDateTime()));
+                }
+            }
+        }
+    }
+
     /**
      * The method to delete a column from the project.
      *
@@ -246,4 +256,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // Inserting the new task
         insertTask.DBInsert(updatedTask,columnID);
     }
+
+
 }
