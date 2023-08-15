@@ -16,7 +16,7 @@
       </Label>
       <ScrollPane fx:id="scrollPaneContainer" layoutX="52.0" layoutY="72.0" prefHeight="390.0" prefWidth="718.0">
          <content>
-            <HBox fx:id="columnsContainer" prefHeight="371.0" prefWidth="721.0" />
+            <HBox fx:id="columnsContainer" prefHeight="371.0" prefWidth="715.0" />
          </content></ScrollPane>
       <Button fx:id="backButton" layoutX="58.0" layoutY="14.0" mnemonicParsing="false" onAction="#clickBackButton" text="Back">
          <font>

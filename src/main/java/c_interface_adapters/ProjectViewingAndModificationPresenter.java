@@ -272,6 +272,10 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     public void displayNewColumn(ColumnModel column) {
         ScrollPane scrollPane = new PresenterUtility().createScrollPane();
         VBox columnBox = new PresenterUtility().createColumnBox(column);
+
+        columnBox.setPrefWidth(220);
+//        columnBox.setPrefHeight(365);
+
         HBox columnNameAndOptions = new PresenterUtility().createColumnNameAndOptions();
         Label columnLabel = new PresenterUtility().createColumnLabel(column.getName());
         MenuButton columnOptions = new PresenterUtility().createColumnOptions();
