@@ -10,7 +10,6 @@ import b_application_business_rules.use_cases.project_selection_gateways.IDBInse
 
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
-import com.sun.glass.ui.Clipboard;
 
 
 import java.io.*;

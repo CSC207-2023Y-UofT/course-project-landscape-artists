@@ -5,7 +5,6 @@ package b_application_business_rules.boundaries;//this boundary will be the inpu
 
 
 import b_application_business_rules.entity_models.ColumnModel;
-import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 
 
@@ -28,4 +27,6 @@ public interface ProjectViewingAndModificationInputBoundary {
     void addColumn(String columnName);
 
     void getTask(UUID taskID);
+
+    void changeTaskCompletionStatus(UUID id, boolean completionStatus, UUID columnID);
 }

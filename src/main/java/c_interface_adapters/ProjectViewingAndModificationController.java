@@ -360,4 +360,14 @@ public class ProjectViewingAndModificationController {
         System.out.println("\nSUCCESSFUL MOVE!!!!!");
     }
 
+    /**
+     * Handles the click event when a task is completed.
+     *
+     * @param id               of task to change.
+     * @param completionStatus the completion status previously
+     * @param columnID id the task belongs to.
+     */
+    public void handleCompleteTask(UUID id, boolean completionStatus, UUID columnID) {
+        interactor.changeTaskCompletionStatus(id, completionStatus, columnID);
+    }
 }

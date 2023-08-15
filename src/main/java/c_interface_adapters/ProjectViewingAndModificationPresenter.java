@@ -342,6 +342,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private void setTaskOptions( HBox hbox, TaskModel task, String columnBoxId) {
         MenuButton taskOptionsButton = new PresenterUtility().createTaskOptionsMenu(task, hbox, columnBoxId, this);
         RadioButton completeTaskButton = new RadioButton();
+        completeTaskButton.setOnAction(event -> {controller.handleCompleteTask(task.getID(),
+                task.getCompletionStatus(), UUID.fromString(columnBoxId));});
 
         hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
         new PresenterUtility().configureHBoxFeatures(hbox, this, task);

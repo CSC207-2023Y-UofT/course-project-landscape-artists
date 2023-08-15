@@ -173,6 +173,32 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
+     * Changes a task's completion status.
+     *
+     * @param idOfTask               the UUID of the tak to be changed.
+     * @param completionStatus its previous status.
+     * @param columnID
+     */
+    @Override
+    public void changeTaskCompletionStatus(UUID idOfTask, boolean completionStatus, UUID columnID) {
+        ChangeTaskCompletionStatus useCase = new ChangeTaskCompletionStatus(currentProject);
+        Task taskUpdated = useCase.changeCompletionStatus(idOfTask);
+
+        TaskModel taskModel = new TaskModel(taskUpdated);
+
+        IDBInsert idbInsert = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+
+        System.out.println("TASKMODEL STATUS (SHOULD BE TRUE) " + taskUpdated.getCompletionStatus());
+
+        idbRemove.DBRemoveTask(idOfTask);
+        idbInsert.DBInsert(taskModel, columnID);
+
+
+
+    }
+
+    /**
      * The method to delete a column from the project.
      *
      * @param columnID the UUID of the column to be deleted.
