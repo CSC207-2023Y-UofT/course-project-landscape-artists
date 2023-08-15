@@ -120,9 +120,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         // calls presenter to display message
         presenter.displayRemovedTask(taskModel, columnID);
 
-        // initialize controller and remove task from database
-        IDBRemove removeTask = new DBManagerRemoveController();
-        removeTask.DBRemoveTask(taskModel.getID());
+
     }
 
     /**
@@ -236,7 +234,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         String oldTaskName = oldTaskInfo.get(1);
         String oldTaskDescription = oldTaskInfo.get(2);
         boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
 //        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
         TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
