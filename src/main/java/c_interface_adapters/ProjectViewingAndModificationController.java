@@ -201,7 +201,7 @@ public class ProjectViewingAndModificationController {
      * Displays the detailed information of a specific task in a pop-up window.
      * The TaskModel object contains the attributes and details of the task to be displayed.
      *
-     * @param task The TaskModel object representing the task whose details will be displayed.
+     * @param taskID The TaskID object representing the task whose details will be displayed.
      *             It should contain the task's name, ID, description, completion status, and due date.
      */
     public void showTaskDetails(UUID taskID) {

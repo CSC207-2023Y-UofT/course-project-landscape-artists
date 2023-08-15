@@ -276,7 +276,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         scrollPane.getStyleClass().clear();
 
         VBox columnBox = new PresenterUtility().createColumnBox(column);
-        columnBox.setStyle("-fx-background-color: #FFFFFF");
+        PresenterUtility.setColumnUIStyling(columnBox);
 
         // set prefered width of scroll pane.
         columnBox.setPrefWidth(220);

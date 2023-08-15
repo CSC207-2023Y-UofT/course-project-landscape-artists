@@ -155,6 +155,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         dbInsertManager.DBInsert(updatedProject);
     }
 
+    /**
+     * The method to get the task from the entities. Used to show the updated task details.
+     *
+     * @param taskID ID of task.
+     */
     @Override
     public void getTask(UUID taskID) {
         for (Column column: currentProject.getColumns()) {

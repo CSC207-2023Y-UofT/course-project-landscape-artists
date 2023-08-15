@@ -97,6 +97,17 @@ public class PresenterUtility {
         return valueLabel;
     }
 
+
+    /**
+     * Sets the styling for columnUI.
+     *
+     * @param columnBox the VBox to set the styling of.
+     */
+    public static void setColumnUIStyling(VBox columnBox) {
+//        columnBox.setStyle("-fx-background-color: red");
+        columnBox.getStyleClass().add("column-ui-styling");
+    }
+
     /**
      * Creates and returns a Label for the column name.
      *
