@@ -316,9 +316,16 @@ public class UIComponentLocator {
         Scene currentScene = ProjectSelectionPresenter.stage.getScene();
         if (currentScene != null) {
             for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    if (node.getId().equals(projectsGridID)) {
-                        return ((GridPane) node);
+//                if (node instanceof GridPane) {
+//                    if (node.getId().equals(projectsGridID)) {
+//                        return ((GridPane) node);
+//                    }
+//                }
+
+                if (node instanceof ScrollPane) {
+                    Node projectsGrid = ((ScrollPane) node).getContent();
+                    if (projectsGrid.getId().equals(projectsGridID)) {
+                        return ((GridPane) projectsGrid);
                     }
                 }
             }

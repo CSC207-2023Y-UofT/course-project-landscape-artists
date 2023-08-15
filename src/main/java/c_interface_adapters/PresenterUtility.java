@@ -805,7 +805,7 @@ public class PresenterUtility {
     void configureProjectsGrid() {
         GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
         projectsGrid.setHgap(20);
-        projectsGrid.setVgap(100);
+        projectsGrid.setVgap(20);
         new PresenterUtility().setColumnAndRowConstraints(projectsGrid);
     }
 }
