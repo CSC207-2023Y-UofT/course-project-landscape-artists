@@ -680,7 +680,8 @@ public class PresenterUtility {
      * @return The created "Create Project" button.
      */
     Button createCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
-        Button createProjectButton = new Button("+");
+        Button createProjectButton = UIComponentLocator.findCreateProjectButton();
+//        Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(projectSelectionPresenter::handleCreateProjectPopup);
         createProjectButton.getStyleClass().add("create-project-button-style");
         return createProjectButton;
@@ -692,9 +693,9 @@ public class PresenterUtility {
      * @param projectSelectionPresenter
      */
     void addCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
-        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
+//        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
         Button createProjectButton = new PresenterUtility().createCreateProjectButton(projectSelectionPresenter);
-        projectsGrid.add(createProjectButton, projectSelectionPresenter.getCurrentColumn(), projectSelectionPresenter.getCurrentRow());
+//        projectsGrid.add(createProjectButton, projectSelectionPresenter.getCurrentColumn(), projectSelectionPresenter.getCurrentRow());
     }
 
     /**
@@ -778,6 +779,7 @@ public class PresenterUtility {
         new PresenterUtility().configureCurrentProjectButton(currentProjectButton, nameAndDescriptionContainer, project);
         currentProjectButton.setUserData(project.getID());
         currentProjectButton.setOnAction(event -> projectSelectionPresenter.controller.handleChosenProjectButton(event));
+
         return currentProjectButton;
     }
 
@@ -790,12 +792,12 @@ public class PresenterUtility {
         for (int col = 0; col < 2; col++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
             columnConstraints.setHgrow(Priority.ALWAYS);
-            columnConstraints.setFillWidth(true);
+            columnConstraints.setFillWidth(false);
         }
 
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setFillHeight(true);
+        rowConstraints.setFillHeight(false);
         projectsGrid.getRowConstraints().add(rowConstraints);
     }
 
@@ -805,7 +807,7 @@ public class PresenterUtility {
     void configureProjectsGrid() {
         GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
         projectsGrid.setHgap(20);
-        projectsGrid.setVgap(20);
+        projectsGrid.setVgap(40);
         new PresenterUtility().setColumnAndRowConstraints(projectsGrid);
     }
 }

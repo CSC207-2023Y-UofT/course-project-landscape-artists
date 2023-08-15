@@ -323,6 +323,7 @@ public class UIComponentLocator {
 //                }
 
                 if (node instanceof ScrollPane) {
+                    node.getStyleClass().clear();
                     Node projectsGrid = ((ScrollPane) node).getContent();
                     if (projectsGrid.getId().equals(projectsGridID)) {
                         return ((GridPane) projectsGrid);
@@ -359,6 +360,20 @@ public class UIComponentLocator {
         for (Node hboxChild : hbox.getChildren()) {
             if (hboxChild instanceof Button) {
                 return (Button) hboxChild;
+            }
+        }
+        return null;
+    }
+
+    static Button findCreateProjectButton() {
+        Scene currentScene = ProjectSelectionPresenter.stage.getScene();
+        if (currentScene != null) {
+            for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof Button) {
+                    System.out.println("FOUND THE BUTTON " + node);
+                    return (Button) node;
+
+                }
             }
         }
         return null;

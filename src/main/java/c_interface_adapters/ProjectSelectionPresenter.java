@@ -12,6 +12,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoMod
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -180,6 +181,12 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Button currentProjectButton = new PresenterUtility().createCurrentProjectButton(project, this);
             MenuButton menuButton = new PresenterUtility().createMenuButton(project, this);
             HBox buttonContainer = new PresenterUtility().createButtonContainer(currentProjectButton, menuButton, project);
+
+            Insets buttonContainerMargin = new Insets(20, 10, 20, 10); // Adjust the values as per your requirements
+            buttonContainer.setMargin(buttonContainer, buttonContainerMargin);
+
+            GridPane.setMargin(buttonContainer, new Insets(50, 10, 0, 50));
+
             projectsGrid.add(buttonContainer, currentColumn, currentRow);
 
             currentColumn++;
