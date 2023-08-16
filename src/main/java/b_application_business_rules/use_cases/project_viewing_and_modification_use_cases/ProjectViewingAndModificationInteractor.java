@@ -251,34 +251,24 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     public void changeTaskDetails(TaskModel updatedTask, UUID taskID, UUID columnID) {
         // Initializes and call use case
         EditTask editTask = new EditTask(currentProject);
-        editTask.editTask(columnID, updatedTask);
-
-        // calls presenter to display message
-        presenter.displayChangedTaskDetails(updatedTask, columnID);
+        Task editedTask = editTask.editTask(columnID, updatedTask);
 
         // Initializing the controllers
         IDBRemove removeTask = new DBManagerRemoveController();
         IDBInsert insertTask = new DBManagerInsertController();
-        IDBSearch findOldTask = new DBManagerSearchController();
 
         // Removing the existing task requires a TaskModel, which we don't have any
         // So we need to make one: by finding all the information about the old task
         // Then using the TaskFactory to create a TaskModel
 
-        ArrayList<String> oldTaskInfo = findOldTask.DBTaskSearch(taskID.toString());
-        String oldTaskName = oldTaskInfo.get(1);
-        String oldTaskDescription = oldTaskInfo.get(2);
-        boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
-        TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
-                oldTaskDescription, oldTaskStatus, oldTaskDate);
-
         // Removing the old task
         removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask,columnID);
+        insertTask.DBInsert(new TaskModel(editedTask),columnID);
+
+        // calls presenter to display message
+        presenter.displayChangedTaskDetails(updatedTask, columnID);
     }
 
 
