@@ -6,7 +6,7 @@ import java.util.UUID;
 
 /**
  * A task within in the productivity application.
- * 
+ * <p>
  * Each task will have a name, a unique identifier, a description, an attribute
  * to indicate whether the task has been completed or not, and a due date.
  */
@@ -133,10 +133,10 @@ public class Task {
 
     /**
      * Negates the status of completion for this task.
-     * 
+     * <p>
      * Iff the task is completed, the task will be marked as incomplete.
      * Iff the task is incomplete, the task will be marked as complete.
-     * 
+     *
      * @return The final status of completion for the task.
      */
     public boolean negateCompletionStatus() {
@@ -165,7 +165,7 @@ public class Task {
 
     /**
      * Returns a String representation of the Task.
-     * 
+     * <p>
      * {@inheritDoc}
      * 
      * @return a String representation of the Task.
@@ -190,13 +190,12 @@ public class Task {
             return false;
         }
         // Checking the equality of each of the attributes
-        boolean allAttributesAreEqual = t.getName().equals(this.getName()) &&
+
+        return t.getName().equals(this.getName()) &&
                 t.getID().equals(this.getID()) &&
                 t.getDescription().equals(this.getDescription()) &&
                 t.getCompletionStatus() == this.getCompletionStatus() &&
                 t.getDueDateTime().equals(this.getDueDateTime());
-
-        return allAttributesAreEqual;
     }
 
     /**
@@ -204,7 +203,7 @@ public class Task {
      *      * ID. Otherwise, returns null.
      * @param taskID UUID ID of task searched.
      * @param listOfTasks List of task entities to do the search in.
-     * @return
+     * @return Task with the id
      */
     public static Task IDToTask(UUID taskID, ArrayList<Task> listOfTasks) {
         int i = 0;

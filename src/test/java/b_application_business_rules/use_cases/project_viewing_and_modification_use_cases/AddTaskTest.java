@@ -1,21 +1,18 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
-import static javafx.beans.binding.Bindings.when;
-import static org.junit.jupiter.api.Assertions.*;
-
 import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.*;
+import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.entity_models.TaskModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class AddTaskTest {
 
@@ -23,7 +20,7 @@ public class AddTaskTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -36,7 +33,7 @@ public class AddTaskTest {
         // Mock the behavior of the Project and Column classes
         Column mockColumn = new Column("Test Column", new ArrayList<>(), columnId);
 //        when(mockProject.getColumns()).thenReturn(Collections.singletonList(mockColumn));
-        assertTrue(mockProject.getColumns().size() == 0);
+        assertEquals(0, mockProject.getColumns().size());
 
         // Create an instance of AddTask with the mock Project
         mockProject.addColumn(mockColumn);
@@ -44,7 +41,7 @@ public class AddTaskTest {
         addTask.addTask(columnId, taskModel);
 
         // Verify that the task was added to the column's list of tasks
-        assertTrue(mockColumn.getTasks().size() == 1);
+        assertEquals(1, mockColumn.getTasks().size());
     }
 
     @Test

@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * A column within the productivity application.
- * 
+ * <p>
  * Each column will have a name, a unique identifier, and a list of tasks.
  */
 public class Column {
@@ -208,22 +208,22 @@ public class Column {
     @Override
     public String toString() {
         // Starts constructing the string representation of the column
-        String columnStringRepresentation = "[" + "Column Name: " + this.getName() + ", " + "Tasks: ";
-        columnStringRepresentation += "{";
+        StringBuilder columnStringRepresentation = new StringBuilder("[" + "Column Name: " + this.getName() + ", " + "Tasks: ");
+        columnStringRepresentation.append("{");
 
         // Adding all the column's task to the string representation
         for (Task task : this.tasks) {
-            columnStringRepresentation += task.toString();
-            columnStringRepresentation += ", ";
+            columnStringRepresentation.append(task.toString());
+            columnStringRepresentation.append(", ");
         }
-        columnStringRepresentation = columnStringRepresentation.substring(
-                0, columnStringRepresentation.length() - 2); // removing the last ", "
+        columnStringRepresentation = new StringBuilder(columnStringRepresentation.substring(
+                0, columnStringRepresentation.length() - 2)); // removing the last ", "
 
         // Closing up the braces and brackets
-        columnStringRepresentation += "}";
-        columnStringRepresentation += "]";
+        columnStringRepresentation.append("}");
+        columnStringRepresentation.append("]");
 
-        return columnStringRepresentation;
+        return columnStringRepresentation.toString();
     }
 
 
@@ -240,11 +240,10 @@ public class Column {
             return false;
         }
         // Checking the equality of each of the attributes
-        boolean allAttributesAreEqual = c.getName().equals(this.getName()) &&
+
+        return c.getName().equals(this.getName()) &&
                 c.getID().equals(this.getID()) &&
                 c.getTasks().equals(this.getTasks());
-
-        return allAttributesAreEqual;
     }
 
     /**

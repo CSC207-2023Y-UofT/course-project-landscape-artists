@@ -5,7 +5,7 @@ import java.util.*;
 
 /**
  * A project within the productivity application.
- * 
+ * <p>
  * Each project will have a name, unique identifier, a description, and a list
  * of columns (which contain tasks).
  */
@@ -262,11 +262,10 @@ public class Project {
             return false;
         }
         // Checking the equality of each of the attributes
-        boolean allAttributesAreEqual = p.getName().equals(this.getName()) &&
+
+        return p.getName().equals(this.getName()) &&
                 p.getID().equals(this.getID()) &&
                 p.getDescription().equals(this.getDescription()) &&
                 p.getColumns().equals(this.getColumns());
-
-        return allAttributesAreEqual;
     }
 }
