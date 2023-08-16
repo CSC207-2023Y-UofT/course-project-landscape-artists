@@ -45,6 +45,18 @@ public class IDListsToModelList implements IDbIdToModelList {
         return resultColumnModels;
     }
 
+    /**
+     * Creates and inserts a default column into the list of column models.
+     *
+     * This method generates a new default column with the name "Default Column" and an empty list of task models.
+     * The generated default column is added to the provided list of column models. Additionally, it inserts the default
+     * column into the database and updates the project's column list with the default column's ID. The method then
+     * removes the existing project entry from the database and replaces it with an updated entry containing the new
+     * default column ID and the provided list of column models.
+     *
+     * @param resultColumnModels The list of column models to which the default column will be added.
+     * @return The updated list of column models with the added default column.
+     */
     private List<ColumnModel> getDefaultColumn(List<ColumnModel> resultColumnModels) {
         ColumnModel defaultColumn = new  ColumnModel(
             "Default Column",

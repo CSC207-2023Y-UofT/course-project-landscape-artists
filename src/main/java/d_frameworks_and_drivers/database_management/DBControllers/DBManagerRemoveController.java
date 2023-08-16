@@ -17,10 +17,19 @@ import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * A class responsible for managing the removal of data from the database.
+ */
 public class DBManagerRemoveController implements IDBRemove {
     /**
+     * Removes a project entry from the database.
      *
+     * This method takes the UUID of the project to be removed. It renames the Projects.csv file to ProjectsBin.csv to
+     * temporarily move the file aside. It initializes a ProjectDBInitializer to prepare for the CSV removal and update
+     * operation. Then, it calls CsvRemovalUpdate method to update the CSV file with the specified UUID removed. Finally,
+     * it renames ProjectsBin.csv back to Projects.csv after the update.
+     *
+     * @param uuid The UUID of the project to be removed from the database.
      */
     public void DBRemoveProject(UUID uuid) {
         File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
@@ -38,7 +47,13 @@ public class DBManagerRemoveController implements IDBRemove {
     }
 
     /**
+     * Removes a column entry from the database.
      *
+     * Similar to DBRemoveProject, this method removes a column entry specified by the UUID. It performs similar steps
+     * such as temporarily renaming the Columns.csv file, initializing a ColumnDBInitializer, updating the CSV file,
+     * and renaming it back.
+     *
+     * @param uuid The UUID of the column to be removed from the database.
      */
     public void DBRemoveColumn(UUID uuid) {
         File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
@@ -56,7 +71,13 @@ public class DBManagerRemoveController implements IDBRemove {
     }
 
     /**
+     * Removes a task entry from the database.
      *
+     * Similar to the previous methods, this method removes a task entry specified by the UUID. It temporarily renames
+     * the Tasks.csv file, initializes a TaskDBInitializer, updates the CSV file, and renames it back.
+     * Additionally, it prints debug messages before and after the removal process.
+     *
+     * @param uuid The UUID of the task to be removed from the database.
      */
     public void DBRemoveTask(UUID uuid) {
         System.out.println("INSIDE DB REMOVE Task");
