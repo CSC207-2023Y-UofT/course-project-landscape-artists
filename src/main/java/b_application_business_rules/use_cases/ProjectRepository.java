@@ -62,6 +62,11 @@ public class ProjectRepository {
         this.setCurrentProject(null);
     }
 
+    /**
+     * Returns all the projects in the class.
+     *
+     * @return List<Project> held in class.
+     */
     public List<Project> getAllProjects() {
         return allProjects;
     }

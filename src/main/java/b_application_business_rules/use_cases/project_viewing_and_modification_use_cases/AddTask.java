@@ -39,8 +39,9 @@ public class AddTask {
         // Then, retrieve the column entity
         Column currentColumn = Column.IDToColumn(columnID, listOfColumns);
         // Then, add the task to the columns list of tasks
-        System.out.println( "\n\nCurrent Columns Tasks "+ currentColumn.getTasks());
-        currentColumn.addTask(task);
+        if (currentColumn!=null) {
+            currentColumn.addTask(task);
+        }
     }
 
     /**
@@ -53,5 +54,4 @@ public class AddTask {
         return new Task(taskModel.getName(), taskModel.getID(), taskModel.getDescription(),
                 taskModel.getCompletionStatus(), taskModel.getDueDateTime());
     }
-
 }

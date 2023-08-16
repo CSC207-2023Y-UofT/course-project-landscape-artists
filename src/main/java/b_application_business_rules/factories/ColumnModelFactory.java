@@ -13,11 +13,12 @@ import java.util.UUID;
 public class ColumnModelFactory {
 
     /**
-     * Creates a ColumnModel
-     * @param name
-     * @param taskModels
-     * @param ID
-     * @return a ColumnModel
+     * Creates a new ColumnModel instance.
+     *
+     * @param name The name of the column.
+     * @param taskModels The list of TaskModels associated with the column.
+     * @param ID The unique ID for the column.
+     * @return A newly created ColumnModel instance.
      */
     public static ColumnModel create(String name, List<TaskModel> taskModels, UUID ID) {
         return new ColumnModel(name, taskModels, ID);
