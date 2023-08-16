@@ -1,41 +1,50 @@
-package b_application_business_rules.project_selection_use_cases;
+package b_application_business_rules.use_cases.project_selection_use_cases;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
-import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
-public class DeleteProjectTest {
-    private Project p;
+public class CreateProjectTest {
+    private ArrayList<Column> listOfColumns = new ArrayList<>();
     private Column c;
     private Task t1;
 
+    //private ProjectModel uP;
 
     @BeforeEach
     public void setUp() {
-        UUID id1 = UUID.randomUUID();
+        //UUID id1 = UUID.randomUUID();
         UUID id2 = UUID.randomUUID();
         UUID id3 = UUID.randomUUID();
-
+        //UUID id4 = UUID.randomUUID();
         t1 = new Task("t1", id3, "", false, LocalDateTime.now());
         ArrayList<Task> listOfTasks = new ArrayList<>();
         listOfTasks.add(t1);
         c = new Column("c1", listOfTasks, id2);
 
-        ArrayList<Column> listOfColumns = new ArrayList<>();
         listOfColumns.add(c);
-        p = new Project("p1", id1, "", listOfColumns);
 
     }
-    //This test is just a dummy - it always passes. This was added purely for marks associated with test coverage
+
     @Test
-    public void testDeleteProject() {
+    public void testNewProject() {
+        //uP.setName("p2");
+        List<Project> allProjects = new ArrayList<>();
+        CreateProject useCase = new CreateProject(allProjects);
+        Project p1 =
+                useCase.newProject("p1", UUID.randomUUID(), "", listOfColumns);
+        assertTrue(p1.getName().equals("p1"));
+        assertTrue(p1.getDescription().equals(""));
+
+        assertTrue(allProjects.size() == 1);
+
     }
 }
