@@ -11,6 +11,8 @@ marking tasks as complete or incomplete
 (regardless of the column -- which allows you to use these boards as regular kanban boards,
 or just a board with columns of tasks), create new projects/boards, and more!
 
+![project-demo.gif](..%2Fproject-demo.gif)
+
 ## Running the Program
 To run the program, ensure that you have Java installed, as well as JavaFX.
 This program uses Java Version 17.
