@@ -58,26 +58,4 @@ public class EditProjectDetails {
         IDBInsert databaseInserter = new DBManagerInsertController();
         databaseInserter.DBInsert(new ProjectModel(projectToBeEdited));
     }
-
-    /**
-     * Converts a ProjectModel into a Project entity.
-     *
-     * @param projectModel The ProjectModel to convert.
-     * @return A Project entity representing the given ProjectModel.
-     */
-    public static Project createProjectEntity(ProjectModel projectModel) {
-        List<ColumnModel> columnModels = projectModel.getColumnModels();
-        List<Column> columns = new ArrayList<>();
-        for (ColumnModel columnModel : columnModels) {
-            List<TaskModel> taskModels = columnModel.getTaskModels();
-            List<Task> tasks = new ArrayList<>();
-            for (TaskModel taskModel : taskModels) {
-                tasks.add(new Task(taskModel.getName(), taskModel.getID(), taskModel.getDescription(),
-                        taskModel.getCompletionStatus(), taskModel.getDueDateTime()));
-            }
-            columns.add(new Column(columnModel.getName(), tasks, columnModel.getID()));
-        }
-        return new Project(projectModel.getName(), projectModel.getID(), projectModel.getDescription(),
-                columns);
-    }
 }

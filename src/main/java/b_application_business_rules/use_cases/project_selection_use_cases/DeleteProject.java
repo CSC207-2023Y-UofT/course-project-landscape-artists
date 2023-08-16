@@ -32,6 +32,16 @@ public class DeleteProject {
     }
 
     /**
+     * Constructor to initialize the DeleteProject instance with a list of all projects.
+     *
+     * @param allProjects The list of all projects in the system.
+     */
+    public DeleteProject(List<Project> allProjects, IDBRemove dbImplementation) {
+        this.allProjects = allProjects;
+        this.databaseRemover = dbImplementation;
+    }
+
+    /**
      * Deletes a project from the database based on the provided project UUID.
      *
      * @param projectUUID The UUID of the project to be deleted.
