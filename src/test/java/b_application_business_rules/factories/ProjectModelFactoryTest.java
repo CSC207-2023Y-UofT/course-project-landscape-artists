@@ -11,11 +11,17 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Tests the project model factory.
+ */
 class ProjectModelFactoryTest {
+    /**
+     * Tests the create method.
+     */
     @Test
     void create() {
         TaskModel task = TaskModelFactory.create("silly little task", UUID.randomUUID(), "silly little description", false, LocalDateTime.now());
-        ArrayList<TaskModel> tasks = new ArrayList<TaskModel>();
+        ArrayList<TaskModel> tasks = new ArrayList<>();
         tasks.add(task);
         ColumnModel c = ColumnModelFactory.create("test name", tasks, UUID.randomUUID());
         ArrayList<ColumnModel> cols = new ArrayList<>();
