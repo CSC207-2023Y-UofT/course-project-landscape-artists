@@ -14,6 +14,9 @@ import javafx.util.Pair;
 
 import java.util.UUID;
 
+/**
+ * Responsible for UI related functionality of popup windows.
+ */
 public class PopupUI {
     /**
      * Displays a popup window to add a new task to the selected column. *

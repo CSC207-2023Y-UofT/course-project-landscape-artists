@@ -17,11 +17,6 @@ import javafx.util.Duration;
  * with implementing drag-and-drop functionality within the user interface (UI). It provides methods to configure
  * the drag-and-drop behavior of UI components and handles state changes that occur during the drag-and-drop
  * interactions.
- *
- * This class serves as a modular solution for incorporating drag-and-drop interactions into UI elements,
- * promoting reusability and maintainability across different parts of the application. By managing the
- * complexity of drag-and-drop interactions, the DragAndDropImplementation class allows presenter classes to
- * focus on higher-level application logic and user experience.
  */
 public class DragAndDropImplementation {
     private boolean success;

@@ -175,7 +175,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
      *
      * @param idOfTask               the UUID of the tak to be changed.
      * @param completionStatus its previous status.
-     * @param columnID
+     * @param columnID The columnID of parent column of the task.
      */
     @Override
     public void changeTaskCompletionStatus(UUID idOfTask, boolean completionStatus, UUID columnID) {
@@ -271,7 +271,13 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
-     * Edits the details of a column identified by the specified columnID.
+     * Edits the details of a column using the provided information. This method triggers the relevant use cases
+     * to modify the corresponding entities and database records. After the changes are made, the presenter is
+     * called to display the updated information.
+     *
+     * @param columnID The unique ID of the column to be modified.
+     * @param newColumnName The new name for the column.
+     * @param columnModel The ColumnModel containing the original column details.
      */
     @Override
     public void editColumnDetails(UUID columnID, String newColumnName, ColumnModel columnModel) {
@@ -295,10 +301,13 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
 
     /**
-     * Changes the task details given the new TaskModel task. Calls the use case to
-     * make changes to the entities and database then calls the presenter to display the
-     * updated changes
+     * Changes the details of a task using the updated TaskModel. This method triggers the relevant use cases
+     * to modify the corresponding entities and database records. After the changes are made, the presenter is
+     * called to display the updated information.
      *
+     * @param updatedTask The TaskModel containing the updated task details.
+     * @param taskID The unique ID of the task to be modified.
+     * @param columnID The unique ID of the column in which the task is located.
      */
     @Override
     public void changeTaskDetails(TaskModel updatedTask, UUID taskID, UUID columnID) {
