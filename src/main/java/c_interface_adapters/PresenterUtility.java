@@ -97,6 +97,17 @@ public class PresenterUtility {
         return valueLabel;
     }
 
+
+    /**
+     * Sets the styling for columnUI.
+     *
+     * @param columnBox the VBox to set the styling of.
+     */
+    public static void setColumnUIStyling(VBox columnBox) {
+        columnBox.setStyle("-fx-background-color: #F9F9FA;" +
+                "-fx-background-radius: 20");
+    }
+
     /**
      * Creates and returns a Label for the column name.
      *
@@ -117,7 +128,11 @@ public class PresenterUtility {
      */
     ScrollPane createScrollPane() {
         ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setPrefSize(200, 400);
+        scrollPane.setPrefWidth(235);
+        scrollPane.setMinWidth(235);
+        scrollPane.setMaxWidth(235);
+        scrollPane.setPrefHeight(370);
+        scrollPane.setMaxHeight(370);
         return scrollPane;
     }
 
@@ -276,7 +291,7 @@ public class PresenterUtility {
             ProjectViewingAndModificationPresenter.controller.deleteTask(UUID.fromString(columnBoxId), task);
         });
         showTaskDetailsButton.setOnAction(event -> {
-            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task);
+            ProjectViewingAndModificationPresenter.controller.showTaskDetails(task.getID());
         });
 
         taskOptionsButton.getItems().addAll(changeTaskDetailsButton, deleteTaskButton, showTaskDetailsButton);
@@ -680,7 +695,8 @@ public class PresenterUtility {
      * @return The created "Create Project" button.
      */
     Button createCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
-        Button createProjectButton = new Button("+");
+        Button createProjectButton = UIComponentLocator.findCreateProjectButton();
+//        Button createProjectButton = new Button("+");
         createProjectButton.setOnAction(projectSelectionPresenter::handleCreateProjectPopup);
         createProjectButton.getStyleClass().add("create-project-button-style");
         return createProjectButton;
@@ -692,9 +708,9 @@ public class PresenterUtility {
      * @param projectSelectionPresenter
      */
     void addCreateProjectButton(ProjectSelectionPresenter projectSelectionPresenter) {
-        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
+//        GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
         Button createProjectButton = new PresenterUtility().createCreateProjectButton(projectSelectionPresenter);
-        projectsGrid.add(createProjectButton, projectSelectionPresenter.getCurrentColumn(), projectSelectionPresenter.getCurrentRow());
+//        projectsGrid.add(createProjectButton, projectSelectionPresenter.getCurrentColumn(), projectSelectionPresenter.getCurrentRow());
     }
 
     /**
@@ -778,6 +794,7 @@ public class PresenterUtility {
         new PresenterUtility().configureCurrentProjectButton(currentProjectButton, nameAndDescriptionContainer, project);
         currentProjectButton.setUserData(project.getID());
         currentProjectButton.setOnAction(event -> projectSelectionPresenter.controller.handleChosenProjectButton(event));
+
         return currentProjectButton;
     }
 
@@ -790,13 +807,8 @@ public class PresenterUtility {
         for (int col = 0; col < 2; col++) {
             ColumnConstraints columnConstraints = new ColumnConstraints();
             columnConstraints.setHgrow(Priority.ALWAYS);
-            columnConstraints.setFillWidth(true);
+            columnConstraints.setFillWidth(false);
         }
-
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.ALWAYS);
-        rowConstraints.setFillHeight(true);
-        projectsGrid.getRowConstraints().add(rowConstraints);
     }
 
     /**
@@ -804,8 +816,7 @@ public class PresenterUtility {
      */
     void configureProjectsGrid() {
         GridPane projectsGrid = ProjectSelectionPresenter.uiComponentLocator.findGridPane();
-        projectsGrid.setHgap(20);
-        projectsGrid.setVgap(100);
+        projectsGrid.setVgap(40);
         new PresenterUtility().setColumnAndRowConstraints(projectsGrid);
     }
 }

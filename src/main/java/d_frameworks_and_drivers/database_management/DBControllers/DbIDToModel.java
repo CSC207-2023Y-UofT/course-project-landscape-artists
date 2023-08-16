@@ -10,14 +10,22 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The DbIDToModel class implements the IDbIdToModel interface and provides methods to retrieve various models
+ * (ColumnModel, TaskModel, and ProjectModel) from the database based on their IDs.
+ */
 public class DbIDToModel implements IDbIdToModel {
-    DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
-    IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
+    private final DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+    private final IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
     /**
-     * Returns column model given its ID from database
-     * @param Id id of column model
-     * @return column model object
+     * Retrieves a ColumnModel from the database based on its ID.
+     *
+     * @param Id The ID of the desired ColumnModel.
+     * @return The retrieved ColumnModel object.
      */
+    @Override
     public ColumnModel IdToColumnModel(String Id) {
         List<String> temp = dbManagerSearchController.DBColumnSearch(Id);
         ColumnModel columnModelTemp = new ColumnModel(
@@ -30,35 +38,40 @@ public class DbIDToModel implements IDbIdToModel {
     }
 
     /**
-     * Returns task model given its ID from database
-     * @param Id id of task model
-     * @return task model object
+     * Retrieves a TaskModel from the database based on its ID.
+     *
+     * @param Id The ID of the desired TaskModel.
+     * @return The retrieved TaskModel object.
      */
+    @Override
     public TaskModel IdToTaskModel(String Id) {
-        List<String> temp = dbManagerSearchController.DBColumnSearch(Id);
+        List<String> temp = dbManagerSearchController.DBTaskSearch(Id);
         TaskModel TaskModelTemp = new TaskModel(
                 temp.get(1),
                 UUID.fromString(temp.get(0)),
                 temp.get(2),
                 !temp.get(3).isEmpty(),
-                LocalDateTime.parse(temp.get(4)));
+                LocalDateTime.parse(temp.get(4))
+        );
         return TaskModelTemp;
     }
 
     /**
-     * Returns project model given its ID from database
-     * @param Id id of project model
-     * @return project model object
+     * Retrieves a ProjectModel from the database based on its ID.
+     *
+     * @param Id The ID of the desired ProjectModel.
+     * @return The retrieved ProjectModel object.
      */
+    @Override
     public ProjectModel IdToProjectModel(String Id) {
-            List<String> temp = dbManagerSearchController.DBProjectSearch(Id);
-            System.out.println("IDTO PROJECT");
-            System.out.println(List.of(temp.get(3)));
-            ProjectModel ProjectModelTemp = new ProjectModel(
-                    temp.get(1),
-                    UUID.fromString(temp.get(0)),
-                    temp.get(2),
-                    iDbIdToModelList.IdToColumnModelList(List.of(temp.get(3))));
+        List<String> temp = dbManagerSearchController.DBProjectSearch(Id);
+        List<String> columnIds = List.of(temp.get(3).split(","));
+        ProjectModel ProjectModelTemp = new ProjectModel(
+                temp.get(1),
+                UUID.fromString(temp.get(0)),
+                temp.get(2),
+                iDbIdToModelList.IdToColumnModelList(columnIds)
+        );
         return ProjectModelTemp;
     }
 }

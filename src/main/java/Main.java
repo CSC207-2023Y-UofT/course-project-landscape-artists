@@ -1,5 +1,4 @@
 import c_interface_adapters.ProjectSelectionPresenter;
-
 import javafx.application.Application;
 
 

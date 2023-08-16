@@ -24,6 +24,10 @@
     -fx-alignment: center; /* Align the graphic in the center of the button */
 }
 
+.column-ui-styling {
+    -fx-background-color: red;
+}
+
 .menu-button-custom  {
     -fx-background-color: transparent; /* Remove the default background color */
 
@@ -35,3 +39,4 @@
 .menu-button-custom .arrow {
     -fx-padding: 0; /* Remove padding to minimize spacing */
 }
+

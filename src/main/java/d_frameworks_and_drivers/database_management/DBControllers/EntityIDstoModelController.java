@@ -48,39 +48,25 @@ public class EntityIDstoModelController implements DBAdapterInterface {
             // Iterate through the list of column UUIDS to create a list of ColumnModels
             //IF AND ONLY IF there is a valid list of column UUIDs
             List<ColumnModel> columnModelList = new ArrayList<>();
-//            System.out.println("TEMP COLUMN TEST");
-//            System.out.println(Arrays.stream(tempColumnID).toList() == null);
-//            System.out.println(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty());
             if (!(Arrays.stream(tempColumnID).toList().get(0) == null || Arrays.stream(tempColumnID).toList().get(0).trim().isEmpty())) {
                 for (String tempCol : tempColumnID) {
                     //Find the correct column given the string UUID in Column.csv
-                    System.out.println("------------IDs To Project Models");
-                    System.out.println(Arrays.stream(tempColumnID).toList());
-                    System.out.println(tempCol);
                     ArrayList<String> columnInfo = searchController.DBColumnSearch(tempCol);
 
                     //Saving the column ID and name
-                    System.out.println("------------ColumnInfo");
-                    System.out.println(columnInfo);
-                    System.out.println(columnInfo.get(0));
                     UUID columnID = UUID.fromString(columnInfo.get(0));
                     String columnName = columnInfo.get(1);
 
                     //Temporary Array of string to hold the task IDs
                     String[] tempTaskID = columnInfo.get(2).split(",");
 
-                    System.out.println("Task ID ARRAY");
-                    System.out.println(Arrays.toString(tempTaskID));
 
                     List<TaskModel> taskModelList = new ArrayList<>();
                     if (!(Arrays.stream(tempTaskID).toList().get(0) == null || Arrays.stream(tempTaskID).toList().get(0).trim().isEmpty())) {
                         for (String tempTask : tempTaskID) {
-                            System.out.println("Task ID");
-                            System.out.println(tempTask);
+
                             ArrayList<String> taskInfo = searchController.DBTaskSearch(tempTask);
 
-                            System.out.println("TaskInfo");
-                            System.out.println(taskInfo);
                             UUID taskID = UUID.fromString(taskInfo.get(0));
                             String taskName = taskInfo.get(1);
                             String taskDescription = taskInfo.get(2);
@@ -113,9 +99,10 @@ public class EntityIDstoModelController implements DBAdapterInterface {
     }
 
     /**
-     * Returns a project model given its UUID ID.
-     * @param projectUUID UUID ID
-     * @return a project model
+     * Converts a project UUID to the corresponding ProjectModel from the database.
+     *
+     * @param projectUUID The UUID of the project.
+     * @return The corresponding ProjectModel object.
      */
     public ProjectModel IDsToProjectModel(UUID projectUUID) {
         ArrayList<String> DbEntry = searchController.DBProjectSearch(projectUUID.toString());

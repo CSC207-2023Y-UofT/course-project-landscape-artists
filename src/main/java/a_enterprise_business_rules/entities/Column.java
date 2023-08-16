@@ -205,8 +205,6 @@ public class Column {
     /**
      * Returns a String representation of the Column.
      * 
-     * {@inheritDoc}
-     * 
      * @return a String representation of the Column.
      */
     @Override
@@ -269,27 +267,4 @@ public class Column {
         }
         return null;
     }
-    // testing IDToColumn helper function (Success!)
-    // public static void main(String[] args) {
-    // UUID id1 = UUID.randomUUID();
-    // UUID id2 = UUID.randomUUID();
-    // Column c1 = new Column("column 1", new List<Task>(), id1);
-    // Column c2 = new Column("column 2", new List<Task>(), id2);
-    // List<Column> listOfColumns = new List<Column>();
-    // listOfColumns.add(c1);
-    // listOfColumns.add(c2);
-    // Column found = Column.IDToColumn(id2, listOfColumns);
-    // System.out.println(c2.equals(found));
-    // }
-    // private UUID getValidColumnID(){
-    // this.ID = UUID.randomUUID();
-    // DBManagerInsertController dbManagerInsertController = new
-    // DBManagerInsertController();
-    // while(uuidMap.containsKey(this.ID.toString())){
-    // this.ID = UUID.randomUUID();
-    // }
-    // dbManagerInsertController.DBInsert(this.ID);
-    // return this.ID;
-    // }
-
 }

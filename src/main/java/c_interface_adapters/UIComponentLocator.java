@@ -172,8 +172,14 @@ public class UIComponentLocator {
     public HBox findColumnsContainer() {
         if (scene != null) {
             Node scrollPaneContainer = findNodeById(scrollPaneContainerID);
+            // clears scrollpane style
+            scrollPaneContainer.getStyleClass().clear();
+
             if (scrollPaneContainer instanceof ScrollPane) {
                 HBox columnsContainer = (HBox) ((ScrollPane) scrollPaneContainer).getContent();
+
+                // set spacing between each item
+                columnsContainer.setSpacing(10);
                 return columnsContainer;
             }
         }
@@ -296,7 +302,6 @@ public class UIComponentLocator {
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                System.out.println(node);
                 if (node.getId().equals(projectNameID)) {
                     return (Label) node;
                 }
@@ -316,9 +321,11 @@ public class UIComponentLocator {
         Scene currentScene = ProjectSelectionPresenter.stage.getScene();
         if (currentScene != null) {
             for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
-                if (node instanceof GridPane) {
-                    if (node.getId().equals(projectsGridID)) {
-                        return ((GridPane) node);
+                if (node instanceof ScrollPane) {
+                    node.getStyleClass().clear();
+                    Node projectsGrid = ((ScrollPane) node).getContent();
+                    if (projectsGrid.getId().equals(projectsGridID)) {
+                        return ((GridPane) projectsGrid);
                     }
                 }
             }
@@ -352,6 +359,23 @@ public class UIComponentLocator {
         for (Node hboxChild : hbox.getChildren()) {
             if (hboxChild instanceof Button) {
                 return (Button) hboxChild;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Finds a Button element in the project selection.
+     *
+     */
+    static Button findCreateProjectButton() {
+        Scene currentScene = ProjectSelectionPresenter.stage.getScene();
+        if (currentScene != null) {
+            for (Node node : currentScene.getRoot().getChildrenUnmodifiable()) {
+                if (node instanceof Button) {
+                    return (Button) node;
+
+                }
             }
         }
         return null;

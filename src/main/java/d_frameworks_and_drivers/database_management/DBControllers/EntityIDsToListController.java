@@ -9,6 +9,9 @@ import b_application_business_rules.use_cases.project_selection_gateways.IEntity
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The EntityIDsToListController class provides methods to convert lists of entity IDs into concatenated strings.
+ */
 public class EntityIDsToListController implements IEntityIDsToList {
     /**
      * This returns a concatenated string of column IDs
@@ -60,29 +63,3 @@ public class EntityIDsToListController implements IEntityIDsToList {
     }
 
 }
-
-/*
-String csvFilePath = "DatabaseFiles/Projects/Projects.csv"; // Replace with the path to your CSV file
-
-        // Sample list to store in the CSV column
-        List<String> columnIdList = project.getColumns();
-        String columnIdListString = "";
-        try (FileWriter fileWriter = new FileWriter(csvFilePath);
-             CSVPrinter csvPrinter = new CSVPrinter(
-                     fileWriter,
-                     CSVFormat.RFC4180.
-                             withQuoteMode(CSVFormat.
-                                     DEFAULT.getQuoteMode()))) {
-
-            columnIdListString.join(", ", columnIdList);
-            // Write the list to the CSV column as a single entry
-            csvPrinter.printRecord("","","", columnIdListString);
-
-            // Flush and close the CSVPrinter
-            csvPrinter.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return columnIdListString;
- */

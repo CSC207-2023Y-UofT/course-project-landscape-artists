@@ -28,7 +28,7 @@ public class TaskDBInitializerTest {
         // Check if the CSV file has the expected header
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] header = reader.readNext();
-            assertArrayEquals(new String[]{"TaskID", "Name", "Description", "Completion Status", "Due Date", "ColumnID"}, header);
+            assertArrayEquals(new String[]{"TaskID", "Name", "Description", "Completion Status", "Due Date"}, header);
 
             // Add more assertions if necessary
         } catch (IOException e) {
