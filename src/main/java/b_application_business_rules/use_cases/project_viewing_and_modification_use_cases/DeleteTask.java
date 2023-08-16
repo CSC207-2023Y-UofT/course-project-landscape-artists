@@ -16,19 +16,27 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * A use case class for deleting a task
+ * A use case class responsible for deleting a task from a project's column.
  */
 public class DeleteTask {
 
     private Project currentProject;
 
+    /**
+     * Constructs a DeleteTask instance associated with the specified project.
+     *
+     * @param currentProject The project from which tasks will be deleted.
+     */
     public DeleteTask(Project currentProject) {
         this.currentProject = currentProject;
     }
 
-    // Review whether entities should have arraylists or lists.ArrayLists more
-    // flexible
-    // Review whether models should be updated like entities
+    /**
+     * Deletes the specified task from the given column in the project.
+     *
+     * @param columnID The ID of the column from which the task will be deleted.
+     * @param taskModel The model representing the task to be deleted.
+     */
     public void deleteTask(UUID columnID, TaskModel taskModel) {
         // Delete Task from Column entity's list of tasks'
         // First get the list of columns in the current project

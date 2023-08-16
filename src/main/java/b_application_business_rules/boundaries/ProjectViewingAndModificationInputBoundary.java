@@ -83,4 +83,13 @@ public interface ProjectViewingAndModificationInputBoundary {
      * @param columnID       The unique identifier of the column containing the task.
      */
     void changeTaskCompletionStatus(UUID id, boolean completionStatus, UUID columnID);
+
+    /**
+     * Moves a task from the source column to the target column.
+     *
+     * @param sourceColumnID The ID of the source column from which the task will be moved.
+     * @param targetColumnID The ID of the target column to which the task will be moved.
+     * @param task The task to be moved.
+     */
+    void moveTask(String sourceColumnID, String targetColumnID, TaskModel task);
 }

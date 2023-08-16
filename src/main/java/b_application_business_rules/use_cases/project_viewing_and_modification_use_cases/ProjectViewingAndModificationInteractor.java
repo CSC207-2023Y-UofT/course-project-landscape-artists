@@ -11,10 +11,7 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.ProjectRepository;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_gateways.*;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
 import d_frameworks_and_drivers.database_management.DBControllers.*;
 
@@ -194,6 +191,62 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         idbInsert.DBInsert(taskModel, columnID);
 
 
+
+    }
+
+    /**
+     * Moves a task from the source column to the target column.
+     *
+     * @param sourceColumnID The ID of the source column from which the task will be moved.
+     * @param targetColumnID The ID of the target column to which the task will be moved.
+     * @param task The task to be moved.
+     */
+    @Override
+    public void moveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
+        MoveTask useCase = new MoveTask(sourceColumnID, targetColumnID, currentProject);
+
+        // Use DIP to retrieve all  necessary instances
+        IDBInsert  idbInsert = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+        IDBSearch idbSearch = new DBManagerSearchController();
+        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
+        // get the data from the database
+        List<String> sourceColumndata = idbSearch.DBColumnSearch(sourceColumnID);
+        List<String> targetColumndata = idbSearch.DBColumnSearch(targetColumnID);
+
+        // get original and updated TaskModel List
+        List<TaskModel> sourceTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(sourceColumndata.get(2).split(",")));
+        List<TaskModel> targetTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
+
+        // Delete the task model from the old list and add it to the new one
+        TaskModel.removeFromTaskModelList(sourceTaskList, task);
+        targetTaskList.add(task);
+
+        // build their respective ColumnModels
+        ColumnModel sourceColumnModel = new ColumnModel(
+                sourceColumndata.get(1),
+                sourceTaskList,
+                UUID.fromString(sourceColumndata.get(0))
+        );
+        ColumnModel targetColumnModel = new ColumnModel(
+                targetColumndata.get(1),
+                targetTaskList,
+                UUID.fromString(targetColumndata.get(0))
+        );
+
+
+        //remove old entries from DB
+        idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
+        idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));
+        idbRemove.DBRemoveTask(task.getID());
+
+        //add new entries to colunm DB
+        idbInsert.DBInsert(sourceColumnModel);
+        idbInsert.DBInsert(targetColumnModel);
+        idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
 
     }
 

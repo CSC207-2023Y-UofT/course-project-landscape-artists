@@ -5,25 +5,25 @@ import a_enterprise_business_rules.entities.Project;
 import b_application_business_rules.entity_models.ColumnModel;
 
 /**
- * The EditColumnDetails class is responsible for editing a column in the
- * currently
- * opened project in the database and the project entity.
+ * A use case class responsible for editing column details in a project.
  */
 public class EditColumn {
 
     private final Project currentProject;
 
     /**
-     * Constructs an EditColumnDetails object with the currentProject entity.
+     * Constructs an EditColumn instance associated with the current project.
      *
-     * @param currentProject
+     * @param currentProject The project for which column details will be edited.
      */
     public EditColumn(Project currentProject) {
         this.currentProject = currentProject;
     }
 
     /**
-     * Edits the column in the currently opened project entity.
+     * Edits the name of the specified column in the current project.
+     *
+     * @param updatedColumnModel The model representing the updated column details.
      */
     public void setColumnName(ColumnModel updatedColumnModel) {
         // Get the corresponding column entity

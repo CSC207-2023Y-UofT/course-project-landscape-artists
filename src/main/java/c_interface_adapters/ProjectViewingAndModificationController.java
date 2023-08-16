@@ -308,56 +308,7 @@ public class ProjectViewingAndModificationController {
     }
 
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
-        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
-        System.out.println("TARGET COLUMN ID " + targetColumnID );
-        System.out.println("TASK: " + task);
-
-        // Use DIP to retrieve all  necessary instances
-        IDBInsert  idbInsert = new DBManagerInsertController();
-        IDBRemove idbRemove = new DBManagerRemoveController();
-        IDBSearch idbSearch = new DBManagerSearchController();
-        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
-
-        // get the data from the database
-        List<String> sourceColumndata = idbSearch.DBColumnSearch(sourceColumnID);
-        List<String> targetColumndata = idbSearch.DBColumnSearch(targetColumnID);
-
-        // get original and updated TaskModel List
-        List<TaskModel> sourceTaskList = iDbIdToModelList.
-                IdToTaskModelList(List.of(sourceColumndata.get(2).split(",")));
-        List<TaskModel> targetTaskList = iDbIdToModelList.
-                IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
-
-        // Delete the task model from the old list and add it to the new one
-        TaskModel.removeFromTaskModelList(sourceTaskList, task);
-        targetTaskList.add(task);
-
-        System.out.println("SourceTaskList " + sourceTaskList);
-        System.out.println("Task to be removed " + task);
-        // build their respective ColumnModels
-        ColumnModel sourceColumnModel = new ColumnModel(
-                sourceColumndata.get(1),
-                sourceTaskList,
-                UUID.fromString(sourceColumndata.get(0))
-        );
-        ColumnModel targetColumnModel = new ColumnModel(
-                targetColumndata.get(1),
-                targetTaskList,
-                UUID.fromString(targetColumndata.get(0))
-        );
-
-
-        //remove old entries from DB
-        idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
-        idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));
-        idbRemove.DBRemoveTask(task.getID());
-
-        //add new entries to colunm DB
-        idbInsert.DBInsert(sourceColumnModel);
-        idbInsert.DBInsert(targetColumnModel);
-        idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
-
-        System.out.println("\nSUCCESSFUL MOVE!!!!!");
+        interactor.moveTask(sourceColumnID, targetColumnID, task);
     }
 
     /**
