@@ -246,7 +246,6 @@ public class ProjectViewingAndModificationController {
             projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
         } else {
             popupStage.close();
-            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
             changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
                 uuid);
         }
@@ -307,9 +306,17 @@ public class ProjectViewingAndModificationController {
         dialogStage.close();
     }
 
+    /**
+     * Handles the request to move a task from the source column to the target column.
+     *
+     * @param sourceColumnID The ID of the source column from which the task will be moved.
+     * @param targetColumnID The ID of the target column to which the task will be moved.
+     * @param task The TaskModel representing the task to be moved.
+     */
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
         interactor.moveTask(sourceColumnID, targetColumnID, task);
     }
+
 
     /**
      * Handles the click event when a task is completed.

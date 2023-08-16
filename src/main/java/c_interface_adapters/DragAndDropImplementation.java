@@ -128,7 +128,6 @@ public class DragAndDropImplementation {
      * @return The found HBox, or null if not found.
      */
     HBox findHBoxById(String id, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
-        System.out.println("this.VBoxContainer " + projectViewingAndModificationPresenter.VBoxContainer);
         for (VBox vBox : projectViewingAndModificationPresenter.VBoxContainer) {
             for (Node node2 : vBox.getChildren() ) {
                 if (node2 instanceof HBox && node2.getId().equals(id)) {
