@@ -17,24 +17,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The DBManagerRemoveController class implements the IDBRemove interface to provide methods for removing
+ * database records corresponding to projects, columns, and tasks based on their UUIDs.
+ * It handles the removal process by copying CSV files to bin files, updating them, and swapping out the old file
+ * with the new one to maintain data integrity.
+ */
 public class DBManagerRemoveController implements IDBRemove {
     private static  String baseDirectory = "src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/";
+
     /**
+     * Removes a project record from the database using its UUID.
      *
+     * @param uuid The UUID of the project to be removed.
      */
     public void DBRemoveProject(UUID uuid) {
-//        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Projects/Projects.csv");
-//        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Projects/ProjectsBin.csv"));
-//        ProjectDBInitializer projectDBInitializer = new ProjectDBInitializer();
-//        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Projects/Projects.csv");
-//
-//        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Projects/ProjectsBin.csv");
-//        CsvRemovalUpdate(uuid, binFile, newFile);
-//        binFile.renameTo(newFile);
         try {
             String projectsDirectory = baseDirectory + "Projects/";
 
@@ -51,22 +48,13 @@ public class DBManagerRemoveController implements IDBRemove {
 
     }
 
+
     /**
+     * Removes a column record from the database using its UUID.
      *
+     * @param uuid The UUID of the column to be removed.
      */
     public void DBRemoveColumn(UUID uuid) {
-//        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Columns/Columns.csv");
-//        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Columns/ColumnsBin.csv"));
-//        ColumnDBInitializer columnDBInitializer = new ColumnDBInitializer();
-//        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Columns/Columns.csv");
-//
-//        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Columns/ColumnsBin.csv");
-//        CsvRemovalUpdate(uuid, binFile, newFile);
-//        binFile.renameTo(newFile);
         try {
             String columnsDirectory = baseDirectory + "Columns/";
 
@@ -83,29 +71,11 @@ public class DBManagerRemoveController implements IDBRemove {
     }
 
     /**
+     * Removes a task record from the database using its UUID.
      *
+     * @param uuid The UUID of the task to be removed.
      */
     public void DBRemoveTask(UUID uuid) {
-//        System.out.println("INSIDE DB REMOVE Task");
-//        File tempFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Tasks/Tasks.csv");
-//        printFileContent(tempFile, "TEMP FILE BEFORE RENAME");
-//        tempFile.renameTo(new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Tasks/TasksBin.csv"));
-//        printFileContent(tempFile, "TEMP FILE AFTER RENAME");
-//        TaskDBInitializer taskDBInitializer = new TaskDBInitializer();
-//        File newFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Tasks/Tasks.csv");
-//
-//        printFileContent(newFile, "NEW FILE");
-//
-//        File binFile = new File("src/main/java/d_frameworks_and_drivers/" +
-//                "database_management/DatabaseFiles/Tasks/TasksBin.csv");
-//
-//        printFileContent(binFile, "BIN FILE");
-//        CsvRemovalUpdate(uuid, binFile, newFile);
-//        binFile.renameTo(newFile);
-//        System.out.println("FINISHED DB REMOVE Task");
         try {
             String taskDirectory = baseDirectory + "Tasks/";
 
@@ -121,22 +91,6 @@ public class DBManagerRemoveController implements IDBRemove {
             CsvRemovalUpdate(uuid, binFile, newFile);
         } catch (IOException e) {
             System.err.println("ERROR IN DBREMOVETASK");
-        }
-    }
-
-    public static void printFileContent(File file, String state) {
-        System.out.println("THE FILE NAME IS " + state);
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(file));
-            String line;
-
-            while ((line = reader.readLine()) != null) {
-                System.out.println(line);
-            }
-
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -167,11 +121,8 @@ public class DBManagerRemoveController implements IDBRemove {
             fileReader.close();
             csvParser.close();
             boolean deleted = tempFile.delete();
-            System.out.println("DELETED??? " + deleted + tempFile.getName());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 }

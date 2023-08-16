@@ -26,14 +26,13 @@ public class DBManagerInsertController implements IDBInsert {
      * Adds a project record with ProjectID, Name, Description and list of column IDs
      * into the Database
      *
-     * @param projectModel
+     * @param projectModel The model to be added
      */
     public void DBInsert(ProjectModel projectModel) {
 
         EntityIDsToListController entityIDsToListController = new EntityIDsToListController();
         File projectFile = new File("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/Projects/Projects.csv");
         List<String[]> content = new ArrayList<>();
-        System.out.println(projectFile.exists());
         // Read the existing content of the CSV file into memory
         try (CSVReader reader = new CSVReader(new FileReader(projectFile))) {
             content.addAll(reader.readAll());
@@ -66,7 +65,7 @@ public class DBManagerInsertController implements IDBInsert {
      * Adds a column record with fields "ColumnID","Name",
      * and "Task ID's" into the Database
      *
-     * @param columnModel
+     * @param columnModel The model to be added
      */
     public void DBInsert(ColumnModel columnModel) {
         // Try with resources: CSVWriter
@@ -114,7 +113,6 @@ public class DBManagerInsertController implements IDBInsert {
         List<String[]> content = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(file))) {
             content.addAll(reader.readAll());
-            System.out.println("Content At The Reader Instance " + content);
             reader.close(); // Close the CSVReader after reading
         } catch (Exception e) {
             e.printStackTrace();
@@ -129,14 +127,10 @@ public class DBManagerInsertController implements IDBInsert {
         data.add(taskModel.getDueDateTime().toString());
         data.add(parentColumn.toString());
 
-        System.out.println("Data " + data);
-
-
         content.add(data.toArray(new String[0]));
 
         // Write the updated content back to the CSV file (append mode)
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
-            System.out.println("Content After Adding Data " + content);
             writer.writeAll(content);
             writer.close(); // Close the CSVWriter after writing
         } catch (Exception e) {
@@ -147,7 +141,7 @@ public class DBManagerInsertController implements IDBInsert {
 
     /**
      * Adds a record of unique ID into the Database
-     * @param uuid
+     * @param uuid The uuid of class to be inserted.
      */
     public void DBInsert(UUID uuid) {
         // Try with resources: CSVWriter

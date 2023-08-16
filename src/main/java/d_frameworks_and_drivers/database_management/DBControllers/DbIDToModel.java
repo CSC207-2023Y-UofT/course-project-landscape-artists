@@ -10,6 +10,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The DbIDToModel class implements the IDbIdToModel interface to provide methods for retrieving entity models
+ * from the database based on their IDs. It interacts with the database search controller and utilizes
+ * ID lists to model list conversion for constructing entity models from database data.
+ */
 public class DbIDToModel implements IDbIdToModel {
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
     IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
@@ -52,8 +57,6 @@ public class DbIDToModel implements IDbIdToModel {
      */
     public ProjectModel IdToProjectModel(String Id) {
             List<String> temp = dbManagerSearchController.DBProjectSearch(Id);
-            System.out.println("IDTO PROJECT");
-            System.out.println(List.of(temp.get(3)));
             ProjectModel ProjectModelTemp = new ProjectModel(
                     temp.get(1),
                     UUID.fromString(temp.get(0)),
