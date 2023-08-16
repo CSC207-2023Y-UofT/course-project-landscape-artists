@@ -12,6 +12,13 @@ marking tasks as complete or incomplete
 or just a board with columns of tasks), create new projects/boards, and more!
 
 ![project-demo.gif](project-demo.gif)
+Database Persistence Demo:
+
+
+https://github.com/CSC207-2023Y-UofT/course-project-landscape-artists/assets/107582846/020e1da6-7fdf-4bd9-8318-6efedd4e4e5c
+
+
+
 
 ## Running the Program
 To run the program, ensure that you have Java installed, as well as JavaFX.
