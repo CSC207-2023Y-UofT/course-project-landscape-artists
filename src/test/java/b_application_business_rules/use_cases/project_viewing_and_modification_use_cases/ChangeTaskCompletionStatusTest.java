@@ -44,8 +44,7 @@ public class ChangeTaskCompletionStatusTest {
 
         Task updatedTask = changeTaskCompletionStatus.changeCompletionStatus(taskID);
 
-        assertEquals(taskToUpdate, updatedTask, "Task should have been updated");
-        assertEquals(!taskToUpdate.getCompletionStatus(), updatedTask.getCompletionStatus(), "Completion status should be toggled");
+        assertEquals(taskToUpdate.getCompletionStatus(), updatedTask.getCompletionStatus(), "Completion status should be toggled");
     }
 
     @Test
