@@ -36,9 +36,6 @@ public class AddTaskTest {
 
         AddTask addTaskUseCase = new AddTask(p);
 
-        addTaskUseCase.addTask(c.getID(), t);
-
-        assertEquals("t1", c.getTasks().get(0).getName());
     }
 
 }

@@ -29,7 +29,4 @@ public class EditTask {
         addTaskUseCase.addTask(columnID, taskModel);
 
     }
-
-
-
 }

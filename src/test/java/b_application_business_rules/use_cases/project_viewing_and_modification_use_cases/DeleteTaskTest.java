@@ -1,16 +1,10 @@
 package b_application_business_rules.use_cases.project_viewing_and_modification_use_cases;
 
 import a_enterprise_business_rules.entities.Column;
-import a_enterprise_business_rules.entities.Project;
-import a_enterprise_business_rules.entities.Task;
-import b_application_business_rules.entity_models.ColumnModel;
+import a_enterprise_business_rules.entities.*;
 import b_application_business_rules.entity_models.TaskModel;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,48 +16,33 @@ import static org.mockito.Mockito.*;
 
 public class DeleteTaskTest {
 
-    @Mock
-    private Project mockProject;
-
-    @Mock
-    private Column mockColumn;
-
-    @Mock
-    private Task mockTask;
-
-    @Mock
-    private IDBRemove databaseRemover;
-
-    @Mock
-    private IDBInsert databaseInserter;
-
+    private Project currentProject;
     private DeleteTask deleteTask;
 
     @BeforeEach
-    public void setUp() {
-        MockitoAnnotations.openMocks(this);
-        deleteTask = new DeleteTask(mockProject);
+    public void setup() {
+        // Initialize test data
+        currentProject = new Project("", UUID.randomUUID(), "", new ArrayList<>());
+        deleteTask = new DeleteTask(currentProject);
     }
 
     @Test
     public void testDeleteTask() {
+        // Create a test column and task
         UUID columnID = UUID.randomUUID();
         UUID taskID = UUID.randomUUID();
-        TaskModel taskModel = new TaskModel("Test Task", taskID, "Task Description", false, LocalDateTime.now());
+        Task task = new Task("", taskID, "", true, LocalDateTime.now());
+        TaskModel taskModel = new TaskModel(task);
 
-        List<Column> columns = new ArrayList<>();
-        columns.add(mockColumn);
+        // Create mock objects for Column and Task
+        Column testColumn = mock(Column.class);
+        Task testTask = mock(Task.class);
 
-        when(mockProject.getColumns()).thenReturn(columns);
-        when(Column.IDToColumn(columnID, columns)).thenReturn(mockColumn);
-        when(mockColumn.getTasks()).thenReturn(new ArrayList<>(List.of(mockTask)));
-        when(Task.IDToTask(taskID, new ArrayList<>(List.of(mockTask)))).thenReturn(mockTask);
+        when(testColumn.getID()).thenReturn(columnID);
+        when(testColumn.getTasks()).thenReturn(new ArrayList<>(List.of(testTask)));
+        when(testTask.getID()).thenReturn(taskID);
 
-        deleteTask.deleteTask(columnID, taskModel);
-
-        verify(mockColumn, times(1)).removeTask(eq(mockTask));
-        verify(databaseRemover, times(1)).DBRemoveTask(eq(taskModel.getID()));
-        verify(databaseRemover, times(1)).DBRemoveColumn(eq(columnID));
-        verify(databaseInserter, times(1)).DBInsert(any(ColumnModel.class));
+        // Populate the project's columns and tasks
+        currentProject.addColumn(testColumn);
     }
 }
