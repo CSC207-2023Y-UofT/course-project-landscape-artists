@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -104,6 +105,35 @@ public class DBSearcher implements AutoCloseable {
              CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
             // first, generate map of from column with search keys to records
             Map<String,CSVRecord> strRecordMap = DBMapper.getStringToRecordMap(fieldIndex);
+            // Generate a list of values from the map using searched keys
+            for (String key : searchKeys) {
+                CSVRecord record = strRecordMap.get(key);
+                if (record != null) {
+                    output.add(record);
+                }
+            }
+            return output;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     *  Returns a list of csv records given field where to do the search and search keys list.
+     * @param field field where to do the search
+     * @param searchKeys search keys list
+     * @return list of csv records
+     */
+    public List<CSVRecord> getRecordsList(String field, List<String> searchKeys){
+        List<CSVRecord> output = new ArrayList<>();
+        // Try with resource: create FileWriter, CSVParser object as resources - closes automatically
+        try (FileReader fileReader = new FileReader(csvFile);
+             DBMapper csvMapper = new DBMapper(csvFile.getPath());
+             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader().withNullString(""))) {
+            // first, generate map of from column with search keys to records
+            Map<String,CSVRecord> strRecordMap = csvMapper.getStringToRecordMap(field);
             // Generate a list of values from the map using searched keys
             for (String key : searchKeys) {
                 CSVRecord record = strRecordMap.get(key);

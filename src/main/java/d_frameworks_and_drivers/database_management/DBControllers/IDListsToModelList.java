@@ -16,8 +16,9 @@ public class IDListsToModelList implements IDbIdToModelList {
     //DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of column entity models given a list of UUID IDs as strings for the columns.
+     * @param IDlist a list of UUID IDs as strings for the columns
+     * @return a list of column entity models
      */
     public List<ColumnModel> IdToColumnModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
@@ -44,6 +45,18 @@ public class IDListsToModelList implements IDbIdToModelList {
         return resultColumnModels;
     }
 
+    /**
+     * Creates and inserts a default column into the list of column models.
+     *
+     * This method generates a new default column with the name "Default Column" and an empty list of task models.
+     * The generated default column is added to the provided list of column models. Additionally, it inserts the default
+     * column into the database and updates the project's column list with the default column's ID. The method then
+     * removes the existing project entry from the database and replaces it with an updated entry containing the new
+     * default column ID and the provided list of column models.
+     *
+     * @param resultColumnModels The list of column models to which the default column will be added.
+     * @return The updated list of column models with the added default column.
+     */
     private List<ColumnModel> getDefaultColumn(List<ColumnModel> resultColumnModels) {
         ColumnModel defaultColumn = new  ColumnModel(
             "Default Column",
@@ -71,8 +84,9 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of task entity models given a list of UUID IDs as strings for the tasks.
+     * @param IDlist a list of UUID IDs as strings for the tasks
+     * @return a list of task entity models
      */
     public List<TaskModel> IdToTaskModelList(List<String> IDlist) {
         //IDlist = List.of(IDlist.get(0).split(","));
@@ -108,8 +122,9 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Returns a list of project entity models given a list of UUID IDs as strings for the projects.
+     * @param IDlist a list of UUID IDs as strings for the projects
+     * @return a list of project entity models
      */
     public List<ProjectModel> IdToProjectModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));

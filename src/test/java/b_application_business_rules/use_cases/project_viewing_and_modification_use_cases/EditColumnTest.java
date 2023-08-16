@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
-class EditColumnTest {
+public class EditColumnTest {
     private Project p;
     private Column c;
     @BeforeEach

@@ -10,12 +10,13 @@ import com.opencsv.CSVWriter;
 
 public class DBInitializer {
     String [] DBNames = {"Projects", "Columns", "Tasks"};
+
     CSVWriter writer;
     public DBInitializer(){
         {
             for (String s : DBNames) {
                 try {
-                    writer = new CSVWriter(new FileWriter("./DatabaseFiles/" + s + "/" + s + ".csv"));
+                    writer = new CSVWriter(new FileWriter("src/main/java/d_frameworks_and_drivers/database_management/DatabaseFiles/" + s + "/" + s + ".csv"));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -1,4 +1,4 @@
-package d_frameworks_and_drivers.database_management.DBControllers;
+package d_frameworks_and_drivers.database_management.DBAdapters;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class IDListsToModelListTest {
+public class DBSearcherTest {
+
     /**
      * Setting up test data fixtures in preparation for the execution of a test method.
      */
@@ -21,14 +22,18 @@ public class IDListsToModelListTest {
     }
 
     @Test
-    void idToColumnModelList() {
+    void getRecord() {
     }
 
     @Test
-    void idToTaskModelList() {
+    void testGetRecord() {
     }
 
     @Test
-    void idToProjectModelList() {
+    void getRecordsList() {
+    }
+
+    @Test
+    void testGetRecordsList() {
     }
 }

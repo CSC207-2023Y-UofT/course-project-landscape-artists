@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class AddColumnTest {
+public class AddColumnTest {
     private Project p;
 
     @BeforeEach
