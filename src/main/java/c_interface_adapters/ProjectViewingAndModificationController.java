@@ -246,7 +246,6 @@ public class ProjectViewingAndModificationController {
             projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
         } else {
             popupStage.close();
-            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
             changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
                 uuid);
         }
@@ -308,10 +307,6 @@ public class ProjectViewingAndModificationController {
     }
 
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
-        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
-        System.out.println("TARGET COLUMN ID " + targetColumnID );
-        System.out.println("TASK: " + task);
-
         // Use DIP to retrieve all  necessary instances
         IDBInsert  idbInsert = new DBManagerInsertController();
         IDBRemove idbRemove = new DBManagerRemoveController();
@@ -332,8 +327,6 @@ public class ProjectViewingAndModificationController {
         TaskModel.removeFromTaskModelList(sourceTaskList, task);
         targetTaskList.add(task);
 
-        System.out.println("SourceTaskList " + sourceTaskList);
-        System.out.println("Task to be removed " + task);
         // build their respective ColumnModels
         ColumnModel sourceColumnModel = new ColumnModel(
                 sourceColumndata.get(1),
@@ -357,7 +350,6 @@ public class ProjectViewingAndModificationController {
         idbInsert.DBInsert(targetColumnModel);
         idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
 
-        System.out.println("\nSUCCESSFUL MOVE!!!!!");
     }
 
     /**

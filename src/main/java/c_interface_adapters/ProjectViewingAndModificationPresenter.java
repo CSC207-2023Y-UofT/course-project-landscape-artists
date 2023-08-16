@@ -153,7 +153,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     @Override
     public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
-        System.out.println("DISPLAY NEW TASK WAS RUN");
 
         // Get the UI for the column
         VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
@@ -175,8 +174,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     @Override
     public void displayRemovedTask(TaskModel task, UUID columnBoxID) {
-        System.out.println("REMOVE TASK WAS RUN");
-
         // Get the UI for the column
         VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
 
@@ -198,7 +195,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         String columnName = column.getName();
 
         VBox columnUI = uiComponentLocator.getColumnUI(columnUUID);
-        System.out.println("Column UI" + columnUI);
         if (columnUI != null) {
             Label columnNameUI = uiComponentLocator.getColumnNameUI(columnUI);
             if (columnNameUI != null) {
@@ -237,7 +233,7 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         if (taskNameUI != null) {
             taskNameUI.setText(taskName);
         } else {
-            System.out.println("TASK IS NOT IN THE COLUMN");
+            System.err.println("TASK IS NOT IN THE COLUMN");
         }
     }
 

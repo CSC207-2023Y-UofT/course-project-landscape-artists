@@ -302,7 +302,6 @@ public class UIComponentLocator {
         if (scene != null) {
             // Find the HBox that corresponds to the provided projectUUID
             for (Node node : scene.getRoot().getChildrenUnmodifiable()) {
-                System.out.println(node);
                 if (node.getId().equals(projectNameID)) {
                     return (Label) node;
                 }
