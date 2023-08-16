@@ -33,6 +33,7 @@ public class ChangeTaskCompletionStatus {
         for (Column column: currentProject.getColumns()) {
             for (Task task: column.getTasks()) {
                 if (task.getID().equals(taskID)) {
+                    task.negateCompletionStatus();
                     return task;
                 }
             }
