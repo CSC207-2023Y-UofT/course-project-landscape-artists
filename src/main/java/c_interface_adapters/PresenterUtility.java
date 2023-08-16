@@ -2,6 +2,7 @@ package c_interface_adapters;
 
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.ProjectRepository;
 import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -312,7 +313,7 @@ public class PresenterUtility {
             projectViewingAndModificationPresenter, TaskModel task) {
         new DragAndDropImplementation().configureDragAndDropBehavior(hbox,
                 projectViewingAndModificationPresenter, task);
-        new PresenterUtility().configureHBoxStyleOnMouseActions(hbox, projectViewingAndModificationPresenter);
+        new PresenterUtility().configureHBoxStyleOnMouseActions(hbox, projectViewingAndModificationPresenter, task);
     }
 
     /**
@@ -321,13 +322,13 @@ public class PresenterUtility {
      * @param hbox                                   The HBox to configure the style for.
      * @param projectViewingAndModificationPresenter
      */
-    void configureHBoxStyleOnMouseActions(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
+    void configureHBoxStyleOnMouseActions(HBox hbox, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter, TaskModel taskModel) {
         hbox.setOnMouseEntered(e -> {
             new PresenterUtility().applyHBoxHoverStyle(hbox);
         });
 
         hbox.setOnMouseExited(e -> {
-            new PresenterUtility().resetHBoxStyle(hbox);
+            new PresenterUtility().resetHBoxStyle(hbox, taskModel);
         });
     }
 
@@ -346,7 +347,14 @@ public class PresenterUtility {
      *
      * @param hbox The HBox to reset the style for.
      */
-    void resetHBoxStyle(HBox hbox) {
+    void resetHBoxStyle(HBox hbox, TaskModel taskModel) {
+//        ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter = new ProjectViewingAndModificationPresenter();
+//        if(!taskModel.getCompletionStatus()){
+//            projectViewingAndModificationPresenter.displayTaskCompleted(taskModel.getID(), UUID.fromString(hbox.getParent().getId()));
+//        } else{
+//            hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
+//            hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
+//        }
         hbox.setStyle("-fx-border-radius: 10.0d; -fx-border-color: black; -fx-border-width: 2px;");
         hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGRAY, new CornerRadii(10.0d), Insets.EMPTY)));
     }

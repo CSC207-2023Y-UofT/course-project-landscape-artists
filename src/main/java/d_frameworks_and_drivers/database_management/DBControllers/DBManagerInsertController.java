@@ -113,7 +113,7 @@ public class DBManagerInsertController implements IDBInsert {
         List<String[]> content = new ArrayList<>();
         try (CSVReader reader = new CSVReader(new FileReader(file))) {
             content.addAll(reader.readAll());
-            reader.close(); // Close the CSVReader after reading
+            //reader.close(); // Close the CSVReader after reading
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,8 +132,8 @@ public class DBManagerInsertController implements IDBInsert {
         // Write the updated content back to the CSV file (append mode)
         try (CSVWriter writer = new CSVWriter(new FileWriter(file))) {
             writer.writeAll(content);
-            writer.close(); // Close the CSVWriter after writing
-        } catch (Exception e) {
+            //writer.close(); // Close the CSVWriter after writing
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -6,10 +6,12 @@ import b_application_business_rules.entity_models.ProjectModel;
 import b_application_business_rules.entity_models.TaskModel;
 import c_interface_adapters.view_models.ProjectViewModel;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.control.Label;
@@ -312,6 +314,12 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
 
         for (TaskModel task : tasks) {
             HBox hbox = new PresenterUtility().createTaskCard(task);
+//            if(task.getCompletionStatus()){
+//                hbox.setStyle("-fx-border-radius: 10.0d;" +
+//                        "-fx-border-color: black;" +
+//                        "-fx-border-width: 2px;");
+//                hbox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(10.0d), Insets.EMPTY)));
+//            }
             setTaskOptions( hbox, task, columnBox.getId());
 
             if (!addedHBoxIds.contains(hbox.getId())) {
@@ -383,4 +391,14 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         popupStage.showAndWait();
     }
 
+    public void displayTaskCompleted(UUID taskModelid, UUID colID){
+        HBox taskBox = uiComponentLocator.findTaskUI(taskModelid,
+                uiComponentLocator.getColumnUI(colID.toString()));
+
+        taskBox.setStyle("-fx-border-radius: 10.0d;" +
+                "-fx-border-color: black;" +
+                "-fx-border-width: 2px;");
+        taskBox.setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, new CornerRadii(10.0d), Insets.EMPTY)));
+
+    }
 }

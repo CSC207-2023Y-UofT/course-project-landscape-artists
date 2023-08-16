@@ -190,6 +190,7 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         idbRemove.DBRemoveTask(idOfTask);
         idbInsert.DBInsert(taskModel, columnID);
 
+        presenter.displayTaskCompleted(idOfTask, columnID);
 
 
     }

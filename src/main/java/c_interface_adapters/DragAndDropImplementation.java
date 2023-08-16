@@ -107,17 +107,18 @@ public class DragAndDropImplementation {
 
         TranslateTransition transition = new TranslateTransition(Duration.millis(100), sourceHBox);
         transition.setToX(projectViewingAndModificationPresenter.dragDestination.getLayoutX() - destinationHBox.getLayoutX());
-        transition.play();
 
         transition.setOnFinished(event -> {
             projectViewingAndModificationPresenter.dragDestination.getChildren().add(sourceHBox);
+
+            // Call controller class to initiate move task.
+            projectViewingAndModificationPresenter.controller.handleMoveTask(
+                    sourceColumnBox.getId(),
+                    projectViewingAndModificationPresenter.dragDestination.getId(),
+                    task);
         });
 
-        // Call controller class to initiate move task.
-        projectViewingAndModificationPresenter.controller.handleMoveTask(
-                sourceColumnBox.getId(),
-                projectViewingAndModificationPresenter.dragDestination.getId(),
-                task);
+        transition.play();
     }
 
     /**

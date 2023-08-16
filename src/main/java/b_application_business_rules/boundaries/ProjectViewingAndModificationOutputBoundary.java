@@ -77,4 +77,6 @@ public interface ProjectViewingAndModificationOutputBoundary {
      * @param taskModel  The task model containing details of the task to be displayed.
      */
     void displayTaskDetails(TaskModel taskModel);
+
+    void displayTaskCompleted(UUID taskModel, UUID colID);
 }
