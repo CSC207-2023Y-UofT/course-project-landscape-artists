@@ -213,7 +213,6 @@ public class TaskModel {
      */
     public Task getTaskEntity() {
         Task task = new Task(name, ID, description, isCompleted, dueDateTime);
-        System.out.println("TASK " + task);
         return task;
     }
 

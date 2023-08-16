@@ -98,9 +98,7 @@ public class Column {
      * @param newTask The task to add.
      */
     public void addTask(Task newTask) {
-        System.out.println("Old Tasks List" + this.tasks);
         this.tasks.add(newTask);
-        System.out.println("newTask List " + this.tasks);
 
     }
 

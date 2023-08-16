@@ -56,8 +56,6 @@ public class ColumnModel {
             this.addTaskModel(new TaskModel(tasks.get(i)));
         }
 
-        System.out.println("TASKS IN COLUMN MODEL " + this.taskModels.toString());
-
         this.ID = column.getID();
     }
 

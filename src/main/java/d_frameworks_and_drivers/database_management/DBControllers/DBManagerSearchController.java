@@ -123,7 +123,6 @@ public class DBManagerSearchController implements IDBSearch {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(taskInfo);
         return taskInfo;
     }
 
