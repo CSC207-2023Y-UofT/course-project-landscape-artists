@@ -12,18 +12,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * The IDListsToModelList class provides methods to convert lists of IDs to corresponding model lists from the database.
+ */
 public class IDListsToModelList implements IDbIdToModelList {
-    //DBManagerInsertController dbManagerInsertController = new DBManagerInsertController();
     DBManagerSearchController dbManagerSearchController = new DBManagerSearchController();
+
     /**
-     * @param IDlist
-     * @return
+     * Converts a list of column IDs to a list of corresponding ColumnModel objects from the database.
+     *
+     * @param IDlist The list of column IDs.
+     * @return The list of corresponding ColumnModel objects.
      */
     public List<ColumnModel> IdToColumnModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
         List<ColumnModel> resultColumnModels = new ArrayList<>();
-        System.out.println("---------IDlist");
-        System.out.println(IDlist);
 
         if(IDlist.get(0).equals("")){
             return getDefaultColumn(resultColumnModels);
@@ -31,9 +34,7 @@ public class IDListsToModelList implements IDbIdToModelList {
 
         for (String col : IDlist) {
             List<String> temp = dbManagerSearchController.DBColumnSearch(col);
-            System.out.println("IDs Lists To Model List");
-            System.out.println(col);
-            System.out.println(List.of(temp.get(2).split(",")));
+
             ColumnModel columnModelTemp = new ColumnModel(
                     temp.get(1),
                     IdToTaskModelList(List.of(temp.get(2).split(","))),
@@ -44,6 +45,13 @@ public class IDListsToModelList implements IDbIdToModelList {
         return resultColumnModels;
     }
 
+    /**
+     * Adds a default column to the provided list of column models, inserts it into the database,
+     * updates the project with the new column, and returns the updated list of column models.
+     *
+     * @param resultColumnModels The list of column models to which the default column should be added.
+     * @return The updated list of column models.
+     */
     private List<ColumnModel> getDefaultColumn(List<ColumnModel> resultColumnModels) {
         ColumnModel defaultColumn = new  ColumnModel(
             "Default Column",
@@ -71,8 +79,10 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Converts a list of IDs into a list of corresponding TaskModels by querying the database.
+     *
+     * @param IDlist The list of IDs to be converted into TaskModels.
+     * @return A list of TaskModels corresponding to the provided IDs.
      */
     public List<TaskModel> IdToTaskModelList(List<String> IDlist) {
         //IDlist = List.of(IDlist.get(0).split(","));
@@ -82,15 +92,11 @@ public class IDListsToModelList implements IDbIdToModelList {
         if(IDlist.get(0)==null || IDlist.get(0).isEmpty() || IDlist.get(0).equals("")){
             return resultTaskModels;
         }
-        System.out.println("ID List Printed Here:");
-        System.out.println(IDlist);
 
         for (String task : IDlist) {
             for (String s : task.split(",")) {
                 List<String> temp = dbManagerSearchController.DBTaskSearch(s);
-                System.out.println("temptemptemptemptemp");
-                System.out.println(temp);
-                System.out.println(task);
+
                 if(temp.size()>1){
                     TaskModel TaskModelTemp = new TaskModel(
                             temp.get(1),
@@ -108,8 +114,10 @@ public class IDListsToModelList implements IDbIdToModelList {
     }
 
     /**
-     * @param IDlist
-     * @return
+     * Converts a list of IDs into a list of corresponding ProjectModels by querying the database.
+     *
+     * @param IDlist The list of IDs to be converted into ProjectModels.
+     * @return A list of ProjectModels corresponding to the provided IDs.
      */
     public List<ProjectModel> IdToProjectModelList(List<String> IDlist) {
         IDlist = List.of(IDlist.get(0).split(","));
