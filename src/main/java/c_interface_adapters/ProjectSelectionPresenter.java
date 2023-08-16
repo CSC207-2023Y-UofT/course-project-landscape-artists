@@ -218,23 +218,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
         return currentRow;
     }
 
-
-    @Override
-    public void displayCurrentProject() {
-
-    }
-
-    @Override
-    public void projectCreated(ProjectModel projectModel) {
-
-    }
-
-    @Override
-    public void projectCreationFailed(String errorMessage) {
-        showErrorAlert("ERROR IN PROJECT CREATION", errorMessage);
-
-    }
-
     /**
      * Displays the provided projectModel to the UI.
      *

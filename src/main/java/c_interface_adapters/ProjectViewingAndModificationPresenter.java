@@ -242,11 +242,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     }
 
 
-    // TODO: IMPLEMENT THIS.
-    @Override
-    public void displayDeleteProject(ProjectViewModel project, UUID projectId) {
-
-    }
 
 
 
