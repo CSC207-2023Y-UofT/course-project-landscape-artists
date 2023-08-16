@@ -3,7 +3,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 import a_enterprise_business_rules.entities.Task;
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
-import b_application_business_rules.DataAccessInterface;
+
 import b_application_business_rules.entity_models.ColumnModel;
 import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
@@ -18,7 +18,7 @@ import java.util.UUID;
 /**
  * A use case class for deleting a task
  */
-public class DeleteTask implements DataAccessInterface {
+public class DeleteTask {
 
     private Project currentProject;
 

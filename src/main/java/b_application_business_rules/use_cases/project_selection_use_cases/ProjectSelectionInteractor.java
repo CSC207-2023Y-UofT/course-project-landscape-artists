@@ -30,7 +30,7 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	private final ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 	private final List<Project> allProjects = projectRepository.getAllProjects();
 	private final ProjectSelectionOutputBoundary presenter;
-	private ProjectModel projectModel;
+
 
 	/**
 	 * Initializes the ProjectSelectionInteractor with the provided presenter.
@@ -41,15 +41,24 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		this.presenter = presenter;
 	}
 
-	@Override
-	public void setCurrentProject(Project project) {
-		this.setCurrentProject(new ProjectModel(project));
-	}
-
+	/**
+	 * Sets the current project in the CurrentProjectRepository and notifies the
+	 * presenter to display it. This method is called when a project is selected
+	 * by the user in the UI.
+	 *
+	 * @param project The project selected by the user.
+	 */
 	public void setCurrentProject(ProjectModel project) {
 		projectRepository.setCurrentProject(project.getProjectEntity());
 	}
 
+
+	/**
+	 * Sets the attribute holding all projects in the ProjectRepository.
+	 * This method is called upon startup.
+	 *
+	 * @param allProjectsList The projects from the database.
+	 */
 	@Override
 	public void setAllProjects(List<ProjectModel> allProjectsList) {
 		List<Project> allProjects = new ArrayList<>();
@@ -61,10 +70,24 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		projectRepository.setAllProjects(allProjects);
 	}
 
+
+	/**
+	 * Sets the current project ID in the CurrentProjectID repository. Used by the database to have access
+	 *
+	 * @param uuid The UUID of the selected project.
+	 */
 	public void setCurrentProjectID(UUID uuid) {
 		CurrentProjectID.getCurrentProjectID().setSelectedProjectID(uuid);
 	}
 
+	/**
+	 * Creates a new project. This method is called when the user creates a new
+	 * project in the UI. It interacts with the necessary use cases and gateway to
+	 * create the project.
+	 *
+	 * @param projectName        The name of the project.
+	 * @param projectDescription The description of the project.
+	 */
 	@Override
 	public void createProject(String projectName, String projectDescription) {
 		IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
@@ -85,22 +108,29 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		presenter.displayCurrentProject(projectModel);
 	}
 
+	/**
+	 * Opens the project with the specified ID. This method is called when the user
+	 * wants to open a project.
+	 *
+	 * @param currentProjectID The ID of the project to open.
+	 */
 	@Override
 	public void openProject(UUID currentProjectID) {
 		IDbIdToModel iDbIdToModel = new DbIDToModel();
-		List<TaskModel> TaskList = Arrays.asList(
-				new TaskModel("Task1", UUID.randomUUID(), "Task1", true, LocalDateTime.now()),
-				new TaskModel("Task2", UUID.randomUUID(), "Task2", true, LocalDateTime.now()));
-		List<ColumnModel> ColumnsList = Arrays.asList(
-				new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
-				new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
-		ProjectModel projectModel = new ProjectModel("Project P1", UUID.randomUUID(), "", ColumnsList);
 		setCurrentProjectID(currentProjectID);
 		ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
 		setCurrentProject(ProjectFromDB);
 		presenter.displayCurrentProject(ProjectFromDB);
 	}
 
+	/**
+	 * Renames a project with the given UUID and updates its description. This
+	 * method is called when the user wants to rename a project.
+	 *
+	 * @param projectUUID     The UUID of the project to be renamed.
+	 * @param newName         The new name for the project.
+	 * @param newDescription  The new description for the project.
+	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
 		EditProjectDetails useCase = new EditProjectDetails(allProjects, projectUUID);
@@ -109,6 +139,12 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		presenter.displayRenamedProject(editedProjectModel);
 	}
 
+	/**
+	 * Deletes a project with the specified UUID. This method is called when the
+	 * user wants to delete a project.
+	 *
+	 * @param projectUUID The UUID of the project to be deleted.
+	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
 		DeleteProject useCase = new DeleteProject(allProjects);

@@ -11,14 +11,6 @@ import java.util.UUID;
  * It provides methods to set, create, delete, open, rename, and update project-related information.
  */
 public interface ProjectSelectionInputBoundary {
-
-    /**
-     * Sets the current project to the specified project.
-     *
-     * @param project The project to set as the current project.
-     */
-    void setCurrentProject(Project project);
-
     /**
      * Sets the current project to the specified project model.
      *

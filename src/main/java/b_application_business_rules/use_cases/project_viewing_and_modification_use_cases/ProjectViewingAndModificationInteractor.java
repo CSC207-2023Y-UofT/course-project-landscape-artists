@@ -34,18 +34,27 @@ import java.util.UUID;
  * which are used by the presenter to interact with this interactor.
  */
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
-    // The currentProjectRepository holds the reference to the
-    // CurrentProjectRepository instance.
+
+    /**
+     * Accesses the singleton instance of CurrentProjectID, which holds the currently selected project's UUID.
+     */
     CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
+
+    /**
+     * Accesses the singleton instance of ProjectRepository, which manages project-related data and operations.
+     */
     ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 
-    // currentProject attribute to be replaced by actual project access (to access a project entity)
+    /**
+     * The currently selected project instance from the ProjectRepository.
+     */
     private final Project currentProject = ProjectRepository.getProjectRepository().getCurrentProject();
 
-    // The presenter holds the reference to the
-    // ProjectViewingAndModificationOutputBoundary instance,
-    // which is responsible for displaying the results of the use cases.
+    /**
+     * The presenter instance responsible for displaying the results of the project viewing and modification use cases.
+     */
     private final ProjectViewingAndModificationOutputBoundary presenter;
+
 
     /**
      * Initializes the ProjectViewingAndModificationInteractor with the provided
@@ -88,18 +97,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         AddTask useCase = new AddTask(currentProject);
         useCase.addTask(columnID, newTaskModel);
 
-        System.out.println("CURRENT PROJECT SET IN SINGLETON " + currentProject);
-        System.out.println("SIZE OF COLUMNS " + currentProject.getColumns().size());
-        for (Column column: currentProject.getColumns()) {
-            System.out.println("COLUMN IN CURRENTPROJECTREPOSITORY " + column );
-        }
-
         // calls presenter to display message
         presenter.displayNewTask(columnID, newTaskModel);
 
-        // Initializing the required controllers and calls method that adds task to the database
-//        IDBInsert insertTask = new DBManagerInsertController();
-//        insertTask.DBInsert(newTaskModel, columnID);
+
     }
 
     /**
@@ -189,8 +190,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         IDBInsert idbInsert = new DBManagerInsertController();
         IDBRemove idbRemove = new DBManagerRemoveController();
 
-        System.out.println("TASKMODEL STATUS (SHOULD BE TRUE) " + taskUpdated.getCompletionStatus());
-
         idbRemove.DBRemoveTask(idOfTask);
         idbInsert.DBInsert(taskModel, columnID);
 
@@ -211,16 +210,11 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Initializes and call use case
         DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
-        System.out.println("Interactor, about to enter use case");
+
         deleteColumnUseCase.deleteColumnFromDB(columnID);
-        //deleteColumnUseCase.deleteColumn(columnID);
 
         // calls presenter to display message
         presenter.displayDeletedColumn(columnModel);
-
-        // Update the database to remove the column.
-//        IDBRemove dbRemoveManager = new DBManagerRemoveController();
-//        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
@@ -277,7 +271,6 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
         DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
-//        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
         TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
                 oldTaskDescription, oldTaskStatus, oldTaskDate);
 

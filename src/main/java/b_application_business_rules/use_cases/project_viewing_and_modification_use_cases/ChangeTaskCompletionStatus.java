@@ -3,7 +3,6 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
-import b_application_business_rules.entity_models.TaskModel;
 
 import java.util.UUID;
 
