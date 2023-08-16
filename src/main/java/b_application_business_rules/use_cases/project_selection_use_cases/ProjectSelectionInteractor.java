@@ -21,40 +21,21 @@ import java.util.*;
 
 /**
  * The ProjectSelectionInteractor class is responsible for handling interactions
- * and business logic
- * related to project selection use cases. It implements the
- * ProjectSelectionInputBoundary interface
- * to define the input boundary methods, which are used by the presenter to
- * interact with this interactor.
+ * and business logic related to project selection use cases. It implements the
+ * ProjectSelectionInputBoundary interface to define the input boundary methods,
+ * which are used by the presenter to interact with this interactor.
  */
 public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary {
 
-	// The currentProjectRepository holds the reference to the
-	// CurrentProjectRepository instance.
-	private final ProjectRepository projectRepository = ProjectRepository
-			.getProjectRepository();
-
-	// allProjects holds all project entities in the system.
-	private final List<Project> allProjects = ProjectRepository.getProjectRepository().getAllProjects();
-
-	// COPIED FROM ProjectViewingAndModificationInteractor
-	//currentProject attribute to be replaced by actual project access (to access a project entity)
-	private final Project currentProject = new Project("p", UUID.randomUUID(), "", new ArrayList<Column>());
-
-	private final CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
-
-	// The presenter holds the reference to the ProjectSelectionOutputBoundary
-	// instance,
-	// which is responsible for displaying the results of the use cases.
+	private final ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
+	private final List<Project> allProjects = projectRepository.getAllProjects();
 	private final ProjectSelectionOutputBoundary presenter;
-	private ProjectModel projectModel;
-	private String message;
+
 
 	/**
 	 * Initializes the ProjectSelectionInteractor with the provided presenter.
 	 *
-	 * @param presenter The presenter instance responsible for displaying the
-	 *                  results of the use cases.
+	 * @param presenter The presenter instance responsible for displaying the results of the use cases.
 	 */
 	public ProjectSelectionInteractor(ProjectSelectionOutputBoundary presenter) {
 		this.presenter = presenter;
@@ -62,20 +43,8 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 
 	/**
 	 * Sets the current project in the CurrentProjectRepository and notifies the
-	 * presenter to display it.
-	 * This method is called when a project is selected by the user in the UI.
-	 * 
-	 * @param project The project selected by the user.
-	 */
-	@Override
-	public void setCurrentProject(Project project) {
-		this.setCurrentProject(new ProjectModel(project));
-	}
-
-	/**
-	 * Sets the current project in the CurrentProjectRepository and notifies the
-	 * presenter to display it.
-	 * This method is called when a project is selected by the user in the UI.
+	 * presenter to display it. This method is called when a project is selected
+	 * by the user in the UI.
 	 *
 	 * @param project The project selected by the user.
 	 */
@@ -83,9 +52,9 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 		projectRepository.setCurrentProject(project.getProjectEntity());
 	}
 
+
 	/**
 	 * Sets the attribute holding all projects in the ProjectRepository.
-	 *
 	 * This method is called upon startup.
 	 *
 	 * @param allProjectsList The projects from the database.
@@ -94,127 +63,92 @@ public class ProjectSelectionInteractor implements ProjectSelectionInputBoundary
 	public void setAllProjects(List<ProjectModel> allProjectsList) {
 		List<Project> allProjects = new ArrayList<>();
 
-		// Convert all Project models from the outer layers to a Project.
 		for (ProjectModel projectModel: allProjectsList) {
-			System.out.println("PROJECT MODEL DIRECTLY FROM DB " + projectModel);
 			allProjects.add(projectModel.getProjectEntity());
 		}
 
 		projectRepository.setAllProjects(allProjects);
 	}
+
+
+	/**
+	 * Sets the current project ID in the CurrentProjectID repository. Used by the database to have access
+	 *
+	 * @param uuid The UUID of the selected project.
+	 */
 	public void setCurrentProjectID(UUID uuid) {
-		currentProjectID.setSelectedProjectID(uuid);
+		CurrentProjectID.getCurrentProjectID().setSelectedProjectID(uuid);
 	}
 
 	/**
 	 * Creates a new project. This method is called when the user creates a new
-	 * project in the UI.
-	 * It interacts with the necessary use cases and gateway to create the project.
+	 * project in the UI. It interacts with the necessary use cases and gateway to
+	 * create the project.
 	 *
-	 * @param projectName        The name of project.
-	 * @param projectDescription Description of project.
+	 * @param projectName        The name of the project.
+	 * @param projectDescription The description of the project.
 	 */
 	@Override
 	public void createProject(String projectName, String projectDescription) {
-		// Interact with necessary use cases and gateway to create a project.
-		// Implementation details depend on the specific requirements and architecture
-		// of the application.
-		// For example, the interactor might interact with a ProjectRepository to store
-		// the project in a database.
 		IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
 		CreateProject useCase = new CreateProject(allProjects);
-		Project newProject = useCase.newProject(projectName, UUID.randomUUID(),
-				projectDescription, new ArrayList<>());
+		Project newProject = useCase.newProject(projectName, UUID.randomUUID(), projectDescription, new ArrayList<>());
 
 		CurrentProjectID.getCurrentProjectID().setSelectedProjectID(newProject.getID());
 
 		List<ColumnModel> defaultColumn = new ArrayList<>();
-		defaultColumn.add(new  ColumnModel(
-				"Default Column",
-				new ArrayList<>(),
-				UUID.randomUUID()
-		));
+		defaultColumn.add(new  ColumnModel("Default Column", new ArrayList<>(), UUID.randomUUID()));
 		IDBInsert databaseInserter = new DBManagerInsertController();
 		ProjectModel projectModel = new ProjectModel(newProject);
 		projectModel.setColumnModels(defaultColumn);
 		databaseInserter.DBInsert(projectModel);
 		databaseInserter.DBInsert(projectModel.getColumnModels().get(0));
 
-		// Sets the project in the projectRepository
 		setCurrentProject(projectModel);
 		presenter.displayCurrentProject(projectModel);
 	}
 
-
+	/**
+	 * Opens the project with the specified ID. This method is called when the user
+	 * wants to open a project.
+	 *
+	 * @param currentProjectID The ID of the project to open.
+	 */
 	@Override
 	public void openProject(UUID currentProjectID) {
 		IDbIdToModel iDbIdToModel = new DbIDToModel();
-		// TODO: Pass the ProjectModel of the Project with the given UUID to the
-		// presenter.
-		// TODO: i.e. presenter.displayCurrentProjct(projectModel);
-
-		 // Temporary implementation for testing purposes.
-		 List<TaskModel> TaskList = Arrays.asList(
-		 new TaskModel("Task1", UUID.randomUUID(), "Task1", true,
-		 LocalDateTime.now()),
-		 new TaskModel("Task2", UUID.randomUUID(), "Task2", true,
-		 LocalDateTime.now()));
-		 List<ColumnModel> ColumnsList = Arrays.asList(
-		 new ColumnModel("COLUMN 1", TaskList, UUID.randomUUID()),
-		 new ColumnModel("COLUMN 2", new ArrayList<>(), UUID.randomUUID()));
-		 ProjectModel projectModel = new ProjectModel(
-		 "Project P1", UUID.randomUUID(), "", ColumnsList);
-		 setCurrentProjectID(currentProjectID);
-		 ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
-		 setCurrentProject(ProjectFromDB);
-		 presenter.displayCurrentProject(ProjectFromDB);
+		setCurrentProjectID(currentProjectID);
+		ProjectModel ProjectFromDB = iDbIdToModel.IdToProjectModel(currentProjectID.toString());
+		setCurrentProject(ProjectFromDB);
+		presenter.displayCurrentProject(ProjectFromDB);
 	}
 
 	/**
-	 * @param projectUUID
-	 * @param newName
-	 * @param newDescription
+	 * Renames a project with the given UUID and updates its description. This
+	 * method is called when the user wants to rename a project.
+	 *
+	 * @param projectUUID     The UUID of the project to be renamed.
+	 * @param newName         The new name for the project.
+	 * @param newDescription  The new description for the project.
 	 */
 	@Override
 	public void renameProject(UUID projectUUID, String newName, String newDescription) {
 		EditProjectDetails useCase = new EditProjectDetails(allProjects, projectUUID);
-
 		useCase.setNameAndDescription(newName, newDescription);
-
-		// For UI purposes, we do not need the list of columns in the project model since it would not get displayed
-		// anyways.
 		ProjectModel editedProjectModel = new ProjectModel(newName, projectUUID, newDescription, new ArrayList<>());
 		presenter.displayRenamedProject(editedProjectModel);
 	}
 
 	/**
-	 * @param projectUUID
+	 * Deletes a project with the specified UUID. This method is called when the
+	 * user wants to delete a project.
+	 *
+	 * @param projectUUID The UUID of the project to be deleted.
 	 */
 	@Override
 	public void deleteProject(UUID projectUUID) {
-		System.out.println("WE GOT TO THE INTERACTOR DELETE PROJECT");
 		DeleteProject useCase = new DeleteProject(allProjects);
-
-		//This line calls the use case and updates the database
 		useCase.deleteProject(projectUUID);
-		presenter.displayDeletedProject(new ProjectModel(
-				"", projectUUID, "", new ArrayList<>()
-		));
-	}
-
-	/**
-	 * @param message
-	 */
-	@Override
-	public void projectDeletionFailed(String message) {
-
-	}
-
-	/**
-	 * @param projectID
-	 */
-	@Override
-	public void projectDeleted(UUID projectID) {
-
+		presenter.displayDeletedProject(new ProjectModel("", projectUUID, "", new ArrayList<>()));
 	}
 }

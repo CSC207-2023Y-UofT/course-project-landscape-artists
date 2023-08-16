@@ -213,10 +213,16 @@ public class TaskModel {
      */
     public Task getTaskEntity() {
         Task task = new Task(name, ID, description, isCompleted, dueDateTime);
-        System.out.println("TASK " + task);
         return task;
     }
 
+    /**
+     * Removes a specified task model from a list of task models.
+     *
+     * @param taskModelList The list of task models from which the specified task should be removed.
+     * @param taskModel     The task model to be removed from the list.
+     * @return              The modified list of task models after removing the specified task.
+     */
     public static List<TaskModel> removeFromTaskModelList(List<TaskModel> taskModelList ,TaskModel taskModel ){
         for (TaskModel task : taskModelList) {
             if(task.getID().equals(taskModel.getID())){

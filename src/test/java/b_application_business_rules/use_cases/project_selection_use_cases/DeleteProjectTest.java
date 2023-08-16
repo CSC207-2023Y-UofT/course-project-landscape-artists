@@ -1,41 +1,69 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
+
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
-import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
-import java.sql.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-public class DeleteProjectTest {
-    private Project p;
-    private Column c;
-    private Task t1;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
+public class DeleteProjectTest {
+
+    @Mock
+    private IDBRemove databaseRemover;
+
+    private List<Project> allProjects;
+    private DeleteProject deleteProject;
 
     @BeforeEach
     public void setUp() {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
-
-        t1 = new Task("t1", id3, "", false, LocalDateTime.now());
-        ArrayList<Task> listOfTasks = new ArrayList<>();
-        listOfTasks.add(t1);
-        c = new Column("c1", listOfTasks, id2);
-
-        ArrayList<Column> listOfColumns = new ArrayList<>();
-        listOfColumns.add(c);
-        p = new Project("p1", id1, "", listOfColumns);
-
+        MockitoAnnotations.openMocks(this);
+        allProjects = new ArrayList<>();
+        deleteProject = new DeleteProject(allProjects, databaseRemover);
     }
-    //This test is just a dummy - it always passes. This was added purely for marks associated with test coverage
+
     @Test
     public void testDeleteProject() {
+        UUID projectUUID = UUID.randomUUID();
+        Project projectToBeDeleted = new Project("Test Project", projectUUID, "Project Description", new ArrayList<>());
+        allProjects.add(projectToBeDeleted);
+
+        deleteProject.deleteProject(projectUUID);
+
+        verify(databaseRemover, times(1)).DBRemoveProject(projectUUID);
+        assertTrue(allProjects.isEmpty());
     }
+
+    @Test
+    public void testDeleteProjectWithColumnsAndTasks() {
+        UUID projectUUID = UUID.randomUUID();
+        UUID columnUUID = UUID.randomUUID();
+        UUID taskUUID = UUID.randomUUID();
+
+        Task task = new Task("Test Task", taskUUID, "Task Description", false, LocalDateTime.now());
+        Column column = new Column("Test Column", new ArrayList<>(), columnUUID);
+        column.addTask(task);
+        Project projectToBeDeleted = new Project("Test Project", projectUUID, "Project Description", new ArrayList<>());
+        projectToBeDeleted.addColumn(column);
+        allProjects.add(projectToBeDeleted);
+
+        deleteProject.deleteProject(projectUUID);
+
+        verify(databaseRemover, times(1)).DBRemoveProject(projectUUID);
+        verify(databaseRemover, times(1)).DBRemoveColumn(columnUUID);
+        verify(databaseRemover, times(1)).DBRemoveTask(taskUUID);
+        assertTrue(allProjects.isEmpty());
+    }
+
+    // More tests for other methods can be added similarly
 }

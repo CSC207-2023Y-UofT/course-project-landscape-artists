@@ -4,7 +4,7 @@ import java.util.*;
 
 /**
  * A column within the productivity application.
- * 
+ * <p>
  * Each column will have a name, a unique identifier, and a list of tasks.
  */
 public class Column {
@@ -98,9 +98,7 @@ public class Column {
      * @param newTask The task to add.
      */
     public void addTask(Task newTask) {
-        System.out.println("Old Tasks List" + this.tasks);
         this.tasks.add(newTask);
-        System.out.println("newTask List " + this.tasks);
 
     }
 
@@ -205,29 +203,27 @@ public class Column {
     /**
      * Returns a String representation of the Column.
      * 
-     * {@inheritDoc}
-     * 
      * @return a String representation of the Column.
      */
     @Override
     public String toString() {
         // Starts constructing the string representation of the column
-        String columnStringRepresentation = "[" + "Column Name: " + this.getName() + ", " + "Tasks: ";
-        columnStringRepresentation += "{";
+        StringBuilder columnStringRepresentation = new StringBuilder("[" + "Column Name: " + this.getName() + ", " + "Tasks: ");
+        columnStringRepresentation.append("{");
 
         // Adding all the column's task to the string representation
         for (Task task : this.tasks) {
-            columnStringRepresentation += task.toString();
-            columnStringRepresentation += ", ";
+            columnStringRepresentation.append(task.toString());
+            columnStringRepresentation.append(", ");
         }
-        columnStringRepresentation = columnStringRepresentation.substring(
-                0, columnStringRepresentation.length() - 2); // removing the last ", "
+        columnStringRepresentation = new StringBuilder(columnStringRepresentation.substring(
+                0, columnStringRepresentation.length() - 2)); // removing the last ", "
 
         // Closing up the braces and brackets
-        columnStringRepresentation += "}";
-        columnStringRepresentation += "]";
+        columnStringRepresentation.append("}");
+        columnStringRepresentation.append("]");
 
-        return columnStringRepresentation;
+        return columnStringRepresentation.toString();
     }
 
 
@@ -244,11 +240,10 @@ public class Column {
             return false;
         }
         // Checking the equality of each of the attributes
-        boolean allAttributesAreEqual = c.getName().equals(this.getName()) &&
+
+        return c.getName().equals(this.getName()) &&
                 c.getID().equals(this.getID()) &&
                 c.getTasks().equals(this.getTasks());
-
-        return allAttributesAreEqual;
     }
 
     /**
@@ -269,27 +264,4 @@ public class Column {
         }
         return null;
     }
-    // testing IDToColumn helper function (Success!)
-    // public static void main(String[] args) {
-    // UUID id1 = UUID.randomUUID();
-    // UUID id2 = UUID.randomUUID();
-    // Column c1 = new Column("column 1", new List<Task>(), id1);
-    // Column c2 = new Column("column 2", new List<Task>(), id2);
-    // List<Column> listOfColumns = new List<Column>();
-    // listOfColumns.add(c1);
-    // listOfColumns.add(c2);
-    // Column found = Column.IDToColumn(id2, listOfColumns);
-    // System.out.println(c2.equals(found));
-    // }
-    // private UUID getValidColumnID(){
-    // this.ID = UUID.randomUUID();
-    // DBManagerInsertController dbManagerInsertController = new
-    // DBManagerInsertController();
-    // while(uuidMap.containsKey(this.ID.toString())){
-    // this.ID = UUID.randomUUID();
-    // }
-    // dbManagerInsertController.DBInsert(this.ID);
-    // return this.ID;
-    // }
-
 }

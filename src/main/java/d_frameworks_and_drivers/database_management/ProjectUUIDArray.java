@@ -1,9 +1,6 @@
 package d_frameworks_and_drivers.database_management;
 
 import com.opencsv.CSVReader;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 
 import java.io.FileReader;
@@ -46,32 +43,3 @@ public class ProjectUUIDArray {
         return resultList;
     }
 }
-        //        ArrayList<ArrayList<String>> csvDataArray = new ArrayList<>();
-//
-//        // Create a CSVParser to read the CSV file
-//        try (FileReader fileReader = new FileReader(csvFilePath);
-//             CSVParser csvParser = new CSVParser(fileReader, CSVFormat.DEFAULT.withHeader())) {
-//
-//            // Iterate through each CSV line
-//            for (CSVRecord csvRecord : csvParser) {
-//                ArrayList<String> projectInfo = new ArrayList<>();
-//
-//                //Add in the Project attributes a new Arraylist
-//                projectInfo.add(csvRecord.values()[0]);
-//                projectInfo.add(csvRecord.values()[1]);
-//                projectInfo.add(csvRecord.values()[2]);
-//                projectInfo.add(csvRecord.values()[3]);
-//                projectInfo.add(csvRecord.values()[4]);
-//
-//
-//                //Place the newly made arrayList into another ArrayList --> 2D arraylist
-//                csvDataArray.add(projectInfo);
-//                System.out.println("PROJECT INFO");
-//                System.out.println(projectInfo);
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(csvDataArray);
-//        return csvDataArray;
-

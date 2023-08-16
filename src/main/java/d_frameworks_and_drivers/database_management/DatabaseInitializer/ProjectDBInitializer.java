@@ -5,11 +5,16 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+/**
+ * The ProjectDBInitializer class is responsible for initializing the CSV file for storing project data.
+ * It creates the file and writes the project headers as the initial content.
+ */
 public class ProjectDBInitializer {
     String [] ProjectHeaders = {"ProjectID", "Name", "Description", "Column ID's"};
 
     /**
-     * Initializes project csv file for database with the above headers.
+     * Constructs a ProjectDBInitializer object and initializes the CSV file for projects.
+     * It creates the file and writes the project headers as the initial content.
      */
     public ProjectDBInitializer() {
         // create CSVWriter object filewriter object as parameter

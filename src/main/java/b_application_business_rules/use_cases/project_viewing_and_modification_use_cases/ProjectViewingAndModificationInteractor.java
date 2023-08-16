@@ -2,6 +2,7 @@ package b_application_business_rules.use_cases.project_viewing_and_modification_
 
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
+import a_enterprise_business_rules.entities.Task;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationInputBoundary;
 import b_application_business_rules.boundaries.ProjectViewingAndModificationOutputBoundary;
 import b_application_business_rules.entity_models.ColumnModel;
@@ -10,15 +11,9 @@ import b_application_business_rules.entity_models.TaskModel;
 import b_application_business_rules.factories.TaskModelFactory;
 import b_application_business_rules.use_cases.CurrentProjectID;
 import b_application_business_rules.use_cases.ProjectRepository;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
-import b_application_business_rules.use_cases.project_selection_gateways.IDBSearch;
-import b_application_business_rules.use_cases.project_selection_gateways.IDbIdToModel;
+import b_application_business_rules.use_cases.project_selection_gateways.*;
 import b_application_business_rules.use_cases.project_selection_use_cases.DeleteProject;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerInsertController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerRemoveController;
-import d_frameworks_and_drivers.database_management.DBControllers.DBManagerSearchController;
-import d_frameworks_and_drivers.database_management.DBControllers.DbIDToModel;
+import d_frameworks_and_drivers.database_management.DBControllers.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -36,18 +31,27 @@ import java.util.UUID;
  * which are used by the presenter to interact with this interactor.
  */
 public class ProjectViewingAndModificationInteractor implements ProjectViewingAndModificationInputBoundary {
-    // The currentProjectRepository holds the reference to the
-    // CurrentProjectRepository instance.
+
+    /**
+     * Accesses the singleton instance of CurrentProjectID, which holds the currently selected project's UUID.
+     */
     CurrentProjectID currentProjectID = CurrentProjectID.getCurrentProjectID();
+
+    /**
+     * Accesses the singleton instance of ProjectRepository, which manages project-related data and operations.
+     */
     ProjectRepository projectRepository = ProjectRepository.getProjectRepository();
 
-    // currentProject attribute to be replaced by actual project access (to access a project entity)
+    /**
+     * The currently selected project instance from the ProjectRepository.
+     */
     private final Project currentProject = ProjectRepository.getProjectRepository().getCurrentProject();
 
-    // The presenter holds the reference to the
-    // ProjectViewingAndModificationOutputBoundary instance,
-    // which is responsible for displaying the results of the use cases.
+    /**
+     * The presenter instance responsible for displaying the results of the project viewing and modification use cases.
+     */
     private final ProjectViewingAndModificationOutputBoundary presenter;
+
 
     /**
      * Initializes the ProjectViewingAndModificationInteractor with the provided
@@ -90,18 +94,10 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
         AddTask useCase = new AddTask(currentProject);
         useCase.addTask(columnID, newTaskModel);
 
-        System.out.println("CURRENT PROJECT SET IN SINGLETON " + currentProject);
-        System.out.println("SIZE OF COLUMNS " + currentProject.getColumns().size());
-        for (Column column: currentProject.getColumns()) {
-            System.out.println("COLUMN IN CURRENTPROJECTREPOSITORY " + column );
-        }
-
         // calls presenter to display message
         presenter.displayNewTask(columnID, newTaskModel);
 
-        // Initializing the required controllers and calls method that adds task to the database
-//        IDBInsert insertTask = new DBManagerInsertController();
-//        insertTask.DBInsert(newTaskModel, columnID);
+
     }
 
     /**
@@ -158,6 +154,103 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
     }
 
     /**
+     * The method to get the task from the entities. Used to show the updated task details.
+     *
+     * @param taskID ID of task.
+     */
+    @Override
+    public void getTask(UUID taskID) {
+        for (Column column: currentProject.getColumns()) {
+            for (Task task: column.getTasks()) {
+                if (task.getID().equals(taskID)) {
+                    presenter.displayTaskDetails(new TaskModel(task.getName(), taskID, task.getDescription(),
+                            task.getCompletionStatus(), task.getDueDateTime()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Changes a task's completion status.
+     *
+     * @param idOfTask               the UUID of the tak to be changed.
+     * @param completionStatus its previous status.
+     * @param columnID The columnID of parent column of the task.
+     */
+    @Override
+    public void changeTaskCompletionStatus(UUID idOfTask, boolean completionStatus, UUID columnID) {
+        ChangeTaskCompletionStatus useCase = new ChangeTaskCompletionStatus(currentProject);
+        Task taskUpdated = useCase.changeCompletionStatus(idOfTask);
+
+        TaskModel taskModel = new TaskModel(taskUpdated);
+
+        IDBInsert idbInsert = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+
+        idbRemove.DBRemoveTask(idOfTask);
+        idbInsert.DBInsert(taskModel, columnID);
+
+
+
+    }
+
+    /**
+     * Moves a task from the source column to the target column.
+     *
+     * @param sourceColumnID The ID of the source column from which the task will be moved.
+     * @param targetColumnID The ID of the target column to which the task will be moved.
+     * @param task The task to be moved.
+     */
+    @Override
+    public void moveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
+        MoveTask useCase = new MoveTask(sourceColumnID, targetColumnID, currentProject);
+
+        // Use DIP to retrieve all  necessary instances
+        IDBInsert  idbInsert = new DBManagerInsertController();
+        IDBRemove idbRemove = new DBManagerRemoveController();
+        IDBSearch idbSearch = new DBManagerSearchController();
+        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
+
+        // get the data from the database
+        List<String> sourceColumndata = idbSearch.DBColumnSearch(sourceColumnID);
+        List<String> targetColumndata = idbSearch.DBColumnSearch(targetColumnID);
+
+        // get original and updated TaskModel List
+        List<TaskModel> sourceTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(sourceColumndata.get(2).split(",")));
+        List<TaskModel> targetTaskList = iDbIdToModelList.
+                IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
+
+        // Delete the task model from the old list and add it to the new one
+        TaskModel.removeFromTaskModelList(sourceTaskList, task);
+        targetTaskList.add(task);
+
+        // build their respective ColumnModels
+        ColumnModel sourceColumnModel = new ColumnModel(
+                sourceColumndata.get(1),
+                sourceTaskList,
+                UUID.fromString(sourceColumndata.get(0))
+        );
+        ColumnModel targetColumnModel = new ColumnModel(
+                targetColumndata.get(1),
+                targetTaskList,
+                UUID.fromString(targetColumndata.get(0))
+        );
+
+
+        //remove old entries from DB
+        idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
+        idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));
+        idbRemove.DBRemoveTask(task.getID());
+
+        //add new entries to colunm DB
+        idbInsert.DBInsert(sourceColumnModel);
+        idbInsert.DBInsert(targetColumnModel);
+        idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
+
+    }
+
+    /**
      * The method to delete a column from the project.
      *
      * @param columnID the UUID of the column to be deleted.
@@ -170,20 +263,21 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
         // Initializes and call use case
         DeleteColumn deleteColumnUseCase = new DeleteColumn(currentProject);
-        System.out.println("Interactor, about to enter use case");
+
         deleteColumnUseCase.deleteColumnFromDB(columnID);
-        //deleteColumnUseCase.deleteColumn(columnID);
 
         // calls presenter to display message
         presenter.displayDeletedColumn(columnModel);
-
-        // Update the database to remove the column.
-//        IDBRemove dbRemoveManager = new DBManagerRemoveController();
-//        dbRemoveManager.DBRemoveColumn(columnID);
     }
 
     /**
-     * Edits the details of a column identified by the specified columnID.
+     * Edits the details of a column using the provided information. This method triggers the relevant use cases
+     * to modify the corresponding entities and database records. After the changes are made, the presenter is
+     * called to display the updated information.
+     *
+     * @param columnID The unique ID of the column to be modified.
+     * @param newColumnName The new name for the column.
+     * @param columnModel The ColumnModel containing the original column details.
      */
     @Override
     public void editColumnDetails(UUID columnID, String newColumnName, ColumnModel columnModel) {
@@ -207,43 +301,37 @@ public class ProjectViewingAndModificationInteractor implements ProjectViewingAn
 
 
     /**
-     * Changes the task details given the new TaskModel task. Calls the use case to
-     * make changes to the entities and database then calls the presenter to display the
-     * updated changes
+     * Changes the details of a task using the updated TaskModel. This method triggers the relevant use cases
+     * to modify the corresponding entities and database records. After the changes are made, the presenter is
+     * called to display the updated information.
      *
+     * @param updatedTask The TaskModel containing the updated task details.
+     * @param taskID The unique ID of the task to be modified.
+     * @param columnID The unique ID of the column in which the task is located.
      */
     @Override
     public void changeTaskDetails(TaskModel updatedTask, UUID taskID, UUID columnID) {
         // Initializes and call use case
         EditTask editTask = new EditTask(currentProject);
-        editTask.editTask(columnID, updatedTask);
-
-        // calls presenter to display message
-        presenter.displayChangedTaskDetails(updatedTask, columnID);
+        Task editedTask = editTask.editTask(columnID, updatedTask);
 
         // Initializing the controllers
         IDBRemove removeTask = new DBManagerRemoveController();
         IDBInsert insertTask = new DBManagerInsertController();
-        IDBSearch findOldTask = new DBManagerSearchController();
 
         // Removing the existing task requires a TaskModel, which we don't have any
         // So we need to make one: by finding all the information about the old task
         // Then using the TaskFactory to create a TaskModel
 
-        ArrayList<String> oldTaskInfo = findOldTask.DBTaskSearch(taskID.toString());
-        String oldTaskName = oldTaskInfo.get(1);
-        String oldTaskDescription = oldTaskInfo.get(2);
-        boolean oldTaskStatus = Boolean.parseBoolean(oldTaskInfo.get(3));
-        DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4), formatter);
-//        LocalDateTime oldTaskDate = LocalDateTime.parse(oldTaskInfo.get(4));
-        TaskModel oldTask = TaskModelFactory.create(oldTaskName, taskID,
-                oldTaskDescription, oldTaskStatus, oldTaskDate);
-
         // Removing the old task
         removeTask.DBRemoveTask(taskID);
 
         // Inserting the new task
-        insertTask.DBInsert(updatedTask,columnID);
+        insertTask.DBInsert(new TaskModel(editedTask),columnID);
+
+        // calls presenter to display message
+        presenter.displayChangedTaskDetails(updatedTask, columnID);
     }
+
+
 }

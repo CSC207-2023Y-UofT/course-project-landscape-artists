@@ -17,11 +17,6 @@ import javafx.util.Duration;
  * with implementing drag-and-drop functionality within the user interface (UI). It provides methods to configure
  * the drag-and-drop behavior of UI components and handles state changes that occur during the drag-and-drop
  * interactions.
- *
- * This class serves as a modular solution for incorporating drag-and-drop interactions into UI elements,
- * promoting reusability and maintainability across different parts of the application. By managing the
- * complexity of drag-and-drop interactions, the DragAndDropImplementation class allows presenter classes to
- * focus on higher-level application logic and user experience.
  */
 public class DragAndDropImplementation {
     private boolean success;
@@ -133,7 +128,6 @@ public class DragAndDropImplementation {
      * @return The found HBox, or null if not found.
      */
     HBox findHBoxById(String id, ProjectViewingAndModificationPresenter projectViewingAndModificationPresenter) {
-        System.out.println("this.VBoxContainer " + projectViewingAndModificationPresenter.VBoxContainer);
         for (VBox vBox : projectViewingAndModificationPresenter.VBoxContainer) {
             for (Node node2 : vBox.getChildren() ) {
                 if (node2 instanceof HBox && node2.getId().equals(id)) {

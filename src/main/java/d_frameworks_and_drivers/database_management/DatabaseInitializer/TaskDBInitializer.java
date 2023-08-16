@@ -5,11 +5,16 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+/**
+ * The TaskDBInitializer class is responsible for initializing the CSV file for storing task data.
+ * It creates the file and writes the task headers as the initial content.
+ */
 public class TaskDBInitializer {
-    String[] TaskHeaders = {"TaskID", "Name", "Description", "Completion Status", "Due Date","ColumnID"};
+    String[] TaskHeaders = {"TaskID", "Name", "Description", "Completion Status", "Due Date"};
 
     /**
-     * Initializes tasks csv file for database with the above headers.
+     * Constructs a TaskDBInitializer object and initializes the CSV file for tasks.
+     * It creates the file and writes the task headers as the initial content.
      */
     public TaskDBInitializer() {
         // create CSVWriter object filewriter object as parameter

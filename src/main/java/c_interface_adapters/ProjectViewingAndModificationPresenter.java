@@ -153,8 +153,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     @Override
     public void displayNewTask(UUID columnBoxID, TaskModel newTask) {
-        System.out.println("DISPLAY NEW TASK WAS RUN");
-
         // Get the UI for the column
         VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
 
@@ -175,8 +173,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     @Override
     public void displayRemovedTask(TaskModel task, UUID columnBoxID) {
-        System.out.println("REMOVE TASK WAS RUN");
-
         // Get the UI for the column
         VBox columnUI = uiComponentLocator.getColumnUI(String.valueOf(columnBoxID));
 
@@ -198,7 +194,6 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         String columnName = column.getName();
 
         VBox columnUI = uiComponentLocator.getColumnUI(columnUUID);
-        System.out.println("Column UI" + columnUI);
         if (columnUI != null) {
             Label columnNameUI = uiComponentLocator.getColumnNameUI(columnUI);
             if (columnNameUI != null) {
@@ -237,16 +232,11 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
         if (taskNameUI != null) {
             taskNameUI.setText(taskName);
         } else {
-            System.out.println("TASK IS NOT IN THE COLUMN");
+            System.err.println("TASK IS NOT IN THE COLUMN");
         }
     }
 
 
-    // TODO: IMPLEMENT THIS.
-    @Override
-    public void displayDeleteProject(ProjectViewModel project, UUID projectId) {
-
-    }
 
 
 
@@ -271,7 +261,21 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
      */
     public void displayNewColumn(ColumnModel column) {
         ScrollPane scrollPane = new PresenterUtility().createScrollPane();
+
+        // clear scrollpane styling
+        scrollPane.getStyleClass().clear();
+
         VBox columnBox = new PresenterUtility().createColumnBox(column);
+        PresenterUtility.setColumnUIStyling(columnBox);
+
+        // set prefered width of scroll pane.
+        columnBox.setPrefWidth(220);
+        columnBox.setPrefHeight(370);
+        columnBox.setMaxHeight(370);
+
+
+//        columnBox.setPrefHeight(365);
+
         HBox columnNameAndOptions = new PresenterUtility().createColumnNameAndOptions();
         Label columnLabel = new PresenterUtility().createColumnLabel(column.getName());
         MenuButton columnOptions = new PresenterUtility().createColumnOptions();
@@ -328,6 +332,8 @@ public class ProjectViewingAndModificationPresenter implements ProjectViewingAnd
     private void setTaskOptions( HBox hbox, TaskModel task, String columnBoxId) {
         MenuButton taskOptionsButton = new PresenterUtility().createTaskOptionsMenu(task, hbox, columnBoxId, this);
         RadioButton completeTaskButton = new RadioButton();
+        completeTaskButton.setOnAction(event -> {controller.handleCompleteTask(task.getID(),
+                task.getCompletionStatus(), UUID.fromString(columnBoxId));});
 
         hbox.getChildren().addAll(taskOptionsButton, completeTaskButton);
         new PresenterUtility().configureHBoxFeatures(hbox, this, task);

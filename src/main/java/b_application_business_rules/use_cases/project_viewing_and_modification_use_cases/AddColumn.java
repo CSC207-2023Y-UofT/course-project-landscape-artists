@@ -29,7 +29,6 @@ public class AddColumn {
      * Adds the new column to the current project, project entity.
      */
     public void addColumn(ColumnModel columnModel) {
-        IDbIdToModel iDbIdToModel = new DbIDToModel();
         // Create the column entity
         Column column = columnModel.getColumnEntity();
         // Add the column to the currently opened Project entity.

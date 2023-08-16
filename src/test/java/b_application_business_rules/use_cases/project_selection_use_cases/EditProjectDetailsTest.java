@@ -1,61 +1,85 @@
 package b_application_business_rules.use_cases.project_selection_use_cases;
+
 import a_enterprise_business_rules.entities.Column;
 import a_enterprise_business_rules.entities.Project;
 import a_enterprise_business_rules.entities.Task;
+import b_application_business_rules.entity_models.ColumnModel;
+import b_application_business_rules.entity_models.ProjectModel;
+import b_application_business_rules.entity_models.TaskModel;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBInsert;
+import b_application_business_rules.use_cases.project_selection_gateways.IDBRemove;
 import b_application_business_rules.use_cases.project_selection_use_cases.EditProjectDetails;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-public class EditProjectDetailsTest {
-    private Project p;
-    private Column c;
-    private Task t1;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
-    //private ProjectModel uP;
+public class EditProjectDetailsTest {
+
+    @Mock
+    private IDBRemove databaseRemover;
+
+    @Mock
+    private IDBInsert databaseInserter;
+
+    private List<Project> allProjects;
+    private EditProjectDetails editProjectDetails;
 
     @BeforeEach
     public void setUp() {
-        UUID id1 = UUID.randomUUID();
-        UUID id2 = UUID.randomUUID();
-        UUID id3 = UUID.randomUUID();
-        //UUID id4 = UUID.randomUUID();
-        t1 = new Task("t1", id3, "", false, LocalDateTime.now());
-        ArrayList<Task> listOfTasks = new ArrayList<>();
-        listOfTasks.add(t1);
-        c = new Column("c1", listOfTasks, id2);
-        ArrayList<Column> listOfColumns = new ArrayList<>();
-        listOfColumns.add(c);
-        //p = new Project("p1", id1, "", listOfColumns);
-        p = new Project("p1", id1, "", listOfColumns);
-        //uP = ProjectModelFactory.create("p1", id1, "", listOfColumns);
+        MockitoAnnotations.openMocks(this);
+        allProjects = new ArrayList<>();
 
     }
 
-        // implementation problems
-//    @Test
-//    public void testSetName() {
-//        UUID uuid = UUID.randomUUID();
-//        Project p = new Project("p1", uuid, "D1", null );
-//
-//        UUID idOfP = p.getID();
-//
-//        List<Project> allProjects = new ArrayList<>();
-//        allProjects.add(p);
-//
-//        EditProjectDetails useCase = new EditProjectDetails(allProjects, idOfP);
-//
-//        useCase.setNameAndDescription("p2", "Hello");
-//
-//        Assertions.assertEquals("p2", p.getName());
-//        Assertions.assertEquals("Hello", p.getDescription());
-//
-//    }
-}
+    @Test
+    public void testSetNameAndDescription() {
+        UUID projectUUID = UUID.randomUUID();
+        Project project = new Project("Test Project", projectUUID, "Old Description", new ArrayList<>());
+        allProjects.add(project);
 
+        editProjectDetails = new EditProjectDetails(allProjects, projectUUID);
+
+        editProjectDetails.setNameAndDescription("New Project Name", "New Project Description");
+
+        assertEquals("New Project Name", project.getName());
+        assertEquals("New Project Description", project.getDescription());
+    }
+
+    @Test
+    public void testCreateProjectEntity() {
+        UUID taskUUID = UUID.randomUUID();
+        Task taskModel = new Task("Test Task", taskUUID, "Task Description",
+                false, LocalDateTime.now());
+        Column columnModel = new Column("Test Column", List.of(taskModel), UUID.randomUUID());
+        Project projectEntity = new Project("Test Project", UUID.randomUUID(), "Project Description",
+                List.of(columnModel));
+
+
+        assertEquals("Test Project", projectEntity.getName());
+        assertEquals("Project Description", projectEntity.getDescription());
+
+        List<Column> columns = projectEntity.getColumns();
+        assertEquals(1, columns.size());
+
+        Column column = columns.get(0);
+        assertEquals("Test Column", column.getName());
+
+        List<Task> tasks = column.getTasks();
+        assertEquals(1, tasks.size());
+
+        Task task = tasks.get(0);
+        assertEquals("Test Task", task.getName());
+        assertEquals("Task Description", task.getDescription());
+        assertFalse(task.getCompletionStatus());
+        assertNotNull(task.getDueDateTime());
+    }
+}

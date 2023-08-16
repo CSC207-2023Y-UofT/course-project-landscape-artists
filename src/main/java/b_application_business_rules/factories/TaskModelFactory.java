@@ -13,13 +13,14 @@ import java.util.UUID;
 public class TaskModelFactory {
 
     /**
-     * Creates a TaskModel
-     * @param name
-     * @param ID
-     * @param description
-     * @param isCompleted
-     * @param dueDateTime
-     * @return a TaskModel
+     * Creates a new TaskModel instance.
+     *
+     * @param name The name of the task.
+     * @param ID The unique ID for the task.
+     * @param description The description of the task.
+     * @param isCompleted The completion status of the task.
+     * @param dueDateTime The due date and time for the task.
+     * @return A newly created TaskModel instance.
      */
     public static TaskModel create(String name, UUID ID, String description, boolean isCompleted, LocalDateTime dueDateTime) {
         return new TaskModel(name, ID, description, isCompleted, dueDateTime);

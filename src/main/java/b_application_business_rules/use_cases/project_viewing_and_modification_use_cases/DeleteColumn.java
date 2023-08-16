@@ -45,13 +45,14 @@ public class DeleteColumn {
         currentProject.removeColumn(columnID);
     }
 
+    /**
+     * Deletes a column and its associated tasks from the database.
+     *
+     * @param columnID The UUID of the column to be deleted.
+     */
     public void deleteColumnFromDB(UUID columnID) {
-
-        System.out.println("Current Project Column List "+currentProject.getColumns());
         // Remove column from the DB
         for (Column col : currentProject.getColumns()) {
-            System.out.println("\nInside delete column from db: " + Objects.equals(col.getID().toString(), columnID.toString()));
-            System.out.println("Inside delete column from db: " + col.getID().toString() +"\t"+ columnID);
             if(col.getID().toString().equals(columnID.toString())){
                 for (Task task : col.getTasks()) {
                     databaseRemover.DBRemoveTask(task.getID());
@@ -62,6 +63,12 @@ public class DeleteColumn {
         updateProject(currentProject, columnID);
     }
 
+    /**
+     * Updates the project by removing the specified column and then reinserts the project into the database.
+     *
+     * @param projectToBeUpdated The project that needs to be updated.
+     * @param colID              The UUID of the column to be removed.
+     */
     private void updateProject(Project projectToBeUpdated, UUID colID) {
         for (Column col : projectToBeUpdated.getColumns()) {
             if(col.getID().equals(colID)){
@@ -71,12 +78,5 @@ public class DeleteColumn {
         }
         databaseRemover.DBRemoveProject(projectToBeUpdated.getID());
         idbInsert.DBInsert(new ProjectModel(projectToBeUpdated));
-    }
-
-    private void deleteTaskFromDB(Column column) {
-        for (Task task : column.getTasks()) {
-            System.out.println("TASK ID IN COLUMN " + task.getID());
-            databaseRemover.DBRemoveTask(task.getID());
-        }
     }
 }

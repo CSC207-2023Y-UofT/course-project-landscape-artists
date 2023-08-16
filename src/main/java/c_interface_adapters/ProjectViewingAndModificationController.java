@@ -201,11 +201,11 @@ public class ProjectViewingAndModificationController {
      * Displays the detailed information of a specific task in a pop-up window.
      * The TaskModel object contains the attributes and details of the task to be displayed.
      *
-     * @param task The TaskModel object representing the task whose details will be displayed.
+     * @param taskID The TaskID object representing the task whose details will be displayed.
      *             It should contain the task's name, ID, description, completion status, and due date.
      */
-    public void showTaskDetails(TaskModel task) {
-        presenter.displayTaskDetails(task);
+    public void showTaskDetails(UUID taskID) {
+        interactor.getTask(taskID);
     }
 
     /**
@@ -246,7 +246,6 @@ public class ProjectViewingAndModificationController {
             projectViewingAndModificationPresenter.showAlert("Error", "All fields are required. Please fill in all the details.");
         } else {
             popupStage.close();
-            System.out.println("DATE AT handleTaskSubmit " +  dueDate.atStartOfDay());
             changeTaskDetails(task, hbox, taskName, taskDetails, dueDate.atStartOfDay(),
                 uuid);
         }
@@ -307,57 +306,26 @@ public class ProjectViewingAndModificationController {
         dialogStage.close();
     }
 
+    /**
+     * Handles the request to move a task from the source column to the target column.
+     *
+     * @param sourceColumnID The ID of the source column from which the task will be moved.
+     * @param targetColumnID The ID of the target column to which the task will be moved.
+     * @param task The TaskModel representing the task to be moved.
+     */
     public void handleMoveTask(String sourceColumnID, String targetColumnID, TaskModel task) {
-        System.out.println("SOURCE COLUMN ID " + sourceColumnID );
-        System.out.println("TARGET COLUMN ID " + targetColumnID );
-        System.out.println("TASK: " + task);
-
-        // Use DIP to retrieve all  necessary instances
-        IDBInsert  idbInsert = new DBManagerInsertController();
-        IDBRemove idbRemove = new DBManagerRemoveController();
-        IDBSearch idbSearch = new DBManagerSearchController();
-        IDbIdToModelList iDbIdToModelList = new IDListsToModelList();
-
-        // get the data from the database
-        List<String> sourceColumndata = idbSearch.DBColumnSearch(sourceColumnID);
-        List<String> targetColumndata = idbSearch.DBColumnSearch(targetColumnID);
-
-        // get original and updated TaskModel List
-        List<TaskModel> sourceTaskList = iDbIdToModelList.
-                IdToTaskModelList(List.of(sourceColumndata.get(2).split(",")));
-        List<TaskModel> targetTaskList = iDbIdToModelList.
-                IdToTaskModelList(List.of(targetColumndata.get(2).split(",")));
-
-        // Delete the task model from the old list and add it to the new one
-        TaskModel.removeFromTaskModelList(sourceTaskList, task);
-        targetTaskList.add(task);
-
-        System.out.println("SourceTaskList " + sourceTaskList);
-        System.out.println("Task to be removed " + task);
-        // build their respective ColumnModels
-        ColumnModel sourceColumnModel = new ColumnModel(
-                sourceColumndata.get(1),
-                sourceTaskList,
-                UUID.fromString(sourceColumndata.get(0))
-        );
-        ColumnModel targetColumnModel = new ColumnModel(
-                targetColumndata.get(1),
-                targetTaskList,
-                UUID.fromString(targetColumndata.get(0))
-        );
-
-
-        //remove old entries from DB
-        idbRemove.DBRemoveColumn(UUID.fromString(sourceColumnID));
-        idbRemove.DBRemoveColumn(UUID.fromString(targetColumnID));
-        idbRemove.DBRemoveTask(task.getID());
-
-        //add new entries to colunm DB
-        idbInsert.DBInsert(sourceColumnModel);
-        idbInsert.DBInsert(targetColumnModel);
-        idbInsert.DBInsert(task, UUID.fromString(targetColumnID));
-
-        System.out.println("\nSUCCESSFUL MOVE!!!!!");
+        interactor.moveTask(sourceColumnID, targetColumnID, task);
     }
 
+
+    /**
+     * Handles the click event when a task is completed.
+     *
+     * @param id               of task to change.
+     * @param completionStatus the completion status previously
+     * @param columnID id the task belongs to.
+     */
+    public void handleCompleteTask(UUID id, boolean completionStatus, UUID columnID) {
+        interactor.changeTaskCompletionStatus(id, completionStatus, columnID);
+    }
 }

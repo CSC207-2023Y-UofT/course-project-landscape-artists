@@ -56,8 +56,6 @@ public class ColumnModel {
             this.addTaskModel(new TaskModel(tasks.get(i)));
         }
 
-        System.out.println("TASKS IN COLUMN MODEL " + this.taskModels.toString());
-
         this.ID = column.getID();
     }
 
@@ -250,17 +248,4 @@ public class ColumnModel {
 
         return new Column(name, taskEntities, ID);
     }
-
-    // TODO:turn this into its own class
-    // private UUID getValidColumnID(){
-    // this.ID = UUID.randomUUID();
-    // DBManagerInsertController dbManagerInsertController = new
-    // DBManagerInsertController();
-    // while(uuidMap.containsKey(this.ID.toString())){
-    // this.ID = UUID.randomUUID();
-    // }
-    // dbManagerInsertController.DBInsert(this.ID);
-    // return this.ID;
-    // }
-
 }

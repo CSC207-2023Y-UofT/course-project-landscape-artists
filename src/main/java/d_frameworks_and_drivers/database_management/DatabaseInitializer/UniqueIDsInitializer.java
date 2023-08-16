@@ -5,11 +5,16 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 
+/**
+ * The UniqueIDsInitializer class is responsible for initializing the CSV file for storing unique IDs.
+ * It creates the file and writes the headers for UUIDs and their states as the initial content.
+ */
 public class UniqueIDsInitializer {
     String [] IdsDbHeaders = {"UUID", "State"};
 
     /**
-     * Initializes UUID csv file for database with the above headers.
+     * Constructs a UniqueIDsInitializer object and initializes the CSV file for unique IDs.
+     * It creates the file and writes the headers for UUIDs and their states as the initial content.
      */
     public UniqueIDsInitializer() {
         // create CSVWriter object filewriter object as parameter

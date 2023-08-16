@@ -12,6 +12,7 @@ import d_frameworks_and_drivers.database_management.DBControllers.EntityIDstoMod
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -180,12 +181,20 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
             Button currentProjectButton = new PresenterUtility().createCurrentProjectButton(project, this);
             MenuButton menuButton = new PresenterUtility().createMenuButton(project, this);
             HBox buttonContainer = new PresenterUtility().createButtonContainer(currentProjectButton, menuButton, project);
+
+
+            GridPane.setMargin(buttonContainer, new Insets(0, 0, 50, 20));
             projectsGrid.add(buttonContainer, currentColumn, currentRow);
 
             currentColumn++;
             if (currentColumn >= 2) {
                 currentColumn = 0;
+
+                // set the column constraints to be fixed.
+                RowConstraints rowConstraints = new RowConstraints(100);
+                projectsGrid.getRowConstraints().add(currentRow, rowConstraints);
                 currentRow++;
+
             }
         }
     }
@@ -207,23 +216,6 @@ public class ProjectSelectionPresenter extends Application implements ProjectSel
      */
     int getCurrentRow() {
         return currentRow;
-    }
-
-
-    @Override
-    public void displayCurrentProject() {
-
-    }
-
-    @Override
-    public void projectCreated(ProjectModel projectModel) {
-
-    }
-
-    @Override
-    public void projectCreationFailed(String errorMessage) {
-        showErrorAlert("ERROR IN PROJECT CREATION", errorMessage);
-
     }
 
     /**

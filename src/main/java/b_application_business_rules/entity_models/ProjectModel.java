@@ -265,7 +265,6 @@ public class ProjectModel {
     public Project getProjectEntity() {
         ArrayList<Column> columnEntities = new ArrayList<>();
         for (ColumnModel columnModel: columnModels) {
-            System.out.println("columnModel " + columnModel);
             columnEntities.add(columnModel.getColumnEntity());
         }
 

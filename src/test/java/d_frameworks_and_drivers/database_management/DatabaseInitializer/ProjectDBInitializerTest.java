@@ -2,7 +2,6 @@ package d_frameworks_and_drivers.database_management.DatabaseInitializer;
 
 
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,7 @@ public class ProjectDBInitializerTest {
         try (CSVReader reader = new CSVReader(new FileReader(CSV_FILE_PATH))) {
             String[] header = reader.readNext();
             assertArrayEquals(new String[]{"ProjectID", "Name", "Description", "Column ID's"}, header);
-        } catch (IOException e) {fail("Exception occurred: " + e.getMessage());} catch (CsvValidationException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }

@@ -1,13 +1,15 @@
 package d_frameworks_and_drivers.database_management.DatabaseInitializer;
-/*
-READ BEFORE CALLING METHODS
-This file is intended to initialize the Database CSV files and the main method should only be called/run ONCE
- */
 
 import java.io.FileWriter;
 
 import com.opencsv.CSVWriter;
-
+/**
+ * The DBInitializer class is responsible for initializing CSV files for different database entities.
+ * It creates CSV files for projects, columns, and tasks, each with corresponding headers.
+ * The main method in this class is used to trigger the initialization process for different entities.
+ *
+ * This file is intended to initialize the Database CSV files and the main method should only be called/run ONCE
+ */
 public class DBInitializer {
     String [] DBNames = {"Projects", "Columns", "Tasks"};
 
@@ -24,6 +26,12 @@ public class DBInitializer {
         }
     }
 
+    /**
+     * The main method to trigger the initialization process for different entities.
+     * It creates instances of initializers for projects, columns, tasks, and unique IDs.
+     *
+     * @param args Command-line arguments (not used).
+     */
     public static void main(String[] args) {
         DBInitializer dbInitializer = new DBInitializer();
         ProjectDBInitializer projectDBInitializer = new ProjectDBInitializer();

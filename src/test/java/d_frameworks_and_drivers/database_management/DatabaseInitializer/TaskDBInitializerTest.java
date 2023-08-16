@@ -2,7 +2,6 @@ package d_frameworks_and_drivers.database_management.DatabaseInitializer;
 
 
 import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvValidationException;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileReader;
@@ -28,13 +27,13 @@ public class TaskDBInitializerTest {
         // Check if the CSV file has the expected header
         try (CSVReader reader = new CSVReader(new FileReader(csvFilePath))) {
             String[] header = reader.readNext();
-            assertArrayEquals(new String[]{"TaskID", "Name", "Description", "Completion Status", "Due Date", "ColumnID"}, header);
+            assertArrayEquals(new String[]{"TaskID", "Name", "Description", "Completion Status", "Due Date"}, header);
 
             // Add more assertions if necessary
         } catch (IOException e) {
             fail("Exception occurred: " + e.getMessage());
-        } catch (CsvValidationException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

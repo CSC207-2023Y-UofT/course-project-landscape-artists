@@ -433,20 +433,6 @@ public class ProjectModelTest {
      * Tests swapColumnModelOrder. NOT USED.
      */
 //    void swapColumnModelOrder() {
-//        ColumnModelModel c1 = new ColumnModelModel(null, null, null);
-//        ColumnModelModel c2 = new ColumnModelModel(null, null, null);
-//        ArrayList<ColumnModelModel> columns = new ArrayList<ColumnModelModel>();
-//        columns.add(c1);
-//        columns.add(c2);
-//
-//        ArrayList<ColumnModelModel> columns2 = new ArrayList<ColumnModelModel>();
-//        columns.add(c2);
-//        columns.add(c1);
-//
-//        ProjectModel p = new ProjectModel(null, null, null, columns);
-//        p.swapColumnModelOrder(c2.getColumnModelEntity(), c1.getColumnModelEntity());
-//
-//        Assertions.assertEquals(p.getColumnModels(), columns2);
 //    }
 
 

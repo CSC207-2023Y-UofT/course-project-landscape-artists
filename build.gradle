@@ -30,7 +30,7 @@ application {
 }
 
 javafx {
-    version = '17.0.6'
+    version = '20.0.1'
     modules = ['javafx.controls', 'javafx.fxml']
 }
 
@@ -44,6 +44,8 @@ dependencies {
     // https://mvnrepository.com/artifact/com.opencsv/opencsv
     implementation group: 'com.opencsv', name: 'opencsv', version: '5.7.1'
     implementation 'org.apache.commons:commons-csv:1.10.0'
+    implementation 'commons-io:commons-io:2.13.0'
+    implementation group: 'org.mockito', name: 'mockito-core', version: '5.4.0'
 }
 
 test {

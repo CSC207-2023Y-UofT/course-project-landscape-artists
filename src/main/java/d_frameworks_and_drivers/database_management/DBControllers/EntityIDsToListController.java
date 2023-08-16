@@ -14,6 +14,7 @@ public class EntityIDsToListController implements IEntityIDsToList {
      * This returns a concatenated string of column IDs
      * which makes it able to be put into the Database of projects
      * for the individual project's Column IDs field as one csv value.
+     *
      * @param projectModel Project model from which column IDs are retrieved
      * @return String of Concatenated Column IDs
      */
@@ -37,6 +38,7 @@ public class EntityIDsToListController implements IEntityIDsToList {
      * This returns a concatenated string of Task IDs
      * which makes it able to be put into the Database of columns
      * for the individual column's Task IDs field as one csv value.
+     *
      * @param columnModel Column model from which task IDs are retrieved
      * @return String of Concatenated Task IDs
      */
@@ -60,29 +62,3 @@ public class EntityIDsToListController implements IEntityIDsToList {
     }
 
 }
-
-/*
-String csvFilePath = "DatabaseFiles/Projects/Projects.csv"; // Replace with the path to your CSV file
-
-        // Sample list to store in the CSV column
-        List<String> columnIdList = project.getColumns();
-        String columnIdListString = "";
-        try (FileWriter fileWriter = new FileWriter(csvFilePath);
-             CSVPrinter csvPrinter = new CSVPrinter(
-                     fileWriter,
-                     CSVFormat.RFC4180.
-                             withQuoteMode(CSVFormat.
-                                     DEFAULT.getQuoteMode()))) {
-
-            columnIdListString.join(", ", columnIdList);
-            // Write the list to the CSV column as a single entry
-            csvPrinter.printRecord("","","", columnIdListString);
-
-            // Flush and close the CSVPrinter
-            csvPrinter.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-        return columnIdListString;
- */

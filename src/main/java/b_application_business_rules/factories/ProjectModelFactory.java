@@ -12,12 +12,13 @@ import java.util.UUID;
 public class ProjectModelFactory {
 
     /**
-     * Creates a ProjectModel
-     * @param name
-     * @param id
-     * @param description
-     * @param columnModels
-     * @return a ProjectModel
+     * Creates a new ProjectModel instance.
+     *
+     * @param name The name of the project.
+     * @param id The unique ID for the project.
+     * @param description The description of the project.
+     * @param columnModels The list of ColumnModels associated with the project.
+     * @return A newly created ProjectModel instance.
      */
     public static ProjectModel create(String name, UUID id, String description, List<ColumnModel> columnModels) {
         return new ProjectModel(name, id, description, columnModels);
